@@ -16,7 +16,7 @@ export interface Book {
 
 export const books: Book[] = [
   {
-    "slug": "di-tian-sui",
+    "slug": "ditiansui-site",
     "title": "滴天髓阐微",
     "total": 64,
     "done": 9,
@@ -345,6 +345,9 @@ export const books: Book[] = [
     "skills": [
       {
         "name": "bage"
+      },
+      {
+        "name": "bazi-research-dispute-exec"
       },
       {
         "name": "dizhi"

@@ -1,2 +1,2 @@
 // Auto-generated — do not edit manually
-export * from './di-tian-sui';
+export * from './ditiansui-site';

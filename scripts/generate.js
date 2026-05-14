@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 import { marked } from 'marked';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = '/root/.hermes/mingli';
+const ROOT = path.join(__dirname, '../books');
 const OUT_DIR = path.join(__dirname, '../src/data');
 
 marked.setOptions({ gfm: true, breaks: false });
