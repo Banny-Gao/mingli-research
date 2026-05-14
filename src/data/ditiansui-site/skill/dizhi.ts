@@ -1,0 +1,262 @@
+// Auto-generated — do not edit manually
+export default `<h1>《滴天髓》·地支篇</h1>
+<blockquote>
+<p><strong>原著：</strong> 《滴天髓》上篇第八章·地支
+<strong>正文：</strong> 阳支动且强，速达显灾祥；阴支静且专，否泰每经年</p>
+</blockquote>
+<hr>
+<h2>一、核心定理</h2>
+<h3>定理一：阳动阴静</h3>
+<pre><code>阳支（子丑寅卯辰巳）→ 动且强 → 气化流行，变化快；吉凶速达
+阴支（午未申酉戌亥）→ 静且专 → 质凝形聚，变化慢；否泰经年乃见
+</code></pre>
+<h3>定理二：藏干主次规则</h3>
+<pre><code>本气为重（最重要）
+  ↓
+中气得时令可用（次要）
+  ↓
+余气非当令不足为用（最次）
+</code></pre>
+<h3>定理三：冲合总纲（任注精华）</h3>
+<pre><code>冲者，必是相克
+支神以冲为重，刑与穿总非紧要
+四库之冲，必须冲开，非闭藏之谓
+冲有吉有凶，不可执一
+</code></pre>
+<h3>定理四：生方旺方</h3>
+<pre><code>生方怕动（亥子寅卯辰）→ 气化速变
+旺方忌冲（申酉戌）→ 本气当令，冲开反吉
+</code></pre>
+<hr>
+<h2>二、藏干速查表</h2>
+<table>
+<thead>
+<tr>
+<th>地支</th>
+<th>本气</th>
+<th>中气</th>
+<th>余气</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>子</td>
+<td>癸（官）</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>丑</td>
+<td>己（财）</td>
+<td>癸（印）</td>
+<td>辛（偏印）</td>
+</tr>
+<tr>
+<td>寅</td>
+<td>甲（比）</td>
+<td>丙（偏印）</td>
+<td>戊（财）</td>
+</tr>
+<tr>
+<td>卯</td>
+<td>乙（财）</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>辰</td>
+<td>戊（官）</td>
+<td>乙（偏财）</td>
+<td>癸（印）</td>
+</tr>
+<tr>
+<td>巳</td>
+<td>丙（偏印）</td>
+<td>庚（杀）</td>
+<td>戊（财）</td>
+</tr>
+<tr>
+<td>午</td>
+<td>丁（伤）</td>
+<td>己（印）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>未</td>
+<td>己（财）</td>
+<td>丁（伤）</td>
+<td>乙（偏印）</td>
+</tr>
+<tr>
+<td>申</td>
+<td>庚（比）</td>
+<td>壬（偏印）</td>
+<td>戊（偏财）</td>
+</tr>
+<tr>
+<td>酉</td>
+<td>辛（官）</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>戌</td>
+<td>戊（官）</td>
+<td>辛（印）</td>
+<td>丁（伤）</td>
+</tr>
+<tr>
+<td>亥</td>
+<td>壬（偏印）</td>
+<td>甲（劫）</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>三、六冲深度解析</h2>
+<table>
+<thead>
+<tr>
+<th>六冲</th>
+<th>本气相克</th>
+<th>冲开（旺相）→ 吉</th>
+<th>冲坏（衰败）→ 凶</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>子午</td>
+<td>癸冲丁己</td>
+<td>官印发越</td>
+<td>伤病是非</td>
+</tr>
+<tr>
+<td>丑未</td>
+<td>己冲己</td>
+<td>金库开，财发</td>
+<td>印星学业损</td>
+</tr>
+<tr>
+<td>寅申</td>
+<td>甲冲庚</td>
+<td>金闭开，财官动</td>
+<td>木根破，体弱</td>
+</tr>
+<tr>
+<td>卯酉</td>
+<td>乙冲辛</td>
+<td>金质开，财动</td>
+<td>木气损，伤身</td>
+</tr>
+<tr>
+<td>辰戌</td>
+<td>戊冲戊</td>
+<td>水库开，印发</td>
+<td>火库破，凶</td>
+</tr>
+<tr>
+<td>巳亥</td>
+<td>丙冲壬</td>
+<td>水闭开，才动</td>
+<td>火根耗，心神损</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>四、三合三会力量排序</h2>
+<pre><code>三会方（力量最大，难成）&gt; 三合局 &gt; 半三合
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>三合局</th>
+<th>合成</th>
+<th>力量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>申子辰</td>
+<td>水局</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>亥卯未</td>
+<td>木局</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>寅午戌</td>
+<td>火局</td>
+<td>★★★★★</td>
+</tr>
+<tr>
+<td>巳酉丑</td>
+<td>金局</td>
+<td>★★★★★</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>五、冲吉凶判断树</h2>
+<pre><code>所冲之地支是否为用神所在？
+  ↓是
+  用神旺相？→ 冲起作用 → 大吉
+  用神休囚？→ 冲坏用神 → 大凶
+
+所冲之地支是否为忌神所在？
+  ↓是
+  忌神旺相？→ 冲坏忌神 → 大吉（去忌得清）
+  忌神休囚？→ 冲起忌神 → 凶（忌神借势）
+
+冲的是四库（辰戌丑未）吗？
+  ↓是
+  冲开 → 吉
+  冲坏 → 凶
+</code></pre>
+<hr>
+<h2>六、必须背诵名句</h2>
+<blockquote>
+<p><strong>1.</strong> 阳支动且强，速达显灾祥；阴支静且专，否泰每经年</p>
+</blockquote>
+<blockquote>
+<p><strong>2.</strong> 冲者，必是相克。及乎四库兄弟之冲，必须冲开，非闭藏之谓</p>
+</blockquote>
+<blockquote>
+<p><strong>3.</strong> 支神以冲为重，刑与穿总非紧要</p>
+</blockquote>
+<blockquote>
+<p><strong>4.</strong> 生方怕动，旺方忌冲</p>
+</blockquote>
+<hr>
+<h2>七、自测题</h2>
+<table>
+<thead>
+<tr>
+<th>题号</th>
+<th>问题</th>
+<th>参考答案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>阳支和阴支各有哪些？根本区别？</td>
+<td>子丑寅卯辰巳 / 午未申酉戌亥；动强 vs 静专</td>
+</tr>
+<tr>
+<td>2</td>
+<td>任注批判了哪四个冲合谬说？</td>
+<td>金水冲木火/冲喜合/冲为凶/刑穿为主</td>
+</tr>
+<tr>
+<td>3</td>
+<td>&quot;生方怕动，旺方忌冲&quot;各指哪些？</td>
+<td>生方=亥子寅卯辰；旺方=申酉戌</td>
+</tr>
+<tr>
+<td>4</td>
+<td>子午冲的吉凶如何判断？</td>
+<td>冲起官印则吉，冲坏则凶</td>
+</tr>
+<tr>
+<td>5</td>
+<td>&quot;本气为重&quot;为何重要？</td>
+<td>余气非当令不足为用</td>
+</tr>
+</tbody></table>
+`;
