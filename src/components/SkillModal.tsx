@@ -1,5 +1,5 @@
 import React from 'react';
-import { skillContent } from '../data/di-tian-sui';
+import { skillContent } from '../data/ditiansui-site';
 
 interface Props {
   slug: string;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { books } from '../data/books';
-import { interpContent, skillContent } from '../data/di-tian-sui';
+import { interpContent, skillContent } from '../data/ditiansui-site';
 import ReadList from '../components/ReadList';
 import SkillGrid from '../components/SkillGrid';
 
