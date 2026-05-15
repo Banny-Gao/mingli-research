@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
 import SearchBar from '../components/SearchBar'
+import { useGlobalProgress } from '../hooks/useProgress'
 
 const Landing: React.FC = () => {
+  const gp = useGlobalProgress()
   return (
     <div className="page-container">
       <Helmet>
@@ -22,12 +24,19 @@ const Landing: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: 16,
             width: '100%',
             maxWidth: 900,
             marginBottom: 16,
           }}
         >
           <SearchBar />
+          {gp.streakDays > 0 && (
+            <div className="streak-badge">
+              🔥 连续{gp.streakDays}天
+            </div>
+          )}
         </div>
         <div className="hero-badge">正统子平学术</div>
         <h1 className="hero-title">命理学术中心</h1>
