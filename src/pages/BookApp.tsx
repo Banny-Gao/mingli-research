@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { books } from '../data/books'
 import { interpContent, skillContent } from '../data/ditiansui-site'
 import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
@@ -12,7 +13,7 @@ import AnnotationPanel from '../components/AnnotationPanel'
 import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/useProgress'
 import { useAnnotations } from '../hooks/useAnnotations'
 import type { AnnotationType } from '../hooks/useAnnotations'
-import { ThemeToggle } from '../main'
+import { ThemeToggle, LangToggle } from '../main'
 
 function injectAnnotations(html: string, annotations: Array<{ rangeStart: number; rangeEnd: number; type: string; id: string }>): string {
   if (annotations.length === 0) return html
@@ -31,6 +32,7 @@ function injectAnnotations(html: string, annotations: Array<{ rangeStart: number
 }
 
 const BookApp: React.FC = () => {
+  const { t } = useTranslation()
   const { slug } = useParams<{ slug: string }>()
   const [activeTab, setActiveTab] = useState<'read' | 'skill'>('read')
   const [modalType, setModalType] = useState<'interp' | 'skill' | null>(null)
@@ -69,19 +71,19 @@ const BookApp: React.FC = () => {
     return () => window.removeEventListener('keydown', handler)
   }, [book, modalKey, modalType, toggleBookmark])
 
-  const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'
-  const pageDesc = book ? `${book.title}，已解读 ${book.done}/${book.total} 篇` : '未找到该典籍'
+  const pageTitle = book ? `${t('bookApp.pageTitle', { book: book.title })}` : `${t('landing.notFound', { fallback: '404' })} - 命理学术中心`
+  const pageDesc = book ? `${book.title}，${t('landing.progress').replace('{done}', String(book.done))}` : t('bookApp.notFoundMsg')
 
   if (!book) {
     return (
       <>
-        <Helmet><title>404 - 命理学术中心</title></Helmet>
+        <Helmet><title>{`${t('bookApp.notFound')} - 命理学术中心`}</title></Helmet>
         <div className="page-container">
           <div className="not-found">
             <div className="not-found-inner">
-              <div className="not-found-code">404</div>
-              <p className="not-found-msg">未找到该典籍</p>
-              <Link to="/" className="btn-primary">返回首页</Link>
+              <div className="not-found-code">{t('bookApp.notFound')}</div>
+              <p className="not-found-msg">{t('bookApp.notFoundMsg')}</p>
+              <Link to="/" className="btn-primary">{t('bookApp.back')}</Link>
             </div>
           </div>
         </div>
@@ -136,7 +138,7 @@ const BookApp: React.FC = () => {
     }
   }
 
-  const modalTitle = modalType === 'interp' ? `【${modalKey}】原文解读` : `【${modalKey}】技能文件`
+  const modalTitle = modalType === 'interp' ? t('modal.interpTitle', { name: modalKey }) : t('modal.skillTitle', { name: modalKey })
   const rawBody =
     modalType === 'interp'
       ? interpContent[modalKey] || '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
@@ -155,7 +157,7 @@ const BookApp: React.FC = () => {
         {/* Hero */}
         <div className="book-hero">
           <div className="book-hero-glow" />
-          <div className="hero-badge">正统子平 · 任铁樵增注本</div>
+          <div className="hero-badge">{t('bookApp.heroBadge')}</div>
           <h1 style={{ fontSize: 24, color: 'var(--color-gold)', fontWeight: 'bold', letterSpacing: 5, marginBottom: 8, textShadow: '0 0 30px var(--color-gold-glow)' }}>
             《{book.title}》
           </h1>
@@ -163,24 +165,25 @@ const BookApp: React.FC = () => {
             原著：刘伯温（托名）｜注疏：任铁樵｜评注：徐乐吾
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+            <LangToggle />
             <ThemeToggle />
             <div className="book-hero-stats">
-              <div className="stat-item"><div className="stat-num">{book.total}</div><div className="stat-label">全篇章</div></div>
-              <div className="stat-item"><div className="stat-num-green">{book.done}</div><div className="stat-label">已解读</div></div>
-              <div className="stat-item"><div className="stat-num-purple">{book.skills.length}</div><div className="stat-label">技能文件</div></div>
+              <div className="stat-item"><div className="stat-num">{book.total}</div><div className="stat-label">{t('bookApp.stats.total')}</div></div>
+              <div className="stat-item"><div className="stat-num-green">{book.done}</div><div className="stat-label">{t('bookApp.stats.done')}</div></div>
+              <div className="stat-item"><div className="stat-num-purple">{book.skills.length}</div><div className="stat-label">{t('bookApp.stats.skills')}</div></div>
             </div>
           </div>
         </div>
 
         {/* Back */}
         <div className="container-wide" style={{ marginBottom: 24 }}>
-          <Link to="/" className="back-link">← 返回典籍首页</Link>
+          <Link to="/" className="back-link">{t('bookApp.back')}</Link>
         </div>
 
         {/* Tab Bar */}
         <div className="tab-bar">
-          <button className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`} onClick={() => setActiveTab('read')}>原文解读</button>
-          <button className={`tab-btn ${activeTab === 'skill' ? 'active' : ''}`} onClick={() => setActiveTab('skill')}>技能库</button>
+          <button className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`} onClick={() => setActiveTab('read')}>{t('bookApp.tabs.read')}</button>
+          <button className={`tab-btn ${activeTab === 'skill' ? 'active' : ''}`} onClick={() => setActiveTab('skill')}>{t('bookApp.tabs.skill')}</button>
         </div>
 
         {/* Content */}
@@ -207,7 +210,7 @@ const BookApp: React.FC = () => {
                           fontSize: 13, transition: 'all 0.2s',
                         }}
                       >
-                        批注{annotations.length > 0 ? ` (${annotations.length})` : ''}
+                        {t('modal.annotations')}{annotations.length > 0 ? ` (${annotations.length})` : ''}
                       </button>
                       <button
                         onClick={() => toggleBookmark(modalKey)}
@@ -218,7 +221,7 @@ const BookApp: React.FC = () => {
                           fontSize: 13, transition: 'all 0.2s',
                         }}
                       >
-                        {isBookmarked(modalKey) ? '★ 已收藏' : '☆ 收藏'}
+                        {isBookmarked(modalKey) ? t('modal.bookmarked') : t('modal.bookmark')}
                       </button>
                     </>
                   )}
@@ -251,7 +254,7 @@ const BookApp: React.FC = () => {
                 <div className="related-section">
                   {modalType === 'interp' && interpToSkill[modalKey]?.length > 0 && (
                     <div className="related-tags">
-                      <span className="related-label">关联技能</span>
+                      <span className="related-label">{t('related.skills')}</span>
                       {interpToSkill[modalKey].map(sk => (
                         <button key={sk} className="related-tag related-tag-skill" onClick={() => openModal('skill', sk)}>{sk}</button>
                       ))}
@@ -259,7 +262,7 @@ const BookApp: React.FC = () => {
                   )}
                   {modalType === 'skill' && skillToInterp[modalKey]?.length > 0 && (
                     <div className="related-tags">
-                      <span className="related-label">相关篇目</span>
+                      <span className="related-label">{t('related.chapters')}</span>
                       {skillToInterp[modalKey].map(ch => (
                         <button key={ch} className="related-tag related-tag-chapter" onClick={() => openModal('interp', ch)}>{ch}</button>
                       ))}

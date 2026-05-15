@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { AnnotationType } from '../hooks/useAnnotations'
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const Toolbar: React.FC<Props> = ({ position, onSelect, onClose }) => {
+  const { t } = useTranslation()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -38,9 +40,9 @@ const Toolbar: React.FC<Props> = ({ position, onSelect, onClose }) => {
       className="ann-toolbar"
       style={{ left: position.x, top: position.y }}
     >
-      <button className="ann-toolbar-btn ann-emphasis" onClick={() => onSelect('emphasis')}>重点</button>
-      <button className="ann-toolbar-btn ann-question" onClick={() => onSelect('question')}>疑问</button>
-      <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>引用</button>
+      <button className="ann-toolbar-btn ann-emphasis" onClick={() => onSelect('emphasis')}>{t('annotations.emphasis')}</button>
+      <button className="ann-toolbar-btn ann-question" onClick={() => onSelect('question')}>{t('annotations.question')}</button>
+      <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>{t('annotations.quote')}</button>
       <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>×</button>
     </div>
   )

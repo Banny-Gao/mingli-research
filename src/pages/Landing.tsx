@@ -1,20 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { books } from '../data/books'
 import SearchBar from '../components/SearchBar'
 import { useGlobalProgress } from '../hooks/useProgress'
-import { ThemeToggle } from '../main'
+import { ThemeToggle, LangToggle } from '../main'
 
 const Landing: React.FC = () => {
+  const { t } = useTranslation()
   const gp = useGlobalProgress()
   return (
     <div className="page-container">
       <Helmet>
-        <title>命理学术中心 - 经典原文 · 专业注解 · 学术整理</title>
+        <title>{t('landing.title')} - {t('landing.subtitle')}</title>
         <meta
           name="description"
-          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统性学术解读。"
+          content={t('landing.metaDesc') || 'Mingli Research Center'}
         />
       </Helmet>
 
@@ -33,6 +35,7 @@ const Landing: React.FC = () => {
           }}
         >
           <SearchBar />
+          <LangToggle />
           <ThemeToggle />
           {gp.streakDays > 0 && (
             <div className="streak-badge">
@@ -40,24 +43,24 @@ const Landing: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="hero-badge">正统子平学术</div>
-        <h1 className="hero-title">命理学术中心</h1>
-        <p className="hero-subtitle">经典原文 · 专业注解 · 学术整理</p>
+        <div className="hero-badge">{t('landing.heroBadge')}</div>
+        <h1 className="hero-title">{t('landing.title')}</h1>
+        <p className="hero-subtitle">{t('landing.subtitle')}</p>
       </div>
 
       {/* Stats */}
       <div className="hero-stats">
         <div className="stat-item">
           <div className="stat-num">{books.length}</div>
-          <div className="stat-label">典籍</div>
+          <div className="stat-label">{t('landing.stats.books')}</div>
         </div>
         <div className="stat-item">
           <div className="stat-num">{books.reduce((s, b) => s + b.total, 0)}</div>
-          <div className="stat-label">总篇章</div>
+          <div className="stat-label">{t('landing.stats.chapters')}</div>
         </div>
         <div className="stat-item">
           <div className="stat-num">{books.reduce((s, b) => s + b.done, 0)}</div>
-          <div className="stat-label">已解读</div>
+          <div className="stat-label">{t('landing.stats.done')}</div>
         </div>
       </div>
 
@@ -67,7 +70,7 @@ const Landing: React.FC = () => {
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(122,79,170,0.2)' }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(122,79,170,0.1)' }}
         >
-          📝 我的笔记
+          📝 {t('nav.notes')}
         </Link>
       </div>
       <div className="book-grid">
@@ -90,8 +93,8 @@ const Landing: React.FC = () => {
               />
             </div>
             <div className="progress-meta">
-              <span>已解读 {book.done} 篇</span>
-              <span>{book.total > 0 ? Math.round((book.done / book.total) * 100) : 0}% 完成</span>
+              <span>{t('landing.progress').replace('{done}', String(book.done))}</span>
+              <span>{book.total > 0 ? t('landing.percent').replace('{percent}', String(Math.round((book.done / book.total) * 100))) : '0%'}</span>
             </div>
           </Link>
         ))}
@@ -99,15 +102,7 @@ const Landing: React.FC = () => {
 
       {/* Footer */}
       <div className="footer">
-        Hermes Agent · 学术整理 ·
-        <a
-          href="https://www.iwzbz.com"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: 'var(--color-blue)' }}
-        >
-          iwzbz.com
-        </a>
+        {t('landing.footer')}
       </div>
     </div>
   )
