@@ -51,13 +51,19 @@ function parseCatalog(catalogPath) {
       .filter(c => c !== '')
     if (cells.length < 3) continue
     const num = cells[0]
-    const status = cells[cells.length - 1]
     if (!/^\d+$/.test(num)) continue
+    const status = cells.length > 3 ? cells[3] : ''
+    // cells: [num, title, path, status, skills?] — skills is 2nd-last when present
+    const skillsRaw = cells.length >= 5 ? cells[cells.length - 1] : ''
+    const skills = skillsRaw
+      ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean)
+      : []
     rows.push({
       num,
       title: cells[1],
       filePath: cells.length > 2 ? cells[2] : '',
       status,
+      skills,
     })
   }
   return rows
@@ -132,6 +138,19 @@ for (const bookSlug of BOOK_DIRS) {
 
   const doneCount = chapters.filter(c => c.isDone).length
 
+  // Build association map
+  const interpToSkill = {}
+  const skillToInterp = {}
+  for (const row of catalogRows) {
+    if (row.skills.length > 0) {
+      interpToSkill[row.title] = row.skills
+      for (const sk of row.skills) {
+        if (!skillToInterp[sk]) skillToInterp[sk] = []
+        if (!skillToInterp[sk].includes(row.title)) skillToInterp[sk].push(row.title)
+      }
+    }
+  }
+
   books.push({
     slug: bookSlug,
     title,
@@ -202,6 +221,15 @@ export const skillKeys = ${JSON.stringify(skillKeys)} as const;
 export const skillContent: Record<SkillKey, () => Promise<string>> = modules as any;
 `
   fs.writeFileSync(path.join(skillDir, 'index.ts'), skillIndex)
+
+  // 生成 assoc.ts
+  if (Object.keys(interpToSkill).length > 0 || Object.keys(skillToInterp).length > 0) {
+    const assocContent = `// Auto-generated — do not edit manually
+export const interpToSkill: Record<string, string[]> = ${JSON.stringify(interpToSkill, null, 2)};
+export const skillToInterp: Record<string, string[]> = ${JSON.stringify(skillToInterp, null, 2)};
+`
+    fs.writeFileSync(path.join(bookOutDir, 'assoc.ts'), assocContent)
+  }
 
   // 生成 index.ts
   const interpType = interpKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ')
