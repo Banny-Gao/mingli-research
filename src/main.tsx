@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import './styles/index.css'
+import './i18n'
 import Landing from './pages/Landing'
 import BookApp from './pages/BookApp'
 import Notes from './pages/Notes'
 
-// Prevent FOUC: apply saved theme before React renders
 const initTheme = () => {
   try {
     const saved = localStorage.getItem('mingli_theme')
@@ -18,6 +19,7 @@ const initTheme = () => {
 initTheme()
 
 export function ThemeToggle() {
+  const { t } = useTranslation()
   const [theme, setTheme] = useState(() =>
     document.documentElement.getAttribute('data-theme') || 'dark',
   )
@@ -27,10 +29,26 @@ export function ThemeToggle() {
   }, [theme])
   return (
     <button
-      onClick={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
+      onClick={() => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))}
       className="theme-toggle-btn"
     >
-      {theme === 'dark' ? '☀️ 浅色' : '🌙 深色'}
+      {theme === 'dark' ? `${t('theme.light')} ☀️` : `${t('theme.dark')} 🌙`}
+    </button>
+  )
+}
+
+export function LangToggle() {
+  const { i18n } = useTranslation()
+  return (
+    <button
+      className="lang-toggle-btn"
+      onClick={() => {
+        const next = i18n.language === 'zh' ? 'en' : 'zh'
+        i18n.changeLanguage(next)
+        localStorage.setItem('mingli_lang', next)
+      }}
+    >
+      {i18n.language === 'zh' ? 'EN' : '中文'}
     </button>
   )
 }
