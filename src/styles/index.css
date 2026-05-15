@@ -957,3 +957,177 @@ body {
 .related-tag-chapter:hover {
   background: rgba(96, 160, 96, 0.2);
 }
+
+/* Annotation System */
+mark.ann-emphasis {
+  background: rgba(240, 192, 96, 0.28);
+  border-bottom: 2px solid var(--color-gold-dim);
+  cursor: pointer;
+}
+mark.ann-question {
+  background: rgba(220, 80, 80, 0.2);
+  border-bottom: 2px solid #d05050;
+  cursor: pointer;
+}
+mark.ann-quote {
+  background: rgba(96, 160, 96, 0.18);
+  border-bottom: 2px solid #60c060;
+  cursor: pointer;
+}
+
+.ann-toolbar {
+  position: fixed;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 8px;
+  padding: 4px 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 300;
+}
+.ann-toolbar-btn {
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid;
+  font-size: 12px;
+  cursor: pointer;
+  background: transparent;
+  transition: filter 0.15s;
+}
+.ann-toolbar-btn:hover { filter: brightness(1.3); }
+.ann-toolbar-close {
+  color: var(--color-text-dim);
+  border-color: var(--color-border) !important;
+  margin-left: 4px;
+}
+
+.ann-panel {
+  position: fixed;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  width: 240px;
+  max-height: 70vh;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 250;
+  display: flex;
+  flex-direction: column;
+}
+.ann-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+.ann-panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-body);
+}
+.ann-panel-count {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-border);
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+.ann-panel-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.ann-panel-empty {
+  padding: 24px 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.ann-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+.ann-item:last-child { border-bottom: none; }
+.ann-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.ann-type-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.ann-type-emphasis { background: rgba(240,192,96,0.2); color: var(--color-gold); }
+.ann-type-question { background: rgba(220,80,80,0.2); color: #d05050; }
+.ann-type-quote    { background: rgba(96,160,96,0.2); color: #60c060; }
+.ann-item-remove {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+}
+.ann-item-remove:hover { color: #d05050; }
+.ann-item-text {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  line-height: 1.5;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ann-item-text:hover { color: var(--color-text-body); }
+.ann-note-text {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  line-height: 1.5;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background: var(--color-bg-base);
+  border-radius: 5px;
+}
+.ann-note-input {
+  width: 100%;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 6px 8px;
+  color: var(--color-text-body);
+  font-size: 12px;
+  resize: vertical;
+  margin-bottom: 6px;
+}
+.ann-note-actions {
+  display: flex;
+  gap: 6px;
+}
+.ann-note-save, .ann-note-cancel {
+  flex: 1;
+  padding: 3px 0;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  border: none;
+}
+.ann-note-save { background: var(--color-purple); color: white; }
+.ann-note-cancel { background: var(--color-border); color: var(--color-text-dim); }
+.ann-note-add-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+}
+.ann-note-add-btn:hover { color: var(--color-purple-light); }
