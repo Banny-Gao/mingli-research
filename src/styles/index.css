@@ -1131,3 +1131,73 @@ mark.ann-quote {
   padding: 0;
 }
 .ann-note-add-btn:hover { color: var(--color-purple-light); }
+
+/* Notes Page */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.notes-empty {
+  padding: 60px 20px;
+  text-align: center;
+}
+.notes-book {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-card);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.notes-book-title {
+  padding: 14px 18px;
+  background: rgba(122, 79, 170, 0.08);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 15px;
+  font-weight: 600;
+}
+.notes-chapter {
+  border-bottom: 1px solid var(--color-border);
+}
+.notes-chapter:last-child { border-bottom: none; }
+.notes-chapter-name {
+  padding: 10px 18px 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: rgba(255,255,255,0.02);
+}
+.notes-item {
+  padding: 10px 18px;
+  border-top: 1px solid var(--color-border);
+}
+.notes-item:first-of-type { border-top: none; }
+.notes-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+.notes-item-text {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+.notes-item-note {
+  font-size: 12px;
+  color: var(--color-text-body);
+  background: var(--color-bg-base);
+  border-radius: 5px;
+  padding: 5px 8px;
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+.notes-item-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.notes-item-link {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+.notes-item-link:hover { color: var(--color-purple-light); }

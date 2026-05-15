@@ -89,7 +89,8 @@ const Landing: React.FC = () => {
 
       {/* Footer */}
       <div className="footer">
-        Hermes Agent · 学术整理 ·{' '}
+        Hermes Agent · 学术整理 ·
+        <Link to="/notes" style={{ color: 'var(--color-purple-light)', marginRight: 8 }}>我的笔记</Link>·
         <a
           href="https://www.iwzbz.com"
           target="_blank"

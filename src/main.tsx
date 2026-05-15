@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import './styles/index.css'
 import Landing from './pages/Landing'
 import BookApp from './pages/BookApp'
+import Notes from './pages/Notes'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -12,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/notes" element={<Notes />} />
           <Route path="/:slug" element={<BookApp />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
