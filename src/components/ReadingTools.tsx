@@ -104,7 +104,7 @@ export const TableOfContents: React.FC<{
   html: string
   scrollRef: React.RefObject<HTMLDivElement | null>
 }> = ({ html, scrollRef }) => {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const toc = extractTOC(html)
 
   if (toc.length === 0) return null
@@ -112,72 +112,34 @@ export const TableOfContents: React.FC<{
   const scrollTo = (id: string) => {
     const el = scrollRef.current
     if (!el) return
-    const target = el.querySelector(`[id="${id}"], h2, h3`)
+    const target = el.querySelector(`[id="${id}"]`) as HTMLElement | null
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const top = target.offsetTop - 16
+      el.scrollTo({ top, behavior: 'smooth' })
     }
   }
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 80,
-        right: 16,
-        width: 180,
-        zIndex: 40,
-        background: 'var(--color-bg-card)',
-        border: '1px solid var(--color-border-hover)',
-        borderRadius: 8,
-        padding: 12,
-        maxHeight: 'calc(100vh - 160px)',
-        overflowY: 'auto',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 8,
-        }}
-      >
-        <span style={{ fontSize: 12, color: 'var(--color-text-dim)', letterSpacing: 1 }}>目录</span>
-        <button
-          onClick={() => setOpen(!open)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--color-text-dim)',
-            cursor: 'pointer',
-            fontSize: 14,
-          }}
-        >
-          {open ? '−' : '+'}
+    <div className="toc-container">
+      <div className="toc-header">
+        <span className="toc-label">目录</span>
+        <button className="toc-toggle-btn" onClick={() => setOpen(!open)}>
+          {open ? '− 收起' : '+ 展开'}
         </button>
       </div>
-      {open &&
-        toc.map(item => (
-          <div
-            key={item.id}
-            onClick={() => scrollTo(item.id)}
-            style={{
-              fontSize: 12,
-              color: 'var(--color-text-dim)',
-              padding: '3px 0',
-              paddingLeft: item.level === 3 ? 12 : 0,
-              cursor: 'pointer',
-              transition: 'color 0.2s',
-              borderLeft: '2px solid transparent',
-            }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--color-gold)')}
-            onMouseLeave={e =>
-              ((e.currentTarget as HTMLElement).style.color = 'var(--color-text-dim)')
-            }
-          >
-            {item.text}
-          </div>
-        ))}
+      {open && (
+        <div className="toc-list">
+          {toc.map(item => (
+            <button
+              key={item.id}
+              className="toc-item"
+              onClick={() => scrollTo(item.id)}
+            >
+              {item.text}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

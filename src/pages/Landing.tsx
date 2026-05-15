@@ -62,6 +62,14 @@ const Landing: React.FC = () => {
       </div>
 
       {/* Book Grid */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16, width: '100%', maxWidth: 900 }}>
+        <Link to="/notes" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(122,79,170,0.1)', border: '1px solid var(--color-border-hover)', borderRadius: 8, color: 'var(--color-purple-light)', fontSize: 13, textDecoration: 'none', transition: 'all 0.2s' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(122,79,170,0.2)' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(122,79,170,0.1)' }}
+        >
+          📝 我的笔记
+        </Link>
+      </div>
       <div className="book-grid">
         {books.map(book => (
           <Link key={book.slug} to={`/${book.slug}`} className="book-card">
@@ -92,7 +100,6 @@ const Landing: React.FC = () => {
       {/* Footer */}
       <div className="footer">
         Hermes Agent · 学术整理 ·
-        <Link to="/notes" style={{ color: 'var(--color-purple-light)', marginRight: 8 }}>我的笔记</Link>·
         <a
           href="https://www.iwzbz.com"
           target="_blank"
