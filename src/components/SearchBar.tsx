@@ -10,6 +10,10 @@ interface SearchEntry {
   text: string
 }
 
+interface SearchBarProps {
+  scopeSlug?: string // 限定搜索的典籍slug
+}
+
 let searchCache: SearchEntry[] | null = null
 let fuseInstance: Fuse<SearchEntry> | null = null
 
@@ -55,40 +59,80 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
   }
   fuseInstance = new Fuse(entries, {
     keys: ['text', 'key', 'title'],
-    threshold: 0.4,
+    threshold: 0.0,
     includeScore: true,
+    ignoreLocation: true,
+    useExtendedSearch: true,
+    minMatchCharLength: 2,
   })
   searchCache = entries
   return entries
 }
 
-const SearchBar: React.FC = () => {
+function fuzzySearch(entries: SearchEntry[], query: string): SearchEntry[] {
+  const q = query.toLowerCase()
+  return entries.filter(
+    entry =>
+      entry.text.toLowerCase().includes(q) ||
+      entry.key.toLowerCase().includes(q) ||
+      entry.title.toLowerCase().includes(q)
+  )
+}
+
+function filterByScope(entries: SearchEntry[], scopeSlug: string | undefined): SearchEntry[] {
+  if (!scopeSlug) return entries
+  return entries.filter(e => e.slug === scopeSlug)
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchEntry[]>([])
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const queryRef = useRef(query)
   const navigate = useNavigate()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const doSearch = useCallback(async (q: string) => {
-    if (!q.trim()) {
-      setResults([])
-      return
-    }
-    setLoading(true)
-    const entries = await loadSearchIndex()
-    if (!fuseInstance) {
+  // Keep queryRef in sync
+  useEffect(() => {
+    queryRef.current = query
+  }, [query])
+
+  const doSearch = useCallback(
+    async (q: string) => {
+      if (!q.trim()) {
+        setResults([])
+        return
+      }
+      setLoading(true)
+      const entries = await loadSearchIndex()
+      if (!entries.length) {
+        setLoading(false)
+        return
+      }
+      // 精确匹配优先（中文key精确匹配）
+      const exactMatches = entries.filter(
+        entry => entry.key === q || entry.key.toLowerCase().includes(q.toLowerCase())
+      )
+      // Fuzzy 后备
+      const fuzzyMatches = fuseInstance
+        ? fuseInstance
+            .search(q)
+            .map(r => r.item)
+            .filter(item => !exactMatches.some(e => e.key === item.key))
+        : []
+
+      let results = [...exactMatches, ...fuzzyMatches]
+      if (results.length === 0) {
+        results = fuzzySearch(entries, q)
+      }
+      const filtered = filterByScope(results, scopeSlug)
+      setResults(filtered.slice(0, 10))
       setLoading(false)
-      return
-    }
-    const hits = fuseInstance
-      .search(q)
-      .slice(0, 10)
-      .map(r => r.item)
-    setResults(hits)
-    setLoading(false)
-  }, [])
+    },
+    [scopeSlug]
+  )
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -122,10 +166,15 @@ const SearchBar: React.FC = () => {
     if (open) inputRef.current?.focus()
   }, [open])
 
-  const handleNavigate = (slug: string) => {
+  const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill') => {
+    const match = queryRef.current.slice(0, 50)
     setOpen(false)
     setQuery('')
-    navigate(`/${slug}`)
+    // Map 'chapter' to 'interp' for compatibility
+    const openType = type === 'chapter' ? 'interp' : 'skill'
+    navigate(
+      `/${slug}?open=${openType}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
+    )
   }
 
   const highlight = (text: string, q: string) => {
@@ -183,7 +232,7 @@ const SearchBar: React.FC = () => {
               <button
                 key={i}
                 className="search-result-item"
-                onClick={() => handleNavigate(r.slug)}
+                onClick={() => handleNavigate(r.slug, r.key, r.type)}
                 onMouseEnter={e =>
                   ((e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)')
                 }
