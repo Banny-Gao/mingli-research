@@ -14,6 +14,8 @@ import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/usePr
 import { useAnnotations } from '../hooks/useAnnotations'
 import type { AnnotationType } from '../hooks/useAnnotations'
 import { ThemeToggle, LangToggle } from '../main'
+import GiscusComments from '../components/GiscusComments'
+import AiAssistant from '../components/AiAssistant'
 
 function injectAnnotations(html: string, annotations: Array<{ rangeStart: number; rangeEnd: number; type: string; id: string }>): string {
   if (annotations.length === 0) return html
@@ -272,7 +274,12 @@ const BookApp: React.FC = () => {
               )}
 
               <BackToTop scrollRef={modalBodyRef} />
+
+              {/* Discussion */}
+              <GiscusComments term={modalKey} />
             </div>
+
+            <AiAssistant chapter={modalKey} />
 
             {/* Annotation Panel */}
             {showPanel && (
