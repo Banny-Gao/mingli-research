@@ -6,7 +6,7 @@ import { interpContent, skillContent } from '../data/ditiansui-site'
 import ReadList from '../components/ReadList'
 import SkillGrid from '../components/SkillGrid'
 import { ReadingProgress, BackToTop, TableOfContents } from '../components/ReadingTools'
-import { useReadProgress, useBookmarks } from '../hooks/useProgress'
+import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/useProgress'
 
 const BookApp: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -18,6 +18,7 @@ const BookApp: React.FC = () => {
   const book = books.find(b => b.slug === slug)
   const { markRead } = useReadProgress(slug || '')
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(slug || '')
+  const { touchChapter } = useGlobalProgress()
 
   const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'
   const pageDesc = book ? `${book.title}，已解读 ${book.done}/${book.total} 篇` : '未找到该典籍'
@@ -52,6 +53,7 @@ const BookApp: React.FC = () => {
   const openModal = (type: 'interp' | 'skill', key: string) => {
     setModalType(type)
     setModalKey(key)
+    if (slug) touchChapter(slug, key)
   }
 
   const modalTitle = modalType === 'interp' ? `【${modalKey}】原文解读` : `【${modalKey}】技能文件`
