@@ -1,37 +1,80 @@
-import React, { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
-import { books } from '../data/books'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Fuse from 'fuse.js'
+
+interface SearchEntry {
+  slug: string
+  title: string
+  type: 'chapter' | 'skill'
+  key: string
+  text: string
+}
+
+let searchCache: SearchEntry[] | null = null
+let fuseInstance: Fuse<SearchEntry> | null = null
+
+function getSnippet(text: string, query: string, len = 60): string {
+  const idx = text.toLowerCase().indexOf(query.toLowerCase())
+  if (idx === -1) return text.slice(0, len)
+  const start = Math.max(0, idx - 20)
+  const end = Math.min(text.length, idx + query.length + 40)
+  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '')
+}
+
+async function loadSearchIndex(): Promise<SearchEntry[]> {
+  if (searchCache) return searchCache
+  const res = await fetch('/search-index.json')
+  const data = await res.json() as Array<{
+    slug: string
+    title: string
+    interp: Array<{ key: string; text: string }>
+    skill: Array<{ key: string; text: string }>
+  }>
+  const entries: SearchEntry[] = []
+  for (const book of data) {
+    for (const ch of book.interp) {
+      if (ch.text) entries.push({ slug: book.slug, title: book.title, type: 'chapter', key: ch.key, text: ch.text })
+    }
+    for (const sk of book.skill) {
+      if (sk.text) entries.push({ slug: book.slug, title: book.title, type: 'skill', key: sk.key, text: sk.text })
+    }
+  }
+  fuseInstance = new Fuse(entries, {
+    keys: ['text', 'key', 'title'],
+    threshold: 0.4,
+    includeScore: true,
+  })
+  searchCache = entries
+  return entries
+}
 
 const SearchBar: React.FC = () => {
-  const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<SearchEntry[]>([])
+  const [loading, setLoading] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const results = useMemo(() => {
-    if (!query.trim()) return []
-    const q = query.toLowerCase()
-    const hits: {
-      book: (typeof books)[0]
-      chapter?: string
-      skill?: string
-      type: 'chapter' | 'skill'
-    }[] = []
-    for (const book of books) {
-      for (const ch of book.chapters) {
-        if (ch.name.toLowerCase().includes(q) || book.title.toLowerCase().includes(q)) {
-          hits.push({ book, chapter: ch.name, type: 'chapter' })
-        }
-      }
-      for (const sk of book.skills) {
-        if (sk.name.toLowerCase().includes(q)) {
-          hits.push({ book, skill: sk.name, type: 'skill' })
-        }
-      }
-    }
-    return hits
-  }, [query])
+  const doSearch = useCallback(async (q: string) => {
+    if (!q.trim()) { setResults([]); return }
+    setLoading(true)
+    const entries = await loadSearchIndex()
+    if (!fuseInstance) { setLoading(false); return }
+    const hits = fuseInstance.search(q).slice(0, 10).map(r => r.item)
+    setResults(hits)
+    setLoading(false)
+  }, [])
 
-  // 键盘快捷键 /
-  React.useEffect(() => {
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => doSearch(query), 200)
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [query, doSearch])
+
+  // keyboard: / to open, Esc to close
+  useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === '/' && !open) {
         const tag = document.activeElement?.tagName
@@ -49,156 +92,95 @@ const SearchBar: React.FC = () => {
     return () => window.removeEventListener('keydown', handler)
   }, [open])
 
+  // auto-focus input when opened
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
+
+  const handleNavigate = (slug: string) => {
+    setOpen(false)
+    setQuery('')
+    navigate(`/${slug}`)
+  }
+
+  const highlight = (text: string, q: string) => {
+    if (!q) return text
+    const idx = text.toLowerCase().indexOf(q.toLowerCase())
+    if (idx === -1) return text
+    return (
+      <>
+        {text.slice(0, idx)}
+        <mark className="search-highlight">{text.slice(idx, idx + q.length)}</mark>
+        {text.slice(idx + q.length)}
+      </>
+    )
+  }
+
   return (
-    <div style={{ position: 'relative' }}>
-      {/* Search button */}
+    <div className="search-bar-container">
+      {/* Search trigger button */}
       <button
         onClick={() => setOpen(!open)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          padding: '6px 12px',
-          background: 'rgba(122,79,170,0.1)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 6,
-          color: 'var(--color-text-dim)',
-          fontSize: 13,
-          cursor: 'pointer',
-          transition: 'all 0.2s',
-        }}
+        className="search-trigger-btn"
       >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
         <span>搜索</span>
-        <kbd
-          style={{
-            fontSize: 11,
-            padding: '1px 4px',
-            background: 'var(--color-border)',
-            borderRadius: 3,
-          }}
-        >
-          /
-        </kbd>
+        <kbd>/</kbd>
       </button>
 
       {/* Search dropdown */}
       {open && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            right: 0,
-            marginTop: 8,
-            width: 340,
-            background: 'var(--color-bg-card)',
-            border: '1px solid var(--color-border-hover)',
-            borderRadius: 10,
-            boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-            zIndex: 200,
-            overflow: 'hidden',
-          }}
-        >
-          <div style={{ padding: 12, borderBottom: '1px solid var(--color-border)' }}>
+        <div className="search-dropdown">
+          <div className="search-input-row">
             <input
-              autoFocus
+              ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="搜索篇目、技能..."
-              style={{
-                width: '100%',
-                background: 'var(--color-bg-base)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 6,
-                padding: '8px 12px',
-                color: 'var(--color-text-body)',
-                fontSize: 14,
-                outline: 'none',
-              }}
+              placeholder="搜索篇目、技能、注解内容..."
+              className="search-input"
             />
+            {loading && <span className="search-spinner" />}
           </div>
-          <div style={{ maxHeight: 300, overflowY: 'auto' }}>
-            {query && results.length === 0 && (
-              <div
-                style={{
-                  padding: 20,
-                  textAlign: 'center',
-                  color: 'var(--color-text-dim)',
-                  fontSize: 13,
-                }}
-              >
-                未找到「{query}」相关篇目
-              </div>
-            )}
+
+          <div className="search-results">
             {!query && (
-              <div
-                style={{
-                  padding: 20,
-                  textAlign: 'center',
-                  color: 'var(--color-text-muted)',
-                  fontSize: 12,
-                }}
-              >
-                输入关键词搜索篇目和技能
-              </div>
+              <div className="search-empty">输入关键词全文搜索篇目和技能</div>
+            )}
+            {query && !loading && results.length === 0 && (
+              <div className="search-empty">未找到「{query}」相关篇目</div>
             )}
             {results.map((r, i) => (
-              <Link
+              <button
                 key={i}
-                to={`/${r.book.slug}`}
-                onClick={() => {
-                  setOpen(false)
-                  setQuery('')
-                }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  padding: '10px 14px',
-                  borderBottom: '1px solid var(--color-border)',
-                  textDecoration: 'none',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e =>
-                  ((e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)')
-                }
-                onMouseLeave={e =>
-                  ((e.currentTarget as HTMLElement).style.background = 'transparent')
-                }
+                className="search-result-item"
+                onClick={() => handleNavigate(r.slug)}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
               >
-                <span
-                  style={{
-                    fontSize: 11,
-                    padding: '2px 6px',
-                    borderRadius: 3,
-                    background:
-                      r.type === 'chapter' ? 'rgba(96,160,96,0.15)' : 'rgba(122,79,170,0.15)',
-                    color:
-                      r.type === 'chapter' ? 'var(--color-green)' : 'var(--color-purple-light)',
-                    border: `1px solid ${r.type === 'chapter' ? 'rgba(96,160,96,0.3)' : 'rgba(122,79,170,0.3)'}`,
-                  }}
-                >
+                <span className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : 'badge-skill'}`}>
                   {r.type === 'chapter' ? '解读' : '技能'}
                 </span>
-                <div>
-                  <div style={{ fontSize: 13, color: 'var(--color-gold)' }}>《{r.book.title}》</div>
-                  <div style={{ fontSize: 12, color: 'var(--color-text-dim)' }}>
-                    {r.chapter || r.skill}
-                  </div>
+                <div className="search-result-text">
+                  <span className="search-book-title">《{r.title}》</span>
+                  <span className="search-item-name">{r.key}</span>
+                  {query && (
+                    <div className="search-snippet">{getSnippet(r.text, query)}</div>
+                  )}
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Click outside to close */}
+      {/* Backdrop */}
       {open && (
         <div
           style={{ position: 'fixed', inset: 0, zIndex: 199 }}
-          onClick={() => {
-            setOpen(false)
-            setQuery('')
-          }}
+          onClick={() => { setOpen(false); setQuery('') }}
         />
       )}
     </div>

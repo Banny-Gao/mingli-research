@@ -15,8 +15,21 @@ import { marked } from 'marked'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '../books')
 const OUT_DIR = path.join(__dirname, '../src/data')
+const PUBLIC_DIR = path.join(__dirname, '../public')
 
 marked.setOptions({ gfm: true, breaks: false })
+
+function stripHtml(html) {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function getSnippet(text, q, len = 60) {
+  const idx = text.toLowerCase().indexOf(q.toLowerCase())
+  if (idx === -1) return text.slice(0, len)
+  const start = Math.max(0, idx - 20)
+  const end = Math.min(text.length, idx + q.length + 40)
+  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '')
+}
 
 function parseMarkdown(md) {
   if (!md) return ''
@@ -262,4 +275,24 @@ for (const b of books) {
   console.log(`    interp keys: ${b.interpKeys.join(', ')}`)
   console.log(`    skill keys: ${b.skillKeys.join(', ')}`)
 }
+
+// ===== 全文搜索索引 =====
+ensureDir(PUBLIC_DIR)
+const searchIndex = books.map(b => ({
+  slug: b.slug,
+  title: b.title,
+  interp: b.interpKeys.map(k => ({
+    key: k,
+    text: stripHtml(b.chaptersData[k] || ''),
+  })),
+  skill: b.skillKeys.map(k => ({
+    key: k,
+    text: stripHtml(b.skillsData[k] || ''),
+  })),
+}))
+fs.writeFileSync(
+  path.join(PUBLIC_DIR, 'search-index.json'),
+  JSON.stringify(searchIndex, null, 2),
+)
+console.log('search-index.json generated.')
 console.log('Done.')
