@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
 import SearchBar from '../components/SearchBar'
 import { useGlobalProgress } from '../hooks/useProgress'
+import { ThemeToggle } from '../main'
 
 const Landing: React.FC = () => {
   const gp = useGlobalProgress()
@@ -32,6 +33,7 @@ const Landing: React.FC = () => {
           }}
         >
           <SearchBar />
+          <ThemeToggle />
           {gp.streakDays > 0 && (
             <div className="streak-badge">
               🔥 连续{gp.streakDays}天

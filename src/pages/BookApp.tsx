@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
@@ -12,6 +12,7 @@ import AnnotationPanel from '../components/AnnotationPanel'
 import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/useProgress'
 import { useAnnotations } from '../hooks/useAnnotations'
 import type { AnnotationType } from '../hooks/useAnnotations'
+import { ThemeToggle } from '../main'
 
 function injectAnnotations(html: string, annotations: Array<{ rangeStart: number; rangeEnd: number; type: string; id: string }>): string {
   if (annotations.length === 0) return html
@@ -44,6 +45,29 @@ const BookApp: React.FC = () => {
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(slug || '')
   const { touchChapter } = useGlobalProgress()
   const { annotations, add, remove, updateNote } = useAnnotations(slug || '', modalKey)
+
+  // J/K keyboard shortcuts for chapter navigation
+  useEffect(() => {
+    if (!book) return
+    const handler = (e: KeyboardEvent) => {
+      const tag = document.activeElement?.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return
+      if (e.key === 'Escape') { setToolbarPos(null); setPendingSelection(null); return }
+      const chapters = book.chapters
+      const currentIdx = modalKey ? chapters.findIndex(c => c.name === modalKey) : -1
+      if ((e.key === 'j' || e.key === 'J') && currentIdx >= 0 && currentIdx < chapters.length - 1) {
+        openModal(modalType || 'interp', chapters[currentIdx + 1].name)
+      }
+      if ((e.key === 'k' || e.key === 'K') && currentIdx > 0) {
+        openModal(modalType || 'interp', chapters[currentIdx - 1].name)
+      }
+      if (e.key === 'b' || e.key === 'B') {
+        if (modalKey) toggleBookmark(modalKey)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [book, modalKey, modalType, toggleBookmark])
 
   const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'
   const pageDesc = book ? `${book.title}，已解读 ${book.done}/${book.total} 篇` : '未找到该典籍'
@@ -135,13 +159,16 @@ const BookApp: React.FC = () => {
           <h1 style={{ fontSize: 24, color: 'var(--color-gold)', fontWeight: 'bold', letterSpacing: 5, marginBottom: 8, textShadow: '0 0 30px var(--color-gold-glow)' }}>
             《{book.title}》
           </h1>
-          <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 24 }}>
+          <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 16 }}>
             原著：刘伯温（托名）｜注疏：任铁樵｜评注：徐乐吾
           </p>
-          <div className="book-hero-stats">
-            <div className="stat-item"><div className="stat-num">{book.total}</div><div className="stat-label">全篇章</div></div>
-            <div className="stat-item"><div className="stat-num-green">{book.done}</div><div className="stat-label">已解读</div></div>
-            <div className="stat-item"><div className="stat-num-purple">{book.skills.length}</div><div className="stat-label">技能文件</div></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+            <ThemeToggle />
+            <div className="book-hero-stats">
+              <div className="stat-item"><div className="stat-num">{book.total}</div><div className="stat-label">全篇章</div></div>
+              <div className="stat-item"><div className="stat-num-green">{book.done}</div><div className="stat-label">已解读</div></div>
+              <div className="stat-item"><div className="stat-num-purple">{book.skills.length}</div><div className="stat-label">技能文件</div></div>
+            </div>
           </div>
         </div>
 
@@ -196,6 +223,7 @@ const BookApp: React.FC = () => {
                     </>
                   )}
                   <button className="btn-back" onClick={closeModal}>×</button>
+                  <button className="btn-back" onClick={() => window.print()} title="打印">⎙</button>
                 </div>
               </div>
 
