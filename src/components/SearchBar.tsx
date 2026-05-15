@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Fuse from 'fuse.js'
 
 interface SearchEntry {
@@ -49,6 +50,7 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
 }
 
 const SearchBar: React.FC = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchEntry[]>([])
@@ -127,7 +129,7 @@ const SearchBar: React.FC = () => {
           <circle cx="11" cy="11" r="8" />
           <path d="m21 21-4.35-4.35" />
         </svg>
-        <span>搜索</span>
+        <span>{t('nav.search')}</span>
         <kbd>/</kbd>
       </button>
 
@@ -139,7 +141,7 @@ const SearchBar: React.FC = () => {
               ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="搜索篇目、技能、注解内容..."
+              placeholder={t('search.placeholder')}
               className="search-input"
             />
             {loading && <span className="search-spinner" />}
@@ -147,10 +149,10 @@ const SearchBar: React.FC = () => {
 
           <div className="search-results">
             {!query && (
-              <div className="search-empty">输入关键词全文搜索篇目和技能</div>
+              <div className="search-empty">{t('search.noQuery')}</div>
             )}
             {query && !loading && results.length === 0 && (
-              <div className="search-empty">未找到「{query}」相关篇目</div>
+              <div className="search-empty">{t('search.noResults', { q: query })}</div>
             )}
             {results.map((r, i) => (
               <button
@@ -161,7 +163,7 @@ const SearchBar: React.FC = () => {
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
               >
                 <span className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : 'badge-skill'}`}>
-                  {r.type === 'chapter' ? '解读' : '技能'}
+                  {r.type === 'chapter' ? t('search.chapter') : t('search.skill')}
                 </span>
                 <div className="search-result-text">
                   <span className="search-book-title">《{r.title}》</span>
