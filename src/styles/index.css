@@ -1296,6 +1296,21 @@ mark.ann-quote {
   color: var(--color-text-body);
 }
 
+.lang-toggle-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--color-text-dim);
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.lang-toggle-btn:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text-body);
+}
+
 /* TOC — Collapsible, inside modal body flow */
 .toc-container {
   padding: 10px 24px 0;
