@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
 import { interpContent, skillContent } from '../data/ditiansui-site'
@@ -7,6 +7,7 @@ import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
 import ReadList from '../components/ReadList'
 import SkillGrid from '../components/SkillGrid'
 import { ReadingProgress, BackToTop, TableOfContents } from '../components/ReadingTools'
+import SearchBar from '../components/SearchBar'
 import AnnotationToolbar from '../components/AnnotationToolbar'
 import AnnotationPanel from '../components/AnnotationPanel'
 import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/useProgress'
@@ -35,9 +36,11 @@ function injectAnnotations(
 
 const BookApp: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
+  const [searchParams] = useSearchParams()
   const [activeTab, setActiveTab] = useState<'read' | 'skill'>('read')
   const [modalType, setModalType] = useState<'interp' | 'skill' | null>(null)
   const [modalKey, setModalKey] = useState('')
+  const [scrollToText, setScrollToText] = useState<string | null>(null)
   const modalBodyRef = useRef<HTMLDivElement>(null)
   const [toolbarPos, setToolbarPos] = useState<{ x: number; y: number } | null>(null)
   const [showPanel, setShowPanel] = useState(false)
@@ -52,6 +55,78 @@ const BookApp: React.FC = () => {
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(slug || '')
   const { touchChapter } = useGlobalProgress()
   const { annotations, add, remove, updateNote } = useAnnotations(slug || '', modalKey)
+
+  // Handle URL params for search navigation
+  useEffect(() => {
+    const open = searchParams.get('open')
+    const key = searchParams.get('key')
+    if (open && key) {
+      // Normalize 'chapter' -> 'interp' for compatibility
+      const normalizedType = open === 'chapter' ? 'interp' : open
+      setModalType(normalizedType as 'interp' | 'skill')
+      setModalKey(decodeURIComponent(key))
+      const match = searchParams.get('match')
+      if (match) {
+        setScrollToText(decodeURIComponent(match))
+      }
+    }
+  }, [searchParams])
+
+  // Scroll to matching text when opened from search
+  useEffect(() => {
+    if (modalKey && scrollToText && modalBodyRef.current) {
+      const container = modalBodyRef.current
+      const plainText = container.innerText || container.textContent || ''
+      const searchText = scrollToText.trim()
+      const idx = plainText.indexOf(searchText)
+      if (idx >= 0) {
+        let charCount = 0
+        let targetNode: Node | null = null
+        let targetOffset = 0
+
+        const walk = (node: Node) => {
+          if (targetNode) return
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = (node as Text).textContent || ''
+            const nextCount = charCount + text.length
+            if (idx < nextCount) {
+              targetNode = node
+              targetOffset = Math.min(idx - charCount, text.length)
+              return
+            }
+            charCount = nextCount
+          } else {
+            for (const child of Array.from(node.childNodes)) {
+              walk(child)
+              if (targetNode) return
+            }
+          }
+        }
+
+        walk(container)
+        if (targetNode) {
+          const nodeText = (targetNode as Text).textContent || ''
+          const nodeLen = nodeText.length
+          const validOffset = Math.min(targetOffset, nodeLen - 1)
+          const validEndOffset = Math.min(validOffset + searchText.length, nodeLen)
+          try {
+            const range = document.createRange()
+            range.setStart(targetNode, validOffset)
+            range.setEnd(targetNode, validEndOffset)
+            const rect = range.getBoundingClientRect()
+            container.scrollTo({
+              top: container.scrollTop + rect.top - 100,
+              behavior: 'smooth',
+            })
+          } catch {
+            // Fallback: scroll to top
+            container.scrollTo({ top: 0, behavior: 'smooth' })
+          }
+        }
+      }
+      setScrollToText(null) // Only scroll once
+    }
+  }, [modalKey, scrollToText])
 
   // J/K keyboard shortcuts for chapter navigation
   useEffect(() => {
@@ -110,6 +185,7 @@ const BookApp: React.FC = () => {
     setModalKey('')
     setToolbarPos(null)
     setShowPanel(false)
+    setScrollToText(null)
   }
 
   const openModal = (type: 'interp' | 'skill', key: string) => {
@@ -178,6 +254,18 @@ const BookApp: React.FC = () => {
         {/* Hero */}
         <div className="book-hero">
           <div className="book-hero-glow" />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: 12,
+              marginBottom: 16,
+            }}
+          >
+            <SearchBar scopeSlug={slug} />
+            <ThemeToggle />
+          </div>
           <div className="hero-badge">正统子平 · 任铁樵增注本</div>
           <h1
             style={{
@@ -195,7 +283,6 @@ const BookApp: React.FC = () => {
             原著：刘伯温（托名）｜注疏：任铁樵｜评注：徐乐吾
           </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-            <ThemeToggle />
             <div className="book-hero-stats">
               <div className="stat-item">
                 <div className="stat-num">{book.total}</div>
