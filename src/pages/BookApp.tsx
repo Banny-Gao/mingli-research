@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
 import { interpContent, skillContent } from '../data/ditiansui-site'
+import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
 import ReadList from '../components/ReadList'
 import SkillGrid from '../components/SkillGrid'
 import { ReadingProgress, BackToTop, TableOfContents } from '../components/ReadingTools'
@@ -188,6 +189,40 @@ const BookApp: React.FC = () => {
               <div className="modal-body" ref={modalBodyRef}>
                 <div className={proseClass} dangerouslySetInnerHTML={{ __html: modalBody }} />
               </div>
+
+              {/* Related items */}
+              {modalKey && (
+                <div className="related-section">
+                  {modalType === 'interp' && interpToSkill[modalKey]?.length > 0 && (
+                    <div className="related-tags">
+                      <span className="related-label">关联技能</span>
+                      {interpToSkill[modalKey].map(sk => (
+                        <button
+                          key={sk}
+                          className="related-tag related-tag-skill"
+                          onClick={() => openModal('skill', sk)}
+                        >
+                          {sk}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {modalType === 'skill' && skillToInterp[modalKey]?.length > 0 && (
+                    <div className="related-tags">
+                      <span className="related-label">相关篇目</span>
+                      {skillToInterp[modalKey].map(ch => (
+                        <button
+                          key={ch}
+                          className="related-tag related-tag-chapter"
+                          onClick={() => openModal('interp', ch)}
+                        >
+                          {ch}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Back to Top */}
               <BackToTop scrollRef={modalBodyRef} />

@@ -5,22 +5,22 @@
 
 ## 上篇 · 通神论（01-14）
 
-| 编号 | 篇名     | 路径                                | 状态   |
-| ---- | -------- | ----------------------------------- | ------ |
-| 01   | 天道     | interpretations/tiandao/tutorial.md | 已解读 |
-| 02   | 坤道     | interpretations/kundao/tutorial.md  | 已解读 |
-| 03   | 人道     | interpretations/rendao/tutorial.md  | 已解读 |
-| 04   | 知命     | interpretations/zhiming/tutorial.md | 已解读 |
-| 05   | 理气     | interpretations/liqi/tutorial.md    | 已解读 |
-| 06   | 配合     | interpretations/peihe/tutorial.md   | 已解读 |
-| 07   | 天干     | interpretations/tiangan/tutorial.md | 已解读 |
-| 08   | 地支     | interpretations/dizhi/tutorial.md   | 已解读 |
-| 09   | 干支总论 |                                     | 待解读 |
-| 10   | 形象     |                                     | 待解读 |
-| 11   | 方局     |                                     | 待解读 |
-| 12   | 八格     | interpretations/bage/tutorial.md    | 已解读 |
-| 13   | 体用     |                                     | 待解读 |
-| 14   | 精神     |                                     | 待解读 |
+| 编号 | 篇名     | 路径                                | 状态   | 关联技能 |
+| ---- | -------- | ----------------------------------- | ------ | -------- |
+| 01   | 天道     | interpretations/tiandao/tutorial.md | 已解读 | tiandao |
+| 02   | 坤道     | interpretations/kundao/tutorial.md  | 已解读 | kundao |
+| 03   | 人道     | interpretations/rendao/tutorial.md  | 已解读 | rendao |
+| 04   | 知命     | interpretations/zhiming/tutorial.md | 已解读 | zhiming |
+| 05   | 理气     | interpretations/liqi/tutorial.md    | 已解读 | liqi |
+| 06   | 配合     | interpretations/peihe/tutorial.md    | 已解读 | peihe |
+| 07   | 天干     | interpretations/tiangan/tutorial.md | 已解读 | tiangan |
+| 08   | 地支     | interpretations/dizhi/tutorial.md    | 已解读 | dizhi |
+| 09   | 干支总论 |                                     | 待解读 |          |
+| 10   | 形象     |                                     | 待解读 |          |
+| 11   | 方局     |                                     | 待解读 |          |
+| 12   | 八格     | interpretations/bage/tutorial.md    | 已解读 | bage |
+| 13   | 体用     |                                     | 待解读 |          |
+| 14   | 精神     |                                     | 待解读 |          |
 
 ## 下篇 · 六亲论（15-64）
 
