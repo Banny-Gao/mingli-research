@@ -1,10 +1,8 @@
 import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { useTranslation } from 'react-i18next'
 import { books } from '../data/books'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
-import { ThemeToggle, LangToggle } from '../main'
 
 const ANN_KEY = 'mingli_annotations'
 
@@ -12,11 +10,6 @@ const TYPE_LABELS: Record<AnnotationType, string> = {
   emphasis: '重点',
   question: '疑问',
   quote: '引用',
-}
-const TYPE_LABELS_KEY: Record<AnnotationType, string> = {
-  emphasis: 'annotations.emphasis',
-  question: 'annotations.question',
-  quote: 'annotations.quote',
 }
 const TYPE_COLORS: Record<AnnotationType, string> = {
   emphasis: 'var(--color-gold)',
@@ -42,14 +35,16 @@ function loadAllAnnotations(): Array<{ slug: string; chapter: string; annotation
   return results.sort((a, b) => b.annotation.createdAt - a.annotation.createdAt)
 }
 
-function exportMarkdown(groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>, label: Record<AnnotationType, string> = TYPE_LABELS) {
+function exportMarkdown(
+  groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>
+) {
   let md = '# 读书笔记 — 命理学术中心\n\n'
   for (const group of groups) {
     md += `## 《${group.book}》\n\n`
     for (const ch of group.chapters) {
       md += `### ${ch.name}\n\n`
       for (const ann of ch.annotations) {
-        md += `- **${label[ann.type]}**「${ann.selectedText}」\n`
+        md += `- **${TYPE_LABELS[ann.type]}**「${ann.selectedText}」\n`
         if (ann.note) md += `  > ${ann.note}\n`
         md += '\n'
       }
@@ -65,7 +60,6 @@ function exportMarkdown(groups: Array<{ book: string; chapters: Array<{ name: st
 }
 
 const Notes: React.FC = () => {
-  const { t } = useTranslation()
   const all = useMemo(() => loadAllAnnotations(), [])
 
   const groups = useMemo(() => {
@@ -91,37 +85,49 @@ const Notes: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>{t('notes.title')} — 命理学术中心</title>
-        <meta name="description" content={t('notes.total').replace('{n}', String(total))} />
+        <title>读书笔记 — 命理学术中心</title>
+        <meta name="description" content={`已收录 ${total} 条批注`} />
       </Helmet>
       <div className="page-container-narrow">
         <div className="book-hero">
           <div className="book-hero-glow" />
-          <div className="hero-badge">{t('notes.title')}</div>
-          <h1 style={{ fontSize: 24, color: 'var(--color-gold)', fontWeight: 'bold', letterSpacing: 5, marginBottom: 8 }}>
-            {t('notes.title')}
+          <div className="hero-badge">批注管理</div>
+          <h1
+            style={{
+              fontSize: 24,
+              color: 'var(--color-gold)',
+              fontWeight: 'bold',
+              letterSpacing: 5,
+              marginBottom: 8,
+            }}
+          >
+            读书笔记
           </h1>
-          <p style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>
-            {t('notes.total').replace('{n}', String(total))}
-          </p>
-          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-            <LangToggle />
-            <ThemeToggle />
-          </div>
+          <p style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>共 {total} 条批注</p>
         </div>
 
         <div className="container-wide" style={{ marginBottom: 20 }}>
-          <Link to="/" className="back-link">{t('bookApp.back')}</Link>
+          <Link to="/" className="back-link">
+            ← 返回典籍首页
+          </Link>
         </div>
 
         {total > 0 && (
           <div style={{ marginBottom: 20 }}>
             <button
               className="btn-primary"
-              onClick={() => exportMarkdown(groups, { emphasis: t('annotations.emphasis'), question: t('annotations.question'), quote: t('annotations.quote') })}
-              style={{ padding: '8px 20px', cursor: 'pointer', borderRadius: 8, background: 'var(--color-purple)', border: 'none', color: 'white', fontSize: 14 }}
+              onClick={() => exportMarkdown(groups)}
+              style={{
+                padding: '8px 20px',
+                cursor: 'pointer',
+                borderRadius: 8,
+                background: 'var(--color-purple)',
+                border: 'none',
+                color: 'white',
+                fontSize: 14,
+              }}
             >
-              t('notes.export')
+              导出 Markdown
             </button>
           </div>
         )}
@@ -130,17 +136,31 @@ const Notes: React.FC = () => {
           {groups.length === 0 && (
             <div className="notes-empty">
               <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
-              <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>{t('notes.empty')}</div>
-              <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{t('notes.emptyHint')}</div>
+              <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
+                暂无批注
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+                在阅读篇目时选中文本添加批注，批注将显示在这里
+              </div>
               <div style={{ marginTop: 20 }}>
-                <Link to="/ditiansui-site" style={{ color: 'var(--color-purple-light)', fontSize: 14 }}>{t('notes.goRead')}</Link>
+                <Link
+                  to="/ditiansui-site"
+                  style={{ color: 'var(--color-purple-light)', fontSize: 14 }}
+                >
+                  前往阅读 →
+                </Link>
               </div>
             </div>
           )}
           {groups.map(group => (
             <div key={group.slug} className="notes-book">
               <div className="notes-book-title">
-                <Link to={`/${group.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>《{group.book}》</Link>
+                <Link
+                  to={`/${group.slug}`}
+                  style={{ color: 'var(--color-gold)', textDecoration: 'none' }}
+                >
+                  《{group.book}》
+                </Link>
               </div>
               {group.chapters.map(ch => (
                 <div key={ch.name} className="notes-chapter">
@@ -148,8 +168,17 @@ const Notes: React.FC = () => {
                   {ch.annotations.map(ann => (
                     <div key={ann.id} className="notes-item">
                       <div className="notes-item-header">
-                        <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3, background: TYPE_COLORS[ann.type] + '22', color: TYPE_COLORS[ann.type], border: `1px solid ${TYPE_COLORS[ann.type]}55` }}>
-                          {t(TYPE_LABELS_KEY[ann.type])}
+                        <span
+                          style={{
+                            fontSize: 10,
+                            padding: '1px 6px',
+                            borderRadius: 3,
+                            background: TYPE_COLORS[ann.type] + '22',
+                            color: TYPE_COLORS[ann.type],
+                            border: `1px solid ${TYPE_COLORS[ann.type]}55`,
+                          }}
+                        >
+                          {TYPE_LABELS[ann.type]}
                         </span>
                         <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
                           {new Date(ann.createdAt).toLocaleDateString('zh-CN')}
@@ -158,7 +187,9 @@ const Notes: React.FC = () => {
                       <div className="notes-item-text">「{ann.selectedText}」</div>
                       {ann.note && <div className="notes-item-note">{ann.note}</div>}
                       <div className="notes-item-actions">
-                        <Link to={`/${group.slug}`} className="notes-item-link">查看原文 →</Link>
+                        <Link to={`/${group.slug}`} className="notes-item-link">
+                          查看原文 →
+                        </Link>
                       </div>
                     </div>
                   ))}

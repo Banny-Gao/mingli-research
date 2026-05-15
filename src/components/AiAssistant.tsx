@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 interface Props {
   chapter?: string
 }
 
 const AiAssistant: React.FC<Props> = ({ chapter }) => {
-  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
 
   return (
@@ -57,7 +55,8 @@ const AiAssistant: React.FC<Props> = ({ chapter }) => {
             AI 解读助手正在训练中，目标：基于任铁樵注解体系，辅助理解原文深意。
             {chapter && (
               <>
-                <br /><br />
+                <br />
+                <br />
                 当前篇目：<strong style={{ color: 'var(--color-gold)' }}>{chapter}</strong>
               </>
             )}
@@ -97,8 +96,8 @@ const AiAssistant: React.FC<Props> = ({ chapter }) => {
           transition: 'transform 0.2s',
           fontSize: 20,
         }}
-        onMouseEnter={e => (e.currentTarget as HTMLElement).style.transform = 'scale(1.1)'}
-        onMouseLeave={e => (e.currentTarget as HTMLElement).style.transform = 'scale(1)'}
+        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.transform = 'scale(1.1)')}
+        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.transform = 'scale(1)')}
       >
         ✨
       </button>

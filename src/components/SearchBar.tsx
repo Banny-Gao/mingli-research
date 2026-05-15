@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import Fuse from 'fuse.js'
 
 interface SearchEntry {
@@ -25,7 +24,7 @@ function getSnippet(text: string, query: string, len = 60): string {
 async function loadSearchIndex(): Promise<SearchEntry[]> {
   if (searchCache) return searchCache
   const res = await fetch('/search-index.json')
-  const data = await res.json() as Array<{
+  const data = (await res.json()) as Array<{
     slug: string
     title: string
     interp: Array<{ key: string; text: string }>
@@ -34,10 +33,24 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
   const entries: SearchEntry[] = []
   for (const book of data) {
     for (const ch of book.interp) {
-      if (ch.text) entries.push({ slug: book.slug, title: book.title, type: 'chapter', key: ch.key, text: ch.text })
+      if (ch.text)
+        entries.push({
+          slug: book.slug,
+          title: book.title,
+          type: 'chapter',
+          key: ch.key,
+          text: ch.text,
+        })
     }
     for (const sk of book.skill) {
-      if (sk.text) entries.push({ slug: book.slug, title: book.title, type: 'skill', key: sk.key, text: sk.text })
+      if (sk.text)
+        entries.push({
+          slug: book.slug,
+          title: book.title,
+          type: 'skill',
+          key: sk.key,
+          text: sk.text,
+        })
     }
   }
   fuseInstance = new Fuse(entries, {
@@ -50,7 +63,6 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
 }
 
 const SearchBar: React.FC = () => {
-  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchEntry[]>([])
@@ -60,11 +72,20 @@ const SearchBar: React.FC = () => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const doSearch = useCallback(async (q: string) => {
-    if (!q.trim()) { setResults([]); return }
+    if (!q.trim()) {
+      setResults([])
+      return
+    }
     setLoading(true)
     const entries = await loadSearchIndex()
-    if (!fuseInstance) { setLoading(false); return }
-    const hits = fuseInstance.search(q).slice(0, 10).map(r => r.item)
+    if (!fuseInstance) {
+      setLoading(false)
+      return
+    }
+    const hits = fuseInstance
+      .search(q)
+      .slice(0, 10)
+      .map(r => r.item)
     setResults(hits)
     setLoading(false)
   }, [])
@@ -72,7 +93,9 @@ const SearchBar: React.FC = () => {
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => doSearch(query), 200)
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+    }
   }, [query, doSearch])
 
   // keyboard: / to open, Esc to close
@@ -121,15 +144,19 @@ const SearchBar: React.FC = () => {
   return (
     <div className="search-bar-container">
       {/* Search trigger button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="search-trigger-btn"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <button onClick={() => setOpen(!open)} className="search-trigger-btn">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <circle cx="11" cy="11" r="8" />
           <path d="m21 21-4.35-4.35" />
         </svg>
-        <span>{t('nav.search')}</span>
+        <span>搜索</span>
         <kbd>/</kbd>
       </button>
 
@@ -141,36 +168,38 @@ const SearchBar: React.FC = () => {
               ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder={t('search.placeholder')}
+              placeholder="搜索篇目、技能、注解内容..."
               className="search-input"
             />
             {loading && <span className="search-spinner" />}
           </div>
 
           <div className="search-results">
-            {!query && (
-              <div className="search-empty">{t('search.noQuery')}</div>
-            )}
+            {!query && <div className="search-empty">输入关键词全文搜索篇目和技能</div>}
             {query && !loading && results.length === 0 && (
-              <div className="search-empty">{t('search.noResults', { q: query })}</div>
+              <div className="search-empty">未找到「{query}」相关篇目</div>
             )}
             {results.map((r, i) => (
               <button
                 key={i}
                 className="search-result-item"
                 onClick={() => handleNavigate(r.slug)}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
+                onMouseEnter={e =>
+                  ((e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)')
+                }
+                onMouseLeave={e =>
+                  ((e.currentTarget as HTMLElement).style.background = 'transparent')
+                }
               >
-                <span className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : 'badge-skill'}`}>
-                  {r.type === 'chapter' ? t('search.chapter') : t('search.skill')}
+                <span
+                  className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : 'badge-skill'}`}
+                >
+                  {r.type === 'chapter' ? '解读' : '技能'}
                 </span>
                 <div className="search-result-text">
                   <span className="search-book-title">《{r.title}》</span>
                   <span className="search-item-name">{r.key}</span>
-                  {query && (
-                    <div className="search-snippet">{getSnippet(r.text, query)}</div>
-                  )}
+                  {query && <div className="search-snippet">{getSnippet(r.text, query)}</div>}
                 </div>
               </button>
             ))}
@@ -182,7 +211,10 @@ const SearchBar: React.FC = () => {
       {open && (
         <div
           style={{ position: 'fixed', inset: 0, zIndex: 199 }}
-          onClick={() => { setOpen(false); setQuery('') }}
+          onClick={() => {
+            setOpen(false)
+            setQuery('')
+          }}
         />
       )}
     </div>
