@@ -1201,3 +1201,51 @@ mark.ann-quote {
   text-decoration: none;
 }
 .notes-item-link:hover { color: var(--color-purple-light); }
+
+/* Print Styles */
+@media print {
+  .back-link, .tab-bar, .book-hero-stats, .footer, .book-hero, .hero-section, .hero-glow, .search-trigger-btn { display: none !important; }
+  .modal-backdrop { background: white !important; }
+  .modal-card { box-shadow: none !important; border: 1px solid #ccc !important; max-height: none !important; }
+  .modal-header { border-bottom: 1px solid #ccc; }
+  .prose-interp, .prose-skill { color: #222 !important; font-size: 14px !important; line-height: 1.8 !important; }
+  mark.ann-emphasis, mark.ann-question, mark.ann-quote { background: none !important; border-bottom: 1px solid currentColor !important; }
+  .related-section { border-top: 1px solid #ccc; }
+  body { background: white !important; }
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --color-bg-base: #f8f4ec;
+  --color-bg-card: #f0ece4;
+  --color-bg-card-hover: #e8e4dc;
+  --color-border: #d0c8b8;
+  --color-border-card: #c8c0b0;
+  --color-border-hover: #b8b0a0;
+  --color-text-body: #2a2a2a;
+  --color-text-dim: #8080a0;
+  --color-text-muted: #a0a080;
+  --color-text-title: #4a4a6a;
+  --color-gold: #b08030;
+  --color-gold-dim: #907028;
+  --color-gold-glow: rgba(176, 128, 48, 0.2);
+  --color-purple: #5a3e8a;
+  --color-purple-light: #7a5aaa;
+  --color-purple-bg: #f0ecf8;
+}
+
+/* Theme Toggle */
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--color-text-dim);
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.theme-toggle-btn:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text-body);
+}
