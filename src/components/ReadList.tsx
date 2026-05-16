@@ -1,5 +1,5 @@
-import React from 'react'
-import { Book } from '../data/books'
+import React, { useState } from 'react'
+import { Book, ChapterInfo } from '../data/books'
 
 interface Props {
   book: Book
@@ -16,6 +16,13 @@ const ReadList: React.FC<Props> = ({
   sourceNames,
   skillToInterp,
 }) => {
+  const categories = new Map<string, ChapterInfo[]>()
+  for (const ch of book.chapters) {
+    const cat = ch.category || '未分类'
+    if (!categories.has(cat)) categories.set(cat, [])
+    categories.get(cat)!.push(ch)
+  }
+
   return (
     <div>
       <div className="section-header">
@@ -24,46 +31,121 @@ const ReadList: React.FC<Props> = ({
           共{book.total}篇 · 已解读{book.done}篇
         </span>
       </div>
-      <div className="chapter-list">
-        {book.chapters.map((ch, i) => {
-          const num = String(i + 1).padStart(2, '0')
-          const hasSource = sourceNames.includes(ch.name)
-          const hasInterp = ch.isDone
-          const hasSkill = !!skillToInterp[ch.name]
-          return (
-            <div key={ch.name} className={`chapter-row ${ch.isDone ? 'done' : 'undone'}`}>
-              <div className="chapter-num">{num}</div>
-              <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
-              <div className="chapter-actions">
-                {hasSource && (
-                  <button
-                    className="btn-text chapter-action action-source"
-                    onClick={() => onSourceClick(ch.name)}
-                  >
-                    原文
-                  </button>
-                )}
-                {hasInterp && (
-                  <button
-                    className="btn-text chapter-action"
-                    onClick={() => onChapterClick(ch.name)}
-                  >
-                    解读
-                  </button>
-                )}
-                {hasSkill && (
-                  <button
-                    className="btn-text chapter-action action-skill"
-                    onClick={() => onChapterClick(ch.name)}
-                  >
-                    技能
-                  </button>
-                )}
-              </div>
-            </div>
-          )
-        })}
+      {Array.from(categories.entries()).map(([category, chapters]) => (
+        <CategorySection
+          key={category}
+          category={category}
+          chapters={chapters}
+          onChapterClick={onChapterClick}
+          onSourceClick={onSourceClick}
+          sourceNames={sourceNames}
+          skillToInterp={skillToInterp}
+        />
+      ))}
+    </div>
+  )
+}
+
+function CategorySection({
+  category,
+  chapters,
+  onChapterClick,
+  onSourceClick,
+  sourceNames,
+  skillToInterp,
+}: {
+  category: string
+  chapters: ChapterInfo[]
+  onChapterClick: (name: string) => void
+  onSourceClick: (name: string) => void
+  sourceNames: string[]
+  skillToInterp: Record<string, string[]>
+}) {
+  const [collapsed, setCollapsed] = useState(false)
+  const doneCount = chapters.filter(c => c.isDone).length
+
+  return (
+    <div className="category-section">
+      <div
+        className="category-header"
+        onClick={() => setCollapsed(v => !v)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setCollapsed(v => !v) }}
+        style={{
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '12px 16px',
+          borderRadius: 8,
+          background: 'var(--color-surface)',
+          marginTop: 12,
+          marginBottom: collapsed ? 0 : 8,
+          userSelect: 'none',
+          border: '1px solid var(--color-border)',
+          transition: 'background 0.2s',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span
+            style={{
+              fontSize: 11,
+              color: 'var(--color-text-dim)',
+              transition: 'transform 0.2s',
+              transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
+              display: 'inline-block',
+            }}
+          >
+            ▼
+          </span>
+          <span style={{ fontWeight: 600, fontSize: 14 }}>{category}</span>
+        </div>
+        <span className="section-badge" style={{ fontSize: 12 }}>
+          {doneCount}/{chapters.length} 已解读
+        </span>
       </div>
+      {!collapsed && (
+        <div className="chapter-list" style={{ marginTop: 0 }}>
+          {chapters.map(ch => {
+            const hasSource = sourceNames.includes(ch.name)
+            const hasInterp = ch.isDone
+            const hasSkill = !!skillToInterp[ch.name]
+            return (
+              <div key={ch.name} className={`chapter-row ${ch.isDone ? 'done' : 'undone'}`}>
+                <div className="chapter-num">{ch.num}</div>
+                <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
+                <div className="chapter-actions">
+                  {hasSource && (
+                    <button
+                      className="btn-text chapter-action action-source"
+                      onClick={() => onSourceClick(ch.name)}
+                    >
+                      原文
+                    </button>
+                  )}
+                  {hasInterp && (
+                    <button
+                      className="btn-text chapter-action"
+                      onClick={() => onChapterClick(ch.name)}
+                    >
+                      解读
+                    </button>
+                  )}
+                  {hasSkill && (
+                    <button
+                      className="btn-text chapter-action action-skill"
+                      onClick={() => onChapterClick(ch.name)}
+                    >
+                      技能
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
