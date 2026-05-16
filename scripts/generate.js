@@ -43,10 +43,15 @@ function parseMarkdown(md) {
 function parseCatalog(catalogPath) {
   const content = fs.readFileSync(catalogPath, 'utf-8')
   const rows = []
+  let currentCategory = ''
   for (const line of content.split('\n')) {
     const trimmed = line.trim()
     if (!trimmed) continue
-    if (/^#{1,6}\s/.test(trimmed)) continue
+    if (/^##\s/.test(trimmed)) {
+      currentCategory = trimmed.replace(/^##\s*/, '')
+      continue
+    }
+    if (/^#\s/.test(trimmed)) continue
     if (trimmed.match(/^\|[-\s:|]+\|$/)) continue
     const cells = trimmed
       .split('|')
@@ -55,26 +60,12 @@ function parseCatalog(catalogPath) {
     if (cells.length < 3) continue
     const num = cells[0]
     if (!/^\d+$/.test(num)) continue
-    // 新格式: cells = [num, title, sourcePath, interpPath, status, skills]
-    // 兼容旧格式: cells = [num, title, path, status, skills?]
+    // 6 列格式: [num, title, sourcePath, interpPath, status, skills]
     let status = ''
     let skills = []
     if (cells.length >= 5) {
-      // 新格式 6 列: [num, title, source, interp, status, skills]
-      // 旧格式 5 列: [num, title, path, status, skills]
-      // 判断依据: cells[3] 是 "已解读"/"待解读" 则为旧格式，否则为新格式
-      if (cells[3] === '已解读' || cells[3] === '待解读') {
-        // 旧格式
-        status = cells[3]
-        skills = cells[4]
-          ? cells[4]
-              .split(',')
-              .map(s => s.trim())
-              .filter(Boolean)
-          : []
-      } else {
-        // 新格式
-        status = cells[4]
+      status = cells.length >= 6 ? cells[4] : cells[3]
+      if (cells.length >= 6) {
         skills = cells[5]
           ? cells[5]
               .split(',')
@@ -87,20 +78,32 @@ function parseCatalog(catalogPath) {
       num,
       title: cells[1],
       sourcePath: cells[2] || '',
-      interpPath:
-        cells.length >= 5 && cells[3] !== '已解读' && cells[3] !== '待解读' ? cells[3] : '',
+      interpPath: cells.length >= 6 ? cells[3] : '',
       status,
       skills,
+      category: currentCategory,
     })
   }
   return rows
 }
 
-function getBookTitle(metaPath) {
-  if (!fs.existsSync(metaPath)) return null
-  const content = fs.readFileSync(metaPath, 'utf-8')
-  const m = content.match(/《([^》]+)》/)
-  return m ? m[1] : null
+function parseBookMeta(filePath) {
+  if (!fs.existsSync(filePath)) return null
+  const content = fs.readFileSync(filePath, 'utf-8')
+  const m = content.match(/# 《([^》]+)》/)
+  const title = m ? m[1] : null
+
+  let author = ''
+  let version = ''
+  let description = ''
+  for (const line of content.split('\n')) {
+    const t = line.trim()
+    if (/^>\s*作者[：:]/.test(t)) author = t.replace(/^>\s*作者[：:]\s*/, '').trim()
+    else if (/^>\s*版本[：:]/.test(t)) version = t.replace(/^>\s*版本[：:]\s*/, '').trim()
+    else if (/^>\s*简介[：:]/.test(t)) description = t.replace(/^>\s*简介[：:]\s*/, '').trim()
+  }
+
+  return { title, author, version, description }
 }
 
 function ensureDir(dir) {
@@ -113,8 +116,7 @@ const BOOK_DIRS = fs.readdirSync(ROOT).filter(f => {
   const p = path.join(ROOT, f)
   return (
     fs.statSync(p).isDirectory() &&
-    fs.existsSync(path.join(p, 'catalog.md')) &&
-    fs.existsSync(path.join(p, 'skills'))
+    fs.existsSync(path.join(p, 'catalog.md'))
   )
 })
 
@@ -123,11 +125,12 @@ const books = []
 for (const bookSlug of BOOK_DIRS) {
   const bookRoot = path.join(ROOT, bookSlug)
   const catalogPath = path.join(bookRoot, 'catalog.md')
-  const metaPath = path.join(bookRoot, 'meta/index.md')
-  const skillsDir = path.join(bookRoot, 'skills')
-  const sourceDir = path.join(bookRoot, 'source')
 
-  const title = getBookTitle(metaPath) || bookSlug
+  const meta = parseBookMeta(catalogPath) || { title: bookSlug, author: '', version: '', description: '' }
+  const title = meta.title
+  const author = meta.author
+  const version = meta.version
+  const description = meta.description
   const catalogRows = parseCatalog(catalogPath)
 
   const chapters = []
@@ -138,7 +141,7 @@ for (const bookSlug of BOOK_DIRS) {
 
   for (const row of catalogRows) {
     const isDone = row.status === '已解读' && row.interpPath && row.interpPath.length > 0
-    chapters.push({ num: row.num, name: row.title, isDone })
+    chapters.push({ num: row.num, name: row.title, isDone, category: row.category })
 
     if (isDone) {
       const fullPath = path.join(bookRoot, row.interpPath)
@@ -152,7 +155,7 @@ for (const bookSlug of BOOK_DIRS) {
       }
     }
 
-    // 读取 source 内容（独立于 isDone）
+    // 读取 source 内容
     if (row.sourcePath) {
       const sourcePath = path.join(bookRoot, row.sourcePath)
       if (fs.existsSync(sourcePath)) {
@@ -162,15 +165,19 @@ for (const bookSlug of BOOK_DIRS) {
     }
   }
 
-  // 读取 skills（按 skills/ 目录独立扫描，关联由 catalog 指定）
+  // 读取 skills（从 articles/ 目录根据 catalog 中 skills 列指定）
   const skillsData = {}
-  if (fs.existsSync(skillsDir)) {
-    for (const entry of fs.readdirSync(skillsDir)) {
-      const skillPath = path.join(skillsDir, entry, 'SKILL.md')
-      if (fs.existsSync(skillPath)) {
-        const content = fs.readFileSync(skillPath, 'utf-8')
-        skillsData[entry] = parseMarkdown(content)
-        skillKeys.push(entry)
+  for (const row of catalogRows) {
+    if (row.skills && row.skills.length > 0) {
+      for (const skillName of row.skills) {
+        const skillPath = path.join(bookRoot, 'articles', row.title, 'skill.md')
+        if (fs.existsSync(skillPath)) {
+          const content = fs.readFileSync(skillPath, 'utf-8')
+          skillsData[skillName] = parseMarkdown(content)
+          if (!skillKeys.includes(skillName)) skillKeys.push(skillName)
+        } else {
+          console.warn(`  ⚠️ 跳过缺失技能文件: ${skillPath}`)
+        }
       }
     }
   }
@@ -193,6 +200,9 @@ for (const bookSlug of BOOK_DIRS) {
   books.push({
     slug: bookSlug,
     title,
+    author,
+    version,
+    description,
     total: chapters.length,
     done: doneCount,
     chapters,
@@ -339,6 +349,9 @@ export type { InterpKey, SkillKey } from './${bookSlug}/index';
 const bookData = books.map(b => ({
   slug: b.slug,
   title: b.title,
+  author: b.author,
+  version: b.version,
+  description: b.description,
   total: b.total,
   done: b.done,
   chapters: b.chapters,
@@ -355,11 +368,15 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
+  category: string;
 }
 
 export interface Book {
   slug: string;
   title: string;
+  author: string;
+  version: string;
+  description: string;
   total: number;
   done: number;
   chapters: ChapterInfo[];
