@@ -278,12 +278,19 @@ const BookApp: React.FC = () => {
                 color: 'var(--color-gold)',
                 fontWeight: 'bold',
                 letterSpacing: 5,
-                marginBottom: 8,
+                marginBottom: 4,
                 textShadow: '0 0 30px var(--color-gold-glow)',
               }}
             >
               《{book.title}》
             </h1>
+
+            {book.author && (
+              <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 4 }}>{book.author}</p>
+            )}
+            {book.description && (
+              <p style={{ fontSize: 13, color: 'var(--color-text-dim)', lineHeight: 1.6, maxWidth: 600, margin: '0 auto 8px' }}>{book.description}</p>
+            )}
 
             <div className="book-hero-stats">
               <div className="stat-item">
