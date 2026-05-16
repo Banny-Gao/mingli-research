@@ -3,11 +3,15 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
+  category: string;
 }
 
 export interface Book {
   slug: string;
   title: string;
+  author: string;
+  version: string;
+  description: string;
   total: number;
   done: number;
   chapters: ChapterInfo[];
@@ -18,324 +22,390 @@ export interface Book {
 export const books: Book[] = [
   {
     "slug": "ditiansui-site",
-    "title": "ditiansui-site",
+    "title": "滴天髓阐微",
+    "author": "[明] 刘基 撰 / [清] 任铁樵 注",
+    "version": "据《四库全书》本",
+    "description": "子平命理学核心经典，以天干地支五行生克为核心，通过六十余篇专题系统阐述命理原理。",
     "total": 63,
     "done": 9,
     "chapters": [
       {
         "num": "01",
         "name": "天道",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "02",
         "name": "坤道",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "03",
         "name": "人道",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "04",
         "name": "知命",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "05",
         "name": "理气",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "06",
         "name": "配合",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "07",
         "name": "天干",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "08",
         "name": "地支",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "09",
         "name": "干支总论",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "10",
         "name": "形象",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "11",
         "name": "方局",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "12",
         "name": "八格",
-        "isDone": true
+        "isDone": true,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "13",
         "name": "体用",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "14",
         "name": "精神",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "15",
         "name": "月令",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "16",
         "name": "生时",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "17",
         "name": "衰旺",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "18",
         "name": "中和",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "19",
         "name": "源流",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "20",
         "name": "通关",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "21",
         "name": "官杀",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "22",
         "name": "伤官",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "23",
         "name": "清气",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "24",
         "name": "浊气",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "25",
         "name": "真神",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "26",
         "name": "假神",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "27",
         "name": "刚柔",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "28",
         "name": "顺逆",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "29",
         "name": "寒暖",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "30",
         "name": "燥湿",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "31",
         "name": "隐显",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "32",
         "name": "众寡",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "33",
         "name": "震兑",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "34",
         "name": "坎离",
-        "isDone": false
+        "isDone": false,
+        "category": "上篇 · 通神论"
       },
       {
         "num": "35",
         "name": "夫妻",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "36",
         "name": "子女",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "37",
         "name": "父母",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "38",
         "name": "兄弟",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "39",
         "name": "何知",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "40",
         "name": "女命",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "41",
         "name": "小儿",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "42",
         "name": "才德",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "43",
         "name": "奋郁",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "44",
         "name": "恩怨",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "45",
         "name": "闲神",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "46",
         "name": "从象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "47",
         "name": "化象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "48",
         "name": "假从",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "49",
         "name": "假化",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "50",
         "name": "顺局",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "51",
         "name": "反局",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "52",
         "name": "战局",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "53",
         "name": "合局",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "54",
         "name": "君象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "55",
         "name": "臣象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "56",
         "name": "母象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "57",
         "name": "子象",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "58",
         "name": "性情",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "59",
         "name": "疾病",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "60",
         "name": "出身",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "61",
         "name": "地位",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "62",
         "name": "岁运",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       },
       {
         "num": "63",
         "name": "贞元",
-        "isDone": false
+        "isDone": false,
+        "category": "下篇 · 六亲论"
       }
     ],
     "skills": [
