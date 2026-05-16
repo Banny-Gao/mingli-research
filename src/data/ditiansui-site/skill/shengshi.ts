@@ -1,0 +1,86 @@
+// Auto-generated — do not edit manually
+export default `<h2>功能</h2>
+<p>在收到八字四柱后，对时柱进行专项分析：判定时辰的人元用事（区分时辰内部的前后用事），评估&quot;穴&quot;（时辰本身）与&quot;向&quot;（人元用事）的吉凶组合关系，并结合山川世德因素给出归宿走向的评估。此技能适用于月令分析之后的第二步时间维度分析，特别关注晚年运势和人生收成。</p>
+<h2>输入</h2>
+<ul>
+<li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 戊午 庚申&quot;）</li>
+<li><strong>出生时间</strong>：具体到时刻（可选，用于判断时辰内部的前后用事，如夜子时/正子时）</li>
+<li><strong>地域信息</strong>：出生地大区域（可选，用于山川之异的修正评估）</li>
+<li><strong>性别</strong>：乾造（男）或坤造（女）（可选）</li>
+</ul>
+<h2>处理逻辑</h2>
+<ol>
+<li><p><strong>时辰本气判定</strong>
+a. 根据时柱地支确定时辰的本气五行
+b. <strong>依据</strong>：生时篇【原句】&quot;生时乃归宿之地，譬之墓也&quot;</p>
+</li>
+<li><p><strong>时辰人元用事判定</strong>
+a. 如果有精确到时刻的出生时间，进一步区分钟点前后的用事差异
+b. 以子时为例：</p>
+<ul>
+<li>23:00-23:45（前三刻）→ 壬水七分用事（夜子时，亥中余气）</li>
+<li>23:45-1:00（后四刻）→ 癸水七分用事（正子时，本气）
+c. 其他时辰依此类推
+d. <strong>依据</strong>：生时篇【原注】&quot;子时生人，前三刻，三分壬水用事；后四刻，七分癸水用事&quot;</li>
+</ul>
+</li>
+<li><p><strong>穴向关系判定</strong>
+a. &quot;穴&quot; = 时柱干支整体的吉凶属性（对日主是喜是忌）
+b. &quot;向&quot; = 人元用事的吉凶属性
+c. 四种组合判定：</p>
+<ul>
+<li>穴吉向吉：大吉，晚运极佳</li>
+<li>穴吉向凶：吉减，好中有缺</li>
+<li>穴凶向吉：凶减，危中有救</li>
+<li>穴凶向凶：大凶，晚景凄凉
+d. <strong>依据</strong>：生时篇【任氏曰】&quot;谓穴吉向凶，必减其吉；穴凶向吉，必减其凶&quot;</li>
+</ul>
+</li>
+<li><p><strong>与月令用神配合判定</strong>
+a. 对比生时人元用事与月令人元用事的五行关系
+b. 如果两者皆为日主所喜 → 加倍兴隆
+c. 如果两者皆为日主所忌 → 必增凶祸
+d. <strong>依据</strong>：生时篇【任氏曰】&quot;如生时用事，与月令人元用事相附，是日主之所喜者，加倍兴隆；是日主之所忌者，必增凶祸&quot;</p>
+</li>
+<li><p><strong>时辰精度评估</strong>
+a. 标注时辰是否可能不准确（十有四五不的当）
+b. 如果有地域信息，附加山川世德修正说明
+c. <strong>依据</strong>：生时篇【任氏曰】&quot;时之不的当者，十有四五&quot;；【原注】&quot;山川之异，世德之殊&quot;</p>
+</li>
+</ol>
+<h2>输出</h2>
+<pre><code class="language-typescript">interface ShengShiReport {
+  /** 时柱基础信息 */
+  hourColumn: {
+    stem: string;               // 时干
+    branch: string;             // 时支
+    mainQi: string;             // 时支本气五行
+  };
+  /** 人元用事判定 */
+  rulingSpirit: {
+    hourType: string;           // 夜子时/正子时 等时间分段
+    rulingTenGod: string;       // 用事之神
+    rulingElement: string;      // 用事之神的五行
+  };
+  /** 穴向关系评估 */
+  caveDirection: {
+    cave: &quot;吉&quot; | &quot;凶&quot;;         // 时辰本身吉凶
+    direction: &quot;吉&quot; | &quot;凶&quot;;    // 人元用事吉凶
+    combination: &quot;穴吉向吉&quot; | &quot;穴吉向凶&quot; | &quot;穴凶向吉&quot; | &quot;穴凶向凶&quot;;
+    verdict: string;            // 对晚运和归宿的中文评估
+  };
+  /** 与月令配合 */
+  monthHourSync: {
+    monthRuling: string;        // 月令人元用事
+    hourRuling: string;         // 生时人元用事
+    syncEffect: &quot;加倍兴隆&quot; | &quot;必增凶祸&quot; | &quot;中性&quot;;
+    description: string;
+  };
+  /** 时辰可信度 */
+  reliability: {
+    accuracy: &quot;高&quot; | &quot;中&quot; | &quot;低&quot;;
+    note: string;               // 关于时辰不准确性和山川世德修正的说明
+  };
+}
+</code></pre>
+`;
