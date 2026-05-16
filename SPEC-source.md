@@ -1,6 +1,6 @@
 # 滴天髓阐微 · 原文录入规范
 
-> **用途：** 规范 `books/**/source/` 目录下原文文件的录入格式，供 AI 产出和 generate.js 消费
+> **用途：** 规范 `books/**/articles/{篇名}/source.md` 原文文件的录入格式，供 AI 产出和 generate.js 消费
 > **原则：** 原文是整个数据管道的锚点，只录入，不解读，不分析，只做格式与排版优化
 
 ---
@@ -8,7 +8,7 @@
 ## 一、文件命名规范
 
 ```
-{篇名}.md
+articles/{篇名}/source.md
 ```
 
 - 篇名使用中文全称，不使用英文或拼音
@@ -17,11 +17,11 @@
 
 **示例：**
 ```
-source/天道.md
-source/坤道.md
-source/人道.md
-source/干支总论.md
-source/八格.md
+articles/天道/source.md
+articles/坤道/source.md
+articles/人道/source.md
+articles/干支总论/source.md
+articles/八格/source.md
 ```
 
 ---
@@ -121,7 +121,7 @@ source/八格.md
 
 ## 六、generate.js 消费约定
 
-generate.js 按以下字段解析 source 文件：
+generate.js 按以下字段解析 source 文件（路径：`articles/{篇名}/source.md`）：
 
 ```javascript
 {
@@ -145,21 +145,21 @@ generate.js 按以下字段解析 source 文件：
 
 | 文件 | 状态 |
 |------|------|
-| `source/天道.md` | 合规 |
-| `source/坤道.md` | 合规 |
-| `source/人道.md` | 合规 |
-| `source/知命.md` | 合规 |
-| `source/理气.md` | 合规 |
-| `source/配合.md` | 合规 |
-| `source/天干.md` | 合规 |
-| `source/地支.md` | 合规 |
-| `source/源流.md` | 合规 |
-| `source/干支总论.md` | 合规 |
-| `source/形象.md` | 合规 |
-| `source/方局.md` | 合规 |
-| `source/八格.md` | 合规 |
+| `articles/天道/source.md` | 合规 |
+| `articles/坤道/source.md` | 合规 |
+| `articles/人道/source.md` | 合规 |
+| `articles/知命/source.md` | 合规 |
+| `articles/理气/source.md` | 合规 |
+| `articles/配合/source.md` | 合规 |
+| `articles/天干/source.md` | 合规 |
+| `articles/地支/source.md` | 合规 |
+| `articles/源流/source.md` | 合规 |
+| `articles/干支总论/source.md` | 合规 |
+| `articles/形象/source.md` | 合规 |
+| `articles/方局/source.md` | 合规 |
+| `articles/八格/source.md` | 合规 |
 | 其余 50 篇 | 待按本规范复核 |
 
 ---
 
-_本规范为数据管道的源头规范，任何 interpretations 和 skills 的产出均依赖于此规范的合规性。_
+_本规范为数据管道的源头规范，任何 interpretation.md 和 skill.md 的产出均依赖于此规范的合规性。_
