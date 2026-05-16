@@ -145,6 +145,5 @@
 
 ### 第07章 · 天干
 
-- URL: `https://www.iwzbz.com/artical/pcbook/v2/3_1_7_9.html`
 - 预期内容：十干性情、天干配合、甲丙戊庚壬五阳干
 - 状态：待做

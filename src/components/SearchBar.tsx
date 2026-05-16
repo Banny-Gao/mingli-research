@@ -91,8 +91,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const queryRef = useRef(query)
+  const containerRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+        setQuery('')
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open])
 
   // Keep queryRef in sync
   useEffect(() => {
@@ -191,7 +205,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   }
 
   return (
-    <div className="search-bar-container">
+    <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
       <button onClick={() => setOpen(!open)} className="search-trigger-btn">
         <svg
@@ -206,12 +220,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
           <path d="m21 21-4.35-4.35" />
         </svg>
         <span>搜索</span>
-        <kbd>/</kbd>
       </button>
 
       {/* Search dropdown */}
       {open && (
-        <div className="search-dropdown">
+        <div className="search-dropdown" onClick={e => e.stopPropagation()}>
           <div className="search-input-row">
             <input
               ref={inputRef}
@@ -254,17 +267,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Backdrop */}
-      {open && (
-        <div
-          style={{ position: 'fixed', inset: 0, zIndex: 199 }}
-          onClick={() => {
-            setOpen(false)
-            setQuery('')
-          }}
-        />
       )}
     </div>
   )

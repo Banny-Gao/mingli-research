@@ -13,7 +13,6 @@ import AnnotationPanel from '../components/AnnotationPanel'
 import { useReadProgress, useBookmarks, useGlobalProgress } from '../hooks/useProgress'
 import { useAnnotations } from '../hooks/useAnnotations'
 import type { AnnotationType } from '../hooks/useAnnotations'
-import { ThemeToggle } from '../main'
 
 function injectAnnotations(
   html: string,
@@ -162,7 +161,7 @@ const BookApp: React.FC = () => {
     return (
       <>
         <Helmet>
-          <title>404 - 命理学术中心</title>
+          <title>404</title>
         </Helmet>
         <div className="page-container">
           <div className="not-found">
@@ -250,39 +249,28 @@ const BookApp: React.FC = () => {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDesc} />
       </Helmet>
-      <div className="page-container-narrow">
-        {/* Hero */}
-        <div className="book-hero">
-          <div className="book-hero-glow" />
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              gap: 12,
-              marginBottom: 16,
-            }}
-          >
-            <SearchBar scopeSlug={slug} />
-            <ThemeToggle />
-          </div>
-          <div className="hero-badge">正统子平 · 任铁樵增注本</div>
-          <h1
-            style={{
-              fontSize: 24,
-              color: 'var(--color-gold)',
-              fontWeight: 'bold',
-              letterSpacing: 5,
-              marginBottom: 8,
-              textShadow: '0 0 30px var(--color-gold-glow)',
-            }}
-          >
-            《{book.title}》
-          </h1>
-          <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 16 }}>
-            原著：刘伯温（托名）｜注疏：任铁樵｜评注：徐乐吾
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+      <div className="page-wrapper">
+        <div className="top-actions">
+          <SearchBar scopeSlug={slug} />
+        </div>
+        <div className="page-container-narrow">
+          {/* Hero */}
+          <div className="book-hero">
+            <div className="book-hero-glow" />
+            <div className="hero-pattern" />
+            <h1
+              style={{
+                fontSize: 24,
+                color: 'var(--color-gold)',
+                fontWeight: 'bold',
+                letterSpacing: 5,
+                marginBottom: 8,
+                textShadow: '0 0 30px var(--color-gold-glow)',
+              }}
+            >
+              《{book.title}》
+            </h1>
+
             <div className="book-hero-stats">
               <div className="stat-item">
                 <div className="stat-num">{book.total}</div>
@@ -292,176 +280,169 @@ const BookApp: React.FC = () => {
                 <div className="stat-num-green">{book.done}</div>
                 <div className="stat-label">已解读</div>
               </div>
-              <div className="stat-item">
-                <div className="stat-num-purple">{book.skills.length}</div>
-                <div className="stat-label">技能文件</div>
-              </div>
             </div>
+
+            <Link to="/" className="back-link">
+              ← 返回典籍首页
+            </Link>
           </div>
-        </div>
 
-        {/* Back */}
-        <div className="container-wide" style={{ marginBottom: 24 }}>
-          <Link to="/" className="back-link">
-            ← 返回典籍首页
-          </Link>
-        </div>
+          {/* Tab Bar */}
+          <div className="tab-bar">
+            <button
+              className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`}
+              onClick={() => setActiveTab('read')}
+            >
+              原文解读
+            </button>
+            <button
+              className={`tab-btn ${activeTab === 'skill' ? 'active' : ''}`}
+              onClick={() => setActiveTab('skill')}
+            >
+              技能库
+            </button>
+          </div>
 
-        {/* Tab Bar */}
-        <div className="tab-bar">
-          <button
-            className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`}
-            onClick={() => setActiveTab('read')}
-          >
-            原文解读
-          </button>
-          <button
-            className={`tab-btn ${activeTab === 'skill' ? 'active' : ''}`}
-            onClick={() => setActiveTab('skill')}
-          >
-            技能库
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="container-wide animate-fade-up">
-          {activeTab === 'read' && (
-            <ReadList book={book} onChapterClick={n => openModal('interp', n)} />
-          )}
-          {activeTab === 'skill' && (
-            <SkillGrid book={book} onSkillClick={n => openModal('skill', n)} />
-          )}
-        </div>
-
-        {/* Modal */}
-        {modalType && (
-          <div
-            className="modal-backdrop"
-            onClick={e => {
-              if ((e.target as HTMLElement).classList.contains('modal-backdrop')) closeModal()
-            }}
-          >
-            <div className="modal-card" style={{ maxHeight: '90vh' }}>
-              <div className="modal-header">
-                <span className="modal-title">{modalTitle}</span>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {modalKey && (
-                    <>
-                      <button
-                        onClick={() => setShowPanel(v => !v)}
-                        style={{
-                          background: 'none',
-                          border: '1px solid var(--color-border-hover)',
-                          borderRadius: 6,
-                          padding: '4px 10px',
-                          cursor: 'pointer',
-                          color: showPanel ? 'var(--color-gold)' : 'var(--color-text-dim)',
-                          fontSize: 13,
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        批注{annotations.length > 0 ? ` (${annotations.length})` : ''}
-                      </button>
-                      <button
-                        onClick={() => toggleBookmark(modalKey)}
-                        style={{
-                          background: 'none',
-                          border: '1px solid var(--color-border-hover)',
-                          borderRadius: 6,
-                          padding: '4px 10px',
-                          cursor: 'pointer',
-                          color: isBookmarked(modalKey)
-                            ? 'var(--color-gold)'
-                            : 'var(--color-text-dim)',
-                          fontSize: 13,
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {isBookmarked(modalKey) ? '★ 已收藏' : '☆ 收藏'}
-                      </button>
-                    </>
-                  )}
-                  <button className="btn-back" onClick={closeModal}>
-                    ×
-                  </button>
-                  <button className="btn-back" onClick={() => window.print()} title="打印">
-                    ⎙
-                  </button>
-                </div>
-              </div>
-
-              {/* Reading Progress Bar */}
-              <ReadingProgress scrollRef={modalBodyRef} />
-
-              {/* TOC - only for interp */}
-              {modalType === 'interp' && (
-                <TableOfContents html={rawBody} scrollRef={modalBodyRef} />
-              )}
-
-              <div className="modal-body" ref={modalBodyRef} onMouseUp={handleMouseUp}>
-                <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
-              </div>
-
-              {/* Annotation Toolbar */}
-              {toolbarPos && (
-                <AnnotationToolbar
-                  position={toolbarPos}
-                  onSelect={handleAnnotationType}
-                  onClose={() => {
-                    setToolbarPos(null)
-                    setPendingSelection(null)
-                  }}
-                />
-              )}
-
-              {/* Related items */}
-              {modalKey && (
-                <div className="related-section">
-                  {modalType === 'interp' && interpToSkill[modalKey]?.length > 0 && (
-                    <div className="related-tags">
-                      <span className="related-label">关联技能</span>
-                      {interpToSkill[modalKey].map(sk => (
-                        <button
-                          key={sk}
-                          className="related-tag related-tag-skill"
-                          onClick={() => openModal('skill', sk)}
-                        >
-                          {sk}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {modalType === 'skill' && skillToInterp[modalKey]?.length > 0 && (
-                    <div className="related-tags">
-                      <span className="related-label">相关篇目</span>
-                      {skillToInterp[modalKey].map(ch => (
-                        <button
-                          key={ch}
-                          className="related-tag related-tag-chapter"
-                          onClick={() => openModal('interp', ch)}
-                        >
-                          {ch}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <BackToTop scrollRef={modalBodyRef} />
-            </div>
-
-            {/* Annotation Panel */}
-            {showPanel && (
-              <AnnotationPanel
-                annotations={annotations}
-                onRemove={remove}
-                onUpdateNote={updateNote}
-                onNavigate={handleNavigate}
-              />
+          {/* Content */}
+          <div className="container-wide animate-fade-up">
+            {activeTab === 'read' && (
+              <ReadList book={book} onChapterClick={n => openModal('interp', n)} />
+            )}
+            {activeTab === 'skill' && (
+              <SkillGrid book={book} onSkillClick={n => openModal('skill', n)} />
             )}
           </div>
-        )}
+
+          {/* Modal */}
+          {modalType && (
+            <div
+              className="modal-backdrop"
+              onClick={e => {
+                if ((e.target as HTMLElement).classList.contains('modal-backdrop')) closeModal()
+              }}
+            >
+              <div className="modal-card" style={{ maxHeight: '90vh' }}>
+                <div className="modal-header">
+                  <span className="modal-title">{modalTitle}</span>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    {modalKey && (
+                      <>
+                        <button
+                          onClick={() => setShowPanel(v => !v)}
+                          style={{
+                            background: 'none',
+                            border: '1px solid var(--color-border-hover)',
+                            borderRadius: 6,
+                            padding: '4px 10px',
+                            cursor: 'pointer',
+                            color: showPanel ? 'var(--color-gold)' : 'var(--color-text-dim)',
+                            fontSize: 13,
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          批注{annotations.length > 0 ? ` (${annotations.length})` : ''}
+                        </button>
+                        <button
+                          onClick={() => toggleBookmark(modalKey)}
+                          style={{
+                            background: 'none',
+                            border: '1px solid var(--color-border-hover)',
+                            borderRadius: 6,
+                            padding: '4px 10px',
+                            cursor: 'pointer',
+                            color: isBookmarked(modalKey)
+                              ? 'var(--color-gold)'
+                              : 'var(--color-text-dim)',
+                            fontSize: 13,
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {isBookmarked(modalKey) ? '★ 已收藏' : '☆ 收藏'}
+                        </button>
+                      </>
+                    )}
+                    <button className="btn-back" onClick={closeModal}>
+                      ×
+                    </button>
+                    <button className="btn-back" onClick={() => window.print()} title="打印">
+                      ⎙
+                    </button>
+                  </div>
+                </div>
+
+                {/* Reading Progress Bar */}
+                <ReadingProgress scrollRef={modalBodyRef} />
+
+                {/* TOC - only for interp */}
+                {modalType === 'interp' && (
+                  <TableOfContents html={rawBody} scrollRef={modalBodyRef} />
+                )}
+
+                <div className="modal-body" ref={modalBodyRef} onMouseUp={handleMouseUp}>
+                  <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
+                </div>
+
+                {/* Annotation Toolbar */}
+                {toolbarPos && (
+                  <AnnotationToolbar
+                    position={toolbarPos}
+                    onSelect={handleAnnotationType}
+                    onClose={() => {
+                      setToolbarPos(null)
+                      setPendingSelection(null)
+                    }}
+                  />
+                )}
+
+                {/* Related items */}
+                {modalKey && (
+                  <div className="related-section">
+                    {modalType === 'interp' && interpToSkill[modalKey]?.length > 0 && (
+                      <div className="related-tags">
+                        <span className="related-label">关联技能</span>
+                        {interpToSkill[modalKey].map(sk => (
+                          <button
+                            key={sk}
+                            className="related-tag related-tag-skill"
+                            onClick={() => openModal('skill', sk)}
+                          >
+                            {sk}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {modalType === 'skill' && skillToInterp[modalKey]?.length > 0 && (
+                      <div className="related-tags">
+                        <span className="related-label">相关篇目</span>
+                        {skillToInterp[modalKey].map(ch => (
+                          <button
+                            key={ch}
+                            className="related-tag related-tag-chapter"
+                            onClick={() => openModal('interp', ch)}
+                          >
+                            {ch}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <BackToTop scrollRef={modalBodyRef} />
+              </div>
+
+              {/* Annotation Panel */}
+              {showPanel && (
+                <AnnotationPanel
+                  annotations={annotations}
+                  onRemove={remove}
+                  onUpdateNote={updateNote}
+                  onNavigate={handleNavigate}
+                />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </>
   )

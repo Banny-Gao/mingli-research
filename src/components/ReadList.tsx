@@ -26,7 +26,6 @@ const ReadList: React.FC<Props> = ({ book, onChapterClick }) => {
             >
               <div className="chapter-num">{num}</div>
               <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
-              {ch.isDone && <div className="chapter-done">✅</div>}
               {ch.isDone && (
                 <button
                   className="btn-text chapter-action"
