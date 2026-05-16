@@ -1,27 +1,25 @@
 # 滴天髓阐微 · 人类可读解读规范
 
-> **用途：** 规范 `books/**/interpretations/` 目录下所有解读文件的产出格式
-> **前置依赖：** 读取 `SPEC-source.md` 确认原文已合规录入，完全理解并遵守 `SKILL-bazi-research-dispute.md` 规则
+> **用途：** 规范 `books/**/articles/{篇名}/interpretation.md` 解读文件的产出格式
+> **前置依赖：** 读取对应 `source.md`（原文）确认原文已合规录入，完全理解并遵守 `SKILL-bazi-research-dispute.md` 规则
 
 ---
 
 ## 一、文件命名规范
 
 ```
-interpretations/{skill_name}/tutorial.md
-interpretations/{skill_name}/advanced.md      ← 可选，深度进阶解读
+articles/{篇名}/interpretation.md
 ```
 
-- `skill_name`：与 skills 目录一致的英文标识（如 `tiandao`、`kundao`、`bage`）
-- `tutorial.md`：**必须**，面向初学者的由浅入深解读
-- `advanced.md`：**可选**，面向进阶学习者的深度专题
-- 两个文件内容**不得重复**，advanced 是补充延伸而非缩略版
+- `篇名`：中文篇名，与 catalog.md 中的篇名严格一致
+- 每篇文章只有一个 interpretation.md 文件
+- 一个`篇名`对应一个篇章
 
 ---
 
-## 二、tutorial.md 结构规范【必须完整】
+## 二、interpretation.md 结构规范【必须完整】
 
-每个 tutorial.md 必须包含以下七个章节，**顺序不可调整，内容不可缺失**：
+每个 interpretation.md 必须包含以下七个章节，**顺序不可调整，内容不可缺失**：
 
 ```
 ## 一、入门导读
@@ -185,24 +183,6 @@ interpretations/{skill_name}/advanced.md      ← 可选，深度进阶解读
 
 ---
 
-## 四、advanced.md 结构规范【可选】
-
-若产出 advanced.md，应与 tutorial.md 互补，不重复已有内容：
-
-```
-## 一、本篇核心争议辨析
-（流派分歧、有多种解读的经典论断）
-
-## 二、深度命造专题
-（比 tutorial 更复杂的命造分析，需要基础才能理解）
-
-## 三、原文精读（原文无删减版）
-（原注+任氏曰完整逐句解读，比 tutorial 更细致）
-
-## 四、延伸阅读与参考文献
-（引用袁树珊/徐乐吾/梁湘润等名家的相关论述，标注出处）
-```
-
 ---
 
 ## 五、语言与风格规范
@@ -245,9 +225,9 @@ interpretations/{skill_name}/advanced.md      ← 可选，深度进阶解读
 2. 禁止传授网络伪论、民间野诀
 3. 禁止将流派分歧强行判定为"唯一正确"
 4. 禁止堆砌原文而不解读（禁止以典代论）
-5. 禁止在 tutorial 中引用非公认名家（袁树珊、韦千里、徐乐吾、梁湘润、钟义明之外）的观点作为主要论据
+5. 禁止在 interpretation 中引用非公认名家（袁树珊、韦千里、徐乐吾、梁湘润、钟义明之外）的观点作为主要论据
 6. 禁止自创命造，所有命造必须有经典出处
-7. 禁止使用非本项目 source 目录以外的原文版本
+7. 禁止使用本项目 `articles/` 目录以外的原文版本
 
 ---
 
@@ -256,14 +236,13 @@ interpretations/{skill_name}/advanced.md      ← 可选，深度进阶解读
 在输出 interpretation 文件前，逐项检查：
 
 - [ ] 读取对应 source 文件，确认【原注】【任氏曰】原文已合规录入
-- [ ] tutorial.md 七个章节齐全，无缺章
+- [ ] interpretation.md 七个章节齐全，无缺章
 - [ ] 所有原文引用标注了【原注】或【任氏曰】来源
 - [ ] 所有命造有经典出处，无自创命造
 - [ ] 图解仅用于逻辑关系清晰的场景，非装饰性
 - [ ] 图解三列对齐，无视觉偏移
 - [ ] 首次出现的专业术语均已加注
 - [ ] 语言面向无基础读者，无行话堆砌
-- [ ] advanced.md（如有）与 tutorial.md 内容不重复
 - [ ] 无触碰任何禁止行为条款
 
 ---
