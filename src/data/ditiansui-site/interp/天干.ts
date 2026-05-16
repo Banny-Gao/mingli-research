@@ -4,7 +4,6 @@ export default `<h1>《滴天髓》·天干篇·详细解读教程</h1>
 <p><strong>原著：</strong> 《滴天髓》上篇第七章·天干
 <strong>注疏：</strong> 任铁樵（徐乐吾评注本）
 <strong>字数：</strong> 约 5,363 字（配合篇的 5 倍）
-<strong>页面：</strong> <a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_7_9.html">https://www.iwzbz.com/artical/pcbook/v2/3_1_7_9.html</a>
 <strong>完成日期：</strong> 2026-05-13</p>
 </blockquote>
 <hr>

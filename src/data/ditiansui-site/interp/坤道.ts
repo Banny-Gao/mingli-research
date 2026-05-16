@@ -6,7 +6,6 @@ export default `<h1>《滴天髓》·坤道篇·详细解读教程</h1>
 <strong>正文：</strong> 坤元合德机缄通，五气偏全会凶吉
 <strong>本章字数：</strong> 223字
 <strong>完成日期：</strong> 2026-05-13
-<strong>页面：</strong> <a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_7_4.html">https://www.iwzbz.com/artical/pcbook/v2/3_1_7_4.html</a></p>
 </blockquote>
 <hr>
 <h2>📖 第一部分：通读全貌（扫盲层）</h2>

@@ -25,17 +25,18 @@ export function ThemeToggle() {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('mingli_theme', theme)
   }, [theme])
+  
   return (
     <button
       onClick={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
       className="theme-toggle-btn"
     >
-      {theme === 'dark' ? '☀️ 浅色' : '🌙 深色'}
+      {theme !== 'dark' ? '☀️' : '🌙'}
     </button>
   )
 }
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.body!).render(
   <React.StrictMode>
     <HelmetProvider>
       <Helmet>

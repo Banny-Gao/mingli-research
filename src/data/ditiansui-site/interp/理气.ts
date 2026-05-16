@@ -6,7 +6,6 @@ export default `<h1>《滴天髓》·理气篇·详细解读教程</h1>
 <strong>正文：</strong> 理承气行岂有常，进兮退兮宜抑扬
 <strong>本章字数：</strong> 1038字
 <strong>完成日期：</strong> 2026-05-13
-<strong>页面：</strong> <a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_7_7.html">https://www.iwzbz.com/artical/pcbook/v2/3_1_7_7.html</a></p>
 </blockquote>
 <hr>
 <h2>📖 第一部分：通读全貌（扫盲层）</h2>

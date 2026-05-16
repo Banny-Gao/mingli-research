@@ -6,7 +6,6 @@ export default `<h1>《滴天髓》·知命篇·详细解读教程</h1>
 <strong>正文：</strong> 要与人间开聋聩，顺逆之机须理会
 <strong>本章字数：</strong> 2130字
 <strong>完成日期：</strong> 2026-05-13
-<strong>页面：</strong> <a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_7_6.html">https://www.iwzbz.com/artical/pcbook/v2/3_1_7_6.html</a></p>
 </blockquote>
 <hr>
 <h2>📖 第一部分：通读全貌（扫盲层）</h2>
