@@ -1,12 +1,8 @@
 ---
 name: bazi-research-dispute
-description: 子平八字学术研究与质疑处置专属技能。触发条件：用户查询《滴天髓》特定篇章/比较注疏版本/梳理理论脉络/提出质疑/讨论流派争议/请求正误判定/学术答疑...
+description: 子平八字学术研究与质疑处置专属技能。
 trigger: 子平八字学术研究|质疑处置|流派辨析|经典解读|义理争鸣|观点正误|滴天髓|渊海子平|子平真诠|三命通会|正误判定|学术讨论
 tags: [学术研究, 质疑处置, 滴天髓, 子平八字, 派别争议]
-related_skills: [tiandao, kundao, rendao, zhiming, liqi, peihe, tiangan, dizhi, bage, ganzhi, yuanliu]
-version: 2.0
-created: 2026-05-14
-root: /mingli/di-tian-sui/
 ---
 
 # 子平八字学术研究与质疑处置专属执行规则

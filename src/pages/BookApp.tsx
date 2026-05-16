@@ -2,10 +2,9 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
-import { interpContent, skillContent } from '../data/ditiansui-site'
+import { interpContent, skillContent, sourceContent } from '../data/ditiansui-site'
 import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
 import ReadList from '../components/ReadList'
-import SkillGrid from '../components/SkillGrid'
 import { ReadingProgress, BackToTop, TableOfContents } from '../components/ReadingTools'
 import SearchBar from '../components/SearchBar'
 import AnnotationToolbar from '../components/AnnotationToolbar'
@@ -36,8 +35,7 @@ function injectAnnotations(
 const BookApp: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const [searchParams] = useSearchParams()
-  const [activeTab, setActiveTab] = useState<'read' | 'skill'>('read')
-  const [modalType, setModalType] = useState<'interp' | 'skill' | null>(null)
+  const [modalType, setModalType] = useState<'interp' | 'skill' | 'source' | null>(null)
   const [modalKey, setModalKey] = useState('')
   const [scrollToText, setScrollToText] = useState<string | null>(null)
   const modalBodyRef = useRef<HTMLDivElement>(null)
@@ -54,6 +52,8 @@ const BookApp: React.FC = () => {
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(slug || '')
   const { touchChapter } = useGlobalProgress()
   const { annotations, add, remove, updateNote } = useAnnotations(slug || '', modalKey)
+  const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
+  const skillKeys = Object.keys(skillContent || {})
 
   // Handle URL params for search navigation
   useEffect(() => {
@@ -155,7 +155,9 @@ const BookApp: React.FC = () => {
   }, [book, modalKey, modalType, toggleBookmark])
 
   const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'
-  const pageDesc = book ? `${book.title}，已解读 ${book.done}/${book.total} 篇` : '未找到该典籍'
+  const pageDesc = book
+    ? `共${book.total}篇·已解读${book.done}篇·已有${skillKeys.length}个技能`
+    : '未找到该典籍'
 
   if (!book) {
     return (
@@ -187,7 +189,7 @@ const BookApp: React.FC = () => {
     setScrollToText(null)
   }
 
-  const openModal = (type: 'interp' | 'skill', key: string) => {
+  const openModal = (type: 'interp' | 'skill' | 'source', key: string) => {
     setModalType(type)
     setModalKey(key)
     setToolbarPos(null)
@@ -232,16 +234,29 @@ const BookApp: React.FC = () => {
     }
   }
 
-  const modalTitle = modalType === 'interp' ? `【${modalKey}】原文解读` : `【${modalKey}】技能文件`
-  const rawBody =
+  const modalTitle =
     modalType === 'interp'
-      ? interpContent[modalKey] ||
-        '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
-      : skillContent[modalKey] ||
-        '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该技能内容</p>'
+      ? `【${modalKey}】原文解读`
+      : modalType === 'skill'
+        ? `【${modalKey}】技能文件`
+        : `【${modalKey}】原文`
+  const rawBody =
+    modalType === 'source'
+      ? (sourceContent as unknown as Record<string, string>)[modalKey] ||
+        '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇原文</p>'
+      : modalType === 'interp'
+        ? (interpContent as Record<string, string>)[modalKey] ||
+          '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
+        : (skillContent as Record<string, string>)[modalKey] ||
+          '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该技能内容</p>'
   const annotatedBody = injectAnnotations(rawBody, annotations)
 
-  const proseClass = modalType === 'interp' ? 'prose-interp' : 'prose-skill'
+  const proseClass =
+    modalType === 'source'
+      ? 'prose-source'
+      : modalType === 'interp'
+        ? 'prose-interp'
+        : 'prose-skill'
 
   return (
     <>
@@ -257,7 +272,6 @@ const BookApp: React.FC = () => {
           {/* Hero */}
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <div className="hero-pattern" />
             <h1
               style={{
                 fontSize: 24,
@@ -287,30 +301,15 @@ const BookApp: React.FC = () => {
             </Link>
           </div>
 
-          {/* Tab Bar */}
-          <div className="tab-bar">
-            <button
-              className={`tab-btn ${activeTab === 'read' ? 'active' : ''}`}
-              onClick={() => setActiveTab('read')}
-            >
-              原文解读
-            </button>
-            <button
-              className={`tab-btn ${activeTab === 'skill' ? 'active' : ''}`}
-              onClick={() => setActiveTab('skill')}
-            >
-              技能库
-            </button>
-          </div>
-
           {/* Content */}
           <div className="container-wide animate-fade-up">
-            {activeTab === 'read' && (
-              <ReadList book={book} onChapterClick={n => openModal('interp', n)} />
-            )}
-            {activeTab === 'skill' && (
-              <SkillGrid book={book} onSkillClick={n => openModal('skill', n)} />
-            )}
+            <ReadList
+              book={book}
+              onChapterClick={n => openModal('interp', n)}
+              onSourceClick={n => openModal('source', n)}
+              sourceNames={bookSourceKeys}
+              skillToInterp={skillToInterp}
+            />
           </div>
 
           {/* Modal */}

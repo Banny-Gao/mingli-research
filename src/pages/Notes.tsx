@@ -96,8 +96,6 @@ const Notes: React.FC = () => {
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <div className="hero-pattern" />
-            <div className="hero-symbol">☯</div>
             <div className="hero-badge">批注管理</div>
             <h1
               style={{

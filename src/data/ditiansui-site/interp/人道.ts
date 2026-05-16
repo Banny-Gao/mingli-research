@@ -5,7 +5,7 @@ export default `<h1>《滴天髓》·人道篇·详细解读教程</h1>
 <strong>注疏：</strong> 任铁樵（徐乐吾评注本）
 <strong>正文：</strong> 戴天履地人为贵，顺则吉兮凶则悖
 <strong>本章字数：</strong> 708字
-<strong>完成日期：</strong> 2026-05-13
+<strong>完成日期：</strong> 2026-05-13</p>
 </blockquote>
 <hr>
 <h2>📖 第一部分：通读全貌（扫盲层）</h2>

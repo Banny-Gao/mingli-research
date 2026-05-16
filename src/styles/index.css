@@ -228,21 +228,6 @@ body {
   background: radial-gradient(ellipse, rgba(122, 79, 170, 0.15) 0%, transparent 70%);
 }
 
-/* 品牌国风装饰纹 */
-.hero-pattern {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 900px;
-  height: 120px;
-  pointer-events: none;
-  opacity: 0.12;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='30' fill='none' stroke='%23c09040' stroke-width='0.5'/%3E%3Ccircle cx='40' cy='40' r='20' fill='none' stroke='%23c09040' stroke-width='0.5'/%3E%3Ccircle cx='40' cy='40' r='10' fill='none' stroke='%23c09040' stroke-width='0.5'/%3E%3Cpath d='M10 40 H70 M40 10 V70' stroke='%23c09040' stroke-width='0.3'/%3E%3Cpath d='M18 18 L62 62 M62 18 L18 62' stroke='%23c09040' stroke-width='0.3'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-position: center top;
-}
 .hero-symbol {
   position: absolute;
   top: 8px;
@@ -494,7 +479,6 @@ body {
   border-radius: 6px;
   margin-bottom: 3px;
   transition: all 0.2s;
-  cursor: pointer;
 }
 
 .chapter-row.done {
@@ -502,7 +486,6 @@ body {
 }
 .chapter-row:hover {
   background: var(--color-bg-card-hover);
-  transform: scale(1.015);
   box-shadow: 0 0px 12px var(--color-border-card);
 }
 
@@ -523,8 +506,27 @@ body {
   color: var(--color-text);
 }
 
+.chapter-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 .chapter-action {
-  margin-left: 8px;
+  margin-left: 0;
+}
+
+.action-source {
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+.action-source:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+.action-skill {
+  color: var(--color-purple-light);
 }
 
 /* ===== Buttons ===== */
