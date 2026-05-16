@@ -1,218 +1,62 @@
 // Auto-generated — do not edit manually
-export default `<h1>《滴天髓》·知命篇</h1>
-<blockquote>
-<p><strong>原著：</strong> 《滴天髓》上篇第四章·知命
-<strong>正文：</strong> 要与人间开聋聩，顺逆之机须理会</p>
-</blockquote>
-<hr>
-<h2>一、核心定理</h2>
-<h3>定理一：知命之要</h3>
-<pre><code>知命 = 理会顺逆之机
-  ↓
-顺者吉，逆者凶
+export default `<h2>功能</h2>
+<p>分析八字命局中各个十神因素相对于日主是&quot;顺&quot;（有利、可用）还是&quot;逆&quot;（不利、不可用），为用神选取提供前置判断。AI 执行者应在需要判定命局中某一因素是否为用时调用本技能，尤其当用户机械地以财官为喜、不以日主衰旺为先时。</p>
+<h2>输入</h2>
+<ul>
+<li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式，如&quot;甲子 丙寅 戊辰 壬戌&quot;）</li>
+<li><strong>日主</strong>：日柱天干的五行属性</li>
+<li><strong>待判断因素</strong>：需要判断顺逆的十神（可单选或全列，如&quot;财星&quot;&quot;官星&quot;&quot;印星&quot;等）</li>
+<li><strong>日主衰旺判定</strong>：可选，未提供时本技能默认按月令+地支藏干先做判定</li>
+</ul>
+<h2>处理逻辑</h2>
+<ol>
+<li><p><strong>确定日主衰旺</strong>：根据月令、地支藏干、四柱生扶克耗关系，判定日主属于旺、相、休、囚、死中的哪一种</p>
+<ul>
+<li>依据：【任氏曰】&quot;不论日主之衰旺，总以财官为喜……殊不知道理乎？&quot;</li>
+</ul>
+</li>
+<li><p><strong>列出待判断因素</strong>：罗列命局中的四柱十神，逐一标记五行属性与其相对于日主的十神关系</p>
+</li>
+<li><p><strong>顺逆判定</strong>（核心步骤）：</p>
+<ul>
+<li>若日主过弱：帮扶日主（印、比劫）的因素为&quot;顺&quot;；克耗日主（财、官、食伤）的因素为&quot;逆&quot;</li>
+<li>若日主过旺：克耗日主（财、官、食伤）的因素为&quot;顺&quot;；帮扶日主（印、比劫）的因素为&quot;逆&quot;</li>
+<li>若日主中和：各因素以不过度伤害或过度帮扶为判断标准，保持均衡为&quot;顺&quot;</li>
+<li>依据：【任氏曰】&quot;用之财官不可伤，不可用财官尽可伤&quot;</li>
+</ul>
+</li>
+<li><p><strong>验证自洽性</strong>：对照&quot;顺&quot;的因素是否确实对命局有益，&quot;逆&quot;的因素是否确实对命局有害，确认判断逻辑不自相矛盾</p>
+</li>
+<li><p><strong>输出报告</strong>：将所有因素标记为&quot;顺&quot;或&quot;逆&quot;，并附判断理由</p>
+</li>
+</ol>
+<h2>输出</h2>
+<pre><code class="language-typescript">interface ShunNiReport {
+  riZhu: {
+    ganZhi: string;        // 日柱干支
+    wuxing: string;        // 日主五行
+    shuaiWang: &quot;旺&quot; | &quot;相&quot; | &quot;休&quot; | &quot;囚&quot; | &quot;死&quot;;
+    basis: string;         // 衰旺判定依据
+  };
+  factors: Array&lt;{
+    name: string;          // 十神名称，如&quot;正财&quot;&quot;七杀&quot;
+    ganZhi: string;        // 对应的天干地支
+    wuxing: string;        // 五行属性
+    shunNi: &quot;顺&quot; | &quot;逆&quot;;
+    reason: string;        // 判断理由，引用【任氏曰】依据
+  }&gt;;
+  conclusion: string;      // 综合分析：顺逆格局概况与用神选取建议
+}
 </code></pre>
-<h3>定理二：四句核心</h3>
-<pre><code>用之为财不可劫
-用之为官不可伤
-用之印绶不可坏
-用之食神不可夺
-  ↓
-关键在一&quot;用&quot;字
+<h2>使用示例</h2>
+<p><strong>输入</strong>：日主甲木（衰），待判断财星</p>
+<p><strong>输出片段</strong>：</p>
+<pre><code>factors: [{
+  name: &quot;正财&quot;,
+  ganZhi: &quot;戊辰&quot;,
+  wuxing: &quot;土&quot;,
+  shunNi: &quot;逆&quot;,
+  reason: &quot;日主甲木衰弱，财星戊辰土过旺克身，财富超出承载力，为逆&quot;
+}]
 </code></pre>
-<h3>定理三：旺极之命</h3>
-<pre><code>旺之极者，宜泄不宜克
-  ↓
-顺其气势则吉
-悖其性则凶
-</code></pre>
-<h3>定理四：水流之命</h3>
-<pre><code>昆仑之水，可顺而不可逆
-  ↓
-顺其流则吉
-逆其流则凶
-</code></pre>
-<hr>
-<h2>二、开篇正文</h2>
-<blockquote>
-<p>要与人间开聋聩，顺逆之机须理会</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>关键词</th>
-<th>命理含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>开聋聩</td>
-<td>使人明命理</td>
-</tr>
-<tr>
-<td>顺逆之机</td>
-<td>顺逆的关键</td>
-</tr>
-<tr>
-<td>须理会</td>
-<td>理解顺逆为论命之要</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>三、【任氏曰】批判</h2>
-<h3>批判五种谬说</h3>
-<table>
-<thead>
-<tr>
-<th>谬说</th>
-<th>批判</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>奇格异局</td>
-<td>非关命理休咎</td>
-</tr>
-<tr>
-<td>桃花咸池</td>
-<td>受责鬼神</td>
-</tr>
-<tr>
-<td>金锁铁蛇</td>
-<td>忧人父母</td>
-</tr>
-<tr>
-<td>总以财官为喜</td>
-<td>不知财官为六亲之名</td>
-</tr>
-<tr>
-<td>总以食印为福</td>
-<td>不知日主衰旺</td>
-</tr>
-</tbody></table>
-<h3>四句核心</h3>
-<table>
-<thead>
-<tr>
-<th>用神</th>
-<th>不可</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>财</td>
-<td>不可劫</td>
-<td>劫则破格</td>
-</tr>
-<tr>
-<td>官</td>
-<td>不可伤</td>
-<td>伤则损贵</td>
-</tr>
-<tr>
-<td>印</td>
-<td>不可坏</td>
-<td>坏则无生</td>
-</tr>
-<tr>
-<td>食</td>
-<td>不可夺</td>
-<td>夺则损福</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>四、五个命造速记</h2>
-<table>
-<thead>
-<tr>
-<th>命造</th>
-<th>四柱</th>
-<th>核心</th>
-<th>断语</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>高宗纯皇帝</td>
-<td>辛卯 丁酉 庚午 丙子</td>
-<td>子午卯酉冲，制化得宜</td>
-<td>天下熙宁</td>
-</tr>
-<tr>
-<td>董中堂</td>
-<td>庚申 庚辰 戊辰 戊午</td>
-<td>午火为用印绶旺</td>
-<td>宦海无波</td>
-</tr>
-<tr>
-<td>己酉丙寅</td>
-<td>辛酉 辛丑 己酉 丙寅</td>
-<td>丙火为用印绶美</td>
-<td>前程无限</td>
-</tr>
-<tr>
-<td>王姓</td>
-<td>壬辰 壬寅 甲寅 庚午</td>
-<td>庚金为病，午火为用</td>
-<td>庚金为病明矣</td>
-</tr>
-<tr>
-<td>福建人</td>
-<td>癸酉 甲子 癸亥 辛酉</td>
-<td>水势冲奔，顺逆之机</td>
-<td>昆仑之水可顺不可逆</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>五、实战四步法</h2>
-<pre><code>第一步：察日主衰旺
-  → 得令否？得地否？得势否？
-
-第二步：究顺悖之机
-  → 用神能否得用？
-  → 忌神能否受制？
-
-第三步：审进退之节
-  → 旺者宜泄宜克？
-  → 弱者宜生宜扶？
-
-第四步：论喜忌之真
-  → 不以财官为喜
-  → 专论日主衰旺
-</code></pre>
-<hr>
-<h2>六、必须背诵的名句</h2>
-<blockquote>
-<p><strong>1.</strong> 要与人间开聋聩，顺逆之机须理会
-<strong>2.</strong> 用之为财不可劫，用之为官不可伤，用之印绶不可坏，用之食神不可夺
-<strong>3.</strong> 旺之极者，宜泄而不宜克，宜顺其气势
-<strong>4.</strong> 昆仑之水，可顺而不可逆也</p>
-</blockquote>
-<hr>
-<h2>七、自测题</h2>
-<table>
-<thead>
-<tr>
-<th>题号</th>
-<th>问题</th>
-<th>参考答案</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>&quot;用&quot;字的关键是什么？</td>
-<td>不用尽可劫/伤/坏/夺</td>
-</tr>
-<tr>
-<td>2</td>
-<td>王姓命局的误判原因？</td>
-<td>误以庚金为用，实为忌神</td>
-</tr>
-<tr>
-<td>3</td>
-<td>&quot;昆仑之水&quot;命局的处理？</td>
-<td>顺其流则吉，逆其流则凶</td>
-</tr>
-<tr>
-<td>4</td>
-<td>知命篇批判了哪些谬说？</td>
-<td>奇格异局、神煞、财官为喜等</td>
-</tr>
-</tbody></table>
 `;
