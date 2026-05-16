@@ -314,8 +314,10 @@ const BookApp: React.FC = () => {
               book={book}
               onChapterClick={n => openModal('interp', n)}
               onSourceClick={n => openModal('source', n)}
+              onSkillClick={sk => openModal('skill', sk)}
               sourceNames={bookSourceKeys}
               skillToInterp={skillToInterp}
+              interpToSkill={interpToSkill}
             />
           </div>
 

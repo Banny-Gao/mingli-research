@@ -5,16 +5,20 @@ interface Props {
   book: Book
   onChapterClick: (name: string) => void
   onSourceClick: (name: string) => void
+  onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
   skillToInterp: Record<string, string[]>
+  interpToSkill?: Record<string, string[]>
 }
 
 const ReadList: React.FC<Props> = ({
   book,
   onChapterClick,
   onSourceClick,
+  onSkillClick,
   sourceNames,
   skillToInterp,
+  interpToSkill,
 }) => {
   const categories = new Map<string, ChapterInfo[]>()
   for (const ch of book.chapters) {
@@ -38,8 +42,10 @@ const ReadList: React.FC<Props> = ({
           chapters={chapters}
           onChapterClick={onChapterClick}
           onSourceClick={onSourceClick}
+          onSkillClick={onSkillClick}
           sourceNames={sourceNames}
           skillToInterp={skillToInterp}
+          interpToSkill={interpToSkill}
         />
       ))}
     </div>
@@ -51,15 +57,19 @@ function CategorySection({
   chapters,
   onChapterClick,
   onSourceClick,
+  onSkillClick,
   sourceNames,
   skillToInterp,
+  interpToSkill,
 }: {
   category: string
   chapters: ChapterInfo[]
   onChapterClick: (name: string) => void
   onSourceClick: (name: string) => void
+  onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
   skillToInterp: Record<string, string[]>
+  interpToSkill?: Record<string, string[]>
 }) {
   const [collapsed, setCollapsed] = useState(false)
   const doneCount = chapters.filter(c => c.isDone).length
@@ -109,7 +119,8 @@ function CategorySection({
           {chapters.map(ch => {
             const hasSource = sourceNames.includes(ch.name)
             const hasInterp = ch.isDone
-            const hasSkill = !!skillToInterp[ch.name]
+            const skillKeys = interpToSkill?.[ch.name]
+            const hasSkill = !!skillKeys?.length
             return (
               <div key={ch.name} className={`chapter-row ${ch.isDone ? 'done' : 'undone'}`}>
                 <div className="chapter-num">{ch.num}</div>
@@ -131,10 +142,10 @@ function CategorySection({
                       解读
                     </button>
                   )}
-                  {hasSkill && (
+                  {hasSkill && onSkillClick && skillKeys && (
                     <button
                       className="btn-text chapter-action action-skill"
-                      onClick={() => onChapterClick(ch.name)}
+                      onClick={() => onSkillClick(skillKeys[0])}
                     >
                       技能
                     </button>
