@@ -1,192 +1,64 @@
 // Auto-generated — do not edit manually
-export default `<h1>《滴天髓》·理气篇</h1>
-<blockquote>
-<p><strong>原著：</strong> 《滴天髓》上篇第五章·理气
-<strong>正文：</strong> 理承气行岂有常，进兮退兮宜抑扬</p>
-</blockquote>
-<hr>
-<h2>一、核心定理</h2>
-<h3>定理一：进退有常</h3>
-<pre><code>进之极 → 退之机
-退之极 → 进之机
-  ↓
-进退循环，无有常
+export default `<h2>功能</h2>
+<p>分析八字命局中每个五行的旺相休囚状态，判断其在当前季节中是&quot;相&quot;（将进）、&quot;旺&quot;（当令）、&quot;休&quot;（方退）还是&quot;囚&quot;（退尽），并据此评估各五行的发展潜力与真实力量。AI 执行者应在需要评估日主或十神的真实力量而非只看表面出现次数时调用本技能。</p>
+<h2>输入</h2>
+<ul>
+<li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
+<li><strong>日主</strong>：日柱天干的五行属性</li>
+<li><strong>月令</strong>：月柱的地支（决定当前季节）</li>
+<li><strong>目标五行列表</strong>：需要分析进退状态的具体五行（默认全部分析）</li>
+</ul>
+<h2>处理逻辑</h2>
+<ol>
+<li><p><strong>确定当前季节</strong>：根据月令地支确定四季归属</p>
+<ul>
+<li>寅卯辰 → 春（木旺）</li>
+<li>巳午未 → 夏（火旺）</li>
+<li>申酉戌 → 秋（金旺）</li>
+<li>亥子丑 → 冬（水旺）</li>
+</ul>
+</li>
+<li><p><strong>按四时定旺相休囚</strong>：按&quot;按四时而定之&quot;原则（【任氏曰】），对每一个五行分别判定</p>
+<ul>
+<li><strong>旺</strong>：当令的五行为旺（如春木）</li>
+<li><strong>相</strong>：旺所生的五行为相（如春木生火，火相）</li>
+<li><strong>休</strong>：生旺的五行为休（如水生春木，水休）</li>
+<li><strong>囚</strong>：克旺的五行为囚（如金克春木，金囚）</li>
+</ul>
+</li>
+<li><p><strong>评估进退潜力</strong>（精微判断）：</p>
+<ul>
+<li>相 &gt; 旺：相为&quot;方长之气，其进无疆&quot;；旺为&quot;极盛之物，其退反速&quot;</li>
+<li>休 &lt; 囚：休为&quot;方退之气，未能骤复&quot;；囚为&quot;既极之势，必将渐生&quot;</li>
+<li>依据：【任氏曰】&quot;相妙于旺，旺则极盛之物，其退反速&quot;&quot;休甚于囚，囚则既极之势，必将渐生&quot;</li>
+</ul>
+</li>
+<li><p><strong>综合报告</strong>：输出每个五行的旺相休囚状态、进退方向和发展潜力评级</p>
+</li>
+</ol>
+<h2>输出</h2>
+<pre><code class="language-typescript">interface LiQiReport {
+  month: string;                 // 月柱干支
+  season: &quot;春&quot; | &quot;夏&quot; | &quot;秋&quot; | &quot;冬&quot;;
+  wuxingStates: Array&lt;{
+    wuxing: &quot;木&quot; | &quot;火&quot; | &quot;土&quot; | &quot;金&quot; | &quot;水&quot;;
+    state: &quot;旺&quot; | &quot;相&quot; | &quot;休&quot; | &quot;囚&quot;;
+    direction: &quot;进&quot; | &quot;退&quot; | &quot;极进&quot; | &quot;极退&quot;;
+    potential: number;            // 发展潜力评分 1-5
+    note: string;                 // 说明，引用【任氏曰】依据
+  }&gt;;
+  recommendation: string;        // 基于进退之机的综合分析建议
+}
 </code></pre>
-<h3>定理二：旺相休囚</h3>
-<pre><code>相 = 将来者进（未来之星）
-旺 = 进而当令（正当时令）
-休 = 功成者退（功成退位）
-囚 = 退而无气（退而无用）
+<h2>使用示例</h2>
+<p><strong>输入</strong>：寅月（春季），分析木的进退状态</p>
+<p><strong>输出片段</strong>：</p>
+<pre><code>wuxingStates: [{
+  wuxing: &quot;木&quot;,
+  state: &quot;旺&quot;,
+  direction: &quot;极进&quot;,
+  potential: 3,
+  note: &quot;木当令为旺，但&#39;旺则极盛之物，其退反速&#39;，虽当前最强但衰退在即&quot;
+}]
 </code></pre>
-<h3>定理三：日主喜忌</h3>
-<pre><code>日主/喜神 → 宜旺相，不宜休囚
-凶煞/忌神 → 宜休囚，不宜旺相
-</code></pre>
-<h3>定理四：相与旺</h3>
-<pre><code>旺 = 极盛之物 → 退反速
-相 = 方长之气 → 进无涯
-</code></pre>
-<hr>
-<h2>二，开篇正文</h2>
-<blockquote>
-<p>理承气行岂有常，进兮退兮宜抑扬</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>关键词</th>
-<th>命理含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>理承气行</td>
-<td>理随气行，气为理用</td>
-</tr>
-<tr>
-<td>岂有常</td>
-<td>气行无常</td>
-</tr>
-<tr>
-<td>进退</td>
-<td>旺相休囚的转化</td>
-</tr>
-<tr>
-<td>宜抑扬</td>
-<td>进则抑，退则扬</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>三、【任氏曰】核心</h2>
-<h3>进退定义</h3>
-<table>
-<thead>
-<tr>
-<th>状态</th>
-<th>定义</th>
-<th>结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>相</td>
-<td>将来者进</td>
-<td>进无涯</td>
-</tr>
-<tr>
-<td>旺</td>
-<td>进而当令</td>
-<td>退速</td>
-</tr>
-<tr>
-<td>休</td>
-<td>功成者退</td>
-<td>未速复</td>
-</tr>
-<tr>
-<td>囚</td>
-<td>退而无气</td>
-<td>渐将生</td>
-</tr>
-</tbody></table>
-<h3>日主喜忌</h3>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>宜</th>
-<th>不宜</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>日主/喜神</td>
-<td>旺相</td>
-<td>休囚</td>
-</tr>
-<tr>
-<td>凶煞/忌神</td>
-<td>休囚</td>
-<td>旺相</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>四、两造对比</h2>
-<table>
-<thead>
-<tr>
-<th>对比项</th>
-<th>第一造</th>
-<th>第二造</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>四柱</td>
-<td>丁亥 庚戌 甲辰 壬申</td>
-<td>乙亥 庚辰 甲戌 壬申</td>
-</tr>
-<tr>
-<td>甲木</td>
-<td>进气</td>
-<td>退气</td>
-</tr>
-<tr>
-<td>结果</td>
-<td>科甲连登</td>
-<td>寒衿</td>
-</tr>
-</tbody></table>
-<p><strong>关键</strong>：辰湿土生木 vs 戌燥土不生</p>
-<hr>
-<h2>五、实战四步法</h2>
-<pre><code>第一步：审月令节气
-  → 定五行旺相休囚
-
-第二步：明进退之机
-  → 进气？退气？
-  → 进极则退，退极则进
-
-第三步：论日主宜忌
-  → 日主宜旺相
-  → 忌神宜休囚
-
-第四步：察天干地支
-  → 生克制化是否得宜
-</code></pre>
-<hr>
-<h2>六、必须背诵的名句</h2>
-<blockquote>
-<p><strong>1.</strong> 理承气行岂有常，进兮退兮宜抑扬
-<strong>2.</strong> 将来者进，是谓相；进而当令，是谓旺；功成者退，是谓休；退而无气，是谓囚
-<strong>3.</strong> 相妙于旺，旺则极盛之物，其退反速；相则方长之气，其进无涯也
-<strong>4.</strong> 进退之机，不可不知也</p>
-</blockquote>
-<hr>
-<h2>七、自测题</h2>
-<table>
-<thead>
-<tr>
-<th>题号</th>
-<th>问题</th>
-<th>参考答案</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>旺相休囚定义？</td>
-<td>相进/旺当令/休功退/囚退无气</td>
-</tr>
-<tr>
-<td>2</td>
-<td>相与旺的区别？</td>
-<td>相进无涯，旺退速</td>
-</tr>
-<tr>
-<td>3</td>
-<td>两造差异原因？</td>
-<td>甲木进气vs退气</td>
-</tr>
-<tr>
-<td>4</td>
-<td>日主喜忌宜什么？</td>
-<td>日主宜旺相，忌神宜休囚</td>
-</tr>
-</tbody></table>
 `;

@@ -1,325 +1,155 @@
 // Auto-generated — do not edit manually
-export default `<h1>《滴天髓》·八格篇</h1>
-<blockquote>
-<p><strong>原著：</strong> 《滴天髓》上篇第十二章·八格
-<strong>注疏：</strong> 任铁樵（徐乐吾评注本）
-<strong>正文：</strong> 财官印绶发偏正，兼论食伤八格定</p>
-</blockquote>
-<hr>
-<h2>一、核心定理（必须背诵）</h2>
-<h3>定理一：八格定义</h3>
-<pre><code>八格 = 财、官、印、绶、食、伤、偏（偏官/七杀）、正（正财/正官）
-</code></pre>
-<h3>定理二：八格取用步骤（核心三步）</h3>
-<pre><code>第一步：先观月令所得何支      → 确定月令五行
-第二步：次看天干透出何神      → 确定透干十神
-第三步：再究司令以定真假      → 确认用神是否得位
-</code></pre>
-<blockquote>
-<p>口诀：<strong>月令定气，天干定格，司令定真</strong></p>
-</blockquote>
-<h3>定理三：正格 vs 变格判别标准</h3>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>判别标准</th>
-<th>特征</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>正格</strong></td>
-<td>兼五行之常礼</td>
-<td>月令本气透干，依常理取用</td>
-</tr>
-<tr>
-<td><strong>变格</strong></td>
-<td>必从五行之气</td>
-<td>气势引导，顺势而行</td>
-</tr>
-</tbody></table>
-<h3>定理四：禄刃月特殊规则</h3>
-<pre><code>若月逢禄刃，无格可取
-  → 禄刃月（日主得令极强），不按八格论，另寻他支透出者为用
-</code></pre>
-<h3>定理五：格局成败比例</h3>
-<pre><code>格局真纯者，百无一二
-破败而杂气者，十有八九
-  → 实战中破格是常态，纯格罕见
-</code></pre>
-<hr>
-<h2>二、八格速查表</h2>
-<table>
-<thead>
-<tr>
-<th>八格</th>
-<th>取格条件（月令透干）</th>
-<th>用神</th>
-<th>忌神</th>
-<th>成格关键</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>正官格</strong></td>
-<td>月令本气为官星透干</td>
-<td>财星生官</td>
-<td>伤官混官/七杀混官</td>
-<td>官星清纯不混</td>
-</tr>
-<tr>
-<td><strong>偏官格（七杀）</strong></td>
-<td>月令本气为七杀透干</td>
-<td>印星化杀/食神制杀</td>
-<td>财星党杀</td>
-<td>制化得宜</td>
-</tr>
-<tr>
-<td><strong>正财格</strong></td>
-<td>月令本气为财星透干</td>
-<td>官星护财</td>
-<td>印星克财/比劫夺财</td>
-<td>财星得位通根</td>
-</tr>
-<tr>
-<td><strong>偏财格</strong></td>
-<td>月令本气为偏财透干</td>
-<td>官星/食神</td>
-<td>比劫夺财</td>
-<td>财星通根有力</td>
-</tr>
-<tr>
-<td><strong>正印格</strong></td>
-<td>月令本气为印星透干</td>
-<td>官星生印/财星破印</td>
-<td>食神坏印</td>
-<td>印星清纯</td>
-</tr>
-<tr>
-<td><strong>偏印格（枭神）</strong></td>
-<td>月令本气为偏印透干</td>
-<td>财星制枭/食神泄秀</td>
-<td>官星生枭</td>
-<td>制化得宜</td>
-</tr>
-<tr>
-<td><strong>食神格</strong></td>
-<td>月令本气为食神透干</td>
-<td>财星生食/官星泄秀</td>
-<td>印星夺食</td>
-<td>食神制杀（如有杀）</td>
-</tr>
-<tr>
-<td><strong>伤官格</strong></td>
-<td>月令本气为伤官透干</td>
-<td>财星泄伤/印星制伤</td>
-<td>官星激伤</td>
-<td>伤官配印（最佳）</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>三、格局分析三步法（实战框架）</h2>
-<h3>第一步：定日主强弱</h3>
-<pre><code>日主得令否？  → 月令是否为日主同类五行
-日主得地否？  → 地支是否有根（禄、刃、余气）
-日主得势否？  → 天干是否有印比生助
-↓
-综合判断：身旺 / 身弱 / 中和
-</code></pre>
-<h3>第二步：定月令格局</h3>
-<pre><code>月令本气透干否？
-  ├─ 是 → 取该透干十神为格（正格）
-  └─ 否 → 看月令藏干中哪个力量强，取为格
-          若禄刃月 → 无格可取，另寻别支透干
-          若杂气月 → 取本气为格（不可执杂气财官为奇格）
-</code></pre>
-<h3>第三步：判断用神真假</h3>
-<pre><code>用神得位否？   → 用神是否在月令或在坐支
-用神通根否？   → 用神是否有根（旺衰关键）
-用神透干否？   → 用神是否在天干显透
-  ↓
-三者齐备 → 真格（极罕见）
-缺一       → 破格（常态）
-缺二以上   → 贱格
-</code></pre>
-<hr>
-<h2>四、杂格批判</h2>
-<p>任铁樵明确批判以下谬说，论命时<strong>不可执为格局</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>被批判的谬说</th>
-<th>任注原话</th>
-<th>核心观点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>兰台妙选</strong></td>
-<td>&quot;尤属不经，不待辩而知识荒唐&quot;</td>
-<td>奇格异局、纳音诸法皆虚妄</td>
-</tr>
-<tr>
-<td><strong>影响遥系</strong>（暗冲暗合）</td>
-<td>&quot;固为影响遥系而非格也&quot;</td>
-<td>暗冲暗合非实格</td>
-</tr>
-<tr>
-<td><strong>杂气财官</strong></td>
-<td>&quot;杂气财官不可执&quot;</td>
-<td>杂气月仍取本气为格</td>
-</tr>
-<tr>
-<td><strong>飞天禄马</strong></td>
-<td>&quot;不可执为格局&quot;</td>
-<td>不可执此为奇格</td>
-</tr>
-<tr>
-<td><strong>倒冲刑冲</strong></td>
-<td>&quot;不可执为格局&quot;</td>
-<td>倒冲非正统论法</td>
-</tr>
-<tr>
-<td><strong>合禄合贵</strong></td>
-<td>&quot;不可执为格局&quot;</td>
-<td>合禄非格局正途</td>
-</tr>
-<tr>
-<td><strong>日时双头算法</strong>（子时算法）</td>
-<td>&quot;何以壬子时独可朝子&quot;</td>
-<td>子时算法混乱，不足为凭</td>
-</tr>
-<tr>
-<td><strong>壬骑龙背</strong></td>
-<td>&quot;何不取壬子、壬申、壬戌为骑猴马狗之背&quot;</td>
-<td>纯属穿凿附会</td>
-</tr>
-<tr>
-<td><strong>六阴朝阳</strong></td>
-<td>&quot;夫阴阳皆阴也，何独辛金可朝阳&quot;</td>
-<td>以偏概全，逻辑荒谬</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>五、命造实例速记（六个命造核心结论）</h2>
-<table>
-<thead>
-<tr>
-<th>命造</th>
-<th>四柱</th>
-<th>格局</th>
-<th>成败关键</th>
-<th>任注断语</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>第一造</strong></td>
-<td>癸卯 己未 乙未 丙子</td>
-<td>正官格</td>
-<td>印星有力贴身相生，格局成</td>
-<td>科甲出身，仕至藩臬</td>
-</tr>
-<tr>
-<td><strong>第二造</strong></td>
-<td>己丑 丁丑 乙丑 丙子</td>
-<td>正官格</td>
-<td>印星无根，湿土晦火，格局破</td>
-<td>功名未遂，耗散资财，刑妻克子</td>
-</tr>
-<tr>
-<td><strong>第三造</strong></td>
-<td>戊寅 甲子 壬子 辛亥</td>
-<td>印绶格</td>
-<td>官星无根太弱，才华露而不能纳牝</td>
-<td>品行超群，才华卓越</td>
-</tr>
-<tr>
-<td><strong>第四造</strong></td>
-<td>辛酉 丁酉 丁酉 辛亥</td>
-<td>印绶格</td>
-<td>壬水药病相济，格局纯粹</td>
-<td>联登甲第，名利两全</td>
-</tr>
-<tr>
-<td><strong>第五造</strong></td>
-<td>辛酉 丁酉 丁酉 丙午</td>
-<td>印绶格</td>
-<td>无壬水药，丙火助日夺财，格局破</td>
-<td>机杼空抛，株守待兔</td>
-</tr>
-<tr>
-<td><strong>第六造</strong></td>
-<td>丁卯 壬寅 辛亥 丙申</td>
-<td>印绶格</td>
-<td>亥壬水相济，格局纯粹</td>
-<td>青蚨十万，化成蓝袍</td>
-</tr>
-</tbody></table>
-<p><strong>命造对比记忆法</strong>：</p>
+export default `<h2>功能</h2>
+<p>输入一个完整的八字四柱，输出该命局的格局判定结果。此技能执行任铁樵&quot;先观月令所得何支，次看天干透出何神，再究司令以定真假，然后取用，以分清浊&quot;的完整流程，并根据&quot;病药说&quot;给出行运建议。用于辅助八字深度分析。</p>
+<h2>输入</h2>
 <ul>
-<li>一、四造成 → 印星有力，用神得位</li>
-<li>二、五造败 → 印星无力或被夺，格局破败</li>
-<li>三、六造中 → 格局有瑕疵，中上之命</li>
+<li><code>year_pillar</code>：年柱（天干+地支），如 &quot;庚辰&quot;</li>
+<li><code>month_pillar</code>：月柱（天干+地支），如 &quot;癸未&quot;</li>
+<li><code>day_pillar</code>：日柱（天干+地支），如 &quot;乙未&quot;</li>
+<li><code>hour_pillar</code>：时柱（天干+地支），如 &quot;癸未&quot;</li>
+<li><code>day_master</code>：日主（自动从日柱提取）</li>
+<li><code>gender</code>（可选）：性别（男/女），用于排大运顺逆</li>
 </ul>
-<hr>
-<h2>六、格局清浊判断速记</h2>
-<pre><code>格局清 → 纯清（百无一二）→ 上等命
-格局浊 → 驳杂（十有八九）→ 中下命
-
-清浊判断四要素：
-  ① 用神是否有力（得根/透干/得位）
-  ② 忌神是否受制（有无制化）
-  ③ 气势是否流通（无阻隔/逆乱）
-  ④ 财官印是否纯粹（不混杂）
-</code></pre>
-<hr>
-<h2>七、常见错误警示</h2>
+<h2>处理逻辑</h2>
+<ol>
+<li><p><strong>步骤一：确定月令地支</strong></p>
+<ol>
+<li>提取月柱的地支（即月令提纲）</li>
+<li>确定月支的五行和藏干</li>
+<li>依据：【任氏曰】&quot;先观月令所得何支&quot;</li>
+</ol>
+</li>
+<li><p><strong>步骤二：检查透干</strong></p>
+<ol>
+<li>列出月支的所有藏干（依地支藏干表）</li>
+<li>检查这些藏干是否有在天干出现（四柱天干中寻找）</li>
+<li>如果有透出 → 按透出之神定格局名</li>
+<li>如果无透出 → 标记为&quot;藏而不透，格局未显&quot;，按本气大致定方向</li>
+<li>依据：【任氏曰】&quot;次看天干透出何神&quot;</li>
+</ol>
+</li>
+<li><p><strong>步骤三：定格局名称</strong></p>
+<ol>
+<li>使用对照表匹配格局名称：</li>
+</ol>
 <table>
 <thead>
 <tr>
-<th>错误类型</th>
-<th>正确做法</th>
+<th>透干</th>
+<th>日主关系</th>
+<th>格局名称</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>执杂气财官为奇格</td>
-<td>杂气月仍取本气为格</td>
+<td>正官</td>
+<td>克日主（阴阳异）</td>
+<td>正官格</td>
 </tr>
 <tr>
-<td>以神煞论命为主</td>
-<td>神煞为辅助，八格为根本</td>
+<td>七杀</td>
+<td>克日主（阴阳同）</td>
+<td>七杀格</td>
 </tr>
 <tr>
-<td>忽略月令透干条件</td>
-<td>必须先观月令透干</td>
+<td>正印</td>
+<td>生日主（阴阳异）</td>
+<td>正印格</td>
 </tr>
 <tr>
-<td>禄刃月仍套八格</td>
-<td>禄刃月无格可取，另寻透干</td>
+<td>偏印</td>
+<td>生日主（阴阳同）</td>
+<td>偏印格</td>
 </tr>
 <tr>
-<td>以纳音定格局</td>
-<td>纳音诸法不经，不可执</td>
+<td>正财</td>
+<td>日主克（阴阳异）</td>
+<td>正财格</td>
 </tr>
 <tr>
-<td>格局破败仍认贵</td>
-<td>格局破则命不贵</td>
+<td>偏财</td>
+<td>日主克（阴阳同）</td>
+<td>偏财格</td>
+</tr>
+<tr>
+<td>食神</td>
+<td>日主生（阴阳同）</td>
+<td>食神格</td>
+</tr>
+<tr>
+<td>伤官</td>
+<td>日主生（阴阳异）</td>
+<td>伤官格</td>
 </tr>
 </tbody></table>
-<hr>
-<h2>八、任注名句背诵</h2>
-<blockquote>
-<p><strong>1.</strong> 八格者，命中之真理也
-<strong>2.</strong> 先观月令所得何支，次看天干透出何神，再究司令以定真假
-<strong>3.</strong> 格局有正有变，正者兼五行之常礼，变者必从五行之气
-<strong>4.</strong> 若月逢禄刃，无格可取
-<strong>5.</strong> 格局真纯者，百无一二；破败而杂气者，十有八九
-<strong>6.</strong> 由是数造观之，格局不可执一论也
-<strong>7.</strong> 格正用真，行运不悖，名利自如其人；格破用损，行运又悖，此乃有命无运</p>
-</blockquote>
-<hr>
-<h2>九、参考资料</h2>
-<ul>
-<li>《滴天髓》任铁樵注疏（徐乐吾评注本）</li>
-<li>《子平真诠》沈孝瞻</li>
-<li>《渊海子平》</li>
+</li>
+<li><p><strong>步骤四：判断格局清浊</strong></p>
+<ol>
+<li>检查是否有混杂（如正官格中是否混入七杀）</li>
+<li>检查是否有破坏因素（如六冲、三刑伤及用神）</li>
+<li>输出：格局清（纯正）/ 格局浊（混杂）/ 格破（受损）</li>
+</ol>
+</li>
+<li><p><strong>步骤五：病药分析</strong></p>
+<ol>
+<li>找出格局中的&quot;病&quot;——对格局不利的因素（破损之物）<ul>
+<li>如印格中财星耗印为病</li>
+<li>如官格中伤官克官为病</li>
 </ul>
+</li>
+<li>找出格局中的&quot;药&quot;——能去除或化解病态的因素<ul>
+<li>如官格中有伤官，看是否有印星制伤官</li>
+</ul>
+</li>
+<li>依据：【任氏曰】&quot;格破用损，谓之有病……行运得所，去其破损之物，扶其喜用之神&quot;</li>
+<li>如果病药皆无 → 输出&quot;格局受损较深，需大运补救&quot;</li>
+</ol>
+</li>
+<li><p><strong>步骤六：用神喜忌判定</strong></p>
+<ol>
+<li>判定日主强弱（看是否得令、得地、得生、得助）</li>
+<li>结合格局类型确定用神</li>
+<li>结合病药分析确定喜忌</li>
+<li>输出喜用神和忌神</li>
+</ol>
+</li>
+<li><p><strong>步骤七：行运建议</strong></p>
+<ol>
+<li>根据喜忌和大运方向，判断行运的顺逆</li>
+<li>指出哪些大运有利于格局（扶喜用之神）</li>
+<li>指出哪些大运有害于格局（助破损之物）</li>
+<li>依据：【任氏曰】&quot;倘行运得所，去其破损之物，扶其喜用之神，譬如人染沉疴，得良剂以生也&quot;</li>
+</ol>
+</li>
+</ol>
+<h2>输出</h2>
+<pre><code class="language-typescript">interface BageAnalysis {
+  summary: {
+    dayMaster: string;                  // 日主
+    monthBranch: string;                // 月令地支
+    patternName: string;                // 格局名称（如&quot;正印格&quot;）
+    patternType: &quot;zheng&quot; | &quot;bian&quot;;      // 正格/变格
+  };
+  determination: {
+    monthBranch: string;                // 月令地支
+    stemExposed: string | null;          // 透干
+    stemRelation: string;               // 与日主关系（正官/七杀/正印等）
+    purity: &quot;clean&quot; | &quot;mixed&quot; | &quot;broken&quot;; // 清/浊/破
+  };
+  bingYao: {
+    bing: string[];                      // 病（损害格局的因素列表）
+    yao: string[];                       // 药（有利格局的因素列表）
+    actionable: boolean;                 // 是否可行运补救
+  };
+  yongShen: {
+    yong: string[];                      // 用神
+    xi: string[];                        // 喜神
+    ji: string[];                        // 忌神
+  };
+  luckAdvice: {
+    favorable: string[];                 // 好大运方向
+    unfavorable: string[];               // 不好大运方向
+    note: string;                        // 行运总评
+  };
+}
+</code></pre>
 `;

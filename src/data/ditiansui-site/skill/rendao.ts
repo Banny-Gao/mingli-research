@@ -1,170 +1,83 @@
 // Auto-generated — do not edit manually
-export default `<h1>《滴天髓》·人道篇</h1>
-<blockquote>
-<p><strong>原著：</strong> 《滴天髓》上篇第三章·人道
-<strong>正文：</strong> 戴天履地人为贵，顺则吉兮凶则悖</p>
-</blockquote>
-<hr>
-<h2>一、核心定理</h2>
-<h3>定理一：人贵于万物</h3>
-<pre><code>人得五行之全（土居中央，木火金水中气）→ 为贵
-万物各得五行之一偏 → 贱
-</code></pre>
-<h3>定理二：顺悖定吉凶</h3>
-<pre><code>顺 = 接续相生 = 有情 = 吉
-悖 = 反克为害 = 无情 = 凶
-</code></pre>
-<h3>定理三：中和为贵</h3>
-<pre><code>命贵中和，偏枯终有损
-理求平正，奇异不足为凭
-</code></pre>
-<h3>定理四：救应四法（日主被克时）</h3>
-<pre><code>① 地支生助日主（生）
-② 天干化忌（化）
-③ 地支通根（根）
-④ 天干制忌（制）
-有一种则吉，全无则凶
-</code></pre>
-<hr>
-<h2>二、开篇正文</h2>
-<blockquote>
-<p>戴天履地人为贵，顺则吉兮凶则悖</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>关键词</th>
-<th>命理含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>戴天履地</td>
-<td>人立于天地之间</td>
-</tr>
-<tr>
-<td>人为贵</td>
-<td>人禀五行之全</td>
-</tr>
-<tr>
-<td>顺则吉</td>
-<td>五行相生有情则吉</td>
-</tr>
-<tr>
-<td>凶则悖</td>
-<td>五行反克无情则凶</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>三、【原注】核心</h2>
-<blockquote>
-<p>万物莫不得五行而戴天履地，惟人得五行之全，故为贵。其有吉凶之不一者，以其得于五行之顺与悖也。</p>
-</blockquote>
+export default `<h2>功能</h2>
+<p>在完成三元拆解（天道技能）和五行偏全评估（坤道技能）之后，对八字中天干地支之间的&quot;顺&quot;与&quot;悖&quot;关系进行逐个柱位与全局的分析。此技能的核心产出是：判断各柱之间的生克关系是有情（顺吉）还是无情（悖凶），并识别命局中是否存在&quot;层层递减&quot;式的救应路径。</p>
+<h2>输入</h2>
 <ul>
-<li>人贵于万物：人得五行之全</li>
-<li>吉凶各异：顺悖之别</li>
+<li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱（字符串）</li>
+<li><strong>三元分析结果</strong>（可选）：来自天道技能（tiandao）的三元分析输出</li>
+<li><strong>五行偏全评估</strong>（可选）：来自坤道技能（kundao）的五气偏全分析输出</li>
+<li><strong>大运流年</strong>（可选）：用于判断岁运引发的顺悖变化</li>
 </ul>
-<hr>
-<h2>四、【任氏曰】核心</h2>
-<h3>4.1 顺悖四种情况</h3>
-<p><strong>顺（吉）：</strong></p>
+<h2>处理逻辑</h2>
+<ol>
+<li><p><strong>单柱顺悖判定</strong>（对每一柱执行）
+a. 判断天干与同柱地支之间的关系：</p>
 <ul>
-<li>天干气弱，地支生之</li>
-<li>地支神衰，天干辅之</li>
+<li>天干生于地支 / 地支生于天干 / 天干同地支 / 天干克地支 / 地支克天干
+b. 判定标尺：</li>
+<li>天干弱 + 地支生天干 → 顺（有情），标注为&quot;+&quot;</li>
+<li>地支弱 + 天干生地支 → 顺（有情），标注为&quot;++&quot;</li>
+<li>天干弱 + 地支克天干 → 悖（无情），标注为&quot;--&quot;</li>
+<li>地支弱 + 天干克地支 → 悖（无情），标注为&quot;-&quot;
+c. <strong>依据</strong>：人道篇【任氏曰】&quot;如天干气弱，地支生之……皆为有情而顺则吉；如天干气衰，地支抑之……皆为无情而悖则凶&quot;</li>
 </ul>
-<p><strong>悖（凶）：</strong></p>
+</li>
+<li><p><strong>全局顺悖扫描</strong>
+a. 统计各柱的顺悖得分（顺 +1，悖 -1，中性 0）
+b. 识别直接的生克冲突（如甲木坐申金）
+c. 识别间接生克链条（如甲己合土→土生金→金克木的间接克）
+d. <strong>依据</strong>：人道篇【任氏曰】&quot;若天干无庚辛，而反遇之以甲己……皦助甲己之金，母子无生意&quot;</p>
+</li>
+<li><p><strong>救应路径筛查</strong>
+a. 对标记为&quot;悖&quot;的柱位，按&quot;层层递减法&quot;四层筛查：</p>
 <ul>
-<li>天干衰弱，地支抑之</li>
-<li>地支气弱，天干克之</li>
+<li>第1层：是否有第三方五行化解（如金克木时，有水转化）</li>
+<li>第2层：是否有印绶通变（如正偏印提供生扶）</li>
+<li>第3层：是否有通根支撑（如地支有日主根基）</li>
+<li>第4层：无救应 → 直接判定为凶
+b. <strong>依据</strong>：人道篇【任氏曰】&quot;假使干是木，畏金之克，地支有亥子水生之；支无亥子，无印绶化之；干无印绶，地支有淫箔以通根……余可类推&quot;</li>
 </ul>
-<h3>4.2 木被金克救应</h3>
-<pre><code>木畏金克 → 四种救应：
-① 地支亥子水生木
-② 天干壬癸水化金
-③ 地支寅卯木通根
-④ 天干丙丁火制金
-有一种则吉，全无则凶
+</li>
+<li><p><strong>综合顺悖评分</strong>
+a. 计算全局顺悖指数 = (顺的柱数 - 悖的柱数) / 总柱数 × 100</p>
+<ul>
+<li>指数 &gt; 50 → 整体偏顺（吉）</li>
+<li>指数 -50 ~ 50 → 顺悖平衡（需结合大运）</li>
+<li>指数 &lt; -50 → 整体偏悖（凶）
+b. <strong>依据</strong>：人道篇【原句】&quot;顺则吉兮悖则凶&quot;</li>
+</ul>
+</li>
+</ol>
+<h2>输出</h2>
+<pre><code class="language-typescript">interface ShunBeiReport {
+  /** 各柱顺悖判定 */
+  pillarAnalysis: {
+    year: { stem: string; branch: string; verdict: &quot;顺&quot; | &quot;悖&quot; | &quot;中性&quot;; score: number; detail: string };
+    month: { stem: string; branch: string; verdict: &quot;顺&quot; | &quot;悖&quot; | &quot;中性&quot;; score: number; detail: string };
+    day: { stem: string; branch: string; verdict: &quot;顺&quot; | &quot;悖&quot; | &quot;中性&quot;; score: number; detail: string };
+    hour: { stem: string; branch: string; verdict: &quot;顺&quot; | &quot;悖&quot; | &quot;中性&quot;; score: number; detail: string };
+  };
+  /** 间接克识别 */
+  indirectKe: Array&lt;{
+    chain: string[];       // 生克链条：如 [&quot;甲木&quot;, &quot;己土&quot;, &quot;庚金&quot;]
+    description: string;   // 间接克的中文描述
+    severity: &quot;轻微&quot; | &quot;中等&quot; | &quot;严重&quot;;
+  }&gt;;
+  /** 救应路径（仅对悖的柱位） */
+  remedyPath: Array&lt;{
+    target: string;         // 受克的柱位
+    level1: boolean;        // 是否有化解五行
+    level2: boolean;        // 是否有印绶
+    level3: boolean;        // 是否有通根
+    level4: boolean;        // 是否直接受克无救
+    mostLikelyRemedy: string; // 最可能的救应路径
+  }&gt;;
+  /** 全局顺悖评估 */
+  overall: {
+    index: number;           // 顺悖指数（-100 ~ 100）
+    verdict: &quot;偏顺（吉）&quot; | &quot;顺悖平衡&quot; | &quot;偏悖（凶）&quot;;
+    keyConclusion: string;   // 关键结论
+  };
+}
 </code></pre>
-<h3>4.3 偏枯批判</h3>
-<pre><code>四戊午、四癸亥等皆偏枯论
-谬书妄称为圣帝之造，皆后人讹传
-</code></pre>
-<hr>
-<h2>五、命造实例</h2>
-<h3>史姓四壬寅</h3>
-<table>
-<thead>
-<tr>
-<th>项目</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>四柱</td>
-<td>壬寅 壬寅 壬寅 壬寅</td>
-</tr>
-<tr>
-<td>问题</td>
-<td>寅中火土之气无从引出</td>
-</tr>
-<tr>
-<td>早年</td>
-<td>幼遭孤苦，中受饥寒</td>
-</tr>
-<tr>
-<td>中年</td>
-<td>运转南方，引出寅中火气，发财</td>
-</tr>
-<tr>
-<td>晚年</td>
-<td>无子，家业分夺</td>
-</tr>
-<tr>
-<td>结论</td>
-<td>偏枯终有损</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>六、必须背诵的名句</h2>
-<blockquote>
-<p><strong>1.</strong> 戴天履地人为贵，顺则吉兮凶则悖
-<strong>2.</strong> 万物莫不得五行而戴天履地，惟人得五行之全，故为贵
-<strong>3.</strong> 顺者接续相生，悖者反克为害，故吉凶判然
-<strong>4.</strong> 命贵中和，偏枯终有损；理求平正，奇异不足为凭</p>
-</blockquote>
-<hr>
-<h2>七、自测题</h2>
-<table>
-<thead>
-<tr>
-<th>题号</th>
-<th>问题</th>
-<th>参考答案</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>人为何为贵？</td>
-<td>得五行之全</td>
-</tr>
-<tr>
-<td>2</td>
-<td>顺与悖的本质？</td>
-<td>相生有情 vs 反克无情</td>
-</tr>
-<tr>
-<td>3</td>
-<td>木被金克的四种救应？</td>
-<td>生、化、根、制</td>
-</tr>
-<tr>
-<td>4</td>
-<td>四壬寅命局的问题？</td>
-<td>寅中火土无从引出</td>
-</tr>
-<tr>
-<td>5</td>
-<td>&quot;奇异不足为凭&quot;指什么？</td>
-<td>偏枯之命非贵</td>
-</tr>
-</tbody></table>
 `;
