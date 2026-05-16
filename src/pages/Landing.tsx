@@ -78,7 +78,7 @@ const Landing: React.FC = () => {
               <div className="book-card-header">
                 <div>
                   <h2 className="book-card-title">《{book.title}》</h2>
-                  <p className="book-card-meta">原著：刘伯温（托名）｜注疏：任铁樵</p>
+                  <p className="book-card-meta">{book.author || '古籍'}</p>
                 </div>
                 <div className="book-card-count">
                   <div className="book-card-count-num">{book.total}</div>
