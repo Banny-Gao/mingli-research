@@ -1,10 +1,7 @@
 # 滴天髓阐微 · 人类可读解读规范
 
-> **版本：** v1.0
-> **制定：** 2026-05-15
-> **用途：** 规范 `books/ditiansui-site/interpretations/` 目录下所有解读文件的产出格式，供 AI 按 SKILL-bazi-research-dispute 思考后输出
-> **前置依赖：** 读取 `SPEC-source.md` 确认原文已合规录入
-> **面向用户：** 普通命理爱好者（不预设命理基础）
+> **用途：** 规范 `books/**/interpretations/` 目录下所有解读文件的产出格式
+> **前置依赖：** 读取 `SPEC-source.md` 确认原文已合规录入，完全理解并遵守 `SKILL-bazi-research-dispute.md` 规则
 
 ---
 

@@ -12,13 +12,14 @@ export interface Book {
   done: number;
   chapters: ChapterInfo[];
   skills: { name: string }[];
+  sources: { name: string }[];
 }
 
 export const books: Book[] = [
   {
     "slug": "ditiansui-site",
-    "title": "滴天髓阐微",
-    "total": 64,
+    "title": "ditiansui-site",
+    "total": 63,
     "done": 9,
     "chapters": [
       {
@@ -333,21 +334,13 @@ export const books: Book[] = [
       },
       {
         "num": "63",
-        "name": "真元",
-        "isDone": false
-      },
-      {
-        "num": "64",
-        "name": "六亲总论",
+        "name": "贞元",
         "isDone": false
       }
     ],
     "skills": [
       {
         "name": "bage"
-      },
-      {
-        "name": "bazi-research-dispute-exec"
       },
       {
         "name": "dizhi"
@@ -372,6 +365,197 @@ export const books: Book[] = [
       },
       {
         "name": "zhiming"
+      }
+    ],
+    "sources": [
+      {
+        "name": "八格"
+      },
+      {
+        "name": "才德"
+      },
+      {
+        "name": "臣象"
+      },
+      {
+        "name": "出身"
+      },
+      {
+        "name": "从象"
+      },
+      {
+        "name": "地位"
+      },
+      {
+        "name": "地支"
+      },
+      {
+        "name": "恩怨"
+      },
+      {
+        "name": "反局"
+      },
+      {
+        "name": "方局"
+      },
+      {
+        "name": "奋郁"
+      },
+      {
+        "name": "夫妻"
+      },
+      {
+        "name": "父母"
+      },
+      {
+        "name": "干支总论"
+      },
+      {
+        "name": "刚柔"
+      },
+      {
+        "name": "官杀"
+      },
+      {
+        "name": "寒暖"
+      },
+      {
+        "name": "合局"
+      },
+      {
+        "name": "何知"
+      },
+      {
+        "name": "化象"
+      },
+      {
+        "name": "疾病"
+      },
+      {
+        "name": "假从"
+      },
+      {
+        "name": "假化"
+      },
+      {
+        "name": "假神"
+      },
+      {
+        "name": "精神"
+      },
+      {
+        "name": "君象"
+      },
+      {
+        "name": "坎离"
+      },
+      {
+        "name": "坤道"
+      },
+      {
+        "name": "理气"
+      },
+      {
+        "name": "母象"
+      },
+      {
+        "name": "女命"
+      },
+      {
+        "name": "配合"
+      },
+      {
+        "name": "清气"
+      },
+      {
+        "name": "人道"
+      },
+      {
+        "name": "伤官"
+      },
+      {
+        "name": "生时"
+      },
+      {
+        "name": "衰旺"
+      },
+      {
+        "name": "顺局"
+      },
+      {
+        "name": "顺逆"
+      },
+      {
+        "name": "岁运"
+      },
+      {
+        "name": "体用"
+      },
+      {
+        "name": "天道"
+      },
+      {
+        "name": "天干"
+      },
+      {
+        "name": "通关"
+      },
+      {
+        "name": "闲神"
+      },
+      {
+        "name": "小儿"
+      },
+      {
+        "name": "形象"
+      },
+      {
+        "name": "性情"
+      },
+      {
+        "name": "兄弟"
+      },
+      {
+        "name": "隐显"
+      },
+      {
+        "name": "源流"
+      },
+      {
+        "name": "月令"
+      },
+      {
+        "name": "燥湿"
+      },
+      {
+        "name": "战局"
+      },
+      {
+        "name": "贞元"
+      },
+      {
+        "name": "真神"
+      },
+      {
+        "name": "震兑"
+      },
+      {
+        "name": "知命"
+      },
+      {
+        "name": "中和"
+      },
+      {
+        "name": "众寡"
+      },
+      {
+        "name": "浊气"
+      },
+      {
+        "name": "子女"
+      },
+      {
+        "name": "子象"
       }
     ]
   }

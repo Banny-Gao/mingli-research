@@ -20,7 +20,10 @@ const PUBLIC_DIR = path.join(__dirname, '../public')
 marked.setOptions({ gfm: true, breaks: false })
 
 function stripHtml(html) {
-  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  return html
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 function getSnippet(text, q, len = 60) {
@@ -52,16 +55,40 @@ function parseCatalog(catalogPath) {
     if (cells.length < 3) continue
     const num = cells[0]
     if (!/^\d+$/.test(num)) continue
-    const status = cells.length > 3 ? cells[3] : ''
-    // cells: [num, title, path, status, skills?] — skills is 2nd-last when present
-    const skillsRaw = cells.length >= 5 ? cells[cells.length - 1] : ''
-    const skills = skillsRaw
-      ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean)
-      : []
+    // 新格式: cells = [num, title, sourcePath, interpPath, status, skills]
+    // 兼容旧格式: cells = [num, title, path, status, skills?]
+    let status = ''
+    let skills = []
+    if (cells.length >= 5) {
+      // 新格式 6 列: [num, title, source, interp, status, skills]
+      // 旧格式 5 列: [num, title, path, status, skills]
+      // 判断依据: cells[3] 是 "已解读"/"待解读" 则为旧格式，否则为新格式
+      if (cells[3] === '已解读' || cells[3] === '待解读') {
+        // 旧格式
+        status = cells[3]
+        skills = cells[4]
+          ? cells[4]
+              .split(',')
+              .map(s => s.trim())
+              .filter(Boolean)
+          : []
+      } else {
+        // 新格式
+        status = cells[4]
+        skills = cells[5]
+          ? cells[5]
+              .split(',')
+              .map(s => s.trim())
+              .filter(Boolean)
+          : []
+      }
+    }
     rows.push({
       num,
       title: cells[1],
-      filePath: cells.length > 2 ? cells[2] : '',
+      sourcePath: cells[2] || '',
+      interpPath:
+        cells.length >= 5 && cells[3] !== '已解读' && cells[3] !== '待解读' ? cells[3] : '',
       status,
       skills,
     })
@@ -98,32 +125,44 @@ for (const bookSlug of BOOK_DIRS) {
   const catalogPath = path.join(bookRoot, 'catalog.md')
   const metaPath = path.join(bookRoot, 'meta/index.md')
   const skillsDir = path.join(bookRoot, 'skills')
+  const sourceDir = path.join(bookRoot, 'source')
 
   const title = getBookTitle(metaPath) || bookSlug
   const catalogRows = parseCatalog(catalogPath)
 
   const chapters = []
   const chaptersData = {}
+  const sourceData = {}
   const interpKeys = []
   const skillKeys = []
 
   for (const row of catalogRows) {
-    const isDone = row.status === '已解读' && row.filePath && row.filePath.length > 0
+    const isDone = row.status === '已解读' && row.interpPath && row.interpPath.length > 0
     chapters.push({ num: row.num, name: row.title, isDone })
 
     if (isDone) {
-      const fullPath = path.join(bookRoot, row.filePath)
+      const fullPath = path.join(bookRoot, row.interpPath)
       if (fs.existsSync(fullPath)) {
         const content = fs.readFileSync(fullPath, 'utf-8')
         const html = parseMarkdown(content)
         chaptersData[row.title] = html
         interpKeys.push(row.title)
       } else {
-        console.warn(`  ⚠️ 跳过缺失文件: ${fullPath}`)
+        console.warn(`  ⚠️ 跳过缺失解读文件: ${fullPath}`)
+      }
+    }
+
+    // 读取 source 内容（独立于 isDone）
+    if (row.sourcePath) {
+      const sourcePath = path.join(bookRoot, row.sourcePath)
+      if (fs.existsSync(sourcePath)) {
+        const content = fs.readFileSync(sourcePath, 'utf-8')
+        sourceData[row.title] = parseMarkdown(content)
       }
     }
   }
 
+  // 读取 skills（按 skills/ 目录独立扫描，关联由 catalog 指定）
   const skillsData = {}
   if (fs.existsSync(skillsDir)) {
     for (const entry of fs.readdirSync(skillsDir)) {
@@ -159,6 +198,7 @@ for (const bookSlug of BOOK_DIRS) {
     chapters,
     chaptersData,
     skillsData,
+    sourceData,
     interpKeys,
     skillKeys,
   })
@@ -170,6 +210,7 @@ for (const bookSlug of BOOK_DIRS) {
 
   ensureDir(interpDir)
   ensureDir(skillDir)
+  ensureDir(path.join(bookOutDir, 'source'))
 
   // 写入每个篇目文件
   for (const [key, html] of Object.entries(chaptersData)) {
@@ -206,6 +247,37 @@ export default \`${escaped}\`;
     fs.writeFileSync(path.join(skillDir, `${key}.ts`), content)
   }
 
+  // 写入 source 目录文件
+  const sourceDirOut = path.join(bookOutDir, 'source')
+  for (const [key, html] of Object.entries(sourceData)) {
+    const escaped = html.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
+    const content = `// Auto-generated — do not edit manually
+export default \`${escaped}\`;
+`
+    const safeKey = key.replace(/[/\\:*?"<>|]/g, '_')
+    fs.writeFileSync(path.join(sourceDirOut, `${safeKey}.ts`), content)
+  }
+
+  // 写入 source/index.ts
+  const sourceKeys = Object.keys(sourceData)
+  const sourceMap = sourceKeys
+    .map(k => {
+      const safeKey = k.replace(/[/\\:*?"<>|]/g, '_')
+      return `  '${k.replace(/'/g, "\\'")}': () => import('./${safeKey}').then(m => m.default as string),`
+    })
+    .join('\n')
+  const sourceIndex = `// Auto-generated — do not edit manually
+import type { SourceKey } from '../index';
+
+const modules = {
+${sourceMap}
+} as const;
+
+export const sourceKeys = ${JSON.stringify(sourceKeys)} as const;
+export const sourceContent: Record<string, () => Promise<string>> = modules as any;
+`
+  fs.writeFileSync(path.join(sourceDirOut, 'index.ts'), sourceIndex)
+
   // 写入 skill/index.ts
   const skillMap = skillKeys
     .map(k => `  '${k}': () => import('./${k}').then(m => m.default as string),`)
@@ -234,24 +306,30 @@ export const skillToInterp: Record<string, string[]> = ${JSON.stringify(skillToI
   // 生成 index.ts
   const interpType = interpKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ')
   const skillType = skillKeys.map(k => `'${k}'`).join(' | ')
+  const sourceType =
+    sourceKeys.length > 0 ? sourceKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ') : 'never'
 
   const indexContent = `// Auto-generated — do not edit manually
 export * as interp from './interp';
 export * as skill from './skill';
+export * as source from './source';
 
 // 类型定义
 export type InterpKey = ${interpType || 'never'};
 export type SkillKey = ${skillType || 'never'};
+export type SourceKey = ${sourceType || 'never'};
 `
   fs.writeFileSync(path.join(bookOutDir, 'index.ts'), indexContent)
 
   // 保留 compat layer（旧消费者兼容）
   const interpJson = JSON.stringify(chaptersData, null, 2)
   const skillJson = JSON.stringify(skillsData, null, 2)
+  const sourceJson = JSON.stringify(sourceData, null, 2)
   const compatContent = `// Auto-generated — compat layer — do not edit manually
 // 旧消费者使用此文件，新消费者应从 './${bookSlug}/interp' 和 './${bookSlug}/skill' 导入
 export const interpContent: Record<string, string> = ${interpJson};
 export const skillContent: Record<string, string> = ${skillJson};
+export const sourceContent: Record<string, string> = ${sourceJson};
 export type { InterpKey, SkillKey } from './${bookSlug}/index';
 `
   fs.writeFileSync(path.join(OUT_DIR, `${bookSlug}.ts`), compatContent)
@@ -265,6 +343,9 @@ const bookData = books.map(b => ({
   done: b.done,
   chapters: b.chapters,
   skills: Object.keys(b.skillsData)
+    .sort((a, bb) => a.localeCompare(bb, 'zh'))
+    .map(name => ({ name })),
+  sources: Object.keys(b.sourceData || {})
     .sort((a, bb) => a.localeCompare(bb, 'zh'))
     .map(name => ({ name })),
 }))
@@ -283,6 +364,7 @@ export interface Book {
   done: number;
   chapters: ChapterInfo[];
   skills: { name: string }[];
+  sources: { name: string }[];
 }
 
 export const books: Book[] = ${JSON.stringify(bookData, null, 2)};
@@ -317,10 +399,11 @@ const searchIndex = books.map(b => ({
     key: k,
     text: stripHtml(b.skillsData[k] || ''),
   })),
+  source: Object.keys(b.sourceData || {}).map(k => ({
+    key: k,
+    text: stripHtml(b.sourceData[k] || ''),
+  })),
 }))
-fs.writeFileSync(
-  path.join(PUBLIC_DIR, 'search-index.json'),
-  JSON.stringify(searchIndex, null, 2),
-)
+fs.writeFileSync(path.join(PUBLIC_DIR, 'search-index.json'), JSON.stringify(searchIndex, null, 2))
 console.log('search-index.json generated.')
 console.log('Done.')

@@ -36,7 +36,6 @@ const Landing: React.FC = () => {
         {/* Hero */}
         <div className="hero-section">
           <div className="hero-glow" />
-          <div className="hero-pattern" />
           <h1 className="hero-title">豫知学堂</h1>
           <p className="hero-subtitle">经典原文 · 专业注解 · 学术整理</p>
         </div>
