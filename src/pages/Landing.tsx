@@ -78,13 +78,16 @@ const Landing: React.FC = () => {
               <div className="book-card-header">
                 <div>
                   <h2 className="book-card-title">《{book.title}》</h2>
-                  <p className="book-card-meta">{book.author || '古籍'}</p>
+                  <p className="book-card-meta">{book.author || ''}{book.version ? ` ｜ ${book.version}` : ''}</p>
                 </div>
                 <div className="book-card-count">
                   <div className="book-card-count-num">{book.total}</div>
                   <div className="book-card-count-label">篇章</div>
                 </div>
               </div>
+              {book.description && (
+                <p className="book-card-desc">{book.description}</p>
+              )}
               <div className="progress-bar">
                 <div
                   className="progress-fill"
