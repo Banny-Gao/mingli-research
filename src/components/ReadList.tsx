@@ -83,7 +83,6 @@ function CategorySection({
           marginTop: 12,
           marginBottom: collapsed ? 0 : 8,
           userSelect: 'none',
-          border: '1px solid var(--color-border)',
           transition: 'background 0.2s',
         }}
       >
