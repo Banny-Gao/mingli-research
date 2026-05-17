@@ -180,6 +180,8 @@ for (const bookSlug of BOOK_DIRS) {
 
   // 读取 skills（从 articles/ 目录根据 catalog 中 skills 列指定）
   const skillsData = {}
+  const skillsRawData = {}
+  const skillDisplayNames = {}
   for (const row of catalogRows) {
     if (row.skills && row.skills.length > 0) {
       for (const skillName of row.skills) {
@@ -187,6 +189,10 @@ for (const bookSlug of BOOK_DIRS) {
         if (fs.existsSync(skillPath)) {
           const content = fs.readFileSync(skillPath, 'utf-8')
           skillsData[skillName] = parseMarkdown(content)
+          skillsRawData[skillName] = content
+          // Extract displayName from YAML frontmatter
+          const dnMatch = content.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)
+          if (dnMatch) skillDisplayNames[skillName] = dnMatch[1].trim()
           if (!skillKeys.includes(skillName)) skillKeys.push(skillName)
         } else {
           console.warn(`  ⚠️ 跳过缺失技能文件: ${skillPath}`)
@@ -261,13 +267,20 @@ export const interpContent: Record<InterpKey, () => Promise<string>> = modules a
 `
   fs.writeFileSync(path.join(interpDir, 'index.ts'), interpIndex)
 
-  // 写入每个技能文件
+  // 写入每个技能文件（HTML + Raw）
   for (const [key, html] of Object.entries(skillsData)) {
     const escaped = html.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
     const content = `// Auto-generated — do not edit manually
 export default \`${escaped}\`;
 `
     fs.writeFileSync(path.join(skillDir, `${key}.ts`), content)
+  }
+  for (const [key, raw] of Object.entries(skillsRawData)) {
+    const rawEscaped = raw.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
+    const rawContent = `// Auto-generated — do not edit manually
+export default \`${rawEscaped}\`;
+`
+    fs.writeFileSync(path.join(skillDir, `${key}.raw.ts`), rawContent)
   }
 
   // 写入 source 目录文件
@@ -305,6 +318,9 @@ export const sourceContent: Record<string, () => Promise<string>> = modules as a
   const skillMap = skillKeys
     .map(k => `  '${k}': () => import('./${k}').then(m => m.default as string),`)
     .join('\n')
+  const skillRawMap = skillKeys
+    .map(k => `  '${k}': () => import('./${k}.raw').then(m => m.default as string),`)
+    .join('\n')
   const skillIndex = `// Auto-generated — do not edit manually
 import type { SkillKey } from '../index';
 
@@ -312,8 +328,14 @@ const modules = {
 ${skillMap}
 } as const;
 
+const rawModules = {
+${skillRawMap}
+} as const;
+
 export const skillKeys = ${JSON.stringify(skillKeys)} as const;
 export const skillContent: Record<SkillKey, () => Promise<string>> = modules as any;
+export const skillRawContent: Record<SkillKey, () => Promise<string>> = rawModules as any;
+export const skillDisplayNames: Record<string, string> = ${JSON.stringify(skillDisplayNames, null, 2)};
 `
   fs.writeFileSync(path.join(skillDir, 'index.ts'), skillIndex)
 
