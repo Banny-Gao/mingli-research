@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft, Copy } from 'lucide-react'
+import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft, Copy, ArrowLeft } from 'lucide-react'
 import { books } from '../data/books'
 import { interpContent, skillContent, sourceContent } from '../data/ditiansui-site'
 import { skillRawContent, skillDisplayNames } from '../data/ditiansui-site/skill'
@@ -342,8 +342,8 @@ const BookApp: React.FC = () => {
               </div>
             </div>
 
-            <Link to="/" className="back-link">
-              ← 返回典籍首页
+            <Link to="/" className="back-link" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <ArrowLeft size={14} /> 返回典籍首页
             </Link>
           </div>
 

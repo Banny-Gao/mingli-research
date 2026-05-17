@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { X } from 'lucide-react'
 import type { AnnotationType } from '../hooks/useAnnotations'
 
 interface Props {
@@ -44,7 +45,7 @@ const Toolbar: React.FC<Props> = ({ position, onSelect, onClose }) => {
         引用
       </button>
       <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
-        ×
+        <X size={14} />
       </button>
     </div>
   )

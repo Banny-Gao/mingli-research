@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Filter, Bookmark, MessageSquare, ArrowRight } from 'lucide-react'
+import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft } from 'lucide-react'
 import { books } from '../data/books'
 import { skillToInterp } from '../data/ditiansui-site/assoc'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
@@ -259,7 +259,7 @@ const Notes: React.FC = () => {
             <div className="notes-section">
               {filteredBookmarks.length === 0 ? (
                 <div className="notes-empty">
-                  <div style={{ fontSize: 48, marginBottom: 16 }}>🔖</div>
+                  <Bookmark size={48} style={{ marginBottom: 16, color: 'var(--color-text-muted)' }} />
                   <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>暂无收藏篇目</div>
                   <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
                     在阅读时点击收藏按钮，收藏的篇目将显示在这里
@@ -294,7 +294,7 @@ const Notes: React.FC = () => {
             <div className="notes-section">
               {groups.length === 0 ? (
                 <div className="notes-empty">
-                  <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
+                  <MessageSquare size={48} style={{ marginBottom: 16, color: 'var(--color-text-muted)' }} />
                   <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
                     {all.length === 0 ? '暂无批注' : '没有匹配的批注'}
                   </div>
@@ -303,7 +303,7 @@ const Notes: React.FC = () => {
                   </div>
                   {all.length === 0 && (
                     <div style={{ marginTop: 20 }}>
-                      <Link to="/ditiansui-site" style={{ color: 'var(--color-purple-light)', fontSize: 14 }}>前往阅读 →</Link>
+                      <Link to="/ditiansui-site" style={{ color: 'var(--color-purple-light)', fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 4 }}>前往阅读 <ArrowRight size={14} /></Link>
                     </div>
                   )}
                 </div>
@@ -340,7 +340,7 @@ const Notes: React.FC = () => {
                             <div className="notes-item-text">「{ann.selectedText}」</div>
                             {ann.note && <div className="notes-item-note">{ann.note}</div>}
                             <div className="notes-item-actions">
-                              <Link to={`/${group.slug}`} className="notes-item-link">查看原文 →</Link>
+                              <Link to={`/${group.slug}`} className="notes-item-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>查看原文 <ArrowRight size={12} /></Link>
                               <button
                                 onClick={() => { deleteAnnotation(group.slug, ch.origChapters?.[0] || ch.name, ann.id); setRefresh(v => v + 1) }}
                                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 12, padding: 0 }}
@@ -359,7 +359,7 @@ const Notes: React.FC = () => {
           )}
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12, marginBottom: 24 }}>
-            <Link to="/" className="back-link">← 返回典籍首页</Link>
+            <Link to="/" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><ArrowLeft size={14} /> 返回典籍首页</Link>
           </div>
         </div>
       </div>

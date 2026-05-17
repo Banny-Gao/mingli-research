@@ -1419,6 +1419,8 @@ mark.ann-quote {
 .notes-item-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
 }
 .notes-item-link {
   font-size: 12px;
