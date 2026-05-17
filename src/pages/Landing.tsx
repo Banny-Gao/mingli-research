@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { Flame, FileText } from 'lucide-react'
 import { books } from '../data/books'
 import SearchBar from '../components/SearchBar'
 import { useGlobalProgress } from '../hooks/useProgress'
@@ -22,7 +23,7 @@ const Landing: React.FC = () => {
       <div className="top-actions">
         {gp.streakDays > 0 && (
           <div className="streak-badge">
-            🔥
+            <Flame size={16} fill="var(--color-gold)" color="var(--color-gold)" />
             <div className="streak-tooltip">坚持学习命理经典，连续{gp.streakDays}天不间断</div>
           </div>
         )}
@@ -66,8 +67,8 @@ const Landing: React.FC = () => {
             maxWidth: 900,
           }}
         >
-          <Link to="/notes" className="notes-cta-btn">
-            📝 我的笔记
+          <Link to="/notes" className="notes-cta-btn" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <FileText size={16} /> 我的笔记
           </Link>
         </div>
 
