@@ -13,6 +13,16 @@ import { fileURLToPath } from 'url'
 import { marked } from 'marked'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// catalog.md 元信息 key 名配置（可按需扩展）
+const META_KEYS = {
+  author: ['作者'],
+  version: ['版本'],
+  description: ['简介'],
+}
+function buildMetaPattern(keys) {
+  return new RegExp(`^>\\s*(?:${keys.join('|')})[：:]`)
+}
 const ROOT = path.join(__dirname, '../books')
 const OUT_DIR = path.join(__dirname, '../src/data')
 const PUBLIC_DIR = path.join(__dirname, '../public')
@@ -100,6 +110,12 @@ function parseCatalog(catalogPath) {
   return rows
 }
 
+const META_PATTERNS = {
+  author: buildMetaPattern(META_KEYS.author),
+  version: buildMetaPattern(META_KEYS.version),
+  description: buildMetaPattern(META_KEYS.description),
+}
+
 function parseBookMeta(filePath) {
   if (!fs.existsSync(filePath)) return null
   const content = fs.readFileSync(filePath, 'utf-8')
@@ -111,9 +127,9 @@ function parseBookMeta(filePath) {
   let description = ''
   for (const line of content.split('\n')) {
     const t = line.trim()
-    if (/^>\s*作者[：:]/.test(t)) author = t.replace(/^>\s*作者[：:]\s*/, '').trim()
-    else if (/^>\s*版本[：:]/.test(t)) version = t.replace(/^>\s*版本[：:]\s*/, '').trim()
-    else if (/^>\s*简介[：:]/.test(t)) description = t.replace(/^>\s*简介[：:]\s*/, '').trim()
+    if (META_PATTERNS.author.test(t)) author = t.replace(META_PATTERNS.author, '').trim()
+    else if (META_PATTERNS.version.test(t)) version = t.replace(META_PATTERNS.version, '').trim()
+    else if (META_PATTERNS.description.test(t)) description = t.replace(META_PATTERNS.description, '').trim()
   }
 
   return { title, author, version, description }
@@ -340,13 +356,11 @@ export const skillDisplayNames: Record<string, string> = ${JSON.stringify(skillD
   fs.writeFileSync(path.join(skillDir, 'index.ts'), skillIndex)
 
   // 生成 assoc.ts
-  if (Object.keys(interpToSkill).length > 0 || Object.keys(skillToInterp).length > 0) {
-    const assocContent = `// Auto-generated — do not edit manually
+  const assocContent = `// Auto-generated — do not edit manually
 export const interpToSkill: Record<string, string[]> = ${JSON.stringify(interpToSkill, null, 2)};
 export const skillToInterp: Record<string, string[]> = ${JSON.stringify(skillToInterp, null, 2)};
 `
-    fs.writeFileSync(path.join(bookOutDir, 'assoc.ts'), assocContent)
-  }
+  fs.writeFileSync(path.join(bookOutDir, 'assoc.ts'), assocContent)
 
   // 生成 index.ts
   const interpType = interpKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ')
@@ -430,6 +444,46 @@ for (const book of books) {
   indexExports += `export * from './${book.slug}';\n`
 }
 fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), indexExports)
+
+// 生成 registry.ts（多书动态加载，避免前端硬编码 slug）
+function safeIdent(slug) { return slug.replace(/[^a-zA-Z0-9_$]/g, '_') }
+const registryImports = books.map(b => {
+  const id = safeIdent(b.slug)
+  return `import * as _${id} from './${b.slug}';
+import * as _${id}Skill from './${b.slug}/skill';
+import * as _${id}Assoc from './${b.slug}/assoc';`
+}).join('\n')
+const registryMap = books.map(b => {
+  const id = safeIdent(b.slug)
+  return `  '${b.slug}': { module: _${id}, skill: _${id}Skill, assoc: _${id}Assoc },`
+}).join('\n')
+const registryContent = `// Auto-generated — do not edit manually
+// 动态加载各典籍数据，避免前端代码硬编码 slug
+${registryImports}
+
+interface BookModules {
+  module: Record<string, any>;
+  skill: Record<string, any>;
+  assoc: Record<string, any>;
+}
+
+const registry: Record<string, BookModules> = {
+${registryMap}
+};
+
+export function getBookCompat(slug: string): Record<string, any> {
+  return registry[slug]?.module ?? {};
+}
+
+export function getBookSkill(slug: string): Record<string, any> {
+  return registry[slug]?.skill ?? {};
+}
+
+export function getBookAssoc(slug: string): Record<string, any> {
+  return registry[slug]?.assoc ?? {};
+}
+`
+fs.writeFileSync(path.join(OUT_DIR, 'registry.ts'), registryContent)
 
 console.log(`Generated ${books.length} book(s):`)
 for (const b of books) {

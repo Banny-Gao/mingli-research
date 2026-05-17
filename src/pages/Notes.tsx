@@ -179,22 +179,47 @@ const Notes: React.FC = () => {
                 textShadow: '0 0 30px var(--color-gold-glow)',
               }}
             >
-              我的笔记
+              个人中心
             </h1>
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              marginTop: 12,
+              marginBottom: 24,
+              width: '100%',
+            }}
+          >
+            <Link
+              to="/"
+              className="back-link"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}
+            >
+              <ArrowLeft size={14} /> 返回典籍首页
+            </Link>
           </div>
 
           <div className="container-wide" style={{ marginBottom: 20 }}>
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <button
                 onClick={() => setTab('bookmark')}
-                style={{ ...btnBase, color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)' }}
+                style={{
+                  ...btnBase,
+                  color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)',
+                  borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)',
+                }}
               >
                 <Bookmark size={14} />
                 收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
               </button>
               <button
                 onClick={() => setTab('annotation')}
-                style={{ ...btnBase, color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)' }}
+                style={{
+                  ...btnBase,
+                  color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)',
+                  borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)',
+                }}
               >
                 <MessageSquare size={14} />
                 批注 {total > 0 ? `(${total})` : ''}
@@ -218,7 +243,9 @@ const Notes: React.FC = () => {
               >
                 <option value="all">所有典籍</option>
                 {bookOptions.map(b => (
-                  <option key={b.slug} value={b.slug}>《{b.title}》</option>
+                  <option key={b.slug} value={b.slug}>
+                    《{b.title}》
+                  </option>
                 ))}
               </select>
               {tab === 'annotation' && (
@@ -237,7 +264,9 @@ const Notes: React.FC = () => {
                 >
                   <option value="all">所有类型</option>
                   {Object.entries(TYPE_LABELS).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
+                    <option key={k} value={k}>
+                      {v}
+                    </option>
                   ))}
                 </select>
               )}
@@ -245,7 +274,11 @@ const Notes: React.FC = () => {
               {tab === 'annotation' && total > 0 && (
                 <button
                   onClick={() => exportMarkdown(groups)}
-                  style={{ ...btnBase, borderColor: 'var(--color-purple)', color: 'var(--color-purple-light)' }}
+                  style={{
+                    ...btnBase,
+                    borderColor: 'var(--color-purple)',
+                    color: 'var(--color-purple-light)',
+                  }}
                 >
                   <Filter size={14} />
                   导出 Markdown
@@ -259,8 +292,13 @@ const Notes: React.FC = () => {
             <div className="notes-section">
               {filteredBookmarks.length === 0 ? (
                 <div className="notes-empty">
-                  <Bookmark size={48} style={{ marginBottom: 16, color: 'var(--color-text-muted)' }} />
-                  <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>暂无收藏篇目</div>
+                  <Bookmark
+                    size={48}
+                    style={{ marginBottom: 16, color: 'var(--color-text-muted)' }}
+                  />
+                  <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
+                    暂无收藏篇目
+                  </div>
                   <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
                     在阅读时点击收藏按钮，收藏的篇目将显示在这里
                   </div>
@@ -271,14 +309,36 @@ const Notes: React.FC = () => {
                   return (
                     <div key={bm.slug} className="notes-book">
                       <div className="notes-book-title">
-                        <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                        <Link
+                          to={`/${bm.slug}`}
+                          style={{ color: 'var(--color-gold)', textDecoration: 'none' }}
+                        >
                           《{book?.title || bm.slug}》
                         </Link>
                       </div>
                       {bm.chapters.map(ch => (
-                        <div key={ch} className="notes-chapter" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div
+                          key={ch}
+                          className="notes-chapter"
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                          }}
+                        >
                           <div className="notes-chapter-name">{ch}</div>
-                          <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} style={{ fontSize: 12, color: 'var(--color-text-muted)', textDecoration: 'none', paddingRight: 18, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Link
+                            to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`}
+                            style={{
+                              fontSize: 12,
+                              color: 'var(--color-text-muted)',
+                              textDecoration: 'none',
+                              paddingRight: 18,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 4,
+                            }}
+                          >
                             继续阅读 <ArrowRight size={12} />
                           </Link>
                         </div>
@@ -294,7 +354,10 @@ const Notes: React.FC = () => {
             <div className="notes-section">
               {groups.length === 0 ? (
                 <div className="notes-empty">
-                  <MessageSquare size={48} style={{ marginBottom: 16, color: 'var(--color-text-muted)' }} />
+                  <MessageSquare
+                    size={48}
+                    style={{ marginBottom: 16, color: 'var(--color-text-muted)' }}
+                  />
                   <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
                     {all.length === 0 ? '暂无批注' : '没有匹配的批注'}
                   </div>
@@ -303,7 +366,18 @@ const Notes: React.FC = () => {
                   </div>
                   {all.length === 0 && (
                     <div style={{ marginTop: 20 }}>
-                      <Link to="/ditiansui-site" style={{ color: 'var(--color-purple-light)', fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 4 }}>前往阅读 <ArrowRight size={14} /></Link>
+                      <Link
+                        to={`/${books[0]?.slug || 'ditiansui-site'}`}
+                        style={{
+                          color: 'var(--color-purple-light)',
+                          fontSize: 14,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 4,
+                        }}
+                      >
+                        前往阅读 <ArrowRight size={14} />
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -311,7 +385,10 @@ const Notes: React.FC = () => {
                 groups.map(group => (
                   <div key={group.slug} className="notes-book">
                     <div className="notes-book-title">
-                      <Link to={`/${group.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                      <Link
+                        to={`/${group.slug}`}
+                        style={{ color: 'var(--color-gold)', textDecoration: 'none' }}
+                      >
                         《{group.book}》
                       </Link>
                     </div>
@@ -340,10 +417,30 @@ const Notes: React.FC = () => {
                             <div className="notes-item-text">「{ann.selectedText}」</div>
                             {ann.note && <div className="notes-item-note">{ann.note}</div>}
                             <div className="notes-item-actions">
-                              <Link to={`/${group.slug}`} className="notes-item-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>查看原文 <ArrowRight size={12} /></Link>
+                              <Link
+                                to={`/${group.slug}`}
+                                className="notes-item-link"
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}
+                              >
+                                查看原文 <ArrowRight size={12} />
+                              </Link>
                               <button
-                                onClick={() => { deleteAnnotation(group.slug, ch.origChapters?.[0] || ch.name, ann.id); setRefresh(v => v + 1) }}
-                                style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 12, padding: 0 }}
+                                onClick={() => {
+                                  deleteAnnotation(
+                                    group.slug,
+                                    ch.origChapters?.[0] || ch.name,
+                                    ann.id
+                                  )
+                                  setRefresh(v => v + 1)
+                                }}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'var(--color-text-muted)',
+                                  cursor: 'pointer',
+                                  fontSize: 12,
+                                  padding: 0,
+                                }}
                               >
                                 删除
                               </button>
@@ -357,10 +454,6 @@ const Notes: React.FC = () => {
               )}
             </div>
           )}
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12, marginBottom: 24 }}>
-            <Link to="/" className="back-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><ArrowLeft size={14} /> 返回典籍首页</Link>
-          </div>
         </div>
       </div>
     </>
