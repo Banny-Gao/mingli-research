@@ -2,6 +2,8 @@ import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { books } from '../data/books'
 import {
   TYPE_LABELS,
@@ -127,12 +129,12 @@ const Notes: React.FC = () => {
 
           <div className="container-wide">
             <div className="flex gap-2 mb-4">
-              <button onClick={() => setTab('annotation')} className={`notes-btn ${tab === 'annotation' ? 'notes-btn-active' : ''}`}>
+              <Button onClick={() => setTab('annotation')} className={tab === 'annotation' ? 'text-[var(--color-gold)] border-[var(--color-gold)]' : ''}>
                 <MessageSquare size={14} />批注 {total > 0 ? `(${total})` : ''}
-              </button>
-              <button onClick={() => setTab('bookmark')} className={`notes-btn ${tab === 'bookmark' ? 'notes-btn-active' : ''}`}>
+              </Button>
+              <Button onClick={() => setTab('bookmark')} className={tab === 'bookmark' ? 'text-[var(--color-gold)] border-[var(--color-gold)]' : ''}>
                 <Bookmark size={14} />收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
-              </button>
+              </Button>
             </div>
 
             <div className="flex gap-2 mb-4 flex-wrap">
@@ -148,9 +150,9 @@ const Notes: React.FC = () => {
               )}
               <div className="flex-1" />
               {tab === 'annotation' && total > 0 && (
-                <button onClick={() => exportMarkdown(groups)} className="notes-btn notes-btn-export">
+                <Button onClick={() => exportMarkdown(groups)} variant="outline">
                   <Filter size={14} />导出 Markdown
-                </button>
+                </Button>
               )}
             </div>
 
@@ -167,13 +169,13 @@ const Notes: React.FC = () => {
               ) : (
                 <>
                   <div className="flex items-center gap-2 mb-2">
-                    <input type="checkbox" checked={bmTotal > 0 && selectedBm.size === bookmarks.flatMap(b => b.chapters).length} onChange={toggleAllBm} className="notes-checkbox" />
+                    <Checkbox checked={bmTotal > 0 && selectedBm.size === bookmarks.flatMap(b => b.chapters).length} onCheckedChange={toggleAllBm} />
                     <span className="text-xs text-[var(--color-text-muted)] cursor-pointer" onClick={toggleAllBm}>全选</span>
                     <div className="flex-1" />
                     {selectedBm.size > 0 && (
                       <>
                         <span className="text-xs text-[var(--color-text-dim)]">已选 {selectedBm.size} 项</span>
-                        <button onClick={handleBatchDeleteBm} className="notes-btn notes-btn-danger"><Trash2 size={14} />删除选中</button>
+                        <Button onClick={handleBatchDeleteBm} variant="destructive"><Trash2 size={14} />删除选中</Button>
                       </>
                     )}
                   </div>
@@ -182,13 +184,13 @@ const Notes: React.FC = () => {
                     return (
                       <div key={bm.slug} className="notes-book">
                         <div className="notes-book-title flex items-center gap-2">
-                          <input type="checkbox" checked={bm.chapters.every(ch => selectedBm.has(`${bm.slug}::${ch}`))} onChange={() => { const keys = bm.chapters.map(ch => `${bm.slug}::${ch}`); setSelectedBm(prev => { const allSelected = keys.every(k => prev.has(k)); const next = new Set(prev); for (const k of keys) { if (allSelected) next.delete(k); else next.add(k) } return next }) }} className="notes-checkbox" />
+                          <Checkbox checked={bm.chapters.every(ch => selectedBm.has(`${bm.slug}::${ch}`))} onCheckedChange={() => { const keys = bm.chapters.map(ch => `${bm.slug}::${ch}`); setSelectedBm(prev => { const allSelected = keys.every(k => prev.has(k)); const next = new Set(prev); for (const k of keys) { if (allSelected) next.delete(k); else next.add(k) } return next }) }} />
                           <Link to={`/${bm.slug}`} className="text-[var(--color-gold)] no-underline">《{book?.title || bm.slug}》</Link>
                         </div>
                         {bm.chapters.map(ch => (
                           <div key={ch} className="notes-chapter flex justify-between items-center">
                             <div className="flex items-center gap-2 flex-1">
-                              <input type="checkbox" checked={selectedBm.has(`${bm.slug}::${ch}`)} onChange={() => { setSelectedBm(prev => { const n = new Set(prev); if (n.has(`${bm.slug}::${ch}`)) n.delete(`${bm.slug}::${ch}`); else n.add(`${bm.slug}::${ch}`); return n }) }} className="notes-checkbox" />
+                              <Checkbox checked={selectedBm.has(`${bm.slug}::${ch}`)} onCheckedChange={() => { setSelectedBm(prev => { const n = new Set(prev); if (n.has(`${bm.slug}::${ch}`)) n.delete(`${bm.slug}::${ch}`); else n.add(`${bm.slug}::${ch}`); return n }) }} />
                               <div className="notes-chapter-name pt-2.5 pb-1.5">{ch}</div>
                             </div>
                             <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} className="text-xs text-[var(--color-text-muted)] no-underline flex items-center gap-1">
@@ -220,20 +222,20 @@ const Notes: React.FC = () => {
               ) : (
                 <>
                   <div className="flex items-center gap-2">
-                    <input type="checkbox" checked={total > 0 && selectedAnn.size === all.length} onChange={toggleAllAnn} className="notes-checkbox" />
+                    <Checkbox checked={total > 0 && selectedAnn.size === all.length} onCheckedChange={toggleAllAnn} />
                     <span className="text-xs text-[var(--color-text-muted)] cursor-pointer" onClick={toggleAllAnn}>全选</span>
                     <div className="flex-1" />
                     {selectedAnn.size > 0 && (
                       <>
                         <span className="text-xs text-[var(--color-text-dim)]">已选 {selectedAnn.size} 项</span>
-                        <button onClick={handleBatchDeleteAnn} className="notes-btn notes-btn-danger"><Trash2 size={14} />删除选中</button>
+                        <Button onClick={handleBatchDeleteAnn} variant="destructive"><Trash2 size={14} />删除选中</Button>
                       </>
                     )}
                   </div>
                   {groups.map(group => (
                     <div key={group.slug} className="notes-book">
                       <div className="notes-book-title flex items-center gap-2">
-                        <input type="checkbox" checked={group.chapters.every(ch => ch.annotations.every(a => selectedAnn.has(a.id)))} onChange={() => { const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id)); setSelectedAnn(prev => { const allSelected = ids.every(id => prev.has(id)); const next = new Set(prev); for (const id of ids) { if (allSelected) next.delete(id); else next.add(id) } return next }) }} className="notes-checkbox" />
+                        <Checkbox checked={group.chapters.every(ch => ch.annotations.every(a => selectedAnn.has(a.id)))} onCheckedChange={() => { const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id)); setSelectedAnn(prev => { const allSelected = ids.every(id => prev.has(id)); const next = new Set(prev); for (const id of ids) { if (allSelected) next.delete(id); else next.add(id) } return next }) }} />
                         <Link to={`/${group.slug}`} className="text-[var(--color-gold)] no-underline">《{group.book}》</Link>
                       </div>
                       {group.chapters.map(ch => (
@@ -243,7 +245,7 @@ const Notes: React.FC = () => {
                             <div key={ann.id} className="notes-item">
                               <div className="notes-item-header">
                                 <div className="flex items-center gap-2">
-                                  <input type="checkbox" checked={selectedAnn.has(ann.id)} onChange={() => toggleAnnSelect(ann.id)} className="notes-checkbox" />
+                                  <Checkbox checked={selectedAnn.has(ann.id)} onCheckedChange={() => toggleAnnSelect(ann.id)} />
                                   <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3, background: TYPE_COLORS[ann.type] + '22', color: TYPE_COLORS[ann.type], border: `1px solid ${TYPE_COLORS[ann.type]}55` }}>
                                     {TYPE_LABELS[ann.type]}
                                   </span>
