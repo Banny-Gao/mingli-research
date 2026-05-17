@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { getBookCompat, getBookSkill, getBookAssoc } from '../data/registry'
 import { ReadingProgress, BackToTop, TocSidebar } from '../components/ReadingTools'
 import AnnotationToolbar from '../components/AnnotationToolbar'
@@ -313,9 +314,9 @@ const ModalReader: React.FC<ModalReaderProps> = ({
               onTogglePanel={() => setShowPanel(v => !v)}
               skillRawContent={skillRawContent}
             />
-            <button className="btn-back" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose}>
               <X size={18} />
-            </button>
+            </Button>
           </div>
           <ReadingProgress scrollRef={modalBodyRef} />
           <div className="modal-content-wrapper">
