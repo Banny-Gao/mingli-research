@@ -791,6 +791,33 @@ body {
   color: inherit;
   background: none;
 }
+.prose-source {
+  font-size: 16px;
+  line-height: 2;
+  color: var(--color-text-body);
+}
+.prose-source h1 {
+  font-size: 22px;
+  color: var(--color-gold);
+  margin: 20px 0 16px;
+  letter-spacing: 2px;
+}
+.prose-source p {
+  margin: 12px 0;
+  line-height: 2;
+  text-indent: 2em;
+}
+.prose-source p:first-of-type {
+  font-size: 17px;
+  color: var(--color-gold-dim);
+  text-indent: 0;
+  text-align: center;
+  margin: 16px 0;
+  letter-spacing: 1px;
+}
+.prose-source p:has(> mark) {
+  text-indent: 0;
+}
 .prose-skill h2 {
   color: var(--color-gold);
   margin: 24px 0 12px;
@@ -1467,6 +1494,15 @@ mark.ann-quote {
 [data-theme='light'] .prose-interp blockquote {
   background: var(--color-purple-bg);
   color: #4a3a28;
+}
+[data-theme='light'] .prose-source {
+  color: #4a3a28;
+}
+[data-theme='light'] .prose-source h1 {
+  color: #8a6a30;
+}
+[data-theme='light'] .prose-source p:first-of-type {
+  color: #9a7a40;
 }
 
 [data-theme='light'] .prose-interp tr:nth-child(even) td {
