@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Fuse from 'fuse.js'
 
 interface SearchEntry {
@@ -201,20 +201,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     )
   }
 
-  const highlight = (text: string, q: string) => {
-    if (!q) return text
-    const idx = text.toLowerCase().indexOf(q.toLowerCase())
-    if (idx === -1) return text
-    return (
-      <>
-        {text.slice(0, idx)}
-        <mark className="search-highlight">{text.slice(idx, idx + q.length)}</mark>
-        {text.slice(idx + q.length)}
-      </>
-    )
-  }
-
-  return (
+return (
     <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
       <button onClick={() => setOpen(!open)} className="search-trigger-btn">

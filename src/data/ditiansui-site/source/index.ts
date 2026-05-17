@@ -1,6 +1,4 @@
 // Auto-generated — do not edit manually
-import type { SourceKey } from '../index';
-
 const modules = {
   '天道': () => import('./天道').then(m => m.default as string),
   '坤道': () => import('./坤道').then(m => m.default as string),

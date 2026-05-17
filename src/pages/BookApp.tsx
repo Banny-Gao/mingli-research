@@ -285,7 +285,7 @@ const BookApp: React.FC = () => {
             <Link to="/" className="back-link" style={{ display: 'flex', alignItems: 'center', gap: 4 }}><ArrowLeft size={14} /> 返回典籍首页</Link>
           </div>
           <div className="container-wide animate-fade-up">
-            <ReadList book={book} onChapterClick={n => openModal('interp', n)} onSourceClick={n => openModal('source', n)} onSkillClick={sk => openModal('skill', sk)} sourceNames={bookSourceKeys} skillToInterp={skillToInterp} interpToSkill={interpToSkill} />
+            <ReadList book={book} onChapterClick={n => openModal('interp', n)} onSourceClick={n => openModal('source', n)} onSkillClick={sk => openModal('skill', sk)} sourceNames={bookSourceKeys} interpToSkill={interpToSkill} />
           </div>
           {modalType && (
             <div className="modal-backdrop" onClick={e => { if ((e.target as HTMLElement).classList.contains('modal-backdrop')) closeModal() }}>
@@ -318,7 +318,7 @@ const BookApp: React.FC = () => {
                 </div>
                 <ReadingProgress scrollRef={modalBodyRef} />
                 <div className="modal-content-wrapper">
-                  {modalType === 'interp' && <TocSidebar html={rawBody} scrollRef={modalBodyRef} open={tocOpen} onClose={() => setTocOpen(false)} />}
+                  {modalType === 'interp' && <TocSidebar html={rawBody} scrollRef={modalBodyRef} open={tocOpen} />}
                   <div className="modal-body" ref={modalBodyRef} onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined} onTouchEnd={modalType !== 'skill' ? (e => { const t = e.changedTouches[0]; handleMouseUp({ clientX: t.clientX, clientY: t.clientY } as any) }) : undefined}>
                     {modalType === 'skill' ? (
                       <pre className="skill-raw-body"><code>{skillRawText || '加载中...'}</code></pre>

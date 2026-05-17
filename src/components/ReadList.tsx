@@ -8,7 +8,6 @@ interface Props {
   onSourceClick: (name: string) => void
   onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
-  skillToInterp: Record<string, string[]>
   interpToSkill?: Record<string, string[]>
 }
 
@@ -18,7 +17,6 @@ const ReadList: React.FC<Props> = ({
   onSourceClick,
   onSkillClick,
   sourceNames,
-  skillToInterp,
   interpToSkill,
 }) => {
   const categories = new Map<string, ChapterInfo[]>()
@@ -45,7 +43,6 @@ const ReadList: React.FC<Props> = ({
           onSourceClick={onSourceClick}
           onSkillClick={onSkillClick}
           sourceNames={sourceNames}
-          skillToInterp={skillToInterp}
           interpToSkill={interpToSkill}
         />
       ))}
@@ -60,7 +57,6 @@ function CategorySection({
   onSourceClick,
   onSkillClick,
   sourceNames,
-  skillToInterp,
   interpToSkill,
 }: {
   category: string
@@ -69,7 +65,6 @@ function CategorySection({
   onSourceClick: (name: string) => void
   onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
-  skillToInterp: Record<string, string[]>
   interpToSkill?: Record<string, string[]>
 }) {
   const [collapsed, setCollapsed] = useState(false)

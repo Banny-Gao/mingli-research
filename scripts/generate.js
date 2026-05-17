@@ -319,8 +319,6 @@ export default \`${escaped}\`;
     })
     .join('\n')
   const sourceIndex = `// Auto-generated — do not edit manually
-import type { SourceKey } from '../index';
-
 const modules = {
 ${sourceMap}
 } as const;
