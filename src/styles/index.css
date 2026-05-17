@@ -781,7 +781,7 @@ body {
   font-family: 'Courier New', 'Consolas', monospace;
   font-size: 13px;
   line-height: 1.6;
-  color: var(--color-text-body);
+  color: #b8d0b0;
   white-space: pre-wrap;
   word-break: break-all;
   margin: 16px;
@@ -1458,6 +1458,11 @@ mark.ann-quote {
 
 [data-theme='light'] .prose-interp pre,
 [data-theme='light'] .prose-skill pre {
+  background: #f5f0e8;
+  border-color: var(--color-border);
+  color: #5a6a4a;
+}
+[data-theme='light'] .skill-raw-body {
   background: #f5f0e8;
   border-color: var(--color-border);
   color: #5a6a4a;
