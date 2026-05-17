@@ -465,7 +465,7 @@ const BookApp: React.FC = () => {
                     onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined}
                   >
                     {modalType === 'skill' ? (
-                      <pre className="skill-raw-body">{skillRawText || '加载中...'}</pre>
+                      <pre className="skill-raw-body"><code>{skillRawText || '加载中...'}</code></pre>
                     ) : (
                       <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
                     )}
