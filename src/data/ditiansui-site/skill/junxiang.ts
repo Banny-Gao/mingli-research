@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字命局，分析其官星和印星的配合状态——判定&quot;官星清而印星纯&quot;的君臣相得格局，或&quot;官杀混杂印星破损&quot;的君臣失道格局。此技能用于八字格局分析中&quot;官印体系&quot;的专项评估，尤其适用于判断命局的贵气层次。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字命局，分析其官星和印星的配合状态——判定&quot;官星清而印星纯&quot;的君臣相得格局，或&quot;官杀混杂印星破损&quot;的君臣失道格局。此技能用于八字格局分析中&quot;官印体系&quot;的专项评估，尤其适用于判断命局的贵气层次。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱干支（如 &quot;甲子&quot;）</li>
 <li><code>month_pillar</code>：月柱干支（如 &quot;丙寅&quot;）</li>
 <li><code>day_pillar</code>：日柱干支（如 &quot;辛巳&quot;）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主五行（自动提取）</li>
 <li><code>gender</code>：性别（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：识别官星（君）</strong></p>
 <ol>
 <li>扫描全局天干地支中的正官和七杀</li>
@@ -53,8 +50,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface JunxiangAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface JunxiangAnalysis {
   summary: {
     isJunxiang: boolean;                  // 是否满足君象条件
     quality: &quot;xiangde&quot; | &quot;shidao&quot; | &quot;partial&quot;; // 相得/失道/部分

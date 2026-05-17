@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>对输入的四柱八字进行从格分析。先检查日主在地支中是否有根（禄、旺、余气），然后评估全局五行之势，判定日主是否&quot;不得不从&quot;。如构成从格，进一步判定从格类型（从财/从官杀/从食伤/从势）和真假（真从/假从），并给出用神建议。此技能在常规扶抑法失效（日主无根无法扶抑）时调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>对输入的四柱八字进行从格分析。先检查日主在地支中是否有根（禄、旺、余气），然后评估全局五行之势，判定日主是否&quot;不得不从&quot;。如构成从格，进一步判定从格类型（从财/从官杀/从食伤/从势）和真假（真从/假从），并给出用神建议。此技能在常规扶抑法失效（日主无根无法扶抑）时调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;庚戌 甲申 甲戌 乙丑&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）</li>
 <li><strong>大运</strong>：已排好的大运流年列表（可选，用于判定行运是否破格）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>检查日主之根</strong>
 a. 提取日柱天干（日主）
 b. 遍历四柱地支（年支、月支、日支、时支）
@@ -52,8 +49,7 @@ c. <strong>忌</strong>：助日主之运（生扶日主、给日主加根，破
 d. <strong>依据</strong>：从格以顺强势为吉，逆强势为凶</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface CongGeReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface CongGeReport {
   /** 命局基础 */
   basic: {
     bazi: string;       // 四柱八字

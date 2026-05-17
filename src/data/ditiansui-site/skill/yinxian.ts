@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱后，将命局中的所有十神按吉凶分类，标注每个十神是&quot;露&quot;（在天干）还是&quot;藏&quot;（在地支），判断是否存在&quot;吉神太露起争夺&quot;或&quot;凶物深藏养虎患&quot;的情况，根据通根当令情况评估风险等级，并提出制化方案。此技能用于深入分析格局安全性——格局不仅要有用神，还要看用神/忌神的藏露是否合理。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱后，将命局中的所有十神按吉凶分类，标注每个十神是&quot;露&quot;（在天干）还是&quot;藏&quot;（在地支），判断是否存在&quot;吉神太露起争夺&quot;或&quot;凶物深藏养虎患&quot;的情况，根据通根当令情况评估风险等级，并提出制化方案。此技能用于深入分析格局安全性——格局不仅要有用神，还要看用神/忌神的藏露是否合理。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>pillars</code>：四柱八字（格式如&quot;己卯 辛未 丙子 辛卯&quot;）</li>
 <li><code>shi_shen_map</code>：十神映射表（从日主推导各柱天干地支对应的十神）</li>
 <li><code>day_master</code>：日主五行</li>
 <li><code>gender</code>（可选）：性别</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：十神吉凶分类</strong></p>
 <ol>
 <li>遍历四柱的所有天干和地支中所有藏干</li>
@@ -42,8 +39,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface YinXianReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface YinXianReport {
   /** 十神藏露全景 */
   shiShenVisibility: {
     good: Array&lt;{

@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>当需要分析一个人的婚姻姻缘（包括配偶情况、婚姻质量、感情走势）时使用此技能。核心方法是：男命以财星为妻，女命以官星为夫，通过财官与日主的配合判断姻缘吉凶。此技能应在完成基础八字排盘（确定日主旺衰、用神喜忌）之后调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>当需要分析一个人的婚姻姻缘（包括配偶情况、婚姻质量、感情走势）时使用此技能。核心方法是：男命以财星为妻，女命以官星为夫，通过财官与日主的配合判断姻缘吉凶。此技能应在完成基础八字排盘（确定日主旺衰、用神喜忌）之后调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 辛未 己丑&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女），必填——男命看财星、女命看官星</li>
 <li><strong>大运流年</strong>：当前所处的十年大运和流年（可选，用于看岁运对婚姻的影响）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定夫妻星</strong>
 a. 男命：找到八字中的财星（正财/偏财）作为妻星
 b. 女命：找到八字中的官星（正官/七杀）作为夫星
@@ -46,8 +43,7 @@ b. 大运流年冲克夫妻星 → 婚姻危机的高发窗口
 c. <strong>依据</strong>：夫妻篇【任氏曰】&quot;财官浊乱，相克相战，此夫妻不和也&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface FuQiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface FuQiReport {
   /** 命局基础信息 */
   basic: {
     bazi: string;          // 四柱八字

@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>分析八字命局中是否存在&quot;子众母衰&quot;的失衡——即比劫过旺（子众）而印星衰微（母衰）的状态，并给出最佳行运方向建议（&quot;带水之金运&quot;或类似调整方案）。AI 执行者应在分析比劫过旺、印星偏弱的命局时调用本技能。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>分析八字命局中是否存在&quot;子众母衰&quot;的失衡——即比劫过旺（子众）而印星衰微（母衰）的状态，并给出最佳行运方向建议（&quot;带水之金运&quot;或类似调整方案）。AI 执行者应在分析比劫过旺、印星偏弱的命局时调用本技能。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式）</li>
 <li><strong>日主</strong>：日柱天干的五行属性（自动提取）</li>
 <li><strong>比劫判断</strong>：列出四柱中的比肩和劫财（含地支藏干）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><strong>财星判断</strong>（可选）：列出四柱中的正财和偏财（用于检测&quot;见土/子恋妇&quot;）</li>
 <li><strong>官杀判断</strong>（可选）：列出四柱中的正官和七杀（用于检测&quot;见金/母不容子&quot;）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>判断子众母衰</strong></p>
 <ul>
 <li>统计比劫的力量和数量（子众程度）</li>
@@ -51,8 +48,7 @@ export default `<h2>功能</h2>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZiXiangReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZiXiangReport {
   biJie: {
     count: number;        // 比劫数量
     power: &quot;极旺&quot; | &quot;旺&quot; | &quot;中&quot; | &quot;弱&quot;;

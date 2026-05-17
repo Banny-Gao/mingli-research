@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，分别统计天干中的阳干（刚）与阴干（柔）数量，结合日主阴阳属性，评估命局是&quot;刚柔相济&quot;、&quot;偏刚&quot;还是&quot;偏柔&quot;，并给出是否需要&quot;以柔济刚&quot;或&quot;以刚济柔&quot;的调济建议。此技能应在用神分析之后、性格判断阶段调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，分别统计天干中的阳干（刚）与阴干（柔）数量，结合日主阴阳属性，评估命局是&quot;刚柔相济&quot;、&quot;偏刚&quot;还是&quot;偏柔&quot;，并给出是否需要&quot;以柔济刚&quot;或&quot;以刚济柔&quot;的调济建议。此技能应在用神分析之后、性格判断阶段调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 己丑 甲子&quot;）</li>
 <li><strong>用神分析结果</strong>：已确定的用神、喜神、忌神信息（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>天干刚柔分类</strong>
 a. 提取四柱的四个天干
 b. 每个天干标记为&quot;刚&quot;（阳干：甲丙戊庚壬）或&quot;柔&quot;（阴干：乙丁己辛癸）
@@ -37,8 +34,7 @@ c. <strong>依据</strong>：刚柔篇【任氏曰】&quot;刚者宜柔济之，
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface GangRouReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface GangRouReport {
   /** 天干刚柔统计 */
   heavenStems: {
     stems: string[];           // [年干, 月干, 日干, 时干]

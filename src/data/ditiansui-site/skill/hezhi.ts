@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>当需要对八字的贵贱吉凶进行快速诊断时使用此技能。何知篇以&quot;问答&quot;形式浓缩了最核心的命理判断法则——&quot;官星有理则贵，财星被劫则贱&quot;。此技能将这些问答体系化，将&quot;何知某人贵？&quot;、&quot;何知某人贱？&quot;等经典问答转化为可执行的判断逻辑。此技能应在完成基础八字排盘之后、在深入格局分析之前调用——作为一种&quot;快速筛查&quot;手段。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>当需要对八字的贵贱吉凶进行快速诊断时使用此技能。何知篇以&quot;问答&quot;形式浓缩了最核心的命理判断法则——&quot;官星有理则贵，财星被劫则贱&quot;。此技能将这些问答体系化，将&quot;何知某人贵？&quot;、&quot;何知某人贱？&quot;等经典问答转化为可执行的判断逻辑。此技能应在完成基础八字排盘之后、在深入格局分析之前调用——作为一种&quot;快速筛查&quot;手段。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;己卯 丙寅 辛巳 戊子&quot;）</li>
 <li><strong>分析需求</strong>：用户希望快速诊断的方向（可选，如&quot;看贵气&quot;&quot;看贫富&quot;&quot;看六亲&quot;等）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>官星有理判定——贵气诊断</strong>
 a. 从八字中找出正官和七杀
 b. 检查官星是否&quot;有理&quot;：</p>
@@ -39,8 +36,7 @@ c. 财星被劫但有官制 → 劫财有制则不贱
 d. <strong>依据</strong>：何知篇【任氏曰】&quot;以问答明吉凶，此命学之要诀也&quot;（强调灵活运用而非死板套用）</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface HeZhiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface HeZhiReport {
   /** 基础信息 */
   basic: {
     bazi: string;

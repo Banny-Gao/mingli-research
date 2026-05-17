@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱后，分析命局中水（坎）与火（离）的力量对比与配置关系，先判定是&quot;既济&quot;（和谐）、&quot;未济&quot;（不交）还是&quot;交战&quot;（冲突），再根据&quot;天干水+地支火&quot;或&quot;天干火+地支水&quot;等具体场景，从&quot;升、降、和、解、制&quot;五法中选取最匹配的调候策略。此技能适用于水火交战或水火不交型命局的专项分析。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱后，分析命局中水（坎）与火（离）的力量对比与配置关系，先判定是&quot;既济&quot;（和谐）、&quot;未济&quot;（不交）还是&quot;交战&quot;（冲突），再根据&quot;天干水+地支火&quot;或&quot;天干火+地支水&quot;等具体场景，从&quot;升、降、和、解、制&quot;五法中选取最匹配的调候策略。此技能适用于水火交战或水火不交型命局的专项分析。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>pillars</code>：四柱八字（格式如&quot;丙子 己亥 丙寅 戊子&quot;）</li>
 <li><code>day_master</code>：日主五行</li>
 <li><code>month_branch</code>：月令地支</li>
 <li><code>gender</code>（可选）：性别</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：判定水火配置类型</strong></p>
 <ol>
 <li>统计天干中水的出现次数（壬、癸）和火的出现次数（丙、丁）</li>
@@ -52,8 +49,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface KanLiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface KanLiReport {
   /** 水火配置 */
   waterFireConfig: {
     heaven: { water: number; fire: number };  // 天干水火个数

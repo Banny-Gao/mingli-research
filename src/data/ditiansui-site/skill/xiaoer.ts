@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在接收到儿童（16岁以下）八字时，优先按小儿篇的简化分析法——跳过复杂的格局拆解，聚焦于日主旺衰、印比有无两个核心维度，判断儿童的先天禀赋强弱与养育风险。此技能应在命主为儿童时自动激活，替代常规的成人论命流程。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在接收到儿童（16岁以下）八字时，优先按小儿篇的简化分析法——跳过复杂的格局拆解，聚焦于日主旺衰、印比有无两个核心维度，判断儿童的先天禀赋强弱与养育风险。此技能应在命主为儿童时自动激活，替代常规的成人论命流程。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
 <li><strong>命主年龄</strong>：数字（以判断是否适用小儿论法；通常适用于童限之前，即年满16岁前）</li>
 <li><strong>性别</strong>：乾造或坤造（可选，影响大运排法）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确认适用范围</strong>
 a. 若命主年龄 &gt;= 16：提示&quot;此命主已超出小儿论命范围，建议使用成人论命方法&quot;
 b. 若命主年龄 &lt; 16：继续执行小儿论法</p>
@@ -34,8 +31,7 @@ e. <strong>依据</strong>：小儿篇【任氏曰】&quot;日主健旺，印比
 <li><p><strong>输出评估报告</strong></p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface XiaoErReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface XiaoErReport {
   /** 适用范围确认 */
   applicable: {
     isChild: boolean;

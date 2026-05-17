@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>分析八字命局中各个十神因素相对于日主是&quot;顺&quot;（有利、可用）还是&quot;逆&quot;（不利、不可用），为用神选取提供前置判断。AI 执行者应在需要判定命局中某一因素是否为用时调用本技能，尤其当用户机械地以财官为喜、不以日主衰旺为先时。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>分析八字命局中各个十神因素相对于日主是&quot;顺&quot;（有利、可用）还是&quot;逆&quot;（不利、不可用），为用神选取提供前置判断。AI 执行者应在需要判定命局中某一因素是否为用时调用本技能，尤其当用户机械地以财官为喜、不以日主衰旺为先时。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式，如&quot;甲子 丙寅 戊辰 壬戌&quot;）</li>
 <li><strong>日主</strong>：日柱天干的五行属性</li>
 <li><strong>待判断因素</strong>：需要判断顺逆的十神（可单选或全列，如&quot;财星&quot;&quot;官星&quot;&quot;印星&quot;等）</li>
 <li><strong>日主衰旺判定</strong>：可选，未提供时本技能默认按月令+地支藏干先做判定</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定日主衰旺</strong>：根据月令、地支藏干、四柱生扶克耗关系，判定日主属于旺、相、休、囚、死中的哪一种</p>
 <ul>
 <li>依据：【任氏曰】&quot;不论日主之衰旺，总以财官为喜……殊不知道理乎？&quot;</li>
@@ -30,8 +27,7 @@ export default `<h2>功能</h2>
 <li><p><strong>输出报告</strong>：将所有因素标记为&quot;顺&quot;或&quot;逆&quot;，并附判断理由</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShunNiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShunNiReport {
   riZhu: {
     ganZhi: string;        // 日柱干支
     wuxing: string;        // 日主五行
@@ -48,8 +44,7 @@ export default `<h2>功能</h2>
   conclusion: string;      // 综合分析：顺逆格局概况与用神选取建议
 }
 </code></pre>
-<h2>使用示例</h2>
-<p><strong>输入</strong>：日主甲木（衰），待判断财星</p>
+<h2 id="使用示例">使用示例</h2><p><strong>输入</strong>：日主甲木（衰），待判断财星</p>
 <p><strong>输出片段</strong>：</p>
 <pre><code>factors: [{
   name: &quot;正财&quot;,

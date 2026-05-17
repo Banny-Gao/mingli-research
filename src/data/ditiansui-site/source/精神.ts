@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>精神</h1>
-<p>1466字
+export default `<h1 id="精神">精神</h1><p>1466字
 第 一十六 页
 《滴天髓阐微》上篇第14章 精神
 人有精神，不可以一偏求也，要在损之益之得其中。

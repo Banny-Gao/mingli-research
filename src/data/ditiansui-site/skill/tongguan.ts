@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在八字分析中，当发现两种五行形成直接相克且气路不通时，调用此技能评估是否存在通关五行以及通关条件是否具备。此技能适用于格局判断的辅助阶段——在用神初步确定后，检查用神与忌神之间是否需要以及能否通关。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在八字分析中，当发现两种五行形成直接相克且气路不通时，调用此技能评估是否存在通关五行以及通关条件是否具备。此技能适用于格局判断的辅助阶段——在用神初步确定后，检查用神与忌神之间是否需要以及能否通关。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>相克关系标识</strong>：已识别出的相克五行对（可选，由上游分析提供）</li>
 <li><strong>通关候选</strong>：用户指定的候选通关五行（可选，用于校验而非推算）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>识别相克关系</strong>
 a. 分析四柱中所有天干、地支的五行分布
 b. 标记所有直接相克的五行对（如金克木、木克土等）
@@ -40,8 +37,7 @@ c. 如原局和岁运均无 → 通关失败
 d. <strong>依据</strong>：通关篇【任氏曰】&quot;倘原局无印，必须岁运逢印……此原局无可通之理，必须岁运暗冲暗会&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface TongGuanReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface TongGuanReport {
   /** 分析的相克五行对 */
   conflicts: Array&lt;{
     elementA: string;          // 五行A

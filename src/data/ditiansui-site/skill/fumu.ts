@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>当需要分析一个人的原生家庭运势（包括父母健康、父母缘分、父母对自己的影响）时使用此技能。核心方法是：印星为母、财星为父，通过印财与日主的配合判断父母吉凶。此技能应在完成基础八字排盘（日主旺衰、用神喜忌）之后调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>当需要分析一个人的原生家庭运势（包括父母健康、父母缘分、父母对自己的影响）时使用此技能。核心方法是：印星为母、财星为父，通过印财与日主的配合判断父母吉凶。此技能应在完成基础八字排盘（日主旺衰、用神喜忌）之后调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;壬辰 戊申 乙未 丙子&quot;）</li>
 <li><strong>大运流年</strong>：当前所处的十年大运和流年（可选，用于看岁运对父母运势的引动）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定父母星</strong>
 a. 从八字中找出印星（正印/偏印）作为母星——生我者
 b. 从八字中找出财星（正财/偏财）作为父星——我克者
@@ -40,8 +37,7 @@ c. 印财为忌仇 → 父母拖累或缘薄
 d. <strong>依据</strong>：父母篇【任氏曰】&quot;须观印星财星与日主之配合&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface FuMuReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface FuMuReport {
   /** 父母星 */
   parentStar: {
     mother: {              // 母亲（印星）

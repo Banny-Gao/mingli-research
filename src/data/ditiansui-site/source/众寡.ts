@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>众寡</h1>
-<p>913字
+export default `<h1 id="众寡">众寡</h1><p>913字
 强众而敌寡者，势在去其寡；强寡而敌众者，势在成乎众。
 【原注】
 强寡而敌众者，喜强而助强者吉；强众而敌寡者，恶敌而敌众者滞。

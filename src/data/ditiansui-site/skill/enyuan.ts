@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字命局后，以&quot;恩（喜神）&quot;和&quot;怨（忌神）&quot;的视角重新审视命局中的五行关系，重点分析喜神与日主之间的连接状态。不同于通用的用神分析（只判断用什么），本技能判断&quot;用神能发挥多大作用&quot;——即喜神是否被有效连接（有媒）、是否被隔断（离间）、以及是否有意外或暗中的喜神获取方式（邂逅/牵合）。此技能应在完成基础用神判定之后调用，作为更深入的喜忌关系分析。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字命局后，以&quot;恩（喜神）&quot;和&quot;怨（忌神）&quot;的视角重新审视命局中的五行关系，重点分析喜神与日主之间的连接状态。不同于通用的用神分析（只判断用什么），本技能判断&quot;用神能发挥多大作用&quot;——即喜神是否被有效连接（有媒）、是否被隔断（离间）、以及是否有意外或暗中的喜神获取方式（邂逅/牵合）。此技能应在完成基础用神判定之后调用，作为更深入的喜忌关系分析。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
 <li><strong>用神判定结果</strong>：来自通用用神分析或知命篇顺逆之机分析的输出（可选，未提供时本技能先自行判定）</li>
 <li><strong>喜神/忌神清单</strong>：可选，未提供时本技能用神力顺应判定</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定喜神与忌神</strong>
 a. 先判定日主旺衰，确定用神
 b. 用神力顺应（生扶用神者为喜神、克耗用神者为忌神）列出完整的喜神和忌神清单
@@ -53,8 +50,7 @@ c. <strong>依据</strong>：恩怨篇【任氏曰】&quot;只有闲神忌神而
 <li><p><strong>输出报告</strong></p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface EnYuanReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface EnYuanReport {
   /** 喜神与忌神清单 */
   likesAndDislikes: {
     xiShen: Array&lt;{ ganZhi: string; element: string; role: string; distance: &quot;近距离&quot; | &quot;中距离&quot; | &quot;远距离&quot; }&gt;;

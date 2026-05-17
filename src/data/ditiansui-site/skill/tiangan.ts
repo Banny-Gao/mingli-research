@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字四柱的天干部分，逐干分析其阴阳五行属性，判断每个天干的&quot;从气&quot;或&quot;从势&quot;倾向，输出各天干的性情特征与在命局中的表现。此技能用于辅助整体命局分析的第一步——先认清天干的&quot;本色&quot;，再结合地支和格局做综合判断。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字四柱的天干部分，逐干分析其阴阳五行属性，判断每个天干的&quot;从气&quot;或&quot;从势&quot;倾向，输出各天干的性情特征与在命局中的表现。此技能用于辅助整体命局分析的第一步——先认清天干的&quot;本色&quot;，再结合地支和格局做综合判断。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_stem</code>：年柱天干（十干之一：甲/乙/丙/丁/戊/己/庚/辛/壬/癸）</li>
 <li><code>month_stem</code>：月柱天干（同上）</li>
 <li><code>day_stem</code>：日柱天干（同上）——日干为日主，是分析核心</li>
 <li><code>hour_stem</code>：时柱天干（同上）</li>
 <li><code>month_branch</code>：月柱地支（用于判断旺衰季节）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>分类：按阴阳五行</strong></p>
 <ol>
 <li>甲乙→木，丙丁→火，戊己→土，庚辛→金，壬癸→水</li>
@@ -59,8 +56,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface TianganAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface TianganAnalysis {
   summary: {
     dayStem: string;           // 日干
     stemAttribute: string;     // 阳干/阴干

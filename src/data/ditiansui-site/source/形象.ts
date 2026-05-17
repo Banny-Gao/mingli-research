@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>形象</h1>
-<p>5249字
+export default `<h1 id="形象">形象</h1><p>5249字
 两气合而成象，象不可破也。
 【原注】
 天干属木，地支属火，天干属火，地支属木，其象则一。若见金水则破，余仿此。

@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>对已建立用神喜忌体系的八字命局进行闲神分析。首先区分用神、喜神、忌神，然后识别出剩余的中立五行（闲神）。分析闲神是否参与了&quot;贪合不化&quot;（牵绊日主或用神），以及是否在岁运中具有&quot;逢冲得用&quot;（解除牵绊、激发活力）的潜力。此技能需在已经确定用神喜忌的基础上才能调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>对已建立用神喜忌体系的八字命局进行闲神分析。首先区分用神、喜神、忌神，然后识别出剩余的中立五行（闲神）。分析闲神是否参与了&quot;贪合不化&quot;（牵绊日主或用神），以及是否在岁运中具有&quot;逢冲得用&quot;（解除牵绊、激发活力）的潜力。此技能需在已经确定用神喜忌的基础上才能调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>用神喜忌判定</strong>：已确定的用神、喜神、忌神（对象，含五行和位置）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）</li>
 <li><strong>大运流年</strong>：可选，用于分析闲神在岁运中的作用</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>建立三神分类体系</strong>
 a. 输入已知的用神、喜神、忌神（由其他技能或手工判定提供）
 b. 确定仇神（生忌神之五行）：</p>
@@ -67,8 +64,7 @@ c. 闲神参与贪合 → 建议在行运中寻找冲合的解救机会
 d. <strong>依据</strong>：【原句】&quot;不用何妨莫动它&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface XianShenReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface XianShenReport {
   /** 命局基础 */
   basic: {
     bazi: string;

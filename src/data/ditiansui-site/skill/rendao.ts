@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在完成三元拆解（天道技能）和五行偏全评估（坤道技能）之后，对八字中天干地支之间的&quot;顺&quot;与&quot;悖&quot;关系进行逐个柱位与全局的分析。此技能的核心产出是：判断各柱之间的生克关系是有情（顺吉）还是无情（悖凶），并识别命局中是否存在&quot;层层递减&quot;式的救应路径。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在完成三元拆解（天道技能）和五行偏全评估（坤道技能）之后，对八字中天干地支之间的&quot;顺&quot;与&quot;悖&quot;关系进行逐个柱位与全局的分析。此技能的核心产出是：判断各柱之间的生克关系是有情（顺吉）还是无情（悖凶），并识别命局中是否存在&quot;层层递减&quot;式的救应路径。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱（字符串）</li>
 <li><strong>三元分析结果</strong>（可选）：来自天道技能（tiandao）的三元分析输出</li>
 <li><strong>五行偏全评估</strong>（可选）：来自坤道技能（kundao）的五气偏全分析输出</li>
 <li><strong>大运流年</strong>（可选）：用于判断岁运引发的顺悖变化</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>单柱顺悖判定</strong>（对每一柱执行）
 a. 判断天干与同柱地支之间的关系：</p>
 <ul>
@@ -48,8 +45,7 @@ b. <strong>依据</strong>：人道篇【原句】&quot;顺则吉兮悖则凶&qu
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShunBeiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShunBeiReport {
   /** 各柱顺悖判定 */
   pillarAnalysis: {
     year: { stem: string; branch: string; verdict: &quot;顺&quot; | &quot;悖&quot; | &quot;中性&quot;; score: number; detail: string };

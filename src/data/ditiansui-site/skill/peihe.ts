@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>综合知命篇的顺逆之机判定和理气篇的进退状态分析，对命局中各十神进行&quot;去留舒配&quot;——决定哪些因素该保留、去除、舒展、搭配，最终确定用神并给出完整的配合方案。AI 执行者应在完成顺逆判定和进退分析后，需要最终确定用神和整体配合方案时调用本技能。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>综合知命篇的顺逆之机判定和理气篇的进退状态分析，对命局中各十神进行&quot;去留舒配&quot;——决定哪些因素该保留、去除、舒展、搭配，最终确定用神并给出完整的配合方案。AI 执行者应在完成顺逆判定和进退分析后，需要最终确定用神和整体配合方案时调用本技能。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
 <li><strong>日主</strong>：日柱天干及其五行属性</li>
 <li><strong>顺逆判定结果</strong>：各十神相对于日主的顺逆标记（来自 zhiming 技能输出，可选）</li>
 <li><strong>进退状态</strong>：各五行的旺相休囚状态（来自 liqi 技能输出，可选）</li>
 <li><strong>目标</strong>：用户的具体需求（如判断用神、分析配合是否恰当、评估大运对配合的影响）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>审查日主衰旺</strong>：综合月令、地支藏干、四柱生扶克耗关系，确定日主的整体强度</p>
 <ul>
 <li>依据：【任氏曰】&quot;果能审日主之衰旺&quot;</li>
@@ -41,8 +38,7 @@ export default `<h2>功能</h2>
 <li><p><strong>输出报告</strong>：给出用神建议、配合方案及推理解释</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface PeiHeReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface PeiHeReport {
   riZhu: {
     ganZhi: string;
     wuxing: string;
@@ -66,8 +62,7 @@ export default `<h2>功能</h2>
   conclusion: string;        // 综合配合评价
 }
 </code></pre>
-<h2>使用示例</h2>
-<p><strong>输入</strong>：日主甲木（过旺），顺逆判定：财星为顺、官星为顺、印比为逆</p>
+<h2 id="使用示例">使用示例</h2><p><strong>输入</strong>：日主甲木（过旺），顺逆判定：财星为顺、官星为顺、印比为逆</p>
 <p><strong>输出片段</strong>：</p>
 <pre><code>yongShen: {
   shiShen: &quot;正官&quot;,

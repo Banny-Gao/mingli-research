@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在八字格局分析中，当发现伤官与官星同时出现（或伤官单独构成格局），调用此技能进行伤官格局的专项分析。此技能判断&quot;伤官见官&quot;是否成立、伤官的格局类型（五格）、以及对应的用神与喜忌。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在八字格局分析中，当发现伤官与官星同时出现（或伤官单独构成格局），调用此技能进行伤官格局的专项分析。此技能判断&quot;伤官见官&quot;是否成立、伤官的格局类型（五格）、以及对应的用神与喜忌。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>日主强弱评估</strong>：由上游分析提供的日主旺衰判断（身旺/身弱/中和）</li>
 <li><strong>官星标记</strong>：已标记出的正官和七杀所在位置（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>判断伤官见官是否可&quot;见&quot;</strong>
 a. 检查原局是否有财星：</p>
 <ul>
@@ -50,8 +47,7 @@ b. <strong>依据</strong>：伤官篇【任氏曰】各格喜忌论述</li>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShangGuanReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShangGuanReport {
   /** 伤官基本信息 */
   basic: {
     shangGuanPosition: string[]; // 伤官所在位置

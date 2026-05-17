@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>才德</h1>
-<p>1150字
+export default `<h1 id="才德">才德</h1><p>1150字
 第 四十四 页
 《滴天髓阐微》下篇第08章 才德
 德胜才者，局合君子之风；才胜德者，用显多能之象。

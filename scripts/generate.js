@@ -19,6 +19,19 @@ const PUBLIC_DIR = path.join(__dirname, '../public')
 
 marked.setOptions({ gfm: true, breaks: false })
 
+function headingId(text) {
+  return text.replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase()
+}
+
+const renderer = {
+  heading({ text, depth }) {
+    const id = headingId(text)
+    return `<h${depth} id="${id}">${text}</h${depth}>`
+  },
+}
+
+marked.use({ renderer })
+
 function stripHtml(html) {
   return html
     .replace(/<[^>]+>/g, ' ')

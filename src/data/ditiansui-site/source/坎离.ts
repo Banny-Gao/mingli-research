@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>坎离</h1>
-<p>1349字
+export default `<h1 id="坎离">坎离</h1><p>1349字
 第 三十六 页
 《滴天髓阐微》上篇第34章 坎离
 坎离宰天地之中气，成不独成，而有相持者在。

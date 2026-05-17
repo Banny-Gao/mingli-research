@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>闲神</h1>
-<p>2331字
+export default `<h1 id="闲神">闲神</h1><p>2331字
 第 四十七 页
 《滴天髓阐微》下篇第11章 闲神
 一二闲神用去么，不用何妨莫动它；半局闲神任闲着，要紧之场作自豪。

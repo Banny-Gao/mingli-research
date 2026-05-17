@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，以年柱为核心进行分析，判断命主的先天出身条件——包括祖业丰薄、家风特征、根基深浅。此技能适用于八字分析中对&quot;起点&quot;的评估，在格局分析之前或之后均可调用，帮助理解命主的人生起点和先天资源。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，以年柱为核心进行分析，判断命主的先天出身条件——包括祖业丰薄、家风特征、根基深浅。此技能适用于八字分析中对&quot;起点&quot;的评估，在格局分析之前或之后均可调用，帮助理解命主的人生起点和先天资源。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;庚申 戊子 甲午 丙寅&quot;）</li>
 <li><strong>日主五行</strong>：日干对应的五行（推导得出）</li>
 <li><strong>大运</strong>：已排好的大运流年列表（可选，用于判断年柱喜忌在运程中的体现）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>年柱信息提取</strong>
 a. 提取年干、年支、年支藏干
 b. 确定年干的十神属性（正官、七杀、正印、偏印、正财、偏财、比肩、劫财、食神、伤官）
@@ -43,8 +40,7 @@ b. 标记出身对命局的整体影响（助力/中性/阻力）
 c. <strong>依据</strong>：出身篇【任氏曰】&quot;出身之论，乃六亲时命之辨也&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ChuShenReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ChuShenReport {
   /** 年柱基础信息 */
   yearPillar: {
     stem: string;          // 年干

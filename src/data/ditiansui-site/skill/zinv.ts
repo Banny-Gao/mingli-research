@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>当需要分析一个人的子女运势（包括子女数量趋势、子女成就、亲子关系）时使用此技能。核心方法是：食神为子、伤官为女，通过食伤的旺衰与日主的配合判断子息吉凶。此技能应在完成基础八字排盘（日主旺衰、用神喜忌）之后调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>当需要分析一个人的子女运势（包括子女数量趋势、子女成就、亲子关系）时使用此技能。核心方法是：食神为子、伤官为女，通过食伤的旺衰与日主的配合判断子息吉凶。此技能应在完成基础八字排盘（日主旺衰、用神喜忌）之后调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 甲申 丙寅&quot;）</li>
 <li><strong>大运流年</strong>：当前所处的十年大运和流年（可选，用于看岁运对子女运势的引动）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定子女星</strong>
 a. 从八字中找出食神（日主所生且阴阳相异）和伤官（日主所生且阴阳相同）
 b. 食神标记为子星，伤官标记为女星
@@ -38,8 +35,7 @@ b. 日主身弱、食伤泄身过重 → 子女成为负担
 c. <strong>依据</strong>：子女篇【任氏曰】&quot;须观食神伤官与日主之配合&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZiNvReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZiNvReport {
   /** 子女星 */
   childrenStar: {
     shiShen: {            // 食神（子星）详情

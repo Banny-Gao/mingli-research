@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在完成三元拆解（天道技能）之后，对八字中五行分布的偏全情况进行定量和定性分析。此技能帮助判断命局五行的均衡性——哪些五行过旺、哪些过弱、是否缺行——并基于坤道篇&quot;五气偏全定吉凶&quot;的义理给出吉凶倾向的评估。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在完成三元拆解（天道技能）之后，对八字中五行分布的偏全情况进行定量和定性分析。此技能帮助判断命局五行的均衡性——哪些五行过旺、哪些过弱、是否缺行——并基于坤道篇&quot;五气偏全定吉凶&quot;的义理给出吉凶倾向的评估。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱（字符串）</li>
 <li><strong>性别</strong>：乾造/坤造（可选）</li>
 <li><strong>月令</strong>：月支对应的节令（影响五行旺衰判定）</li>
 <li><strong>三元拆解结果</strong>：可选的来自天道技能（tiandao）的三元分析输出，用于加速分析</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>五行出现次数统计</strong>
 a. 统计天干五行出现次数
 b. 统计地支五行出现次数（包括地支本气）
@@ -37,8 +34,7 @@ c. &quot;甚偏&quot;→ 格局不稳，标注核心矛盾（过旺五行 vs 过
 d. <strong>依据</strong>：坤道篇【原注】&quot;赋于人者，有偏全之不一，故吉凶定于此&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface WuQiPianQuanReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface WuQiPianQuanReport {
   /** 五行原始统计 */
   rawCount: {
     wood: number;    // 木出现次数

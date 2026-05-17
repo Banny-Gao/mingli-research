@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>分析八字命局中每个五行的旺相休囚状态，判断其在当前季节中是&quot;相&quot;（将进）、&quot;旺&quot;（当令）、&quot;休&quot;（方退）还是&quot;囚&quot;（退尽），并据此评估各五行的发展潜力与真实力量。AI 执行者应在需要评估日主或十神的真实力量而非只看表面出现次数时调用本技能。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>分析八字命局中每个五行的旺相休囚状态，判断其在当前季节中是&quot;相&quot;（将进）、&quot;旺&quot;（当令）、&quot;休&quot;（方退）还是&quot;囚&quot;（退尽），并据此评估各五行的发展潜力与真实力量。AI 执行者应在需要评估日主或十神的真实力量而非只看表面出现次数时调用本技能。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
 <li><strong>日主</strong>：日柱天干的五行属性</li>
 <li><strong>月令</strong>：月柱的地支（决定当前季节）</li>
 <li><strong>目标五行列表</strong>：需要分析进退状态的具体五行（默认全部分析）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定当前季节</strong>：根据月令地支确定四季归属</p>
 <ul>
 <li>寅卯辰 → 春（木旺）</li>
@@ -36,8 +33,7 @@ export default `<h2>功能</h2>
 <li><p><strong>综合报告</strong>：输出每个五行的旺相休囚状态、进退方向和发展潜力评级</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface LiQiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface LiQiReport {
   month: string;                 // 月柱干支
   season: &quot;春&quot; | &quot;夏&quot; | &quot;秋&quot; | &quot;冬&quot;;
   wuxingStates: Array&lt;{
@@ -50,8 +46,7 @@ export default `<h2>功能</h2>
   recommendation: string;        // 基于进退之机的综合分析建议
 }
 </code></pre>
-<h2>使用示例</h2>
-<p><strong>输入</strong>：寅月（春季），分析木的进退状态</p>
+<h2 id="使用示例">使用示例</h2><p><strong>输入</strong>：寅月（春季），分析木的进退状态</p>
 <p><strong>输出片段</strong>：</p>
 <pre><code>wuxingStates: [{
   wuxing: &quot;木&quot;,

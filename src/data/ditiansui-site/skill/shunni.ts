@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，根据月令的当令五行，判断日主在月令所处的旺相休囚死状态，从而确定日主是&quot;得令顺势&quot;还是&quot;失令逆势&quot;，并据此给出用神选取方向和运势趋势建议。此技能应在用神分析之前调用，用于建立命局的时令大环境判断。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，根据月令的当令五行，判断日主在月令所处的旺相休囚死状态，从而确定日主是&quot;得令顺势&quot;还是&quot;失令逆势&quot;，并据此给出用神选取方向和运势趋势建议。此技能应在用神分析之前调用，用于建立命局的时令大环境判断。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;癸卯 乙卯 甲寅 乙亥&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（可选，影响大运方向对顺逆的影响）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>月令当令五行判定</strong>
 a. 根据月支确定当令五行：</p>
 <ul>
@@ -45,8 +42,7 @@ b. 用神得令 → 格局得力
 c. 用神失令但有制化 → 险中求胜</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShunNiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShunNiReport {
   /** 月令基础信息 */
   month: {
     branch: string;

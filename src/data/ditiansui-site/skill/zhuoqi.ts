@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在八字格局分析完成且已评估清气状态后，调用此技能进行浊气专项评估。此技能识别命局中存在的浊气类型（六类之一或多类复合），评估浊气的严重程度，判断是否有扫除浊气的可能性。应与清气评估器（qingqi）配合使用：先用清气评估器判断全局清浊状态，再用浊气评估器识别具体的浊气类型和处理方案。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在八字格局分析完成且已评估清气状态后，调用此技能进行浊气专项评估。此技能识别命局中存在的浊气类型（六类之一或多类复合），评估浊气的严重程度，判断是否有扫除浊气的可能性。应与清气评估器（qingqi）配合使用：先用清气评估器判断全局清浊状态，再用浊气评估器识别具体的浊气类型和处理方案。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>格局分析结果</strong>：已确定的格局类型、用神、喜忌（对象）</li>
 <li><strong>清气评估结果</strong>：由清气评估器输出的清浊状态（可选，用于对比分析）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>识别的浊气类型</strong>
 a. 逐项检查六种浊气是否存在：</p>
 <ul>
@@ -39,8 +36,7 @@ b. 如为&quot;枯&quot;（无根无气）→ 判断为无法通过岁运转机
 c. <strong>依据</strong>：浊气篇【任氏曰】&quot;倘遇行运得所，扫除浊气，亦有起发之机&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZhuoQiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZhuoQiReport {
   /** 浊气类型 */
   types: Array&lt;{
     type: &quot;气之浊&quot; | &quot;格之浊&quot; | &quot;财之浊&quot; | &quot;比劫之浊&quot; | &quot;官之浊&quot; | &quot;食伤之浊&quot;;

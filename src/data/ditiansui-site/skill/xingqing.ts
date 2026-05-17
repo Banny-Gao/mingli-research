@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>通过分析八字命局中五行（金木水火土）的力量分布和生克制化关系，推断命主的性格倾向。AI 执行者应在需要分析命主的性格特质时调用本技能，可用于综合命局分析的补充模块。此技能仅做五行层面的性格推断，不涉及心理学术语或现代人格分类。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>通过分析八字命局中五行（金木水火土）的力量分布和生克制化关系，推断命主的性格倾向。AI 执行者应在需要分析命主的性格特质时调用本技能，可用于综合命局分析的补充模块。此技能仅做五行层面的性格推断，不涉及心理学术语或现代人格分类。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式）</li>
 <li><strong>日主</strong>：日柱天干的五行属性（自动提取）</li>
 <li><strong>五行力量分布</strong>：可选，未提供时本技能默认按四柱五行统计</li>
 <li><strong>重点关注</strong>（可选）：指定想要了解的某方面性格特征（如&quot;勇气&quot;&quot;仁慈&quot;等）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>统计五行力量</strong></p>
 <ul>
 <li>统计天干的五行分布（每个天干计 1 分）</li>
@@ -48,8 +45,7 @@ export default `<h2>功能</h2>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface XingQingReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface XingQingReport {
   wuXingDistribution: {
     mu: number;   // 木的力量值
     huo: number;  // 火的力量值

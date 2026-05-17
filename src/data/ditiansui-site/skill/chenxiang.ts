@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>分析八字命局中食神/伤官（臣）与日主/官星（君）之间的力量对比关系，判断是否处于&quot;君臣相得&quot;的平衡状态。AI 执行者应在需要分析命局中食伤与官星的关系时调用本技能，尤其是在涉及才华与社会地位匹配、能力与体制认同等现实问题分析时。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>分析八字命局中食神/伤官（臣）与日主/官星（君）之间的力量对比关系，判断是否处于&quot;君臣相得&quot;的平衡状态。AI 执行者应在需要分析命局中食伤与官星的关系时调用本技能，尤其是在涉及才华与社会地位匹配、能力与体制认同等现实问题分析时。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式，如&quot;庚辰 癸未 乙未 癸未&quot;）</li>
 <li><strong>日主</strong>：日柱天干的五行属性（自动提取）</li>
 <li><strong>食伤判断</strong>：列出四柱中的食神和伤官（含地支藏干中的食伤）</li>
 <li><strong>官星判断</strong>：列出四柱中的正官和七杀（含地支藏干中的官杀）</li>
 <li><strong>日主衰旺判定</strong>：可选，未提供时本技能默认按月令+地支藏干先做判定</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>确定君臣对应</strong></p>
 <ul>
 <li>臣：食神 + 伤官（食神为臣，伤官为佐）</li>
@@ -55,8 +52,7 @@ export default `<h2>功能</h2>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ChenXiangReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ChenXiangReport {
   jun: {
     riZhu: { ganZhi: string; wuxing: string; liLiang: &quot;旺&quot; | &quot;相&quot; | &quot;休&quot; | &quot;囚&quot; | &quot;死&quot; };
     guanXing: Array&lt;{ ganZhi: string; type: &quot;正官&quot; | &quot;七杀&quot;; liLiang: string }&gt;;

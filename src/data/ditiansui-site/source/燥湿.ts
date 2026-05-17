@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>燥湿</h1>
-<p>1078字
+export default `<h1 id="燥湿">燥湿</h1><p>1078字
 第 三十二 页
 《滴天髓阐微》上篇第30章 燥湿
 地道有燥湿，生成品汇，人道得之，不可偏也。
