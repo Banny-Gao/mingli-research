@@ -94,7 +94,9 @@ function loadAllAnnotations(): Array<{ slug: string; chapter: string; origChapte
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
     if (!key?.startsWith(ANN_KEY)) continue
-    const parts = key.replace(ANN_KEY + '_', '').split('_', 2)
+    // Strip __source suffix before parsing chapter name
+    const cleanKey = key.replace(/__source$/, '')
+    const parts = cleanKey.replace(ANN_KEY + '_', '').split('_', 2)
     if (parts.length !== 2 || !parts[1]) continue
     const [slug, origChapter] = parts
     try {
