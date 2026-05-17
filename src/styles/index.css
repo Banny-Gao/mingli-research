@@ -784,7 +784,18 @@ body {
   color: var(--color-text-body);
   white-space: pre-wrap;
   word-break: break-all;
-  margin: 0;
+  margin: 16px;
+  padding: 14px 18px;
+  background: #0f1628;
+  border: 1px solid var(--color-border-hover);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+.skill-raw-body code {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
   padding: 0;
 }
 .prose-skill h2 {
