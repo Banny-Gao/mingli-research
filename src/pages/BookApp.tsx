@@ -298,7 +298,6 @@ const BookApp: React.FC = () => {
                     )}
                   </div>
                 </div>
-                {toolbarPos && <AnnotationToolbar position={toolbarPos} onSelect={handleAnnotationType} onClose={() => { setToolbarPos(null); setPendingSelection(null) }} />}
                 {modalKey && (
                   <div className="related-section">
                     {modalType === 'interp' && interpToSkill[modalKey]?.length > 0 && (
@@ -324,6 +323,8 @@ const BookApp: React.FC = () => {
               {showPanel && <AnnotationPanel annotations={annotations} onRemove={remove} onUpdateNote={updateNote} onNavigate={handleNavigate} onClose={() => setShowPanel(false)} />}
             </div>
           )}
+          {/* 工具栏移出 modal-backdrop，避免 backdrop-filter 影响 position:fixed */}
+          {toolbarPos && <AnnotationToolbar position={toolbarPos} onSelect={handleAnnotationType} onClose={() => { setToolbarPos(null); setPendingSelection(null) }} />}
         </div>
       </div>
     </>
