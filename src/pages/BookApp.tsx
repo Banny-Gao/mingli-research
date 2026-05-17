@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import { useParams, Link, useSearchParams } from 'react-router-dom'
+import { useParams, Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft, Copy, ArrowLeft } from 'lucide-react'
 import { books } from '../data/books'
@@ -50,6 +50,7 @@ const BookApp: React.FC = () => {
   const [actionPopoverOpen, setActionPopoverOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [skillRawText, setSkillRawText] = useState('')
+  const navigate = useNavigate()
 
   const bookSlug = slug || ''
   const book = books.find(b => b.slug === bookSlug)
@@ -173,6 +174,8 @@ const BookApp: React.FC = () => {
     if (modalType === 'interp' && modalKey) markRead(modalKey)
     setModalType(null); setModalKey(''); setToolbarPos(null); setShowPanel(false)
     setScrollToText(null); setTocOpen(false); setActionPopoverOpen(false)
+    // 清除 URL 参数，防止刷新后重复弹窗
+    navigate(`/${bookSlug}`, { replace: true })
   }
 
   const openModal = (type: 'interp' | 'skill' | 'source', key: string) => {
