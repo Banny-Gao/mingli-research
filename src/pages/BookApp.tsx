@@ -17,19 +17,50 @@ function injectAnnotations(
   html: string,
   annotations: Array<{ rangeStart: number; rangeEnd: number; type: string; id: string }>
 ): string {
-  if (annotations.length === 0) return html
+  if (annotations.length === 0 || typeof document === 'undefined') return html
+  const div = document.createElement('div')
+  div.innerHTML = html
   const sorted = [...annotations].sort((a, b) => a.rangeStart - b.rangeStart)
-  let result = ''
-  let cursor = 0
+
   for (const ann of sorted) {
-    const start = Math.max(cursor, ann.rangeStart)
-    const end = Math.min(html.length, ann.rangeEnd)
-    result += html.slice(cursor, start)
-    result += `<mark class="ann-${ann.type}" data-ann-id="${ann.id}">${html.slice(start, end)}</mark>`
-    cursor = end
+    let acc = 0
+    const walk = (node: Node): boolean => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent || ''
+        const nodeStart = acc
+        const nodeEnd = acc + text.length
+        // 批注完全在此文本节点内
+        if (ann.rangeStart >= nodeStart && ann.rangeEnd <= nodeEnd) {
+          const offsetStart = ann.rangeStart - nodeStart
+          const offsetEnd = ann.rangeEnd - nodeStart
+          const before = text.slice(0, offsetStart)
+          const marked = text.slice(offsetStart, offsetEnd)
+          const after = text.slice(offsetEnd)
+          const mark = document.createElement('mark')
+          mark.className = `ann-${ann.type}`
+          mark.dataset.annId = ann.id
+          mark.textContent = marked
+          const frag = document.createDocumentFragment()
+          frag.appendChild(document.createTextNode(before))
+          frag.appendChild(mark)
+          frag.appendChild(document.createTextNode(after))
+          node.parentNode?.replaceChild(frag, node)
+          return true // 已完成
+        }
+        acc = nodeEnd
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          if (walk(node.childNodes[i])) {
+            // 节点被替换过，childNodes 已变，需重新索引
+            return true
+          }
+        }
+      }
+      return false
+    }
+    walk(div)
   }
-  result += html.slice(cursor)
-  return result
+  return div.innerHTML
 }
 
 const BookApp: React.FC = () => {

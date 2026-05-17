@@ -1350,7 +1350,10 @@ mark.ann-quote {
 }
 .notes-empty {
   padding: 60px 20px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .notes-book {
   background: var(--color-bg-card);
