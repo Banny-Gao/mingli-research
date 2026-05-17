@@ -203,26 +203,29 @@ const Notes: React.FC = () => {
           <div className="container-wide" style={{ marginBottom: 20 }}>
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <button
-                onClick={() => setTab('bookmark')}
-                style={{
-                  ...btnBase,
-                  color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)',
-                  borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)',
-                }}
-              >
-                <Bookmark size={14} />
-                收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
-              </button>
-              <button
                 onClick={() => setTab('annotation')}
                 style={{
                   ...btnBase,
+                  lineHeight: 1.5,
                   color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)',
                   borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)',
                 }}
               >
                 <MessageSquare size={14} />
                 批注 {total > 0 ? `(${total})` : ''}
+              </button>
+
+              <button
+                onClick={() => setTab('bookmark')}
+                style={{
+                  ...btnBase,
+                  lineHeight: 1.5,
+                  color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)',
+                  borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)',
+                }}
+              >
+                <Bookmark size={14} />
+                收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
               </button>
             </div>
 
