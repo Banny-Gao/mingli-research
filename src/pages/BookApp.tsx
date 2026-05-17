@@ -100,7 +100,7 @@ const BookApp: React.FC = () => {
   const { markRead } = useReadProgress(bookSlug)
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(bookSlug)
   const { touchChapter } = useGlobalProgress()
-  const { annotations, add, remove, updateNote } = useAnnotations(bookSlug, modalKey)
+  const { annotations, add, remove, updateNote } = useAnnotations(bookSlug, modalKey, modalType === 'source')
   const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
   const skillKeys = Object.keys(skillContent || {})
 

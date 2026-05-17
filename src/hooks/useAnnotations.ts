@@ -15,12 +15,12 @@ export interface Annotation {
 
 const ANN_KEY = 'mingli_annotations'
 
-function makeKey(slug: string, chapter: string) {
-  return `${ANN_KEY}_${slug}_${chapter}`
+function makeKey(slug: string, chapter: string, isSource?: boolean) {
+  return `${ANN_KEY}_${slug}_${chapter}${isSource ? '__source' : ''}`
 }
 
-export function useAnnotations(slug: string, chapter: string) {
-  const key = makeKey(slug, chapter)
+export function useAnnotations(slug: string, chapter: string, isSource?: boolean) {
+  const key = makeKey(slug, chapter, isSource)
   const [annotations, setAnnotations] = useState<Annotation[]>(() => {
     if (!chapter) return []
     try {
