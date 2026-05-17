@@ -168,10 +168,6 @@ mark.ann-quote    { background: rgba(96,160,96,0.2); border-bottom: 1px solid va
 
 ### P2 — 各项
 
-**P2.1 导出打印：**
-- `index.css` 添加 `@media print` 块（隐藏导航、展开 Modal、白底黑字）
-- Modal 头部添加"打印视图"按钮
-
 **P2.2 SEO 强化：**
 - 每本书 `Book` JSON-LD schema（Helmet）
 - 每篇目 `Chapter` JSON-LD schema
