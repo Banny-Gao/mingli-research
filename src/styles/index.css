@@ -1,0 +1,5 @@
+/* 入口文件：Tailwind v4 在此扫描 class 名称 */
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+/* Less 编译后的样式通过此导入 */
+@import './index.less';
