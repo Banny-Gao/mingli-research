@@ -87,11 +87,11 @@ const BookApp: React.FC = () => {
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <h1 style={{ fontSize: 24, color: 'var(--color-gold)', fontWeight: 'bold', letterSpacing: 5, marginBottom: 4, textShadow: '0 0 30px var(--color-gold-glow)' }}>
+            <h1 className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1" style={{ textShadow: '0 0 30px var(--color-gold-glow)' }}>
               《{book.title}》
             </h1>
-            {book.author && <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 4 }}>{book.author}</p>}
-            {book.description && <p style={{ fontSize: 13, color: 'var(--color-text-dim)', lineHeight: 1.6, maxWidth: 600, margin: '0 auto 8px' }}>{book.description}</p>}
+            {book.author && <p className="text-xs text-[var(--color-text-dim)] mb-1">{book.author}</p>}
+            {book.description && <p className="text-xs text-[var(--color-text-dim)] leading-relaxed max-w-[600px] mx-auto mb-2">{book.description}</p>}
             <div className="book-hero-stats">
               <div className="stat-item"><div className="stat-num">{book.total}</div><div className="stat-label">全篇章</div></div>
               <div className="stat-item"><div className="stat-num-green">{book.done}</div><div className="stat-label">已解读</div></div>
