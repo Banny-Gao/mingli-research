@@ -298,7 +298,7 @@ const BookApp: React.FC = () => {
                   )}
                   <span className="modal-title">{modalTitle}</span>
                   <div style={{ flex: 1 }} />
-                  {modalKey && modalType === 'interp' && (
+                  {modalKey && (modalType === 'interp' || modalType === 'source') && (
                     <div className="action-popover-container">
                       <button className="action-popover-btn" onClick={() => setActionPopoverOpen(v => !v)}><MoreHorizontal size={16} /></button>
                       {actionPopoverOpen && (
