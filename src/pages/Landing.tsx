@@ -69,8 +69,7 @@ const Landing: React.FC = () => {
         >
           <Link
             to="/notes"
-            className="notes-cta-btn"
-            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            className="notes-cta-btn flex items-center gap-1.5"
           >
             <FileText size={16} /> 个人中心
           </Link>
