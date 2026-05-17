@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Book, ChapterInfo } from '../data/books'
+import type { Book, ChapterInfo } from '../data/book-types'
 import { ChevronDown } from 'lucide-react'
 
 interface Props {
