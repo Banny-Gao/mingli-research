@@ -1,9 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft, Copy } from 'lucide-react'
 import { books } from '../data/books'
 import { interpContent, skillContent, sourceContent } from '../data/ditiansui-site'
+import { skillRawContent, skillDisplayNames } from '../data/ditiansui-site/skill'
 import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
 import ReadList from '../components/ReadList'
 import { ReadingProgress, BackToTop, TocSidebar } from '../components/ReadingTools'
@@ -49,6 +50,8 @@ const BookApp: React.FC = () => {
   } | null>(null)
   const [tocOpen, setTocOpen] = useState(false)
   const [actionPopoverOpen, setActionPopoverOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+  const [skillRawText, setSkillRawText] = useState('')
 
   const book = books.find(b => b.slug === slug)
   const { markRead } = useReadProgress(slug || '')
@@ -239,11 +242,12 @@ const BookApp: React.FC = () => {
     }
   }
 
+  const skillDisplayName = modalKey ? skillDisplayNames[modalKey] || modalKey : ''
   const modalTitle =
     modalType === 'interp'
       ? `【${modalKey}】原文解读`
       : modalType === 'skill'
-        ? `【${modalKey}】技能文件`
+        ? `【${skillDisplayName}】技能`
         : `【${modalKey}】原文`
   const rawBody =
     modalType === 'source'
@@ -252,8 +256,7 @@ const BookApp: React.FC = () => {
       : modalType === 'interp'
         ? (interpContent as Record<string, string>)[modalKey] ||
           '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
-        : (skillContent as Record<string, string>)[modalKey] ||
-          '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该技能内容</p>'
+        : '' // skills use raw, not rendered
   const annotatedBody = injectAnnotations(rawBody, annotations)
 
   const proseClass =
@@ -261,7 +264,26 @@ const BookApp: React.FC = () => {
       ? 'prose-source'
       : modalType === 'interp'
         ? 'prose-interp'
-        : 'prose-skill'
+        : ''
+
+  // Load raw skill content
+  useEffect(() => {
+    if (modalType !== 'skill' || !modalKey) { setSkillRawText(''); return }
+    const loader = (skillRawContent as Record<string, () => Promise<string>>)[modalKey]
+    if (!loader) return
+    loader().then(text => setSkillRawText(text))
+  }, [modalType, modalKey])
+
+  // Copy handler
+  const handleCopy = async () => {
+    if (modalType !== 'skill') return
+    const raw = modalKey ? (skillRawContent as Record<string, () => Promise<string>>)[modalKey] : null
+    if (!raw) return
+    const text = await raw()
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
     <>
@@ -398,6 +420,27 @@ const BookApp: React.FC = () => {
                       )}
                     </div>
                   )}
+                  {modalType === 'skill' && modalKey && (
+                    <button
+                      onClick={handleCopy}
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: 6,
+                        padding: '6px 10px',
+                        cursor: 'pointer',
+                        color: copied ? 'var(--color-green)' : 'var(--color-text-dim)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        fontSize: 13,
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      <Copy size={14} />
+                      {copied ? '已复制' : '复制'}
+                    </button>
+                  )}
                   <button className="btn-back" onClick={closeModal}>
                     <X size={18} />
                   </button>
@@ -419,9 +462,13 @@ const BookApp: React.FC = () => {
                   <div
                     className="modal-body"
                     ref={modalBodyRef}
-                    onMouseUp={handleMouseUp}
+                    onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined}
                   >
-                    <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
+                    {modalType === 'skill' ? (
+                      <pre className="skill-raw-body">{skillRawText || '加载中...'}</pre>
+                    ) : (
+                      <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
+                    )}
                   </div>
                 </div>
 
