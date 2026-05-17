@@ -229,7 +229,7 @@ const BookApp: React.FC = () => {
 
   const handleAnnotationType = (type: AnnotationType) => {
     if (!pendingSelection) return
-    add({ type, selectedText: pendingSelection.text, rangeStart: pendingSelection.start, rangeEnd: pendingSelection.end, note: '' })
+    add({ type, selectedText: pendingSelection.text, rangeStart: pendingSelection.start, rangeEnd: pendingSelection.end, note: '', fromSource: modalType === 'source' })
     setToolbarPos(null); setPendingSelection(null); setShowPanel(true)
     window.getSelection()?.removeAllRanges()
   }
