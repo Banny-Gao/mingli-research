@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface ActionBarProps {
   modalType: 'interp' | 'skill' | 'source'
@@ -42,43 +43,25 @@ const ActionBar: React.FC<ActionBarProps> = ({
           </button>
           {actionPopoverOpen && (
             <div className="action-popover">
-              <button
-                className="action-popover-item"
-                onClick={() => { onTogglePanel(); setActionPopoverOpen(false) }}
-              >
+              <Button variant="ghost" size="sm" onClick={() => { onTogglePanel(); setActionPopoverOpen(false) }}>
                 <Bookmark size={14} />
                 批注{annotationsCount > 0 ? ` (${annotationsCount})` : ''}
-              </button>
-              <button
-                className="action-popover-item"
-                onClick={() => { toggleBookmark(modalKey); setActionPopoverOpen(false) }}
-              >
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => { toggleBookmark(modalKey); setActionPopoverOpen(false) }}>
                 <Star size={14} fill={isBookmarked(modalKey) ? 'var(--color-gold)' : 'none'} />
                 {isBookmarked(modalKey) ? '已收藏' : '收藏'}
-              </button>
+              </Button>
             </div>
           )}
         </div>
       )}
       {modalType === 'skill' && modalKey && (
-        <button
+        <Button
           onClick={handleCopy}
-          style={{
-            background: 'none',
-            border: '1px solid var(--color-border)',
-            borderRadius: 6,
-            padding: '6px 10px',
-            cursor: 'pointer',
-            color: copied ? 'var(--color-green)' : 'var(--color-text-dim)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            fontSize: 13,
-            transition: 'all 0.2s',
-          }}
+          style={{ color: copied ? 'var(--color-green)' : 'var(--color-text-dim)' }}
         >
           <Copy size={14} />{copied ? '已复制' : '复制'}
-        </button>
+        </Button>
       )}
     </>
   )
