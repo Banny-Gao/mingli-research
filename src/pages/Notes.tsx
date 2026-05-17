@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Filter, Bookmark, MessageSquare } from 'lucide-react'
+import { Filter, Bookmark, MessageSquare, ArrowRight } from 'lucide-react'
 import { books } from '../data/books'
 import { skillToInterp } from '../data/ditiansui-site/assoc'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
-import { ThemeToggle } from '../main'
 
 const ANN_KEY = 'mingli_annotations'
 const BOOKMARK_KEY = 'mingli_bookmarks'
@@ -167,13 +166,9 @@ const Notes: React.FC = () => {
         <meta name="description" content={`已收录 ${total} 条批注`} />
       </Helmet>
       <div className="page-wrapper">
-        <div className="top-actions">
-          <ThemeToggle />
-        </div>
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <div className="hero-badge">个人中心</div>
             <h1
               style={{
                 fontSize: 32,
@@ -283,8 +278,8 @@ const Notes: React.FC = () => {
                       {bm.chapters.map(ch => (
                         <div key={ch} className="notes-chapter" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div className="notes-chapter-name">{ch}</div>
-                          <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} className="notes-item-link">
-                            继续阅读 →
+                          <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} style={{ fontSize: 12, color: 'var(--color-text-muted)', textDecoration: 'none', paddingRight: 18, display: 'flex', alignItems: 'center', gap: 4 }}>
+                            继续阅读 <ArrowRight size={12} />
                           </Link>
                         </div>
                       ))}
