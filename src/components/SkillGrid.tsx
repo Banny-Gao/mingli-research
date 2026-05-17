@@ -1,5 +1,5 @@
 import React from 'react'
-import { Book } from '../data/books'
+import type { Book } from '../data/book-types'
 import { ArrowRight } from 'lucide-react'
 import { skillDisplayNames } from '../data/ditiansui-site/skill'
 
