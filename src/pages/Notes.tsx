@@ -421,11 +421,11 @@ const Notes: React.FC = () => {
                             {ann.note && <div className="notes-item-note">{ann.note}</div>}
                             <div className="notes-item-actions">
                               <Link
-                                to={`/${group.slug}`}
+                                to={`/${group.slug}?open=interp&key=${encodeURIComponent(ch.name)}&match=${encodeURIComponent(ann.selectedText)}`}
                                 className="notes-item-link"
                                 style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}
                               >
-                                查看原文 <ArrowRight size={12} />
+                                查看批注 <ArrowRight size={12} />
                               </Link>
                               <button
                                 onClick={() => {
