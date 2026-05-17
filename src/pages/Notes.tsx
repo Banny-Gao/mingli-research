@@ -59,7 +59,7 @@ function loadAllAnnotations(): Array<{ slug: string; chapter: string; origChapte
     const key = localStorage.key(i)
     if (!key?.startsWith(ANN_KEY)) continue
     const parts = key.replace(ANN_KEY + '_', '').split('_', 2)
-    if (parts.length !== 2) continue
+    if (parts.length !== 2 || !parts[1]) continue
     const [slug, origChapter] = parts
     try {
       const raw = localStorage.getItem(key)
