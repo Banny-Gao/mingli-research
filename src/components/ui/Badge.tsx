@@ -1,23 +1,18 @@
-import React from 'react'
+import { cn } from '../../lib/utils'
 
-interface Props {
+interface BadgeProps {
   children: React.ReactNode
-  color?: string
-  bg?: string
-  border?: string
+  className?: string
+  variant?: 'default' | 'gold' | 'green' | 'red'
 }
 
-export const Badge: React.FC<Props> = ({ children, color = 'var(--color-text-dim)', bg = 'transparent', border = 'var(--color-border)' }) => (
-  <span
-    style={{
-      fontSize: 10,
-      padding: '1px 6px',
-      borderRadius: 3,
-      background: bg,
-      color,
-      border: `1px solid ${border}`,
-    }}
-  >
-    {children}
-  </span>
-)
+const variants = {
+  default: 'border border-[var(--color-border)] text-[var(--color-text-dim)]',
+  gold: 'border border-[var(--color-gold)]/30 text-[var(--color-gold)] bg-[var(--color-gold)]/10',
+  green: 'border border-[#60c060]/30 text-[#60c060] bg-[#60c060]/10',
+  red: 'border border-[#d05050]/30 text-[#d05050] bg-[#d05050]/10',
+}
+
+export function Badge({ children, className, variant = 'default' }: BadgeProps) {
+  return <span className={cn('inline-block text-[10px] px-1.5 py-0.5 rounded-sm', variants[variant], className)}>{children}</span>
+}

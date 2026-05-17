@@ -23,17 +23,10 @@ const SkillGrid: React.FC<Props> = ({ book, onSkillClick }) => {
               <div className="section-badge mb-2 inline-block">
                 {sk.name}
               </div>
-              <div
-                style={{
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                  color: 'var(--color-gold)',
-                  marginBottom: 8,
-                }}
-              >
+              <div className="text-[15px] font-bold text-[var(--color-gold)] mb-2">
                 {displayName}
               </div>
-              <div className="flex items-center gap-0.5 text-xs" style={{ color: '#5070a0' }}>skills/{sk.name}/SKILL.md <ArrowRight size={11} /></div>
+              <div className="flex items-center gap-0.5 text-xs text-[#5070a0]">skills/{sk.name}/SKILL.md <ArrowRight size={11} /></div>
             </div>
           )
         })}

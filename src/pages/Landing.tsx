@@ -58,15 +58,7 @@ const Landing: React.FC = () => {
         </div>
 
         {/* 笔记入口 */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: 20,
-            width: '100%',
-            maxWidth: 900,
-          }}
-        >
+        <div className="flex justify-end mb-5 w-full max-w-[900px]">
           <Link
             to="/notes"
             className="notes-cta-btn flex items-center gap-1.5"
