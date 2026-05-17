@@ -141,10 +141,10 @@ export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, o
     onClose()
   }
 
-  if (!open || toc.length === 0) return null
+  if (toc.length === 0) return null
 
   return (
-    <div className="toc-sidebar">
+    <div className={`toc-sidebar ${open ? 'toc-sidebar-open' : 'toc-sidebar-closed'}`}>
       <div className="toc-sidebar-header">目录</div>
       <div className="toc-sidebar-list">
         {toc.map(item => (

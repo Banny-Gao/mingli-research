@@ -420,7 +420,6 @@ const BookApp: React.FC = () => {
                     className="modal-body"
                     ref={modalBodyRef}
                     onMouseUp={handleMouseUp}
-                    style={tocOpen ? { flex: 1, overflowY: 'auto', padding: '0 24px 24px' } : undefined}
                   >
                     <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
                   </div>
@@ -482,6 +481,7 @@ const BookApp: React.FC = () => {
                   onRemove={remove}
                   onUpdateNote={updateNote}
                   onNavigate={handleNavigate}
+                  onClose={() => setShowPanel(false)}
                 />
               )}
             </div>
