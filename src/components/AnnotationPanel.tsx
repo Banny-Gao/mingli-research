@@ -29,7 +29,7 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
     <div className="ann-panel">
       <div className="ann-panel-header">
         <span className="ann-panel-title">批注列表</span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="flex items-center gap-2">
           {annotations.length > 0 && <span className="ann-panel-count">{annotations.length}条</span>}
           <button
             onClick={onClose}

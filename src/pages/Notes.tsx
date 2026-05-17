@@ -3,146 +3,17 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft, Trash2 } from 'lucide-react'
 import { books } from '../data/books'
-import { skillToInterp } from '../data/ditiansui-site/assoc'
+import {
+  TYPE_LABELS,
+  TYPE_COLORS,
+  deleteAnnotation,
+  batchDeleteAnnotations,
+  batchDeleteBookmarks,
+  loadAllBookmarks,
+  loadAllAnnotations,
+  exportMarkdown,
+} from '../hooks/useNotesData'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
-
-const ANN_KEY = 'mingli_annotations'
-const BOOKMARK_KEY = 'mingli_bookmarks'
-
-const TYPE_LABELS: Record<AnnotationType, string> = {
-  emphasis: '重点',
-  question: '疑问',
-  quote: '引用',
-}
-const TYPE_COLORS: Record<AnnotationType, string> = {
-  emphasis: 'var(--color-gold)',
-  question: '#d05050',
-  quote: '#60c060',
-}
-
-function normalizeChapter(chapter: string): string {
-  const interp = (skillToInterp as Record<string, string[]>)[chapter]
-  return interp && interp.length > 0 ? interp[0] : chapter
-}
-
-function deleteAnnotation(slug: string, chapter: string, annId: string) {
-  const key = `${ANN_KEY}_${slug}_${chapter}`
-  try {
-    const raw = localStorage.getItem(key)
-    if (!raw) return
-    const anns: Annotation[] = JSON.parse(raw).filter((a: Annotation) => a.id !== annId)
-    if (anns.length === 0) localStorage.removeItem(key)
-    else localStorage.setItem(key, JSON.stringify(anns))
-  } catch {}
-}
-
-function batchDeleteAnnotations(items: Array<{ slug: string; origChapter: string; id: string }>) {
-  for (const item of items) {
-    deleteAnnotation(item.slug, item.origChapter, item.id)
-  }
-}
-
-function batchDeleteBookmarks(items: Array<{ slug: string; chapter: string }>) {
-  // Group by slug to minimize localStorage reads
-  const bySlug = new Map<string, Set<string>>()
-  for (const item of items) {
-    if (!bySlug.has(item.slug)) bySlug.set(item.slug, new Set())
-    bySlug.get(item.slug)!.add(item.chapter)
-  }
-  for (const [slug, chapters] of bySlug) {
-    const key = `${BOOKMARK_KEY}_${slug}`
-    try {
-      const raw = localStorage.getItem(key)
-      if (!raw) continue
-      const all: string[] = JSON.parse(raw)
-      const filtered = all.filter(c => !chapters.has(c))
-      if (filtered.length === 0) localStorage.removeItem(key)
-      else localStorage.setItem(key, JSON.stringify(filtered))
-    } catch {}
-  }
-}
-
-function loadAllBookmarks(): Array<{ slug: string; chapters: string[] }> {
-  const map = new Map<string, string[]>()
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (!key?.startsWith(BOOKMARK_KEY)) continue
-    const slug = key.replace(BOOKMARK_KEY + '_', '')
-    try {
-      const raw = localStorage.getItem(key)
-      if (!raw) continue
-      const chapters: string[] = JSON.parse(raw)
-      if (chapters.length > 0) map.set(slug, chapters)
-    } catch {}
-  }
-  return Array.from(map.entries()).map(([slug, chapters]) => ({ slug, chapters }))
-}
-
-function loadAllAnnotations(): Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> {
-  const results: Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> = []
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i)
-    if (!key?.startsWith(ANN_KEY)) continue
-    // Strip __source suffix before parsing chapter name
-    const cleanKey = key.replace(/__source$/, '')
-    const parts = cleanKey.replace(ANN_KEY + '_', '').split('_', 2)
-    if (parts.length !== 2 || !parts[1]) continue
-    const [slug, origChapter] = parts
-    try {
-      const raw = localStorage.getItem(key)
-      if (!raw) continue
-      const anns: Annotation[] = JSON.parse(raw)
-      const nc = normalizeChapter(origChapter)
-      for (const ann of anns) results.push({ slug, chapter: nc, origChapter, annotation: ann })
-    } catch {}
-  }
-  return results.sort((a, b) => b.annotation.createdAt - a.annotation.createdAt)
-}
-
-function exportMarkdown(groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>) {
-  let md = '# 读书笔记 — 命理学术中心\n\n'
-  for (const group of groups) {
-    md += `## 《${group.book}》\n\n`
-    for (const ch of group.chapters) {
-      md += `### ${ch.name}\n\n`
-      for (const ann of ch.annotations) {
-        md += `- **${TYPE_LABELS[ann.type]}**「${ann.selectedText}」\n`
-        if (ann.note) md += `  > ${ann.note}\n`
-        md += '\n'
-      }
-    }
-  }
-  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = '命理学术笔记.md'
-  a.click()
-  URL.revokeObjectURL(url)
-}
-
-const btnBase: React.CSSProperties = {
-  background: 'none',
-  border: '1px solid var(--color-border)',
-  borderRadius: 6,
-  padding: '6px 12px',
-  color: 'var(--color-text-dim)',
-  cursor: 'pointer',
-  fontSize: 13,
-  transition: 'all 0.2s',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 6,
-}
-
-const checkboxStyle: React.CSSProperties = {
-  cursor: 'pointer',
-  accentColor: 'var(--color-gold)',
-  flexShrink: 0,
-  margin: 0,
-  width: 14,
-  height: 14,
-}
 
 const Notes: React.FC = () => {
   const [refresh, setRefresh] = useState(0)
@@ -256,10 +127,10 @@ const Notes: React.FC = () => {
 
           <div className="container-wide">
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-              <button onClick={() => setTab('annotation')} style={{ ...btnBase, lineHeight: 1.5, color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)' }}>
+              <button onClick={() => setTab('annotation')} className={`notes-btn ${tab === 'annotation' ? 'notes-btn-active' : ''}`}>
                 <MessageSquare size={14} />批注 {total > 0 ? `(${total})` : ''}
               </button>
-              <button onClick={() => setTab('bookmark')} style={{ ...btnBase, lineHeight: 1.5, color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)' }}>
+              <button onClick={() => setTab('bookmark')} className={`notes-btn ${tab === 'bookmark' ? 'notes-btn-active' : ''}`}>
                 <Bookmark size={14} />收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
               </button>
             </div>
@@ -277,7 +148,7 @@ const Notes: React.FC = () => {
               )}
               <div style={{ flex: 1 }} />
               {tab === 'annotation' && total > 0 && (
-                <button onClick={() => exportMarkdown(groups)} style={{ ...btnBase, borderColor: 'var(--color-purple)', color: 'var(--color-purple-light)' }}>
+                <button onClick={() => exportMarkdown(groups)} className="notes-btn notes-btn-export">
                   <Filter size={14} />导出 Markdown
                 </button>
               )}
@@ -296,13 +167,13 @@ const Notes: React.FC = () => {
               ) : (
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <input type="checkbox" checked={bmTotal > 0 && selectedBm.size === bookmarks.flatMap(b => b.chapters).length} onChange={toggleAllBm} style={checkboxStyle} />
+                    <input type="checkbox" checked={bmTotal > 0 && selectedBm.size === bookmarks.flatMap(b => b.chapters).length} onChange={toggleAllBm} className="notes-checkbox" />
                     <span style={{ fontSize: 12, color: 'var(--color-text-muted)', cursor: 'pointer' }} onClick={toggleAllBm}>全选</span>
                     <div style={{ flex: 1 }} />
                     {selectedBm.size > 0 && (
                       <>
                         <span style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>已选 {selectedBm.size} 项</span>
-                        <button onClick={handleBatchDeleteBm} style={{ ...btnBase, borderColor: '#d0505066', color: '#d05050' }}><Trash2 size={14} />删除选中</button>
+                        <button onClick={handleBatchDeleteBm} className="notes-btn notes-btn-danger"><Trash2 size={14} />删除选中</button>
                       </>
                     )}
                   </div>
@@ -311,13 +182,13 @@ const Notes: React.FC = () => {
                     return (
                       <div key={bm.slug} className="notes-book">
                         <div className="notes-book-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <input type="checkbox" checked={bm.chapters.every(ch => selectedBm.has(`${bm.slug}::${ch}`))} onChange={() => { const keys = bm.chapters.map(ch => `${bm.slug}::${ch}`); setSelectedBm(prev => { const allSelected = keys.every(k => prev.has(k)); const next = new Set(prev); for (const k of keys) { if (allSelected) next.delete(k); else next.add(k) } return next }) }} style={checkboxStyle} />
+                          <input type="checkbox" checked={bm.chapters.every(ch => selectedBm.has(`${bm.slug}::${ch}`))} onChange={() => { const keys = bm.chapters.map(ch => `${bm.slug}::${ch}`); setSelectedBm(prev => { const allSelected = keys.every(k => prev.has(k)); const next = new Set(prev); for (const k of keys) { if (allSelected) next.delete(k); else next.add(k) } return next }) }} className="notes-checkbox" />
                           <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>《{book?.title || bm.slug}》</Link>
                         </div>
                         {bm.chapters.map(ch => (
                           <div key={ch} className="notes-chapter" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-                              <input type="checkbox" checked={selectedBm.has(`${bm.slug}::${ch}`)} onChange={() => { setSelectedBm(prev => { const n = new Set(prev); if (n.has(`${bm.slug}::${ch}`)) n.delete(`${bm.slug}::${ch}`); else n.add(`${bm.slug}::${ch}`); return n }) }} style={checkboxStyle} />
+                              <input type="checkbox" checked={selectedBm.has(`${bm.slug}::${ch}`)} onChange={() => { setSelectedBm(prev => { const n = new Set(prev); if (n.has(`${bm.slug}::${ch}`)) n.delete(`${bm.slug}::${ch}`); else n.add(`${bm.slug}::${ch}`); return n }) }} className="notes-checkbox" />
                               <div className="notes-chapter-name" style={{ padding: '10px 0 6px' }}>{ch}</div>
                             </div>
                             <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} style={{ fontSize: 12, color: 'var(--color-text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -349,20 +220,20 @@ const Notes: React.FC = () => {
               ) : (
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <input type="checkbox" checked={total > 0 && selectedAnn.size === all.length} onChange={toggleAllAnn} style={checkboxStyle} />
+                    <input type="checkbox" checked={total > 0 && selectedAnn.size === all.length} onChange={toggleAllAnn} className="notes-checkbox" />
                     <span style={{ fontSize: 12, color: 'var(--color-text-muted)', cursor: 'pointer' }} onClick={toggleAllAnn}>全选</span>
                     <div style={{ flex: 1 }} />
                     {selectedAnn.size > 0 && (
                       <>
                         <span style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>已选 {selectedAnn.size} 项</span>
-                        <button onClick={handleBatchDeleteAnn} style={{ ...btnBase, borderColor: '#d0505066', color: '#d05050' }}><Trash2 size={14} />删除选中</button>
+                        <button onClick={handleBatchDeleteAnn} className="notes-btn notes-btn-danger"><Trash2 size={14} />删除选中</button>
                       </>
                     )}
                   </div>
                   {groups.map(group => (
                     <div key={group.slug} className="notes-book">
                       <div className="notes-book-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <input type="checkbox" checked={group.chapters.every(ch => ch.annotations.every(a => selectedAnn.has(a.id)))} onChange={() => { const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id)); setSelectedAnn(prev => { const allSelected = ids.every(id => prev.has(id)); const next = new Set(prev); for (const id of ids) { if (allSelected) next.delete(id); else next.add(id) } return next }) }} style={checkboxStyle} />
+                        <input type="checkbox" checked={group.chapters.every(ch => ch.annotations.every(a => selectedAnn.has(a.id)))} onChange={() => { const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id)); setSelectedAnn(prev => { const allSelected = ids.every(id => prev.has(id)); const next = new Set(prev); for (const id of ids) { if (allSelected) next.delete(id); else next.add(id) } return next }) }} className="notes-checkbox" />
                         <Link to={`/${group.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>《{group.book}》</Link>
                       </div>
                       {group.chapters.map(ch => (
@@ -372,7 +243,7 @@ const Notes: React.FC = () => {
                             <div key={ann.id} className="notes-item">
                               <div className="notes-item-header">
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                  <input type="checkbox" checked={selectedAnn.has(ann.id)} onChange={() => toggleAnnSelect(ann.id)} style={checkboxStyle} />
+                                  <input type="checkbox" checked={selectedAnn.has(ann.id)} onChange={() => toggleAnnSelect(ann.id)} className="notes-checkbox" />
                                   <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3, background: TYPE_COLORS[ann.type] + '22', color: TYPE_COLORS[ann.type], border: `1px solid ${TYPE_COLORS[ann.type]}55` }}>
                                     {TYPE_LABELS[ann.type]}
                                   </span>

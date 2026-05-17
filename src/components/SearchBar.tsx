@@ -14,70 +14,12 @@ interface SearchBarProps {
   scopeSlug?: string // 限定搜索的典籍slug
 }
 
-let searchCache: SearchEntry[] | null = null
-let fuseInstance: Fuse<SearchEntry> | null = null
-
 function getSnippet(text: string, query: string, len = 60): string {
   const idx = text.toLowerCase().indexOf(query.toLowerCase())
   if (idx === -1) return text.slice(0, len)
   const start = Math.max(0, idx - 20)
   const end = Math.min(text.length, idx + query.length + 40)
   return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '')
-}
-
-async function loadSearchIndex(): Promise<SearchEntry[]> {
-  if (searchCache) return searchCache
-  const res = await fetch('/search-index.json')
-  const data = (await res.json()) as Array<{
-    slug: string
-    title: string
-    interp: Array<{ key: string; text: string }>
-    skill: Array<{ key: string; text: string }>
-    source: Array<{ key: string; text: string }>
-  }>
-  const entries: SearchEntry[] = []
-  for (const book of data) {
-    for (const ch of book.interp) {
-      if (ch.text)
-        entries.push({
-          slug: book.slug,
-          title: book.title,
-          type: 'chapter',
-          key: ch.key,
-          text: ch.text,
-        })
-    }
-    for (const sk of book.skill) {
-      if (sk.text)
-        entries.push({
-          slug: book.slug,
-          title: book.title,
-          type: 'skill',
-          key: sk.key,
-          text: sk.text,
-        })
-    }
-    for (const src of book.source || []) {
-      if (src.text)
-        entries.push({
-          slug: book.slug,
-          title: book.title,
-          type: 'source',
-          key: src.key,
-          text: src.text,
-        })
-    }
-  }
-  fuseInstance = new Fuse(entries, {
-    keys: ['text', 'key', 'title'],
-    threshold: 0.0,
-    includeScore: true,
-    ignoreLocation: true,
-    useExtendedSearch: true,
-    minMatchCharLength: 2,
-  })
-  searchCache = entries
-  return entries
 }
 
 function fuzzySearch(entries: SearchEntry[], query: string): SearchEntry[] {
@@ -103,8 +45,65 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const queryRef = useRef(query)
   const containerRef = useRef<HTMLDivElement>(null)
+  const searchCacheRef = useRef<SearchEntry[] | null>(null)
+  const fuseRef = useRef<Fuse<SearchEntry> | null>(null)
   const navigate = useNavigate()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  async function loadSearchIndex(): Promise<SearchEntry[]> {
+    if (searchCacheRef.current) return searchCacheRef.current
+    const res = await fetch('/search-index.json')
+    const data = (await res.json()) as Array<{
+      slug: string
+      title: string
+      interp: Array<{ key: string; text: string }>
+      skill: Array<{ key: string; text: string }>
+      source: Array<{ key: string; text: string }>
+    }>
+    const entries: SearchEntry[] = []
+    for (const book of data) {
+      for (const ch of book.interp) {
+        if (ch.text)
+          entries.push({
+            slug: book.slug,
+            title: book.title,
+            type: 'chapter',
+            key: ch.key,
+            text: ch.text,
+          })
+      }
+      for (const sk of book.skill) {
+        if (sk.text)
+          entries.push({
+            slug: book.slug,
+            title: book.title,
+            type: 'skill',
+            key: sk.key,
+            text: sk.text,
+          })
+      }
+      for (const src of book.source || []) {
+        if (src.text)
+          entries.push({
+            slug: book.slug,
+            title: book.title,
+            type: 'source',
+            key: src.key,
+            text: src.text,
+          })
+      }
+    }
+    fuseRef.current = new Fuse(entries, {
+      keys: ['text', 'key', 'title'],
+      threshold: 0.0,
+      includeScore: true,
+      ignoreLocation: true,
+      useExtendedSearch: true,
+      minMatchCharLength: 2,
+    })
+    searchCacheRef.current = entries
+    return entries
+  }
 
   // Close on outside click
   useEffect(() => {
@@ -141,8 +140,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
         entry => entry.key === q || entry.key.toLowerCase().includes(q.toLowerCase())
       )
       // Fuzzy 后备
-      const fuzzyMatches = fuseInstance
-        ? fuseInstance
+      const fuzzyMatches = fuseRef.current
+        ? fuseRef.current
             .search(q)
             .map(r => r.item)
             .filter(item => !exactMatches.some(e => e.key === item.key))

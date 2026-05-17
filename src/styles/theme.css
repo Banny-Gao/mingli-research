@@ -1,0 +1,82 @@
+/* ===== Light Theme Overrides ===== */
+
+[data-theme='light'] {
+  --color-bg-base: #f5f0e8;
+  --color-bg-card: #faf7f0;
+  --color-bg-card-hover: #f0ebe0;
+  --color-border: #d8d0c0;
+  --color-border-card: #d0c8b8;
+  --color-border-hover: #c0b8a8;
+  --color-text-body: #3a3028;
+  --color-text-dim: #8a8070;
+  --color-text-muted: #a09888;
+  --color-text-title: #5a4a38;
+  --color-gold: #9a7030;
+  --color-gold-dim: #7a5828;
+  --color-gold-glow: rgba(154, 112, 48, 0.15);
+  --color-purple: #5a3e7a;
+  --color-purple-light: #7a5e9a;
+  --color-purple-bg: #f5f0f8;
+  --color-green: #5a8a4a;
+  --color-blue: #5a7090;
+}
+
+[data-theme='light'] .prose-interp th,
+[data-theme='light'] .prose-skill th {
+  background: #f0ebe0;
+  color: var(--color-gold);
+}
+
+[data-theme='light'] .prose-interp pre,
+[data-theme='light'] .prose-skill pre {
+  background: #f5f0e8;
+  border-color: var(--color-border);
+  color: #5a6a4a;
+}
+[data-theme='light'] .skill-raw-body {
+  background: #f5f0e8;
+  border-color: var(--color-border);
+  color: #5a6a4a;
+}
+
+[data-theme='light'] .prose-interp blockquote {
+  background: var(--color-purple-bg);
+  color: #4a3a28;
+}
+
+[data-theme='light'] .prose-interp tr:nth-child(even) td {
+  background: #f5f0ea;
+}
+
+[data-theme='light'] mark.ann-emphasis {
+  background: rgba(154, 112, 48, 0.2);
+}
+
+[data-theme='light'] .ann-toolbar,
+[data-theme='light'] .ann-panel {
+  background: var(--color-bg-card);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='light'] .hero-glow {
+  background: radial-gradient(ellipse, rgba(90, 62, 122, 0.08) 0%, transparent 70%);
+}
+
+[data-theme='light'] .top-actions {
+  background: rgba(245, 240, 232, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+[data-theme='light'] .hero-pattern {
+  opacity: 0.08;
+}
+
+[data-theme='light'] .hero-symbol {
+  opacity: 0.08;
+}

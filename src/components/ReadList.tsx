@@ -73,26 +73,18 @@ function CategorySection({
   return (
     <div className="category-section">
       <div
-        className="category-header"
+        className="category-header cursor-pointer flex items-center justify-between px-4 py-3 rounded-lg select-none mt-3"
         onClick={() => setCollapsed(v => !v)}
         role="button"
         tabIndex={0}
         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setCollapsed(v => !v) }}
         style={{
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 16px',
-          borderRadius: 8,
           background: 'var(--color-surface)',
-          marginTop: 12,
           marginBottom: collapsed ? 0 : 8,
-          userSelect: 'none',
           transition: 'background 0.2s',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="flex items-center gap-2">
           <ChevronDown
             size={14}
             style={{
@@ -101,14 +93,14 @@ function CategorySection({
               transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
             }}
           />
-          <span style={{ fontWeight: 600, fontSize: 14 }}>{category}</span>
+          <span className="font-semibold text-sm">{category}</span>
         </div>
-        <span className="section-badge" style={{ fontSize: 12 }}>
+        <span className="section-badge text-xs">
           {doneCount}/{chapters.length} 已解读
         </span>
       </div>
       {!collapsed && (
-        <div className="chapter-list" style={{ marginTop: 0 }}>
+        <div className="chapter-list mt-0">
           {chapters.map(ch => {
             const hasSource = sourceNames.includes(ch.name)
             const hasInterp = ch.isDone

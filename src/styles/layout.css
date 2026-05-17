@@ -1,0 +1,58 @@
+/* ===== Layout: page-wrapper, containers, top-actions ===== */
+
+/* 全局居中容器 */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 64px;
+  gap: 0;
+  flex: 1;
+  overflow: auto;
+}
+.page-container-narrow {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px 64px;
+  flex: 1;
+  overflow: auto;
+}
+
+/* 顶部悬浮功能区 */
+.top-actions {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 1100px;
+  padding: 12px 16px;
+  background: rgba(10, 10, 20, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.container-wide {
+  width: 100%;
+  max-width: 1100px;
+}
+.container-mid {
+  width: 100%;
+  max-width: 900px;
+}
