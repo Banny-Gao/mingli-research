@@ -109,7 +109,6 @@
 
 ### P2 — Could Have（中期）
 
-- P2.1 导出与打印（@media print）
 - P2.2 SEO强化（JSON-LD、sitemap）
 - P2.3 深色/浅色模式切换
 - P2.4 键盘快捷键（J/K导航，Esc关闭，B收藏）

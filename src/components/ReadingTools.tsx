@@ -64,8 +64,8 @@ export const BackToTop: React.FC<{ scrollRef: React.RefObject<HTMLDivElement | n
       onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
       style={{
         position: 'fixed',
-        bottom: 24,
-        right: 24,
+        bottom: 10,
+        right: 16,
         width: 40,
         height: 40,
         borderRadius: '50%',

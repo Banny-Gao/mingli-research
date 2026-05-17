@@ -286,10 +286,22 @@ const BookApp: React.FC = () => {
             </h1>
 
             {book.author && (
-              <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 4 }}>{book.author}</p>
+              <p style={{ fontSize: 13, color: 'var(--color-text-dim)', marginBottom: 4 }}>
+                {book.author}
+              </p>
             )}
             {book.description && (
-              <p style={{ fontSize: 13, color: 'var(--color-text-dim)', lineHeight: 1.6, maxWidth: 600, margin: '0 auto 8px' }}>{book.description}</p>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: 'var(--color-text-dim)',
+                  lineHeight: 1.6,
+                  maxWidth: 600,
+                  margin: '0 auto 8px',
+                }}
+              >
+                {book.description}
+              </p>
             )}
 
             <div className="book-hero-stats">
@@ -329,7 +341,7 @@ const BookApp: React.FC = () => {
                 if ((e.target as HTMLElement).classList.contains('modal-backdrop')) closeModal()
               }}
             >
-              <div className="modal-card" style={{ maxHeight: '90vh' }}>
+              <div className="modal-card">
                 <div className="modal-header">
                   <span className="modal-title">{modalTitle}</span>
                   <div style={{ display: 'flex', gap: 8 }}>
@@ -369,11 +381,9 @@ const BookApp: React.FC = () => {
                         </button>
                       </>
                     )}
+
                     <button className="btn-back" onClick={closeModal}>
                       ×
-                    </button>
-                    <button className="btn-back" onClick={() => window.print()} title="打印">
-                      ⎙
                     </button>
                   </div>
                 </div>
