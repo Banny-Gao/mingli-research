@@ -188,14 +188,12 @@ const BookApp: React.FC = () => {
     if (!sel || sel.isCollapsed || !modalBodyRef.current) return
     const text = sel.toString().trim()
     if (!text) return
-    const range = sel.getRangeAt(0)
-    const preCaretRange = range.cloneRange()
-    preCaretRange.selectNodeContents(modalBodyRef.current)
-    preCaretRange.setEnd(range.startContainer, range.startOffset)
-    const start = preCaretRange.toString().length
-    const end = start + text.length
+    // 用 textContent 定位偏移量，避免 DOM range 受 <mark> 标签干扰
+    const plainText = modalBodyRef.current.textContent || ''
+    const start = plainText.indexOf(text)
+    if (start === -1) return
     setToolbarPos({ x: e.clientX, y: e.clientY - 8 })
-    setPendingSelection({ text, start, end })
+    setPendingSelection({ text, start, end: start + text.length })
   }, [])
 
   const handleAnnotationType = (type: AnnotationType) => {
