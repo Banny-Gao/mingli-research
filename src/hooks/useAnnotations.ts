@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export type AnnotationType = 'emphasis' | 'question' | 'quote'
 
@@ -21,6 +21,7 @@ function makeKey(slug: string, chapter: string) {
 export function useAnnotations(slug: string, chapter: string) {
   const key = makeKey(slug, chapter)
   const [annotations, setAnnotations] = useState<Annotation[]>(() => {
+    if (!chapter) return []
     try {
       const raw = localStorage.getItem(key)
       return raw ? JSON.parse(raw) : []
@@ -29,9 +30,20 @@ export function useAnnotations(slug: string, chapter: string) {
     }
   })
 
+  // 切换篇目时从 localStorage 重新加载批注
   useEffect(() => {
+    if (!chapter) { setAnnotations([]); return }
+    try {
+      const raw = localStorage.getItem(key)
+      setAnnotations(raw ? JSON.parse(raw) : [])
+    } catch { setAnnotations([]) }
+  }, [key, chapter])
+
+  // 仅在 modalKey 非空时保存，避免 closeModal 将批注写到空 key 下
+  useEffect(() => {
+    if (!chapter) return
     try { localStorage.setItem(key, JSON.stringify(annotations)) } catch {}
-  }, [annotations, key])
+  }, [annotations, key, chapter])
 
   const add = (ann: Omit<Annotation, 'id' | 'createdAt'>) => {
     setAnnotations(prev => [
