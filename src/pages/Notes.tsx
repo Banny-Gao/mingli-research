@@ -329,7 +329,7 @@ const Notes: React.FC = () => {
                               <input type="checkbox" checked={selectedBm.has(`${bm.slug}::${ch}`)} onChange={() => { setSelectedBm(prev => { const n = new Set(prev); if (n.has(`${bm.slug}::${ch}`)) n.delete(`${bm.slug}::${ch}`); else n.add(`${bm.slug}::${ch}`); return n }) }} style={checkboxStyle} />
                               <div className="notes-chapter-name" style={{ padding: '10px 0 6px' }}>{ch}</div>
                             </div>
-                            <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} style={{ fontSize: 12, color: 'var(--color-text-muted)', textDecoration: 'none', paddingRight: 18, display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} style={{ fontSize: 12, color: 'var(--color-text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
                               继续阅读 <ArrowRight size={12} />
                             </Link>
                           </div>
@@ -391,7 +391,7 @@ const Notes: React.FC = () => {
                               <div className="notes-item-text">「{ann.selectedText}」</div>
                               {ann.note && <div className="notes-item-note">{ann.note}</div>}
                               <div className="notes-item-actions">
-                                <Link to={`/${group.slug}?open=interp&key=${encodeURIComponent(ch.name)}&match=${encodeURIComponent(ann.selectedText)}`} className="notes-item-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                                <Link to={`/${group.slug}?open=${ann.fromSource ? 'source' : 'interp'}&key=${encodeURIComponent(ch.name)}&match=${encodeURIComponent(ann.selectedText)}`} className="notes-item-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
                                   查看批注 <ArrowRight size={12} />
                                 </Link>
                                 <button onClick={() => { deleteAnnotation(group.slug, ch.origChapters?.[0] || ch.name, ann.id); setRefresh(v => v + 1) }} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 12, padding: 0 }}>

@@ -10,6 +10,7 @@ export interface Annotation {
   rangeEnd: number
   note: string
   createdAt: number
+  fromSource?: boolean
 }
 
 const ANN_KEY = 'mingli_annotations'
