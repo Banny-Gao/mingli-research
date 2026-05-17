@@ -289,20 +289,6 @@ const Notes: React.FC = () => {
               )}
             </div>
 
-            {/* Batch action bar */}
-            {(tab === 'annotation' && selectedAnn.size > 0) || (tab === 'bookmark' && selectedBm.size > 0) ? (
-              <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
-                <span style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>
-                  已选 {tab === 'annotation' ? selectedAnn.size : selectedBm.size} 项
-                </span>
-                <button
-                  onClick={tab === 'annotation' ? handleBatchDeleteAnn : handleBatchDeleteBm}
-                  style={{ ...btnBase, borderColor: '#d0505066', color: '#d05050' }}
-                >
-                  <Trash2 size={14} />删除选中
-                </button>
-              </div>
-            ) : null}
           </div>
 
           {tab === 'bookmark' && (
@@ -318,6 +304,13 @@ const Notes: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                     <input type="checkbox" checked={bmTotal > 0 && selectedBm.size === bookmarks.flatMap(b => b.chapters).length} onChange={toggleAllBm} style={checkboxStyle} />
                     <span style={{ fontSize: 12, color: 'var(--color-text-muted)', cursor: 'pointer' }} onClick={toggleAllBm}>全选</span>
+                    <div style={{ flex: 1 }} />
+                    {selectedBm.size > 0 && (
+                      <>
+                        <span style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>已选 {selectedBm.size} 项</span>
+                        <button onClick={handleBatchDeleteBm} style={{ ...btnBase, borderColor: '#d0505066', color: '#d05050' }}><Trash2 size={14} />删除选中</button>
+                      </>
+                    )}
                   </div>
                   {filteredBookmarks.map(bm => {
                     const book = books.find(b => b.slug === bm.slug)
@@ -364,6 +357,13 @@ const Notes: React.FC = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input type="checkbox" checked={total > 0 && selectedAnn.size === all.length} onChange={toggleAllAnn} style={checkboxStyle} />
                     <span style={{ fontSize: 12, color: 'var(--color-text-muted)', cursor: 'pointer' }} onClick={toggleAllAnn}>全选</span>
+                    <div style={{ flex: 1 }} />
+                    {selectedAnn.size > 0 && (
+                      <>
+                        <span style={{ fontSize: 13, color: 'var(--color-text-dim)' }}>已选 {selectedAnn.size} 项</span>
+                        <button onClick={handleBatchDeleteAnn} style={{ ...btnBase, borderColor: '#d0505066', color: '#d05050' }}><Trash2 size={14} />删除选中</button>
+                      </>
+                    )}
                   </div>
                   {groups.map(group => (
                     <div key={group.slug} className="notes-book">
