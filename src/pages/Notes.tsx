@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { books } from '../data/books'
@@ -6,6 +6,7 @@ import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 import { ThemeToggle } from '../main'
 
 const ANN_KEY = 'mingli_annotations'
+const BOOKMARK_KEY = 'mingli_bookmarks'
 
 const TYPE_LABELS: Record<AnnotationType, string> = {
   emphasis: '重点',
@@ -16,6 +17,33 @@ const TYPE_COLORS: Record<AnnotationType, string> = {
   emphasis: 'var(--color-gold)',
   question: '#d05050',
   quote: '#60c060',
+}
+
+function deleteAnnotation(slug: string, chapter: string, annId: string) {
+  const key = `${ANN_KEY}_${slug}_${chapter}`
+  try {
+    const raw = localStorage.getItem(key)
+    if (!raw) return
+    const anns: Annotation[] = JSON.parse(raw).filter((a: Annotation) => a.id !== annId)
+    if (anns.length === 0) localStorage.removeItem(key)
+    else localStorage.setItem(key, JSON.stringify(anns))
+  } catch {}
+}
+
+function loadAllBookmarks(): Array<{ slug: string; chapters: string[] }> {
+  const map = new Map<string, string[]>()
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    if (!key?.startsWith(BOOKMARK_KEY)) continue
+    const slug = key.replace(BOOKMARK_KEY + '_', '')
+    try {
+      const raw = localStorage.getItem(key)
+      if (!raw) continue
+      const chapters: string[] = JSON.parse(raw)
+      if (chapters.length > 0) map.set(slug, chapters)
+    } catch {}
+  }
+  return Array.from(map.entries()).map(([slug, chapters]) => ({ slug, chapters }))
 }
 
 function loadAllAnnotations(): Array<{ slug: string; chapter: string; annotation: Annotation }> {
@@ -61,7 +89,9 @@ function exportMarkdown(
 }
 
 const Notes: React.FC = () => {
-  const all = useMemo(() => loadAllAnnotations(), [])
+  const [refresh, setRefresh] = useState(0)
+  const all = useMemo(() => loadAllAnnotations(), [refresh])
+  const bookmarks = useMemo(() => loadAllBookmarks(), [refresh])
 
   const groups = useMemo(() => {
     const map = new Map<string, Map<string, Annotation[]>>()
@@ -82,6 +112,7 @@ const Notes: React.FC = () => {
   }, [all])
 
   const total = all.length
+  const bmTotal = bookmarks.reduce((s, b) => s + b.chapters.length, 0)
 
   return (
     <>
@@ -107,10 +138,10 @@ const Notes: React.FC = () => {
                 textShadow: '0 0 30px var(--color-gold-glow)',
               }}
             >
-              读书笔记
+              我的笔记
             </h1>
             <p style={{ fontSize: 13, color: 'var(--color-text-dim)', letterSpacing: 2 }}>
-              共 {total} 条批注
+              {total} 条批注 · {bmTotal} 个收藏
             </p>
           </div>
 
@@ -137,7 +168,42 @@ const Notes: React.FC = () => {
             )}
           </div>
 
-          <div className="notes-list">
+          {/* 收藏列表 */}
+          {bmTotal > 0 && (
+            <div className="notes-section">
+              <div className="section-header">
+                <span className="section-title">我的收藏</span>
+                <span className="section-badge">{bmTotal} 篇</span>
+              </div>
+              {bookmarks.map(bm => {
+                const book = books.find(b => b.slug === bm.slug)
+                return (
+                  <div key={bm.slug} className="notes-book">
+                    <div className="notes-book-title">
+                      <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                        《{book?.title || bm.slug}》
+                      </Link>
+                    </div>
+                    {bm.chapters.map(ch => (
+                      <div key={ch} className="notes-chapter">
+                        <div className="notes-chapter-name">{ch}</div>
+                        <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} className="notes-item-link">
+                          继续阅读 →
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {/* 批注列表 */}
+          <div className="notes-section">
+            <div className="section-header">
+              <span className="section-title">批注记录</span>
+              <span className="section-badge">{total} 条</span>
+            </div>
             {groups.length === 0 && (
               <div className="notes-empty">
                 <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
@@ -195,6 +261,15 @@ const Notes: React.FC = () => {
                           <Link to={`/${group.slug}`} className="notes-item-link">
                             查看原文 →
                           </Link>
+                          <button
+                            onClick={() => { deleteAnnotation(group.slug, ch.name, ann.id); setRefresh(v => v + 1) }}
+                            style={{
+                              background: 'none', border: 'none', color: 'var(--color-text-muted)',
+                              cursor: 'pointer', fontSize: 12, padding: 0,
+                            }}
+                          >
+                            删除
+                          </button>
                         </div>
                       </div>
                     ))}
