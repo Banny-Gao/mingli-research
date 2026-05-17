@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Filter, Bookmark, MessageSquare } from 'lucide-react'
 import { books } from '../data/books'
+import { skillToInterp } from '../data/ditiansui-site/assoc'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 import { ThemeToggle } from '../main'
 
@@ -18,6 +19,12 @@ const TYPE_COLORS: Record<AnnotationType, string> = {
   emphasis: 'var(--color-gold)',
   question: '#d05050',
   quote: '#60c060',
+}
+
+// 将 skill key 映射回篇目名称，使同一篇文章的批注归到一起
+function normalizeChapter(chapter: string): string {
+  const interp = (skillToInterp as Record<string, string[]>)[chapter]
+  return interp && interp.length > 0 ? interp[0] : chapter
 }
 
 function deleteAnnotation(slug: string, chapter: string, annId: string) {
@@ -47,19 +54,20 @@ function loadAllBookmarks(): Array<{ slug: string; chapters: string[] }> {
   return Array.from(map.entries()).map(([slug, chapters]) => ({ slug, chapters }))
 }
 
-function loadAllAnnotations(): Array<{ slug: string; chapter: string; annotation: Annotation }> {
-  const results: Array<{ slug: string; chapter: string; annotation: Annotation }> = []
+function loadAllAnnotations(): Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> {
+  const results: Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> = []
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
     if (!key?.startsWith(ANN_KEY)) continue
     const parts = key.replace(ANN_KEY + '_', '').split('_', 2)
     if (parts.length !== 2) continue
-    const [slug, chapter] = parts
+    const [slug, origChapter] = parts
     try {
       const raw = localStorage.getItem(key)
       if (!raw) continue
       const anns: Annotation[] = JSON.parse(raw)
-      for (const ann of anns) results.push({ slug, chapter, annotation: ann })
+      const nc = normalizeChapter(origChapter)
+      for (const ann of anns) results.push({ slug, chapter: nc, origChapter, annotation: ann })
     } catch {}
   }
   return results.sort((a, b) => b.annotation.createdAt - a.annotation.createdAt)
@@ -119,21 +127,27 @@ const Notes: React.FC = () => {
   }, [all, bookmarks])
 
   const groups = useMemo(() => {
-    const map = new Map<string, Map<string, Annotation[]>>()
+    const map = new Map<string, Map<string, { annotations: Annotation[]; origChapters: Set<string> }>>()
     for (const item of all) {
       if (bookFilter !== 'all' && item.slug !== bookFilter) continue
       if (typeFilter !== 'all' && item.annotation.type !== typeFilter) continue
       if (!map.has(item.slug)) map.set(item.slug, new Map())
       const chMap = map.get(item.slug)!
-      if (!chMap.has(item.chapter)) chMap.set(item.chapter, [])
-      chMap.get(item.chapter)!.push(item.annotation)
+      if (!chMap.has(item.chapter)) chMap.set(item.chapter, { annotations: [], origChapters: new Set() })
+      const entry = chMap.get(item.chapter)!
+      entry.annotations.push(item.annotation)
+      entry.origChapters.add(item.origChapter)
     }
     return Array.from(map.entries()).map(([slug, chMap]) => {
       const book = books.find(b => b.slug === slug)
       return {
         slug,
         book: book?.title || slug,
-        chapters: Array.from(chMap.entries()).map(([name, annotations]) => ({ name, annotations })),
+        chapters: Array.from(chMap.entries()).map(([name, { annotations, origChapters }]) => ({
+          name,
+          annotations,
+          origChapters: Array.from(origChapters),
+        })),
       }
     })
   }, [all, bookFilter, typeFilter])
@@ -333,7 +347,7 @@ const Notes: React.FC = () => {
                             <div className="notes-item-actions">
                               <Link to={`/${group.slug}`} className="notes-item-link">查看原文 →</Link>
                               <button
-                                onClick={() => { deleteAnnotation(group.slug, ch.name, ann.id); setRefresh(v => v + 1) }}
+                                onClick={() => { deleteAnnotation(group.slug, ch.origChapters?.[0] || ch.name, ann.id); setRefresh(v => v + 1) }}
                                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 12, padding: 0 }}
                               >
                                 删除
