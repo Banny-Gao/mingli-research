@@ -52,7 +52,6 @@ export function useGlobalProgress() {
 
   useEffect(() => {
     const today = padDate(new Date())
-    const next = { ...gp, lastActiveDate: today }
     // update streak without full re-render just for lastActiveDate
     if (gp.lastActiveDate !== today) {
       const updated = { ...gp, streakDays: computeStreak(gp, today), lastActiveDate: today }

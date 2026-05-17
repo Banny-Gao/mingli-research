@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
 
 interface Props {
@@ -105,10 +105,9 @@ interface TocSidebarProps {
   html: string
   scrollRef: React.RefObject<HTMLDivElement | null>
   open: boolean
-  onClose: () => void
 }
 
-export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, onClose }) => {
+export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open }) => {
   const toc = extractTOC(html)
   const [activeId, setActiveId] = useState('')
 

@@ -42,17 +42,6 @@ function batchDeleteAnnotations(items: Array<{ slug: string; origChapter: string
   }
 }
 
-function deleteBookmark(slug: string, chapter: string) {
-  const key = `${BOOKMARK_KEY}_${slug}`
-  try {
-    const raw = localStorage.getItem(key)
-    if (!raw) return
-    const chapters: string[] = JSON.parse(raw).filter((c: string) => c !== chapter)
-    if (chapters.length === 0) localStorage.removeItem(key)
-    else localStorage.setItem(key, JSON.stringify(chapters))
-  } catch {}
-}
-
 function batchDeleteBookmarks(items: Array<{ slug: string; chapter: string }>) {
   // Group by slug to minimize localStorage reads
   const bySlug = new Map<string, Set<string>>()

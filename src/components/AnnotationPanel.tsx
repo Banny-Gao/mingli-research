@@ -25,8 +25,6 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
   const [editingId, setEditingId] = useState<string | null>(null)
   const [noteVal, setNoteVal] = useState('')
 
-  const grouped = annotations
-
   return (
     <div className="ann-panel">
       <div className="ann-panel-header">
