@@ -302,7 +302,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
               </button>
             )}
             <span className="modal-title">{modalTitle}</span>
-            <div style={{ flex: 1 }} />
+            <div className="flex-1" />
             <ActionBar
               key={modalKey}
               modalType={modalType}
