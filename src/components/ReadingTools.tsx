@@ -138,7 +138,6 @@ export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, o
       const top = target.offsetTop - 16
       el.scrollTo({ top, behavior: 'smooth' })
     }
-    onClose()
   }
 
   if (toc.length === 0) return null
