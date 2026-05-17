@@ -1354,7 +1354,7 @@ mark.ann-quote {
 .notes-section {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 12px;
   width: 100%;
   max-width: 1080px;
 }
