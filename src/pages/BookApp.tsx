@@ -183,7 +183,7 @@ const BookApp: React.FC = () => {
     if (bookSlug) touchChapter(bookSlug, key)
   }
 
-  const handleMouseUp = useCallback(() => {
+  const handleMouseUp = useCallback((e: React.MouseEvent) => {
     const sel = window.getSelection()
     if (!sel || sel.isCollapsed || !modalBodyRef.current) return
     const text = sel.toString().trim()
@@ -194,8 +194,7 @@ const BookApp: React.FC = () => {
     preCaretRange.setEnd(range.startContainer, range.startOffset)
     const start = preCaretRange.toString().length
     const end = start + text.length
-    const rect = range.getBoundingClientRect()
-    setToolbarPos({ x: rect.left + rect.width / 2, y: rect.top - 8 })
+    setToolbarPos({ x: e.clientX, y: e.clientY - 8 })
     setPendingSelection({ text, start, end })
   }, [])
 
@@ -291,7 +290,7 @@ const BookApp: React.FC = () => {
                 <ReadingProgress scrollRef={modalBodyRef} />
                 <div className="modal-content-wrapper">
                   {modalType === 'interp' && <TocSidebar html={rawBody} scrollRef={modalBodyRef} open={tocOpen} onClose={() => setTocOpen(false)} />}
-                  <div className="modal-body" ref={modalBodyRef} onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined}>
+                  <div className="modal-body" ref={modalBodyRef} onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined} onTouchEnd={modalType !== 'skill' ? (e => { const t = e.changedTouches[0]; handleMouseUp({ clientX: t.clientX, clientY: t.clientY } as any) }) : undefined}>
                     {modalType === 'skill' ? (
                       <pre className="skill-raw-body"><code>{skillRawText || '加载中...'}</code></pre>
                     ) : (

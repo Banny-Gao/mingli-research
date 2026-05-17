@@ -29,7 +29,7 @@ const ReadList: React.FC<Props> = ({
   }
 
   return (
-    <div>
+    <>
       <div className="section-header">
         <span className="section-title">篇目总览</span>
         <span className="section-badge">
@@ -49,7 +49,7 @@ const ReadList: React.FC<Props> = ({
           interpToSkill={interpToSkill}
         />
       ))}
-    </div>
+    </>
   )
 }
 

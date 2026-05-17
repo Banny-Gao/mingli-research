@@ -67,8 +67,12 @@ const Landing: React.FC = () => {
             maxWidth: 900,
           }}
         >
-          <Link to="/notes" className="notes-cta-btn" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <FileText size={16} /> 我的笔记
+          <Link
+            to="/notes"
+            className="notes-cta-btn"
+            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <FileText size={16} /> 个人中心
           </Link>
         </div>
 
@@ -76,19 +80,11 @@ const Landing: React.FC = () => {
         <div className="book-grid">
           {books.map(book => (
             <Link key={book.slug} to={`/${book.slug}`} className="book-card">
-              <div className="book-card-header">
-                <div className="book-card-info">
-                  <h2 className="book-card-title">《{book.title}》</h2>
-                  <p className="book-card-meta">{book.author || ''}{book.version ? ` ｜ ${book.version}` : ''}</p>
-                </div>
-                <div className="book-card-count">
-                  <div className="book-card-count-num">{book.total}</div>
-                  <div className="book-card-count-label">篇章</div>
-                </div>
+              <div className="book-card-info">
+                <h2 className="book-card-title">《{book.title}》</h2>
+                <p className="book-card-meta">{book.author || ''}</p>
               </div>
-              {book.description && (
-                <p className="book-card-desc">{book.description}</p>
-              )}
+              {book.description && <p className="book-card-desc">{book.description}</p>}
               <div className="progress-bar">
                 <div
                   className="progress-fill"
