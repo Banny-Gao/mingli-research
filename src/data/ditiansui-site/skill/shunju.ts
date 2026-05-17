@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字命局，输出该命局的顺局判定结果。此技能在执行全局五行力量评估后，识别日主是否健旺、印比是否成势、是否满足&quot;顺势而行&quot;的条件。用于八字格局分析中&quot;极旺格局&quot;的判断场景。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字命局，输出该命局的顺局判定结果。此技能在执行全局五行力量评估后，识别日主是否健旺、印比是否成势、是否满足&quot;顺势而行&quot;的条件。用于八字格局分析中&quot;极旺格局&quot;的判断场景。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱干支（如 &quot;癸卯&quot;）</li>
 <li><code>month_pillar</code>：月柱干支（如 &quot;甲寅&quot;）</li>
 <li><code>day_pillar</code>：日柱干支（如 &quot;甲寅&quot;）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主五行（自动从日柱提取，如 &quot;甲木&quot;）</li>
 <li><code>gender</code>：性别（可选，用于排大运方向）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：评估日主强弱</strong></p>
 <ol>
 <li>统计全局五行力量分布（天干+地支+藏干）</li>
@@ -49,8 +46,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShunjuAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShunjuAnalysis {
   summary: {
     dayMaster: string;                    // 日主
     isShunJu: boolean;                    // 是否顺局

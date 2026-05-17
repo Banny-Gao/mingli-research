@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>奋郁</h1>
-<p>1377字
+export default `<h1 id="奋郁">奋郁</h1><p>1377字
 第 四十五 页
 《滴天髓阐微》下篇第09章 奋郁
 局中显奋发之机者，神舒意畅；象内多沉埋之气者，心郁志灰。

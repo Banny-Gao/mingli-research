@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在八字格局分析中，当发现正官与七杀同时出现（或单独七杀制化复杂），调用此技能进行官杀格局的专项分析。此技能输出官杀关系的判定结果（可混/不可混、格局类型定位），不重复基础格局判断。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在八字格局分析中，当发现正官与七杀同时出现（或单独七杀制化复杂），调用此技能进行官杀格局的专项分析。此技能输出官杀关系的判定结果（可混/不可混、格局类型定位），不重复基础格局判断。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>日主强弱评估</strong>：由上游分析提供的日主旺衰判断（身旺/身弱/中和）</li>
 <li><strong>官杀标记</strong>：已标记出的正官和七杀所在位置（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>判定官杀性质</strong>
 a. 根据日主强弱判定官杀的实际性质：</p>
 <ul>
@@ -52,8 +49,7 @@ b. <strong>依据</strong>：官杀篇各格任氏曰分析</li>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface GuanShaReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface GuanShaReport {
   /** 官杀基本信息 */
   basic: {
     officialPosition: string[];  // 正官所在位置

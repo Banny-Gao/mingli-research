@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>假神</h1>
-<p>1398字</p>
+export default `<h1 id="假神">假神</h1><p>1398字</p>
 <p>第 二十八 页</p>
 <p>《滴天髓阐微》上篇第26章 假神</p>
 <p>真假参差难辨论，不明不暗受困顿。提纲不与真神照，暗处寻真也有真。</p>

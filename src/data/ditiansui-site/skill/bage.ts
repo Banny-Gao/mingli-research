@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个完整的八字四柱，输出该命局的格局判定结果。此技能执行任铁樵&quot;先观月令所得何支，次看天干透出何神，再究司令以定真假，然后取用，以分清浊&quot;的完整流程，并根据&quot;病药说&quot;给出行运建议。用于辅助八字深度分析。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个完整的八字四柱，输出该命局的格局判定结果。此技能执行任铁樵&quot;先观月令所得何支，次看天干透出何神，再究司令以定真假，然后取用，以分清浊&quot;的完整流程，并根据&quot;病药说&quot;给出行运建议。用于辅助八字深度分析。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱（天干+地支），如 &quot;庚辰&quot;</li>
 <li><code>month_pillar</code>：月柱（天干+地支），如 &quot;癸未&quot;</li>
 <li><code>day_pillar</code>：日柱（天干+地支），如 &quot;乙未&quot;</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主（自动从日柱提取）</li>
 <li><code>gender</code>（可选）：性别（男/女），用于排大运顺逆</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：确定月令地支</strong></p>
 <ol>
 <li>提取月柱的地支（即月令提纲）</li>
@@ -121,8 +118,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface BageAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface BageAnalysis {
   summary: {
     dayMaster: string;                  // 日主
     monthBranch: string;                // 月令地支

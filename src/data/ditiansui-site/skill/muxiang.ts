@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>分析八字命局中印星（母）与日主（子）之间的生扶与平衡关系，判断印星是否清正得力、是否存在&quot;母旺子衰&quot;或&quot;印星浊乱&quot;的失衡状态。AI 执行者应在需要分析命局中印星的质量和影响时调用本技能，尤其涉及长辈关系、学业运势、文化修养等方面的分析。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>分析八字命局中印星（母）与日主（子）之间的生扶与平衡关系，判断印星是否清正得力、是否存在&quot;母旺子衰&quot;或&quot;印星浊乱&quot;的失衡状态。AI 执行者应在需要分析命局中印星的质量和影响时调用本技能，尤其涉及长辈关系、学业运势、文化修养等方面的分析。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式）</li>
 <li><strong>日主</strong>：日柱天干的五行属性（自动提取）</li>
 <li><strong>印星判断</strong>：列出四柱中的正印和偏印（含地支藏干中的印星）</li>
 <li><strong>官星判断</strong>：列出四柱中的正官和七杀（用于判断印星是否泄官）</li>
 <li><strong>可选</strong>：长辈关系背景信息（用于辅助判断印星是否&quot;清正&quot;）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>定位母子角色</strong></p>
 <ul>
 <li>母：正印 + 偏印（印星为母，生身之功）</li>
@@ -48,8 +45,7 @@ export default `<h2>功能</h2>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface MuXiangReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface MuXiangReport {
   yinXing: {
     zhengYin: string[];    // 正印列表（干支）
     pianYin: string[];     // 偏印列表（干支）

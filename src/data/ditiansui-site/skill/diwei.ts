@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，分别对&quot;贵&quot;（官印）和&quot;富&quot;（财星）两个维度进行独立评估，输出命主的社会地位等级。此技能适用于八字分析中&quot;落脚点&quot;的评估——在格局判断之后，用以衡量命主在社会中的实际层次。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，分别对&quot;贵&quot;（官印）和&quot;富&quot;（财星）两个维度进行独立评估，输出命主的社会地位等级。此技能适用于八字分析中&quot;落脚点&quot;的评估——在格局判断之后，用以衡量命主在社会中的实际层次。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;壬申 丙午 庚午 丙子&quot;）</li>
 <li><strong>日主五行</strong>：日干对应的五行（推导得出）</li>
 <li><strong>格局判定</strong>：八格类型（可选，辅助地位判断）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>官印评估（贵气判断）</strong>
 a. 从四柱中提取所有官星（正官、七杀）和印星（正印、偏印）
 b. 评估官印的有力程度：</p>
@@ -58,8 +55,7 @@ b. <strong>依据</strong>：地位篇【原注】&quot;地位者，贵贱之等
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface DiWeiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface DiWeiReport {
   /** 贵气判断 */
   nobility: {
     guanXing: {

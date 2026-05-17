@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，先进行三元层级的分解分析，将命局拆解为天元（天干四字）、地元（地支四字）、人元（地支所藏天干）三个层次，分别评估各层次的五行力量与相互关系。此技能适用于八字分析的初始阶段——在任何用神选取、格局判断之前，先完成三元框架的建立。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，先进行三元层级的分解分析，将命局拆解为天元（天干四字）、地元（地支四字）、人元（地支所藏天干）三个层次，分别评估各层次的五行力量与相互关系。此技能适用于八字分析的初始阶段——在任何用神选取、格局判断之前，先完成三元框架的建立。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 戊午 庚申&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（可选，影响排大运方向）</li>
 <li><strong>大运</strong>：已排好的大运流年列表（可选，影响人元透出的岁运判定）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>天元拆解</strong>
 a. 从四柱中提取四个天干
 b. 统计天干五行分布（金木水火土各出现几次）
@@ -38,8 +35,7 @@ d. <strong>依据</strong>：天道篇【原注】&quot;命于天地人三元之
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface SanYuanReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface SanYuanReport {
   /** 命局基础信息 */
   basic: {
     year: string;    // 年柱干支

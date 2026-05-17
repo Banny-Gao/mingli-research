@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字命局，识别是否存在&quot;两神交战&quot;（官杀相战、财印相战等对抗性五行关系），然后评估制化条件——&quot;制&quot;（以强克弱）和&quot;化&quot;（引入第三方疏导）是否得宜。用于八字格局深度分析中，评估命局内部对抗性力量的平衡状态。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字命局，识别是否存在&quot;两神交战&quot;（官杀相战、财印相战等对抗性五行关系），然后评估制化条件——&quot;制&quot;（以强克弱）和&quot;化&quot;（引入第三方疏导）是否得宜。用于八字格局深度分析中，评估命局内部对抗性力量的平衡状态。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱干支（如 &quot;壬申&quot;）</li>
 <li><code>month_pillar</code>：月柱干支（如 &quot;戊申&quot;）</li>
 <li><code>day_pillar</code>：日柱干支（如 &quot;甲申&quot;）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主五行（自动提取）</li>
 <li><code>gender</code>：性别（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：识别对抗性关系</strong></p>
 <ol>
 <li>扫描全局五行力量分布，找出两种最强的五行</li>
@@ -57,8 +54,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZhanjuAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZhanjuAnalysis {
   summary: {
     hasBattle: boolean;                   // 是否存在战局
     battleType: &quot;guansha&quot; | &quot;caiyin&quot; | &quot;other&quot; | null; // 战局类型

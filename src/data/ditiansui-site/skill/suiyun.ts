@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱、已排好的大运和指定流年之后，按&quot;命为根基、运为扶抑、岁为引动&quot;三层框架分析命局在时间维度上的变化趋势。此技能适用于八字实战分析中&quot;什么时候发生什么事&quot;的判断——所有静态分析完成后，用岁运分析来回答&quot;何时吉、何时凶&quot;的问题。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱、已排好的大运和指定流年之后，按&quot;命为根基、运为扶抑、岁为引动&quot;三层框架分析命局在时间维度上的变化趋势。此技能适用于八字实战分析中&quot;什么时候发生什么事&quot;的判断——所有静态分析完成后，用岁运分析来回答&quot;何时吉、何时凶&quot;的问题。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（确定大运顺逆排列方向）</li>
 <li><strong>大运列表</strong>：已排好的大运序列，格式如[&quot;甲子&quot;, &quot;乙丑&quot;, &quot;丙寅&quot;, ...]（可选，若未提供则自动推算）</li>
 <li><strong>流年</strong>：待分析的年份，格式如&quot;甲子&quot;（支持单年查询或区间查询）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>命局喜忌确定</strong>
 a. 分析八字四柱，确定日主旺衰
 b. 确定喜神和忌神（平衡命局偏枯的关键五行）
@@ -42,8 +39,7 @@ b. 输出按时间分段的结果（每个大运 + 重要流年）
 c. <strong>依据</strong>：岁运篇【原注】&quot;岁运并临，吉凶立见&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface SuiYunReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface SuiYunReport {
   /** 命局喜忌 */
   baseProfile: {
     riZhu: string;            // 日干

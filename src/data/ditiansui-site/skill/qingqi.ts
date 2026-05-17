@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在八字格局分析完成后，调用此技能评估格局的清浊程度。此技能不替代格局判断，而是在已确定用神、喜忌的基础上，评估各神的排布是否&quot;循序得所&quot;、是否有&quot;精神&quot;、是否存在可清除的浊气。此技能应配合浊气评估器（zhuoqi）使用，两篇合读才能全面判断格局优劣。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在八字格局分析完成后，调用此技能评估格局的清浊程度。此技能不替代格局判断，而是在已确定用神、喜忌的基础上，评估各神的排布是否&quot;循序得所&quot;、是否有&quot;精神&quot;、是否存在可清除的浊气。此技能应配合浊气评估器（zhuoqi）使用，两篇合读才能全面判断格局优劣。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串）</li>
 <li><strong>格局分析结果</strong>：已确定的格局类型、用神、喜忌（对象）</li>
 <li><strong>十神位置</strong>：各十神在四柱中的分布位置（可选，用于替代计算）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>评估清气的基本状态</strong>
 a. 检查格局中各神是否&quot;循序得所&quot;——生克链条是否通顺
 b. 检查是否有&quot;闲神&quot;——不参与核心生克的五行是否破局
@@ -35,8 +32,7 @@ a. 汇总清气状态、精神状态、澄浊可行性
 b. 得出最终结论：清而精神/清而枯/浊可清/浊难清</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface QingQiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface QingQiReport {
   /** 清气评估 */
   qingAssessment: {
     status: &quot;清而有精神&quot; | &quot;清而无气&quot; | &quot;半清半浊&quot; | &quot;浊可求清&quot; | &quot;浊难清除&quot;;

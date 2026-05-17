@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，先分析天干之间的相合关系（甲己合土、乙庚合金等五种合化），再分析地支之间的六合关系（子丑合、寅亥合等六种），然后判断天干是否通根于地支、干支配合是否得当，最后以日主为中心评估命局的整体协调性。此技能在完成了天道篇三元分析之后、进入八格判断之前使用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，先分析天干之间的相合关系（甲己合土、乙庚合金等五种合化），再分析地支之间的六合关系（子丑合、寅亥合等六种），然后判断天干是否通根于地支、干支配合是否得当，最后以日主为中心评估命局的整体协调性。此技能在完成了天道篇三元分析之后、进入八格判断之前使用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干和地支（字符串，如&quot;甲子 己巳 甲午 甲子&quot;）</li>
 <li><strong>月令</strong>：出生月份地支（用于判断合化条件的成败）</li>
 <li><strong>性别</strong>：乾造或坤造（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>天干相合分析</strong>
 a. 检测四柱中是否存在以下对子：</p>
 <ul>
@@ -61,8 +58,7 @@ b. 检查天干与地支的五行趋势是否一致
 c. <strong>依据</strong>：干支总论篇【原句】&quot;干支配合，最宜辨其喜忌&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface GanZhiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface GanZhiReport {
   /** 天干相合分析 */
   tianGanHe: {
     pairs: Array&lt;{

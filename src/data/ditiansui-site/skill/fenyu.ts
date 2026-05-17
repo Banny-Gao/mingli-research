@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字命局和大运列表后，先评估命局本身的阳明/阴晦倾向（用神是否得力、天地是否交泰），再结合大运判断运途是否能&quot;辅格助用&quot;——即阴晦之命能否被运途转化为舒畅，阳明之命会否被运途拉入困郁。此技能适用于人生趋势咨询、岁运规划等场景。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字命局和大运列表后，先评估命局本身的阳明/阴晦倾向（用神是否得力、天地是否交泰），再结合大运判断运途是否能&quot;辅格助用&quot;——即阴晦之命能否被运途转化为舒畅，阳明之命会否被运途拉入困郁。此技能适用于人生趋势咨询、岁运规划等场景。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串）</li>
 <li><strong>大运列表</strong>：根据命主性别和出生年排好的大运（每运10年），包含运干运支</li>
 <li><strong>当前年龄</strong>：可选，用于定位当前所处的大运</li>
 <li><strong>性别</strong>：乾造/坤造，用于排大运方向验证</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>判定命局基调（阳明/阴晦）</strong>
 a. 确定用神：按通常的用神选取法（平衡日主、调候、通关等）
 b. 判断用神是否得力：</p>
@@ -57,8 +54,7 @@ d. <strong>依据</strong>：奋郁篇【任氏曰】&quot;如用亥中甲木，
 <li><p><strong>输出报告</strong></p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface FenYuReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface FenYuReport {
   /** 命局基调 */
   baseTone: {
     assessment: &quot;阳明&quot; | &quot;阴晦&quot; | &quot;中平&quot;;

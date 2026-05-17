@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱后，分析命局中木（震）与金（兑）的力量对比与状态，根据木所处的季节（春初/仲春/夏令/秋令/冬令），从&quot;攻、成、润、从、暖&quot;五法中选取最匹配的调候策略，并给出行运建议。此技能适用于金木交战型命局的专项分析，可在全局格局分析之后调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱后，分析命局中木（震）与金（兑）的力量对比与状态，根据木所处的季节（春初/仲春/夏令/秋令/冬令），从&quot;攻、成、润、从、暖&quot;五法中选取最匹配的调候策略，并给出行运建议。此技能适用于金木交战型命局的专项分析，可在全局格局分析之后调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>pillars</code>：四柱八字（格式如&quot;丙寅 庚寅 甲申 乙丑&quot;）</li>
 <li><code>day_master</code>：日主五行</li>
 <li><code>season_detail</code>：木所处的具体季节阶段（如&quot;春初&quot;、&quot;仲春&quot;、&quot;夏令&quot;、&quot;秋令&quot;、&quot;冬令&quot;），由月令地支判定</li>
 <li><code>month_branch</code>：月令地支</li>
 <li><code>gender</code>（可选）：性别</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：判定金木状态</strong></p>
 <ol>
 <li>确定日主是否为木（甲木或乙木）——本篇以甲乙木为例</li>
@@ -56,8 +53,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZhenDuiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZhenDuiReport {
   /** 金木基础状态 */
   woodMetalStatus: {
     woodScore: number;

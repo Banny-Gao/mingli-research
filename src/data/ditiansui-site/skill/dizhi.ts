@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱的四个地支，分析全部地支之间的相互作用关系，输出完整的藏干结构、合冲刑害关系列表及吉凶倾向判断。用于辅助格局取用和命局气象判断——先理清地支之间的所有关系，再判断五行气的来源、集中与冲突。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱的四个地支，分析全部地支之间的相互作用关系，输出完整的藏干结构、合冲刑害关系列表及吉凶倾向判断。用于辅助格局取用和命局气象判断——先理清地支之间的所有关系，再判断五行气的来源、集中与冲突。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_branch</code>：年柱地支（子丑寅卯辰巳午未申酉戌亥之一）</li>
 <li><code>month_branch</code>：月柱地支（同上）</li>
 <li><code>day_branch</code>：日柱地支（同上）</li>
 <li><code>hour_branch</code>：时柱地支（同上）</li>
 <li><code>season</code>（可选）：出生季节或月令，用于判断旺衰，辅助冲的吉凶判断</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>列出每个地支的藏干</strong></p>
 <ol>
 <li>依据地支藏干表（子癸、丑己癸辛、寅甲丙戊、卯乙、辰戊乙癸、巳丙戊庚、午丁己、未己丁乙、申庚壬戊、酉辛、戌戊辛丁、亥壬甲）</li>
@@ -67,8 +64,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface DizhiAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface DizhiAnalysis {
   branches: BranchInfo[];           // 四个地支的详细信息
   sanHe: SanHeResult[];            // 三合局
   sanHui: SanHuiResult[];          // 三会局

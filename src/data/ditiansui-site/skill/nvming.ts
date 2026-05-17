@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>接收到坤造（女命）八字后，先判定命局的用神与喜神，再将用神映射为夫星、喜神映射为子星，完成女命特有的夫子星判定。此技能应替代通用用神分析，专用于女命情境——因为在女命中，用神的选择受到夫星/子星的约束，并非完全自由的选神。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>接收到坤造（女命）八字后，先判定命局的用神与喜神，再将用神映射为夫星、喜神映射为子星，完成女命特有的夫子星判定。此技能应替代通用用神分析，专用于女命情境——因为在女命中，用神的选择受到夫星/子星的约束，并非完全自由的选神。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱（字符串，如&quot;戊申 甲寅 壬寅 丁未&quot;）</li>
 <li><strong>性别</strong>：必须为坤造（女命）</li>
 <li><strong>大运</strong>：已排大运（可选，影响夫星子星的岁运应期判定）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>判定日主旺衰</strong>
 a. 按月令、地支藏干、四柱生扶克耗，判定日主旺衰
 b. 标记比劫（同类）、印绶（生我）、官杀（克我）、财星（我克）、食伤（我生）的数量与强弱
@@ -48,8 +45,7 @@ a. 汇总日主、夫星、子星、品格倾向四项判定
 b. 每条判定附原文依据</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface NvMingReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface NvMingReport {
   /** 基础信息 */
   basic: {
     bazi: string;           // 八字字符串

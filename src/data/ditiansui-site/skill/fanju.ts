@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字命局，识别日主是否&quot;失令受攻&quot;且&quot;反与时争&quot;——即反局的三大特征。此技能用于八字深度分析中的风险识别阶段，辅助判断命局是否存在反局倾向及其凶险程度。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字命局，识别日主是否&quot;失令受攻&quot;且&quot;反与时争&quot;——即反局的三大特征。此技能用于八字深度分析中的风险识别阶段，辅助判断命局是否存在反局倾向及其凶险程度。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱干支（如 &quot;庚申&quot;）</li>
 <li><code>month_pillar</code>：月柱干支（如 &quot;甲申&quot;）</li>
 <li><code>day_pillar</code>：日柱干支（如 &quot;甲申&quot;）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主五行（自动从日柱提取）</li>
 <li><code>gender</code>：性别（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：判断日主是否失令</strong></p>
 <ol>
 <li>提取月令地支（月柱地支）</li>
@@ -53,8 +50,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface FanjuAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface FanjuAnalysis {
   summary: {
     isFanJu: boolean;                     // 是否反局
     riskLevel: &quot;high&quot; | &quot;medium&quot; | &quot;low&quot;; // 风险等级

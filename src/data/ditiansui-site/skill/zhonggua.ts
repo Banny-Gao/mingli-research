@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱后，将命局中的十神按&quot;日主阵营&quot;和&quot;敌方阵营&quot;（或按四柱全局主流势力）分为两方，评估各方的力量强弱，判定是&quot;强众敌寡&quot;还是&quot;强寡敌众&quot;局面，给出正确的扶抑策略和行运方向。此技能用于辅助格局对抗性分析——在格局判断基础上进一步分析对抗双方的强弱关系。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱后，将命局中的十神按&quot;日主阵营&quot;和&quot;敌方阵营&quot;（或按四柱全局主流势力）分为两方，评估各方的力量强弱，判定是&quot;强众敌寡&quot;还是&quot;强寡敌众&quot;局面，给出正确的扶抑策略和行运方向。此技能用于辅助格局对抗性分析——在格局判断基础上进一步分析对抗双方的强弱关系。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>pillars</code>：四柱八字（格式如&quot;戊辰 乙丑 戊戌 辛酉&quot;）</li>
 <li><code>day_master</code>：日主五行</li>
 <li><code>shi_shen_map</code>：十神映射表</li>
 <li><code>analysis_mode</code>（可选）：&quot;日主中心&quot;或&quot;全局中心&quot;，默认&quot;全局中心&quot;</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：划分阵营</strong></p>
 <ol>
 <li>若以日主为中心：日主及其生扶者（印、比劫）为一方的&quot;众&quot;，克制日主者（官杀）及生扶官杀者（财）为另一方的&quot;寡&quot;</li>
@@ -44,8 +41,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZhongGuaReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZhongGuaReport {
   /** 阵营划分 */
   factions: {
     strong: {

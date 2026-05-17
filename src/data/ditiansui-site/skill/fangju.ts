@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，先检查命局中是否存在&quot;方&quot;（寅卯辰、巳午未、申酉戌、亥子丑三支相连）或&quot;局&quot;（申子辰、亥卯未、寅午戌、巳酉丑三合局、亥子丑等三会局）的五行聚合形态，然后判断方局的气势方向、用神取向和行运顺逆。此技能在格局判断阶段调用——在理解地支关系之后，在正式进入八格分析之前。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，先检查命局中是否存在&quot;方&quot;（寅卯辰、巳午未、申酉戌、亥子丑三支相连）或&quot;局&quot;（申子辰、亥卯未、寅午戌、巳酉丑三合局、亥子丑等三会局）的五行聚合形态，然后判断方局的气势方向、用神取向和行运顺逆。此技能在格局判断阶段调用——在理解地支关系之后，在正式进入八格分析之前。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的地支（格式如&quot;子 午 卯 酉&quot;），以及对应天干</li>
 <li><strong>月令</strong>：月柱地支（用于判断方局是否当令）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>方检查</strong>
 a. 遍历四个地支，检查是否出现以下三支连续集合：</p>
 <ul>
@@ -49,8 +46,7 @@ b. <strong>依据</strong>：方局篇【任氏曰】&quot;方局既成，不可
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface FangJuReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface FangJuReport {
   /** 命局基础信息 */
   basic: {
     yearBranch: string;

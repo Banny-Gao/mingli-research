@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，首先判断月令真神是否&quot;失势&quot;（力量不足以发挥实际作用），再评估假神（失时退气之神）是否&quot;得局&quot;（在全局中占据优势地位），最终给出&quot;以假为真&quot;还是&quot;仍取真神&quot;的判定。此技能应运用于&quot;真神判定器&quot;输出结论为&quot;真神无用&quot;或&quot;真神有用待运&quot;之后的进一步分析。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，首先判断月令真神是否&quot;失势&quot;（力量不足以发挥实际作用），再评估假神（失时退气之神）是否&quot;得局&quot;（在全局中占据优势地位），最终给出&quot;以假为真&quot;还是&quot;仍取真神&quot;的判定。此技能应运用于&quot;真神判定器&quot;输出结论为&quot;真神无用&quot;或&quot;真神有用待运&quot;之后的进一步分析。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;乙酉 戊寅 壬午 庚戌&quot;）</li>
 <li><strong>真神判定结果</strong>：从真神判定器获得的前置分析结果（可选）</li>
 <li><strong>大运</strong>：已排好的大运列表（可选，用于判断运程对真假力量的影响）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>真神状态评估</strong>
 a. 确认月令真神（得时秉令之神）
 b. 检查真神是否透出天干——不透出则力量不显
@@ -49,8 +46,7 @@ c. 注意：行运与日主偏好相反 → 凶祸立至
 d. <strong>依据</strong>：假神篇【任氏曰】&quot;若岁运助真损假，凶祸立至，此谓以实投虚&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface JiaShenReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface JiaShenReport {
   /** 真神评估 */
   trueGodAssessment: {
     element: string;

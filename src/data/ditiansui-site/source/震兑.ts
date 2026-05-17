@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>震兑</h1>
-<p>1446字
+export default `<h1 id="震兑">震兑</h1><p>1446字
 第 三十五 页
 《滴天髓阐微》上篇第33章 震兑
 震兑主仁义之真机，势不两立，而有相成者存。

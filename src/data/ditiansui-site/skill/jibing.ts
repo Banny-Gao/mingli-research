@@ -1,16 +1,13 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>通过分析八字命局中五行力量的偏枯（过旺或过弱）情况，推断命主容易出现的健康问题倾向和对应的身体脏腑部位。AI 执行者应在需要分析命局的健康倾向时调用本技能。注意：此技能提供的是命理层面的健康预警，不能替代医学诊断。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>通过分析八字命局中五行力量的偏枯（过旺或过弱）情况，推断命主容易出现的健康问题倾向和对应的身体脏腑部位。AI 执行者应在需要分析命局的健康倾向时调用本技能。注意：此技能提供的是命理层面的健康预警，不能替代医学诊断。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支（字符串格式）</li>
 <li><strong>日主</strong>：日柱天干的五行属性（自动提取）</li>
 <li><strong>五行力量分布</strong>：可选，未提供时本技能默认按四柱五行统计</li>
 <li><strong>当前大运</strong>（可选）：用于判断大运是否引动了偏枯的五行</li>
 <li><strong>关注部位</strong>（可选）：如&quot;肝胆&quot;&quot;脾胃&quot;等特定关注部位</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>统计五行力量</strong></p>
 <ul>
 <li>统计四柱天干和地支藏干的五行出现频次</li>
@@ -58,8 +55,7 @@ export default `<h2>功能</h2>
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface JiBingReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface JiBingReport {
   wuXingBalance: {
     mu: &quot;过旺&quot; | &quot;偏旺&quot; | &quot;适中&quot; | &quot;偏弱&quot; | &quot;过弱&quot;;
     huo: &quot;过旺&quot; | &quot;偏旺&quot; | &quot;适中&quot; | &quot;偏弱&quot; | &quot;过弱&quot;;

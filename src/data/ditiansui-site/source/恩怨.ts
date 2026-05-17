@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>恩怨</h1>
-<p>1115字
+export default `<h1 id="恩怨">恩怨</h1><p>1115字
 第 四十六 页
 《滴天髓阐微》下篇第10章 恩怨
 两意情通中有媒，虽然遥立意寻追；有情却被人离间，怨起恩中死不灰。

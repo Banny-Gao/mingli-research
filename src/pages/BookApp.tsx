@@ -1,11 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { X, Star, Bookmark, MoreHorizontal, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { books } from '../data/books'
 import { interpContent, skillContent, sourceContent } from '../data/ditiansui-site'
 import { interpToSkill, skillToInterp } from '../data/ditiansui-site/assoc'
 import ReadList from '../components/ReadList'
-import { ReadingProgress, BackToTop, TableOfContents } from '../components/ReadingTools'
+import { ReadingProgress, BackToTop, TocSidebar } from '../components/ReadingTools'
 import SearchBar from '../components/SearchBar'
 import AnnotationToolbar from '../components/AnnotationToolbar'
 import AnnotationPanel from '../components/AnnotationPanel'
@@ -46,6 +47,8 @@ const BookApp: React.FC = () => {
     start: number
     end: number
   } | null>(null)
+  const [tocOpen, setTocOpen] = useState(false)
+  const [actionPopoverOpen, setActionPopoverOpen] = useState(false)
 
   const book = books.find(b => b.slug === slug)
   const { markRead } = useReadProgress(slug || '')
@@ -187,6 +190,8 @@ const BookApp: React.FC = () => {
     setToolbarPos(null)
     setShowPanel(false)
     setScrollToText(null)
+    setTocOpen(false)
+    setActionPopoverOpen(false)
   }
 
   const openModal = (type: 'interp' | 'skill' | 'source', key: string) => {
@@ -343,61 +348,82 @@ const BookApp: React.FC = () => {
             >
               <div className="modal-card">
                 <div className="modal-header">
-                  <span className="modal-title">{modalTitle}</span>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    {modalKey && (
-                      <>
-                        <button
-                          onClick={() => setShowPanel(v => !v)}
-                          style={{
-                            background: 'none',
-                            border: '1px solid var(--color-border-hover)',
-                            borderRadius: 6,
-                            padding: '4px 10px',
-                            cursor: 'pointer',
-                            color: showPanel ? 'var(--color-gold)' : 'var(--color-text-dim)',
-                            fontSize: 13,
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          批注{annotations.length > 0 ? ` (${annotations.length})` : ''}
-                        </button>
-                        <button
-                          onClick={() => toggleBookmark(modalKey)}
-                          style={{
-                            background: 'none',
-                            border: '1px solid var(--color-border-hover)',
-                            borderRadius: 6,
-                            padding: '4px 10px',
-                            cursor: 'pointer',
-                            color: isBookmarked(modalKey)
-                              ? 'var(--color-gold)'
-                              : 'var(--color-text-dim)',
-                            fontSize: 13,
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          {isBookmarked(modalKey) ? '★ 已收藏' : '☆ 收藏'}
-                        </button>
-                      </>
-                    )}
-
-                    <button className="btn-back" onClick={closeModal}>
-                      ×
+                  {modalType === 'interp' && (
+                    <button
+                      onClick={() => setTocOpen(v => !v)}
+                      title="目录"
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: 6,
+                        padding: '6px',
+                        cursor: 'pointer',
+                        color: tocOpen ? 'var(--color-gold)' : 'var(--color-text-dim)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: 8,
+                        transition: 'all 0.2s',
+                      }}
+                    >
+                      {tocOpen ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
                     </button>
-                  </div>
+                  )}
+                  <span className="modal-title">{modalTitle}</span>
+                  <div style={{ flex: 1 }} />
+                  {modalKey && modalType === 'interp' && (
+                    <div className="action-popover-container">
+                      <button
+                        className="action-popover-btn"
+                        onClick={() => setActionPopoverOpen(v => !v)}
+                      >
+                        <MoreHorizontal size={16} />
+                      </button>
+                      {actionPopoverOpen && (
+                        <div className="action-popover">
+                          <button
+                            className="action-popover-item"
+                            onClick={() => { setShowPanel(v => !v); setActionPopoverOpen(false) }}
+                          >
+                            <Bookmark size={14} />
+                            批注{annotations.length > 0 ? ` (${annotations.length})` : ''}
+                          </button>
+                          <button
+                            className="action-popover-item"
+                            onClick={() => { toggleBookmark(modalKey); setActionPopoverOpen(false) }}
+                          >
+                            <Star size={14} fill={isBookmarked(modalKey) ? 'var(--color-gold)' : 'none'} />
+                            {isBookmarked(modalKey) ? '已收藏' : '收藏'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <button className="btn-back" onClick={closeModal}>
+                    <X size={18} />
+                  </button>
                 </div>
 
                 {/* Reading Progress Bar */}
                 <ReadingProgress scrollRef={modalBodyRef} />
 
-                {/* TOC - only for interp */}
-                {modalType === 'interp' && (
-                  <TableOfContents html={rawBody} scrollRef={modalBodyRef} />
-                )}
-
-                <div className="modal-body" ref={modalBodyRef} onMouseUp={handleMouseUp}>
-                  <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
+                {/* Content with optional TOC sidebar */}
+                <div className="modal-content-wrapper">
+                  {modalType === 'interp' && (
+                    <TocSidebar
+                      html={rawBody}
+                      scrollRef={modalBodyRef}
+                      open={tocOpen}
+                      onClose={() => setTocOpen(false)}
+                    />
+                  )}
+                  <div
+                    className="modal-body"
+                    ref={modalBodyRef}
+                    onMouseUp={handleMouseUp}
+                    style={tocOpen ? { flex: 1, overflowY: 'auto', padding: '0 24px 24px' } : undefined}
+                  >
+                    <div className={proseClass} dangerouslySetInnerHTML={{ __html: annotatedBody }} />
+                  </div>
                 </div>
 
                 {/* Annotation Toolbar */}

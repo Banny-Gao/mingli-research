@@ -1,6 +1,5 @@
 // Auto-generated — do not edit manually
-export default `<h1>女命</h1>
-<p>6594字
+export default `<h1 id="女命">女命</h1><p>6594字
 第 四十二 页
 《滴天髓阐微》下篇第06章 女命
 论夫论子要安样，气静平和妇道章，三奇二德虚好语，咸池驿马半推详。

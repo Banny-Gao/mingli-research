@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在完成日主衰旺判定后，评估命局是否达到&quot;中和&quot;状态——即日主与用神之间是否&quot;相停&quot;（力量平衡）。如果失衡，给出扶抑策略建议（扶弱抑旺）。此技能是对衰旺判定结果的应用和深化，为用神选取提供&quot;扶&quot;或&quot;抑&quot;的方向性指导。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在完成日主衰旺判定后，评估命局是否达到&quot;中和&quot;状态——即日主与用神之间是否&quot;相停&quot;（力量平衡）。如果失衡，给出扶抑策略建议（扶弱抑旺）。此技能是对衰旺判定结果的应用和深化，为用神选取提供&quot;扶&quot;或&quot;抑&quot;的方向性指导。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 戊午 庚申&quot;）</li>
 <li><strong>日主衰旺判定结果</strong>：来自衰旺判定器的输出（日主等级：极旺/偏旺/中和/偏弱/极弱）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>日主状态确认</strong>
 a. 接收日主衰旺判定结果
 b. 确认日主在当前命局中的绝对强弱
@@ -40,8 +37,7 @@ a. 判断是否为&quot;上格&quot;（中和+用神得力）
 b. <strong>依据</strong>：中和篇【原句】&quot;此命之上格也&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZhongHeReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZhongHeReport {
   /** 日主状态 */
   dayMaster: {
     stem: string;

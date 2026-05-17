@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，先定义命局中的&quot;精&quot;（生我的印星）、&quot;神&quot;（克我的官杀或我生的食伤）、&quot;气&quot;（日主的本气是否贯足），然后评估三者之间的流通平衡状态，最后判断是否存在五行偏枯（水泛木浮、木多火炽等）以及给出损益调节建议。此技能在体用分析之后、源流判断之前调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，先定义命局中的&quot;精&quot;（生我的印星）、&quot;神&quot;（克我的官杀或我生的食伤）、&quot;气&quot;（日主的本气是否贯足），然后评估三者之间的流通平衡状态，最后判断是否存在五行偏枯（水泛木浮、木多火炽等）以及给出损益调节建议。此技能在体用分析之后、源流判断之前调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支</li>
 <li><strong>用神与喜忌</strong>：已确定的用神和喜忌判断（可选，来自体用分析）</li>
 <li><strong>大运</strong>：已排好的大运列表（可选，用于评估大运对精神气的影响）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>精的定位与评估</strong>
 a. 检查四柱中的正印和偏印（生扶日主的五行）
 b. 评估印星的力量：</p>
@@ -56,8 +53,7 @@ c. 神太泄 → 建议滋精（加强印星生扶）
 d. <strong>依据</strong>：精神篇【任氏曰】&quot;精太足宜益其气，气太旺宜助其神，神太泄宜滋其精&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface JingShenReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface JingShenReport {
   /** 精（印星）评估 */
   jing: {
     yinStars: string[];           // 正印偏印列表

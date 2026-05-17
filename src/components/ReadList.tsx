@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Book, ChapterInfo } from '../data/books'
+import { ChevronDown } from 'lucide-react'
 
 interface Props {
   book: Book
@@ -97,17 +98,14 @@ function CategorySection({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span
+          <ChevronDown
+            size={14}
             style={{
-              fontSize: 11,
               color: 'var(--color-text-dim)',
               transition: 'transform 0.2s',
               transform: collapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
-              display: 'inline-block',
             }}
-          >
-            ▼
-          </span>
+          />
           <span style={{ fontWeight: 600, fontSize: 14 }}>{category}</span>
         </div>
         <span className="section-badge" style={{ fontSize: 12 }}>

@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱并完成三元分析后，先判定命局的&quot;形象&quot;类别——是两气成象（两种五行均衡）、独象（一种五行独旺）、全象（三种以上五行并存），还是形全形缺（五行当令状态），然后根据形象类别输出对应的用神选取和行运建议。此技能在方局判断和八格判断之前调用，优先判定特殊形象格局。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱并完成三元分析后，先判定命局的&quot;形象&quot;类别——是两气成象（两种五行均衡）、独象（一种五行独旺）、全象（三种以上五行并存），还是形全形缺（五行当令状态），然后根据形象类别输出对应的用神选取和行运建议。此技能在方局判断和八格判断之前调用，优先判定特殊形象格局。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱的天干地支</li>
 <li><strong>五行统计</strong>：天干五行和地支五行的分布计数</li>
 <li><strong>月令</strong>：月柱地支（用于判定形全形缺）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>两气成象判定</strong>
 a. 统计八字中出现的五行种类数
 b. 如果只有2种五行（或某两种五行占绝对主导）：</p>
@@ -61,8 +58,7 @@ d. 形全 → &quot;泄伤分用&quot;——判断用食伤泄还是用官杀克
 e. 形缺 → &quot;帮助分用&quot;——判断用比劫帮还是用印绶助</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface XiangXingReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface XiangXingReport {
   /** 形象类别判定 */
   category: {
     type: &quot;两气成象&quot; | &quot;独象&quot; | &quot;全象&quot; | &quot;形全形缺&quot; | &quot;普通格局&quot;;

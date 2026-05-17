@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入八字四柱后，分析命局的燥湿倾向——根据地支中的水（亥子、辰丑）与火（巳午、未戌）配置，判定此局是偏燥、偏湿还是平衡。识别燥土（未戌）与湿土（辰丑）在局中的实际作用，给出调候建议。此技能适用于命局气候分析阶段，在寒暖判断之后、藏露分析之前调用。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入八字四柱后，分析命局的燥湿倾向——根据地支中的水（亥子、辰丑）与火（巳午、未戌）配置，判定此局是偏燥、偏湿还是平衡。识别燥土（未戌）与湿土（辰丑）在局中的实际作用，给出调候建议。此技能适用于命局气候分析阶段，在寒暖判断之后、藏露分析之前调用。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>pillars</code>：四柱八字（年柱、月柱、日柱、时柱，格式如&quot;丙辰 辛丑 庚辰 丙子&quot;）</li>
 <li><code>day_master</code>：日主五行（自动从日柱天干提取）</li>
 <li><code>season</code>：出生季节（自动从月柱地支判定）</li>
 <li><code>gender</code>（可选）：性别（乾造/坤造）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：判定命局燥湿倾向</strong></p>
 <ol>
 <li>统计地支中的水类比例（亥、子、辰、丑 — 各+1分）和火类比例（巳、午、未、戌 — 各+1分）</li>
@@ -48,8 +45,7 @@ c. 避免：补充燥土（未戌），以防助火</li>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ZaoShiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ZaoShiReport {
   /** 燥湿判定 */
   moistureAssessment: {
     score: {

@@ -1,8 +1,6 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>输入一个八字命局，扫描其中的所有合局关系——天干五合、地支六合、地支三合（含半合）。对每个合局，评估其吉凶属性：是否合成了有用之神（有情则吉），是否牵绊了有用之神（绊之则凶）。用于八字格局分析中的&quot;合局影响评估&quot;环节。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>输入一个八字命局，扫描其中的所有合局关系——天干五合、地支六合、地支三合（含半合）。对每个合局，评估其吉凶属性：是否合成了有用之神（有情则吉），是否牵绊了有用之神（绊之则凶）。用于八字格局分析中的&quot;合局影响评估&quot;环节。</p>
+<h2 id="输入">输入</h2><ul>
 <li><code>year_pillar</code>：年柱干支（如 &quot;癸亥&quot;）</li>
 <li><code>month_pillar</code>：月柱干支（如 &quot;乙卯&quot;）</li>
 <li><code>day_pillar</code>：日柱干支（如 &quot;甲午&quot;）</li>
@@ -10,8 +8,7 @@ export default `<h2>功能</h2>
 <li><code>day_master</code>：日主五行（自动提取）</li>
 <li><code>gender</code>：性别（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>步骤一：扫描天干五合</strong></p>
 <ol>
 <li>检查四天干中是否存在五合配对：<ul>
@@ -65,8 +62,7 @@ export default `<h2>功能</h2>
 </ol>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface HejuAnalysis {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface HejuAnalysis {
   summary: {
     totalHeCount: number;                 // 合局总数
     favorableCount: number;               // 有利合局数

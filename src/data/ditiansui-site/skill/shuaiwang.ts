@@ -1,13 +1,10 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，对日主（代表命主本人的天干）进行衰旺判定。从三个维度综合评估——月令当令与否（最重）、地支得地程度、天干地支的得势程度——给出日主的衰旺等级（从极旺到极衰六级）。此技能是八字分析中最基础、最核心的步骤，所有用神选取、格局判断都以衰旺判定为前提。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，对日主（代表命主本人的天干）进行衰旺判定。从三个维度综合评估——月令当令与否（最重）、地支得地程度、天干地支的得势程度——给出日主的衰旺等级（从极旺到极衰六级）。此技能是八字分析中最基础、最核心的步骤，所有用神选取、格局判断都以衰旺判定为前提。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 戊午 庚申&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（可选，影响排大运方向）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>月令当令判定（权重最高）</strong>
 a. 确认日主五行与月令主气五行的关系
 b. 日主五行与月令同气 → 当令（旺）
@@ -43,8 +40,7 @@ b. <strong>依据</strong>：衰旺篇【任氏曰】&quot;日主衰旺不明，
 </ul>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShuaiWangReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShuaiWangReport {
   /** 日主基础 */
   dayMaster: {
     stem: string;               // 日干

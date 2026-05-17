@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import { ArrowUp } from 'lucide-react'
 
 interface Props {
   scrollRef: React.RefObject<HTMLDivElement | null>
@@ -29,6 +30,7 @@ export const ReadingProgress: React.FC<Props> = ({ scrollRef }) => {
         background: 'var(--color-border-card)',
         zIndex: 10,
         pointerEvents: 'none',
+        flexShrink: 0,
       }}
     >
       <div
@@ -72,7 +74,6 @@ export const BackToTop: React.FC<{ scrollRef: React.RefObject<HTMLDivElement | n
         background: 'var(--color-purple-bg)',
         border: '1px solid var(--color-gold)',
         color: 'var(--color-gold)',
-        fontSize: 18,
         cursor: 'pointer',
         zIndex: 100,
         boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
@@ -82,64 +83,80 @@ export const BackToTop: React.FC<{ scrollRef: React.RefObject<HTMLDivElement | n
         justifyContent: 'center',
       }}
     >
-      ↑
+      <ArrowUp size={18} />
     </button>
   )
 }
 
 export function extractTOC(html: string): { id: string; text: string; level: number }[] {
   const toc: { id: string; text: string; level: number }[] = []
-  const regex = /<h([23])[^>]*>([^<]+)<\/h[23]>/gi
+  const regex = /<h([23])[^>]+id="([^"]+)"[^>]*>([^<]+)<\/h[23]>/gi
   let match
   while ((match = regex.exec(html)) !== null) {
     const level = parseInt(match[1])
-    const text = match[2].trim()
-    const id = text.replace(/[^a-zA-Z0-9一-龥]/g, '-').toLowerCase()
+    const id = match[2]
+    const text = match[3].trim()
     toc.push({ id, text, level })
   }
   return toc
 }
 
-export const TableOfContents: React.FC<{
+interface TocSidebarProps {
   html: string
   scrollRef: React.RefObject<HTMLDivElement | null>
-}> = ({ html, scrollRef }) => {
-  const [open, setOpen] = useState(false)
-  const toc = extractTOC(html)
+  open: boolean
+  onClose: () => void
+}
 
-  if (toc.length === 0) return null
+export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, onClose }) => {
+  const toc = extractTOC(html)
+  const [activeId, setActiveId] = useState('')
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el || toc.length === 0) return
+    const handler = () => {
+      let current = ''
+      for (const item of toc) {
+        const target = el.querySelector(`[id="${CSS.escape(item.id)}"]`) as HTMLElement | null
+        if (target && target.offsetTop - el.scrollTop < 100) {
+          current = item.id
+        }
+      }
+      setActiveId(current)
+    }
+    el.addEventListener('scroll', handler, { passive: true })
+    handler()
+    return () => el.removeEventListener('scroll', handler)
+  }, [scrollRef, toc])
 
   const scrollTo = (id: string) => {
     const el = scrollRef.current
     if (!el) return
-    const target = el.querySelector(`[id="${id}"]`) as HTMLElement | null
+    const target = el.querySelector(`[id="${CSS.escape(id)}"]`) as HTMLElement | null
     if (target) {
       const top = target.offsetTop - 16
       el.scrollTo({ top, behavior: 'smooth' })
     }
+    onClose()
   }
 
+  if (!open || toc.length === 0) return null
+
   return (
-    <div className="toc-container">
-      <div className="toc-header">
-        <span className="toc-label">目录</span>
-        <button className="toc-toggle-btn" onClick={() => setOpen(!open)}>
-          {open ? '− 收起' : '+ 展开'}
-        </button>
+    <div className="toc-sidebar">
+      <div className="toc-sidebar-header">目录</div>
+      <div className="toc-sidebar-list">
+        {toc.map(item => (
+          <button
+            key={item.id}
+            className={`toc-sidebar-item ${item.level === 2 ? 'toc-l2' : 'toc-l3'} ${activeId === item.id ? 'toc-active' : ''}`}
+            onClick={() => scrollTo(item.id)}
+          >
+            {item.text}
+          </button>
+        ))}
       </div>
-      {open && (
-        <div className="toc-list">
-          {toc.map(item => (
-            <button
-              key={item.id}
-              className="toc-item"
-              onClick={() => scrollTo(item.id)}
-            >
-              {item.text}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }

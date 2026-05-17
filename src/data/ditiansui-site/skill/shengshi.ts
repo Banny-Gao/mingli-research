@@ -1,15 +1,12 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>在收到八字四柱后，对时柱进行专项分析：判定时辰的人元用事（区分时辰内部的前后用事），评估&quot;穴&quot;（时辰本身）与&quot;向&quot;（人元用事）的吉凶组合关系，并结合山川世德因素给出归宿走向的评估。此技能适用于月令分析之后的第二步时间维度分析，特别关注晚年运势和人生收成。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>在收到八字四柱后，对时柱进行专项分析：判定时辰的人元用事（区分时辰内部的前后用事），评估&quot;穴&quot;（时辰本身）与&quot;向&quot;（人元用事）的吉凶组合关系，并结合山川世德因素给出归宿走向的评估。此技能适用于月令分析之后的第二步时间维度分析，特别关注晚年运势和人生收成。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;甲子 丙寅 戊午 庚申&quot;）</li>
 <li><strong>出生时间</strong>：具体到时刻（可选，用于判断时辰内部的前后用事，如夜子时/正子时）</li>
 <li><strong>地域信息</strong>：出生地大区域（可选，用于山川之异的修正评估）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）（可选）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>时辰本气判定</strong>
 a. 根据时柱地支确定时辰的本气五行
 b. <strong>依据</strong>：生时篇【原句】&quot;生时乃归宿之地，譬之墓也&quot;</p>
@@ -48,8 +45,7 @@ b. 如果有地域信息，附加山川世德修正说明
 c. <strong>依据</strong>：生时篇【任氏曰】&quot;时之不的当者，十有四五&quot;；【原注】&quot;山川之异，世德之殊&quot;</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface ShengShiReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface ShengShiReport {
   /** 时柱基础信息 */
   hourColumn: {
     stem: string;               // 时干

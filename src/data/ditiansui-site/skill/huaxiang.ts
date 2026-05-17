@@ -1,14 +1,11 @@
 // Auto-generated — do not edit manually
-export default `<h2>功能</h2>
-<p>对输入的四柱八字进行化格分析。先扫描天干中是否存在五合（甲己、乙庚、丙辛、丁壬、戊癸），然后评估化神（合化后的新五行）是否得月令之气且有力，判定化之真假，并给出用神建议。此技能在天干出现五合时调用，用于判断合而化之还是合而不化。</p>
-<h2>输入</h2>
-<ul>
+export default `<h2 id="功能">功能</h2><p>对输入的四柱八字进行化格分析。先扫描天干中是否存在五合（甲己、乙庚、丙辛、丁壬、戊癸），然后评估化神（合化后的新五行）是否得月令之气且有力，判定化之真假，并给出用神建议。此技能在天干出现五合时调用，用于判断合而化之还是合而不化。</p>
+<h2 id="输入">输入</h2><ul>
 <li><strong>四柱八字</strong>：年柱、月柱、日柱、时柱对应的天干地支（字符串，格式如&quot;己巳 甲戌 己未 戊辰&quot;）</li>
 <li><strong>性别</strong>：乾造（男）或坤造（女）</li>
 <li><strong>大运</strong>：已排好的大运流年列表（可选，用于判定化神在岁运中的变化）</li>
 </ul>
-<h2>处理逻辑</h2>
-<ol>
+<h2 id="处理逻辑">处理逻辑</h2><ol>
 <li><p><strong>识别天干五合</strong>
 a. 从四柱中提取所有天干（年干、月干、日干、时干）
 b. 检查是否存在五合配对：</p>
@@ -80,8 +77,7 @@ c. <strong>喜</strong>：助化神之运（生扶化神、与化神同气）
 d. <strong>忌</strong>：破化之运（克制化神、给原日主加根导致不化）</p>
 </li>
 </ol>
-<h2>输出</h2>
-<pre><code class="language-typescript">interface HuaGeReport {
+<h2 id="输出">输出</h2><pre><code class="language-typescript">interface HuaGeReport {
   /** 命局基础 */
   basic: {
     bazi: string;
