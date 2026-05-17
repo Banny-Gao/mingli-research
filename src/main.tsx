@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
+import { Sun, Moon } from 'lucide-react'
 import './styles/index.css'
 import Landing from './pages/Landing'
 import BookApp from './pages/BookApp'
@@ -31,7 +32,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
       className="theme-toggle-btn"
     >
-      {theme === 'dark' ? '☀️' : '🌙'}
+      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
     </button>
   )
 }

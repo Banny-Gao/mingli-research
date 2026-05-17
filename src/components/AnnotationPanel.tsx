@@ -50,7 +50,7 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
                 {TYPE_LABELS[ann.type]}
               </span>
               <button className="ann-item-remove" onClick={() => onRemove(ann.id)} title="删除">
-                ×
+                <X size={12} />
               </button>
             </div>
             <div className="ann-item-text" onClick={() => onNavigate(ann)} title="点击跳转到原文">

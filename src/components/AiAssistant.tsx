@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Sparkles } from 'lucide-react'
 
 interface Props {
   chapter?: string
@@ -99,7 +100,7 @@ const AiAssistant: React.FC<Props> = ({ chapter }) => {
         onMouseEnter={e => ((e.currentTarget as HTMLElement).style.transform = 'scale(1.1)')}
         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.transform = 'scale(1)')}
       >
-        ✨
+        <Sparkles size={20} />
       </button>
     </div>
   )

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Book } from '../data/books'
+import { ArrowRight } from 'lucide-react'
 
 interface Props {
   book: Book
@@ -53,7 +54,7 @@ const SkillGrid: React.FC<Props> = ({ book, onSkillClick }) => {
               >
                 {info.desc}
               </div>
-              <div style={{ fontSize: 11, color: '#5070a0' }}>skills/{sk.name}/SKILL.md →</div>
+              <div style={{ fontSize: 11, color: '#5070a0', display: 'flex', alignItems: 'center', gap: 2 }}>skills/{sk.name}/SKILL.md <ArrowRight size={11} /></div>
             </div>
           )
         })}
