@@ -33,7 +33,7 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
           {annotations.length > 0 && <span className="ann-panel-count">{annotations.length}条</span>}
           <button
             onClick={onClose}
-            style={{ background: 'none', border: 'none', color: 'var(--color-text-dim)', cursor: 'pointer', padding: 2, display: 'flex' }}
+            className="bg-transparent border-none text-[var(--color-text-dim)] cursor-pointer p-0.5 flex"
           >
             <X size={14} />
           </button>
