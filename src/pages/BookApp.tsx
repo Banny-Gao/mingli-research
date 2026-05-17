@@ -244,7 +244,7 @@ const BookApp: React.FC = () => {
       ? (interpContent as Record<string, string>)[modalKey] || '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
       : ''
   const annotatedBody = injectAnnotations(rawBody, annotations)
-  const proseClass = modalType === 'source' ? 'prose-source' : modalType === 'interp' ? 'prose-interp' : ''
+  const proseClass = modalType === 'interp' || modalType === 'source' ? 'prose-interp' : ''
 
   // Load raw skill content
   useEffect(() => {
