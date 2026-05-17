@@ -5,7 +5,7 @@ import Fuse from 'fuse.js'
 interface SearchEntry {
   slug: string
   title: string
-  type: 'chapter' | 'skill'
+  type: 'chapter' | 'skill' | 'source'
   key: string
   text: string
 }
@@ -62,7 +62,7 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
         entries.push({
           slug: book.slug,
           title: book.title,
-          type: 'chapter',
+          type: 'source',
           key: src.key,
           text: src.text,
         })
@@ -191,14 +191,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     if (open) inputRef.current?.focus()
   }, [open])
 
-  const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill') => {
+  const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill' | 'source') => {
     const match = queryRef.current.slice(0, 50)
     setOpen(false)
     setQuery('')
-    // Map 'chapter' to 'interp' for compatibility
-    const openType = type === 'chapter' ? 'interp' : 'skill'
+    const openParam = type === 'chapter' ? 'interp' : type
     navigate(
-      `/${slug}?open=${openType}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
+      `/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
     )
   }
 
@@ -265,9 +264,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
                 }
               >
                 <span
-                  className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : 'badge-skill'}`}
+                  className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : r.type === 'source' ? 'badge-source' : 'badge-skill'}`}
                 >
-                  {r.type === 'chapter' ? '解读' : '技能'}
+                  {r.type === 'chapter' ? '解读' : r.type === 'source' ? '原文' : '技能'}
                 </span>
                 <div className="search-result-text">
                   <span className="search-book-title">《{r.title}》</span>
