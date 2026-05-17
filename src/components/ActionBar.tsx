@@ -40,7 +40,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
       {modalKey && (modalType === 'interp' || modalType === 'source') && (
         <DropdownMenu open={actionPopoverOpen} onOpenChange={setActionPopoverOpen}>
           <DropdownMenuTrigger><span className="inline-flex items-center justify-center border border-[var(--color-border)] rounded-md px-2 py-1.5 cursor-pointer text-[var(--color-text-dim)] hover:text-[var(--color-gold)]"><MoreHorizontal size={16} /></span></DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="z-[10001]">
             <DropdownMenuItem onClick={() => { onTogglePanel(); setActionPopoverOpen(false) }}>
               <Bookmark size={14} />
               批注{annotationsCount > 0 ? ` (${annotationsCount})` : ''}
