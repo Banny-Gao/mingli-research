@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { books } from '../data/books'
 import {
   TYPE_LABELS,
@@ -128,14 +129,12 @@ const Notes: React.FC = () => {
           </div>
 
           <div className="container-wide">
-            <div className="flex gap-2 mb-4">
-              <Button onClick={() => setTab('annotation')} className={tab === 'annotation' ? 'text-[var(--color-gold)] border-[var(--color-gold)]' : ''}>
-                <MessageSquare size={14} />批注 {total > 0 ? `(${total})` : ''}
-              </Button>
-              <Button onClick={() => setTab('bookmark')} className={tab === 'bookmark' ? 'text-[var(--color-gold)] border-[var(--color-gold)]' : ''}>
-                <Bookmark size={14} />收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
-              </Button>
-            </div>
+            <Tabs value={tab} onValueChange={v => setTab(v as 'bookmark' | 'annotation')}>
+              <TabsList className="mb-4">
+                <TabsTrigger value="annotation"><MessageSquare size={14} />批注 {total > 0 ? `(${total})` : ''}</TabsTrigger>
+                <TabsTrigger value="bookmark"><Bookmark size={14} />收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}</TabsTrigger>
+              </TabsList>
+            </Tabs>
 
             <div className="flex gap-2 mb-4 flex-wrap">
               <select value={bookFilter} onChange={e => setBookFilter(e.target.value)} className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-md px-2.5 py-1.5 text-[var(--color-text-body)] text-xs cursor-pointer">
