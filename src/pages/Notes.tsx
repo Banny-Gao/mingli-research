@@ -148,6 +148,9 @@ const checkboxStyle: React.CSSProperties = {
   cursor: 'pointer',
   accentColor: 'var(--color-gold)',
   flexShrink: 0,
+  margin: 0,
+  width: 14,
+  height: 14,
 }
 
 const Notes: React.FC = () => {
