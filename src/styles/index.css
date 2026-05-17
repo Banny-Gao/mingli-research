@@ -1351,7 +1351,8 @@ mark.ann-quote {
 }
 
 /* Notes Page */
-.notes-list {
+.notes-list,
+.notes-section {
   display: flex;
   flex-direction: column;
   gap: 24px;
