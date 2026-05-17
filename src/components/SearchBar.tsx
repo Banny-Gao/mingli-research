@@ -33,6 +33,7 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
     title: string
     interp: Array<{ key: string; text: string }>
     skill: Array<{ key: string; text: string }>
+    source: Array<{ key: string; text: string }>
   }>
   const entries: SearchEntry[] = []
   for (const book of data) {
@@ -54,6 +55,16 @@ async function loadSearchIndex(): Promise<SearchEntry[]> {
           type: 'skill',
           key: sk.key,
           text: sk.text,
+        })
+    }
+    for (const src of book.source || []) {
+      if (src.text)
+        entries.push({
+          slug: book.slug,
+          title: book.title,
+          type: 'chapter',
+          key: src.key,
+          text: src.text,
         })
     }
   }
