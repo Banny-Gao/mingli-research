@@ -729,6 +729,11 @@ body {
   border-radius: 0 6px 6px 0;
   color: #d0c8b0;
 }
+.prose-interp pre,
+.prose-interp code {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
 .prose-interp table {
   width: 100%;
   border-collapse: collapse;
@@ -1509,14 +1514,19 @@ mark.ann-quote {
 }
 
 /* TOC — Sidebar */
+.toc-sidebar-closed,
 .toc-sidebar {
-  width: 220px;
+  width: 0;
   flex-shrink: 0;
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: var(--color-bg-base);
+  transition: width 0.25s ease;
+}
+.toc-sidebar-open {
+  width: 220px;
 }
 .toc-sidebar-header {
   padding: 14px 16px 8px;

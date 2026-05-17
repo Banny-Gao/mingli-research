@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { X } from 'lucide-react'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
   onRemove: (id: string) => void
   onUpdateNote: (id: string, note: string) => void
   onNavigate: (ann: Annotation) => void
+  onClose: () => void
 }
 
 const TYPE_LABELS: Record<AnnotationType, string> = {
@@ -19,7 +21,7 @@ const TYPE_CLASS: Record<AnnotationType, string> = {
   quote: 'ann-type-quote',
 }
 
-const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote, onNavigate }) => {
+const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote, onNavigate, onClose }) => {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [noteVal, setNoteVal] = useState('')
 
@@ -29,7 +31,15 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
     <div className="ann-panel">
       <div className="ann-panel-header">
         <span className="ann-panel-title">批注列表</span>
-        {annotations.length > 0 && <span className="ann-panel-count">{annotations.length}条</span>}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {annotations.length > 0 && <span className="ann-panel-count">{annotations.length}条</span>}
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-dim)', cursor: 'pointer', padding: 2, display: 'flex' }}
+          >
+            <X size={14} />
+          </button>
+        </div>
       </div>
       <div className="ann-panel-body">
         {annotations.length === 0 && <div className="ann-panel-empty">选中文字添加批注</div>}
