@@ -1372,7 +1372,7 @@ mark.ann-quote {
   overflow: hidden;
 }
 .notes-book-title {
-  padding: 14px 18px;
+  padding: 10px;
   background: rgba(122, 79, 170, 0.08);
   border-bottom: 1px solid var(--color-border);
   font-size: 15px;
@@ -1380,19 +1380,20 @@ mark.ann-quote {
 }
 .notes-chapter {
   border-bottom: 1px solid var(--color-border);
+  padding: 0 10px;
 }
 .notes-chapter:last-child {
   border-bottom: none;
 }
 .notes-chapter-name {
-  padding: 10px 18px 6px;
+  padding: 10px;
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-title);
   background: rgba(255, 255, 255, 0.02);
 }
 .notes-item {
-  padding: 10px 18px;
+  padding: 10px;
   border-top: 1px solid var(--color-border);
 }
 .notes-item:first-of-type {
