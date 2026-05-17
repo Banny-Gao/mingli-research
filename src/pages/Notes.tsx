@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
+import { Filter, Bookmark, MessageSquare } from 'lucide-react'
 import { books } from '../data/books'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 import { ThemeToggle } from '../main'
@@ -88,14 +89,40 @@ function exportMarkdown(
   URL.revokeObjectURL(url)
 }
 
+const btnBase: React.CSSProperties = {
+  background: 'none',
+  border: '1px solid var(--color-border)',
+  borderRadius: 6,
+  padding: '6px 12px',
+  color: 'var(--color-text-dim)',
+  cursor: 'pointer',
+  fontSize: 13,
+  transition: 'all 0.2s',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 6,
+}
+
 const Notes: React.FC = () => {
   const [refresh, setRefresh] = useState(0)
+  const [tab, setTab] = useState<'bookmark' | 'annotation'>('annotation')
+  const [typeFilter, setTypeFilter] = useState<AnnotationType | 'all'>('all')
+  const [bookFilter, setBookFilter] = useState<string>('all')
+
   const all = useMemo(() => loadAllAnnotations(), [refresh])
   const bookmarks = useMemo(() => loadAllBookmarks(), [refresh])
+
+  const bookOptions = useMemo(() => {
+    const slugs = new Set(all.map(a => a.slug))
+    bookmarks.forEach(b => slugs.add(b.slug))
+    return Array.from(slugs).map(s => ({ slug: s, title: books.find(b => b.slug === s)?.title || s }))
+  }, [all, bookmarks])
 
   const groups = useMemo(() => {
     const map = new Map<string, Map<string, Annotation[]>>()
     for (const item of all) {
+      if (bookFilter !== 'all' && item.slug !== bookFilter) continue
+      if (typeFilter !== 'all' && item.annotation.type !== typeFilter) continue
       if (!map.has(item.slug)) map.set(item.slug, new Map())
       const chMap = map.get(item.slug)!
       if (!chMap.has(item.chapter)) chMap.set(item.chapter, [])
@@ -109,7 +136,12 @@ const Notes: React.FC = () => {
         chapters: Array.from(chMap.entries()).map(([name, annotations]) => ({ name, annotations })),
       }
     })
-  }, [all])
+  }, [all, bookFilter, typeFilter])
+
+  const filteredBookmarks = useMemo(() => {
+    if (bookFilter === 'all') return bookmarks
+    return bookmarks.filter(b => b.slug === bookFilter)
+  }, [bookmarks, bookFilter])
 
   const total = all.length
   const bmTotal = bookmarks.reduce((s, b) => s + b.chapters.length, 0)
@@ -127,7 +159,7 @@ const Notes: React.FC = () => {
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <div className="hero-badge">批注管理</div>
+            <div className="hero-badge">个人中心</div>
             <h1
               style={{
                 fontSize: 32,
@@ -140,143 +172,185 @@ const Notes: React.FC = () => {
             >
               我的笔记
             </h1>
-            <p style={{ fontSize: 13, color: 'var(--color-text-dim)', letterSpacing: 2 }}>
-              {total} 条批注 · {bmTotal} 个收藏
-            </p>
           </div>
 
-          <div
-            className="container-wide"
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 24,
-            }}
-          >
-            <Link to="/" className="back-link">
-              ← 返回典籍首页
-            </Link>
-            {total > 0 && (
+          <div className="container-wide" style={{ marginBottom: 20 }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <button
-                className="btn-text"
-                onClick={() => exportMarkdown(groups)}
-                style={{ borderColor: 'var(--color-purple)', color: 'var(--color-purple-light)' }}
+                onClick={() => setTab('bookmark')}
+                style={{ ...btnBase, color: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'bookmark' ? 'var(--color-gold)' : 'var(--color-border)' }}
               >
-                导出 Markdown
+                <Bookmark size={14} />
+                收藏 {bmTotal > 0 ? `(${bmTotal})` : ''}
               </button>
-            )}
+              <button
+                onClick={() => setTab('annotation')}
+                style={{ ...btnBase, color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)' }}
+              >
+                <MessageSquare size={14} />
+                批注 {total > 0 ? `(${total})` : ''}
+              </button>
+            </div>
+
+            {/* Filters */}
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+              <select
+                value={bookFilter}
+                onChange={e => setBookFilter(e.target.value)}
+                style={{
+                  background: 'var(--color-bg-card)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 6,
+                  padding: '6px 10px',
+                  color: 'var(--color-text-body)',
+                  fontSize: 13,
+                  cursor: 'pointer',
+                }}
+              >
+                <option value="all">所有典籍</option>
+                {bookOptions.map(b => (
+                  <option key={b.slug} value={b.slug}>《{b.title}》</option>
+                ))}
+              </select>
+              {tab === 'annotation' && (
+                <select
+                  value={typeFilter}
+                  onChange={e => setTypeFilter(e.target.value as AnnotationType | 'all')}
+                  style={{
+                    background: 'var(--color-bg-card)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: 6,
+                    padding: '6px 10px',
+                    color: 'var(--color-text-body)',
+                    fontSize: 13,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <option value="all">所有类型</option>
+                  {Object.entries(TYPE_LABELS).map(([k, v]) => (
+                    <option key={k} value={k}>{v}</option>
+                  ))}
+                </select>
+              )}
+              <div style={{ flex: 1 }} />
+              {tab === 'annotation' && total > 0 && (
+                <button
+                  onClick={() => exportMarkdown(groups)}
+                  style={{ ...btnBase, borderColor: 'var(--color-purple)', color: 'var(--color-purple-light)' }}
+                >
+                  <Filter size={14} />
+                  导出 Markdown
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* 收藏列表 */}
-          {bmTotal > 0 && (
+          {/* Tab content */}
+          {tab === 'bookmark' && (
             <div className="notes-section">
-              <div className="section-header">
-                <span className="section-title">我的收藏</span>
-                <span className="section-badge">{bmTotal} 篇</span>
-              </div>
-              {bookmarks.map(bm => {
-                const book = books.find(b => b.slug === bm.slug)
-                return (
-                  <div key={bm.slug} className="notes-book">
-                    <div className="notes-book-title">
-                      <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
-                        《{book?.title || bm.slug}》
-                      </Link>
-                    </div>
-                    {bm.chapters.map(ch => (
-                      <div key={ch} className="notes-chapter">
-                        <div className="notes-chapter-name">{ch}</div>
-                        <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} className="notes-item-link">
-                          继续阅读 →
+              {filteredBookmarks.length === 0 ? (
+                <div className="notes-empty">
+                  <div style={{ fontSize: 48, marginBottom: 16 }}>🔖</div>
+                  <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>暂无收藏篇目</div>
+                  <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+                    在阅读时点击收藏按钮，收藏的篇目将显示在这里
+                  </div>
+                </div>
+              ) : (
+                filteredBookmarks.map(bm => {
+                  const book = books.find(b => b.slug === bm.slug)
+                  return (
+                    <div key={bm.slug} className="notes-book">
+                      <div className="notes-book-title">
+                        <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                          《{book?.title || bm.slug}》
                         </Link>
                       </div>
-                    ))}
-                  </div>
-                )
-              })}
+                      {bm.chapters.map(ch => (
+                        <div key={ch} className="notes-chapter" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div className="notes-chapter-name">{ch}</div>
+                          <Link to={`/${bm.slug}?open=interp&key=${encodeURIComponent(ch)}`} className="notes-item-link">
+                            继续阅读 →
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })
+              )}
             </div>
           )}
 
-          {/* 批注列表 */}
-          <div className="notes-section">
-            <div className="section-header">
-              <span className="section-title">批注记录</span>
-              <span className="section-badge">{total} 条</span>
-            </div>
-            {groups.length === 0 && (
-              <div className="notes-empty">
-                <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
-                <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
-                  暂无批注
+          {tab === 'annotation' && (
+            <div className="notes-section">
+              {groups.length === 0 ? (
+                <div className="notes-empty">
+                  <div style={{ fontSize: 48, marginBottom: 16 }}>📝</div>
+                  <div style={{ fontSize: 16, color: 'var(--color-text-dim)', marginBottom: 8 }}>
+                    {all.length === 0 ? '暂无批注' : '没有匹配的批注'}
+                  </div>
+                  <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
+                    {all.length === 0 ? '在阅读篇目时选中文本添加批注' : '尝试调整筛选条件'}
+                  </div>
+                  {all.length === 0 && (
+                    <div style={{ marginTop: 20 }}>
+                      <Link to="/ditiansui-site" style={{ color: 'var(--color-purple-light)', fontSize: 14 }}>前往阅读 →</Link>
+                    </div>
+                  )}
                 </div>
-                <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
-                  在阅读篇目时选中文本添加批注，批注将显示在这里
-                </div>
-                <div style={{ marginTop: 20 }}>
-                  <Link
-                    to="/ditiansui-site"
-                    style={{ color: 'var(--color-purple-light)', fontSize: 14 }}
-                  >
-                    前往阅读 →
-                  </Link>
-                </div>
-              </div>
-            )}
-            {groups.map(group => (
-              <div key={group.slug} className="notes-book">
-                <div className="notes-book-title">
-                  <Link
-                    to={`/${group.slug}`}
-                    style={{ color: 'var(--color-gold)', textDecoration: 'none' }}
-                  >
-                    《{group.book}》
-                  </Link>
-                </div>
-                {group.chapters.map(ch => (
-                  <div key={ch.name} className="notes-chapter">
-                    <div className="notes-chapter-name">{ch.name}</div>
-                    {ch.annotations.map(ann => (
-                      <div key={ann.id} className="notes-item">
-                        <div className="notes-item-header">
-                          <span
-                            style={{
-                              fontSize: 10,
-                              padding: '1px 6px',
-                              borderRadius: 3,
-                              background: TYPE_COLORS[ann.type] + '22',
-                              color: TYPE_COLORS[ann.type],
-                              border: `1px solid ${TYPE_COLORS[ann.type]}55`,
-                            }}
-                          >
-                            {TYPE_LABELS[ann.type]}
-                          </span>
-                          <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                            {new Date(ann.createdAt).toLocaleDateString('zh-CN')}
-                          </span>
-                        </div>
-                        <div className="notes-item-text">「{ann.selectedText}」</div>
-                        {ann.note && <div className="notes-item-note">{ann.note}</div>}
-                        <div className="notes-item-actions">
-                          <Link to={`/${group.slug}`} className="notes-item-link">
-                            查看原文 →
-                          </Link>
-                          <button
-                            onClick={() => { deleteAnnotation(group.slug, ch.name, ann.id); setRefresh(v => v + 1) }}
-                            style={{
-                              background: 'none', border: 'none', color: 'var(--color-text-muted)',
-                              cursor: 'pointer', fontSize: 12, padding: 0,
-                            }}
-                          >
-                            删除
-                          </button>
-                        </div>
+              ) : (
+                groups.map(group => (
+                  <div key={group.slug} className="notes-book">
+                    <div className="notes-book-title">
+                      <Link to={`/${group.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>
+                        《{group.book}》
+                      </Link>
+                    </div>
+                    {group.chapters.map(ch => (
+                      <div key={ch.name} className="notes-chapter">
+                        <div className="notes-chapter-name">{ch.name}</div>
+                        {ch.annotations.map(ann => (
+                          <div key={ann.id} className="notes-item">
+                            <div className="notes-item-header">
+                              <span
+                                style={{
+                                  fontSize: 10,
+                                  padding: '1px 6px',
+                                  borderRadius: 3,
+                                  background: TYPE_COLORS[ann.type] + '22',
+                                  color: TYPE_COLORS[ann.type],
+                                  border: `1px solid ${TYPE_COLORS[ann.type]}55`,
+                                }}
+                              >
+                                {TYPE_LABELS[ann.type]}
+                              </span>
+                              <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                                {new Date(ann.createdAt).toLocaleDateString('zh-CN')}
+                              </span>
+                            </div>
+                            <div className="notes-item-text">「{ann.selectedText}」</div>
+                            {ann.note && <div className="notes-item-note">{ann.note}</div>}
+                            <div className="notes-item-actions">
+                              <Link to={`/${group.slug}`} className="notes-item-link">查看原文 →</Link>
+                              <button
+                                onClick={() => { deleteAnnotation(group.slug, ch.name, ann.id); setRefresh(v => v + 1) }}
+                                style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: 12, padding: 0 }}
+                              >
+                                删除
+                              </button>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
-                ))}
-              </div>
-            ))}
+                ))
+              )}
+            </div>
+          )}
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12, marginBottom: 24 }}>
+            <Link to="/" className="back-link">← 返回典籍首页</Link>
           </div>
         </div>
       </div>
