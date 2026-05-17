@@ -23,18 +23,18 @@
 
 [data-theme='light'] .prose-interp th,
 [data-theme='light'] .prose-skill th {
-  background: #f0ebe0;
+  background: var(--color-bg-card-hover);
   color: var(--color-gold);
 }
 
 [data-theme='light'] .prose-interp pre,
 [data-theme='light'] .prose-skill pre {
-  background: #f5f0e8;
+  background: var(--color-bg-base);
   border-color: var(--color-border);
   color: #5a6a4a;
 }
 [data-theme='light'] .skill-raw-body {
-  background: #f5f0e8;
+  background: var(--color-bg-base);
   border-color: var(--color-border);
   color: #5a6a4a;
 }
@@ -45,11 +45,11 @@
 }
 
 [data-theme='light'] .prose-interp tr:nth-child(even) td {
-  background: #f5f0ea;
+  background: var(--color-bg-card-hover);
 }
 
 [data-theme='light'] mark.ann-emphasis {
-  background: rgba(154, 112, 48, 0.2);
+  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
 }
 
 [data-theme='light'] .ann-toolbar,
@@ -64,19 +64,11 @@
 }
 
 [data-theme='light'] .hero-glow {
-  background: radial-gradient(ellipse, rgba(90, 62, 122, 0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--color-purple) 8%, transparent) 0%, transparent 70%);
 }
 
 [data-theme='light'] .top-actions {
-  background: rgba(245, 240, 232, 0.95);
+  background: color-mix(in srgb, var(--color-bg-base) 95%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-}
-
-[data-theme='light'] .hero-pattern {
-  opacity: 0.08;
-}
-
-[data-theme='light'] .hero-symbol {
-  opacity: 0.08;
 }
