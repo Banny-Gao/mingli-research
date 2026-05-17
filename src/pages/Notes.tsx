@@ -260,7 +260,7 @@ const Notes: React.FC = () => {
             </Link>
           </div>
 
-          <div className="container-wide" style={{ marginBottom: 20 }}>
+          <div className="container-wide">
             <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               <button onClick={() => setTab('annotation')} style={{ ...btnBase, lineHeight: 1.5, color: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-text-dim)', borderColor: tab === 'annotation' ? 'var(--color-gold)' : 'var(--color-border)' }}>
                 <MessageSquare size={14} />批注 {total > 0 ? `(${total})` : ''}
@@ -323,7 +323,8 @@ const Notes: React.FC = () => {
                     const book = books.find(b => b.slug === bm.slug)
                     return (
                       <div key={bm.slug} className="notes-book">
-                        <div className="notes-book-title">
+                        <div className="notes-book-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <input type="checkbox" checked={bm.chapters.every(ch => selectedBm.has(`${bm.slug}::${ch}`))} onChange={() => { const keys = bm.chapters.map(ch => `${bm.slug}::${ch}`); setSelectedBm(prev => { const allSelected = keys.every(k => prev.has(k)); const next = new Set(prev); for (const k of keys) { if (allSelected) next.delete(k); else next.add(k) } return next }) }} style={checkboxStyle} />
                           <Link to={`/${bm.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>《{book?.title || bm.slug}》</Link>
                         </div>
                         {bm.chapters.map(ch => (
@@ -360,13 +361,14 @@ const Notes: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input type="checkbox" checked={total > 0 && selectedAnn.size === all.length} onChange={toggleAllAnn} style={checkboxStyle} />
                     <span style={{ fontSize: 12, color: 'var(--color-text-muted)', cursor: 'pointer' }} onClick={toggleAllAnn}>全选</span>
                   </div>
                   {groups.map(group => (
                     <div key={group.slug} className="notes-book">
-                      <div className="notes-book-title">
+                      <div className="notes-book-title" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <input type="checkbox" checked={group.chapters.every(ch => ch.annotations.every(a => selectedAnn.has(a.id)))} onChange={() => { const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id)); setSelectedAnn(prev => { const allSelected = ids.every(id => prev.has(id)); const next = new Set(prev); for (const id of ids) { if (allSelected) next.delete(id); else next.add(id) } return next }) }} style={checkboxStyle} />
                         <Link to={`/${group.slug}`} style={{ color: 'var(--color-gold)', textDecoration: 'none' }}>《{group.book}》</Link>
                       </div>
                       {group.chapters.map(ch => (
