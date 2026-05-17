@@ -496,7 +496,7 @@ const BookApp: React.FC = () => {
                             className="related-tag related-tag-skill"
                             onClick={() => openModal('skill', sk)}
                           >
-                            {sk}
+                            {skillDisplayNames[sk] || sk}
                           </button>
                         ))}
                       </div>
