@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 
 interface ActionBarProps {
   modalType: 'interp' | 'skill' | 'source'
@@ -37,23 +38,19 @@ const ActionBar: React.FC<ActionBarProps> = ({
   return (
     <>
       {modalKey && (modalType === 'interp' || modalType === 'source') && (
-        <div className="action-popover-container">
-          <button className="action-popover-btn" onClick={() => setActionPopoverOpen(v => !v)}>
-            <MoreHorizontal size={16} />
-          </button>
-          {actionPopoverOpen && (
-            <div className="action-popover">
-              <Button variant="ghost" size="sm" onClick={() => { onTogglePanel(); setActionPopoverOpen(false) }}>
-                <Bookmark size={14} />
-                批注{annotationsCount > 0 ? ` (${annotationsCount})` : ''}
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => { toggleBookmark(modalKey); setActionPopoverOpen(false) }}>
-                <Star size={14} fill={isBookmarked(modalKey) ? 'var(--color-gold)' : 'none'} />
-                {isBookmarked(modalKey) ? '已收藏' : '收藏'}
-              </Button>
-            </div>
-          )}
-        </div>
+        <DropdownMenu open={actionPopoverOpen} onOpenChange={setActionPopoverOpen}>
+          <DropdownMenuTrigger><MoreHorizontal size={16} /></DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => { onTogglePanel(); setActionPopoverOpen(false) }}>
+              <Bookmark size={14} />
+              批注{annotationsCount > 0 ? ` (${annotationsCount})` : ''}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => { toggleBookmark(modalKey); setActionPopoverOpen(false) }}>
+              <Star size={14} fill={isBookmarked(modalKey) ? 'var(--color-gold)' : 'none'} />
+              {isBookmarked(modalKey) ? '已收藏' : '收藏'}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
       {modalType === 'skill' && modalKey && (
         <Button
