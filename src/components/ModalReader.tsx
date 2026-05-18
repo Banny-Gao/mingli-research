@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import { getBookCompat, getBookSkill, getBookAssoc } from '../data/registry'
+import { getBook } from '../data/registry'
 import { ReadingProgress, BackToTop, TocSidebar } from '../components/ReadingTools'
 import AnnotationToolbar from '../components/AnnotationToolbar'
 import AnnotationPanel from '../components/AnnotationPanel'
@@ -92,17 +92,17 @@ const ModalReader: React.FC<ModalReaderProps> = ({
   } | null>(null)
   const [tocOpen, setTocOpen] = useState(false)
   const [skillRawText, setSkillRawText] = useState('')
+  const [loadedContent, setLoadedContent] = useState('')
+  const [contentLoading, setContentLoading] = useState(false)
 
-  const bookCompat = getBookCompat(bookSlug)
-  const bookSkill = getBookSkill(bookSlug)
-  const bookAssoc = getBookAssoc(bookSlug)
+  const bookData = getBook(bookSlug)
 
-  const interpContent = bookCompat.interpContent || {}
-  const sourceContent = bookCompat.sourceContent || {}
-  const skillRawContent = bookSkill.skillRawContent || {}
-  const skillDisplayNames = bookSkill.skillDisplayNames || {}
-  const interpToSkill = bookAssoc.interpToSkill || {}
-  const skillToInterp = bookAssoc.skillToInterp || {}
+  const interpContent = (bookData.interpContent as Record<string, () => Promise<string>>) || {}
+  const sourceContent = (bookData.sourceContent as Record<string, () => Promise<string>>) || {}
+  const skillRawContent = bookData.skillRawContent || {}
+  const skillDisplayNames = bookData.skillDisplayNames || {}
+  const interpToSkill = bookData.interpToSkill || {}
+  const skillToInterp = bookData.skillToInterp || {}
 
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(bookSlug)
   const { annotations, add, remove, updateNote } = useAnnotations(
@@ -110,6 +110,35 @@ const ModalReader: React.FC<ModalReaderProps> = ({
     modalKey,
     modalType === 'source',
   )
+
+  // 加载内容（异步函数）
+  useEffect(() => {
+    if (!modalKey || !modalType || modalType === 'skill') return
+    setContentLoading(true)
+    setLoadedContent('')
+
+    let loader: (() => Promise<string>) | undefined
+    if (modalType === 'interp') {
+      const contentMap = interpContent as Record<string, () => Promise<string>>
+      loader = contentMap[modalKey]
+    } else if (modalType === 'source') {
+      const contentMap = sourceContent as Record<string, () => Promise<string>>
+      loader = contentMap[modalKey]
+    }
+
+    if (!loader) {
+      setContentLoading(false)
+      return
+    }
+
+      loader().then(content => {
+        setLoadedContent(content)
+        setContentLoading(false)
+      }).catch(err => {
+        console.error('[DEBUG] Load error:', err)
+        setContentLoading(false)
+      })
+  }, [modalKey, modalType])
 
   // Reset internal UI state when navigating between chapters
   const prevKeyRef = useRef(modalKey)
@@ -212,8 +241,10 @@ const ModalReader: React.FC<ModalReaderProps> = ({
       setSkillRawText('')
       return
     }
+    // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
+    const contentKey = (skillToInterp as Record<string, string[]>)[modalKey]?.[0] || modalKey
     const loader = (skillRawContent as Record<string, () => Promise<string>>)[
-      modalKey
+      contentKey
     ]
     if (!loader) return
     loader().then(text => setSkillRawText(text))
@@ -261,13 +292,14 @@ const ModalReader: React.FC<ModalReaderProps> = ({
         ? `【${skillDisplayName}】技能`
         : `【${modalKey}】原文`
   const rawBody =
-    modalType === 'source'
-      ? (sourceContent as Record<string, string>)[modalKey] ||
-        '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇原文</p>'
-      : modalType === 'interp'
-        ? (interpContent as Record<string, string>)[modalKey] ||
-          '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
-        : ''
+    contentLoading
+      ? ''
+      : loadedContent ||
+        (modalType === 'source'
+          ? '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇原文</p>'
+          : modalType === 'interp'
+            ? '<p style="color:#8080a0;text-align:center;padding:40px 0">未找到该篇解读内容</p>'
+            : '')
   const annotatedBody = injectAnnotations(rawBody, annotations)
   const proseClass =
     modalType === 'interp' || modalType === 'source' ? 'prose-interp' : ''
@@ -352,6 +384,10 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                 <pre className="skill-raw-body">
                   <code>{skillRawText || '加载中...'}</code>
                 </pre>
+              ) : contentLoading ? (
+                <div className={proseClass} style={{ color: 'var(--color-text-dim)', padding: '40px 0', textAlign: 'center' }}>
+                  加载中...
+                </div>
               ) : (
                 <div className={proseClass}>
                   <ReactMarkdown

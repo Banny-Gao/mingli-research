@@ -255,128 +255,73 @@ for (const bookSlug of BOOK_DIRS) {
     skillKeys,
   })
 
-  // ===== 多文件输出 =====
+  // ===== 输出（content.ts + assoc.ts + index.ts）=====
   const bookOutDir = path.join(OUT_DIR, bookSlug)
-  const interpDir = path.join(bookOutDir, 'interp')
-  const skillDir = path.join(bookOutDir, 'skill')
+  ensureDir(bookOutDir)
 
-  ensureDir(interpDir)
-  ensureDir(skillDir)
-  ensureDir(path.join(bookOutDir, 'source'))
-
-  // 写入每个篇目文件
-  for (const [key, html] of Object.entries(chaptersData)) {
-    const escaped = html.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
-    // 每个文件只导出一个 default（避免 export * 冲突）
-    const content = `// Auto-generated — do not edit manually
-export default \`${escaped}\`;
-`
-    fs.writeFileSync(path.join(interpDir, `${key}.ts`), content)
+  // 清理旧子目录（interp/source/skill），已合并到 content.ts
+  for (const sub of ['interp', 'source', 'skill']) {
+    const subDir = path.join(bookOutDir, sub)
+    if (fs.existsSync(subDir)) fs.rmSync(subDir, { recursive: true })
   }
 
-  // 写入 interp/index.ts（用 Record 聚合，避免 export * 冲突）
-  const interpMap = interpKeys
-    .map(k => `  '${k}': () => import('./${k}').then(m => m.default as string),`)
-    .join('\n')
-  const interpIndex = `// Auto-generated — do not edit manually
-import type { InterpKey } from '../index';
+  // 写入 content.ts（所有内容加载器 + extractPathKey 只写一次）
+  const sourceKeys = Object.keys(sourceData)
+  const contentTs = `// Auto-generated — do not edit manually
 
-const modules = {
-${interpMap}
-} as const;
+const interpModules = import.meta.glob(
+  '../../../books/${bookSlug}/articles/*/interpretation.md',
+  { query: '?raw', import: 'default', eager: false }
+)
+const sourceModules = import.meta.glob(
+  '../../../books/${bookSlug}/articles/*/source.md',
+  { query: '?raw', import: 'default', eager: false }
+)
+const skillModules = import.meta.glob(
+  '../../../books/${bookSlug}/articles/*/skill.md',
+  { query: '?raw', import: 'default', eager: false }
+)
+
+function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: string): Record<string, () => Promise<string>> {
+  const result: Record<string, () => Promise<string>> = {};
+  for (const key in mod) {
+    const idx = key.indexOf('/articles/');
+    if (idx === -1) continue;
+    const start = idx + '/articles/'.length;
+    const end = key.lastIndexOf(suffix);
+    if (end === -1) continue;
+    result[key.slice(start, end)] = mod[key];
+  }
+  return result;
+}
 
 export const interpKeys = ${JSON.stringify(interpKeys)} as const;
-export const interpContent: Record<InterpKey, () => Promise<string>> = modules as any;
-`
-  fs.writeFileSync(path.join(interpDir, 'index.ts'), interpIndex)
-
-  // 写入每个技能文件（HTML + Raw）
-  for (const [key, html] of Object.entries(skillsData)) {
-    const escaped = html.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
-    const content = `// Auto-generated — do not edit manually
-export default \`${escaped}\`;
-`
-    fs.writeFileSync(path.join(skillDir, `${key}.ts`), content)
-  }
-  for (const [key, raw] of Object.entries(skillsRawData)) {
-    const rawEscaped = raw.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
-    const rawContent = `// Auto-generated — do not edit manually
-export default \`${rawEscaped}\`;
-`
-    fs.writeFileSync(path.join(skillDir, `${key}.raw.ts`), rawContent)
-  }
-
-  // 写入 source 目录文件
-  const sourceDirOut = path.join(bookOutDir, 'source')
-  for (const [key, html] of Object.entries(sourceData)) {
-    const escaped = html.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${')
-    const content = `// Auto-generated — do not edit manually
-export default \`${escaped}\`;
-`
-    const safeKey = key.replace(/[/\\:*?"<>|]/g, '_')
-    fs.writeFileSync(path.join(sourceDirOut, `${safeKey}.ts`), content)
-  }
-
-  // 写入 source/index.ts
-  const sourceKeys = Object.keys(sourceData)
-  const sourceMap = sourceKeys
-    .map(k => {
-      const safeKey = k.replace(/[/\\:*?"<>|]/g, '_')
-      return `  '${k.replace(/'/g, "\\'")}': () => import('./${safeKey}').then(m => m.default as string),`
-    })
-    .join('\n')
-  const sourceIndex = `// Auto-generated — do not edit manually
-const modules = {
-${sourceMap}
-} as const;
-
+export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');
 export const sourceKeys = ${JSON.stringify(sourceKeys)} as const;
-export const sourceContent: Record<string, () => Promise<string>> = modules as any;
-`
-  fs.writeFileSync(path.join(sourceDirOut, 'index.ts'), sourceIndex)
-
-  // 写入 skill/index.ts
-  const skillMap = skillKeys
-    .map(k => `  '${k}': () => import('./${k}').then(m => m.default as string),`)
-    .join('\n')
-  const skillRawMap = skillKeys
-    .map(k => `  '${k}': () => import('./${k}.raw').then(m => m.default as string),`)
-    .join('\n')
-  const skillIndex = `// Auto-generated — do not edit manually
-import type { SkillKey } from '../index';
-
-const modules = {
-${skillMap}
-} as const;
-
-const rawModules = {
-${skillRawMap}
-} as const;
-
+export const sourceContent = extractPathKey(sourceModules as any, '/source.md');
 export const skillKeys = ${JSON.stringify(skillKeys)} as const;
-export const skillContent: Record<SkillKey, () => Promise<string>> = modules as any;
-export const skillRawContent: Record<SkillKey, () => Promise<string>> = rawModules as any;
+export const skillContent = extractPathKey(skillModules as any, '/skill.md');
+export const skillRawContent = extractPathKey(skillModules as any, '/skill.md');
 export const skillDisplayNames: Record<string, string> = ${JSON.stringify(skillDisplayNames, null, 2)};
 `
-  fs.writeFileSync(path.join(skillDir, 'index.ts'), skillIndex)
+  fs.writeFileSync(path.join(bookOutDir, 'content.ts'), contentTs)
 
-  // 生成 assoc.ts
+  // 写入 assoc.ts
   const assocContent = `// Auto-generated — do not edit manually
 export const interpToSkill: Record<string, string[]> = ${JSON.stringify(interpToSkill, null, 2)};
 export const skillToInterp: Record<string, string[]> = ${JSON.stringify(skillToInterp, null, 2)};
 `
   fs.writeFileSync(path.join(bookOutDir, 'assoc.ts'), assocContent)
 
-  // 生成 index.ts
+  // 写入 book-level index.ts（平铺导出，无 namespace 嵌套）
   const interpType = interpKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ')
   const skillType = skillKeys.map(k => `'${k}'`).join(' | ')
   const sourceType =
     sourceKeys.length > 0 ? sourceKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ') : 'never'
 
   const indexContent = `// Auto-generated — do not edit manually
-export * as interp from './interp';
-export * as skill from './skill';
-export * as source from './source';
+export { interpKeys, interpContent, sourceKeys, sourceContent, skillKeys, skillContent, skillRawContent, skillDisplayNames } from './content';
+export { interpToSkill, skillToInterp } from './assoc';
 
 // 类型定义
 export type InterpKey = ${interpType || 'never'};
@@ -384,19 +329,6 @@ export type SkillKey = ${skillType || 'never'};
 export type SourceKey = ${sourceType || 'never'};
 `
   fs.writeFileSync(path.join(bookOutDir, 'index.ts'), indexContent)
-
-  // 保留 compat layer（旧消费者兼容）
-  const interpJson = JSON.stringify(chaptersData, null, 2)
-  const skillJson = JSON.stringify(skillsData, null, 2)
-  const sourceJson = JSON.stringify(sourceData, null, 2)
-  const compatContent = `// Auto-generated — compat layer — do not edit manually
-// 旧消费者使用此文件，新消费者应从 './${bookSlug}/interp' 和 './${bookSlug}/skill' 导入
-export const interpContent: Record<string, string> = ${interpJson};
-export const skillContent: Record<string, string> = ${skillJson};
-export const sourceContent: Record<string, string> = ${sourceJson};
-export type { InterpKey, SkillKey } from './${bookSlug}/index';
-`
-  fs.writeFileSync(path.join(OUT_DIR, `${bookSlug}.ts`), compatContent)
 }
 
 // 生成 book-types.ts
@@ -428,9 +360,10 @@ export interface Book {
 fs.writeFileSync(path.join(OUT_DIR, 'book-types.ts'), bookTypesContent)
 
 // 生成 books.ts（仅数据，类型从 book-types.ts 导入）
+const VALID_SECTIONS = ['山', '医', '命', '相', '卜']
 const bookData = books.map(b => ({
   slug: b.slug,
-  section: b.section || '',
+  section: VALID_SECTIONS.includes(b.section) ? b.section : (() => { console.warn('  ⚠️ ' + b.slug + ' 术数无效: "' + b.section + '"，默认 "命"'); return '命' })(),
   title: b.title,
   author: b.author,
   version: b.version,
@@ -465,38 +398,22 @@ fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), indexExports)
 function safeIdent(slug) { return slug.replace(/[^a-zA-Z0-9_$]/g, '_') }
 const registryImports = books.map(b => {
   const id = safeIdent(b.slug)
-  return `import * as _${id} from './${b.slug}';
-import * as _${id}Skill from './${b.slug}/skill';
-import * as _${id}Assoc from './${b.slug}/assoc';`
+  return `import * as _${id} from './${b.slug}';`
 }).join('\n')
 const registryMap = books.map(b => {
   const id = safeIdent(b.slug)
-  return `  '${b.slug}': { module: _${id}, skill: _${id}Skill, assoc: _${id}Assoc },`
+  return `  '${b.slug}': _${id},`
 }).join('\n')
 const registryContent = `// Auto-generated — do not edit manually
 // 动态加载各典籍数据，避免前端代码硬编码 slug
 ${registryImports}
 
-interface BookModules {
-  module: Record<string, any>;
-  skill: Record<string, any>;
-  assoc: Record<string, any>;
-}
-
-const registry: Record<string, BookModules> = {
+const registry: Record<string, any> = {
 ${registryMap}
 };
 
-export function getBookCompat(slug: string): Record<string, any> {
-  return registry[slug]?.module ?? {};
-}
-
-export function getBookSkill(slug: string): Record<string, any> {
-  return registry[slug]?.skill ?? {};
-}
-
-export function getBookAssoc(slug: string): Record<string, any> {
-  return registry[slug]?.assoc ?? {};
+export function getBook(slug: string) {
+  return registry[slug] ?? {};
 }
 `
 fs.writeFileSync(path.join(OUT_DIR, 'registry.ts'), registryContent)

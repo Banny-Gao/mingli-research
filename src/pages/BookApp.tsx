@@ -3,7 +3,7 @@ import { useParams, Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ArrowLeft } from 'lucide-react'
 import { books } from '../data/books'
-import { getBookCompat, getBookAssoc } from '../data/registry'
+import { getBook } from '../data/registry'
 import ReadList from '../components/ReadList'
 import SearchBar from '../components/SearchBar'
 import ModalReader from '../components/ModalReader'
@@ -19,12 +19,11 @@ const BookApp: React.FC = () => {
 
   const bookSlug = slug || ''
   const book = books.find(b => b.slug === bookSlug)
-  const bookCompat = getBookCompat(bookSlug)
-  const bookAssoc = getBookAssoc(bookSlug)
+  const bookCompat = getBook(bookSlug)
 
-  const skillContent = bookCompat.skillContent || {}
-  const sourceContent = bookCompat.sourceContent || {}
-  const interpToSkill = bookAssoc.interpToSkill || {}
+  const skillContent = (bookCompat.skillContent as Record<string, any>) || {}
+  const sourceContent = (bookCompat.sourceContent as Record<string, any>) || {}
+  const interpToSkill = bookCompat.interpToSkill || {}
 
   const { markRead } = useReadProgress(bookSlug)
   const { touchChapter } = useGlobalProgress()
