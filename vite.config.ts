@@ -9,6 +9,11 @@ export default defineConfig({
   resolve: {
     alias: { '@': resolve(__dirname, 'src') },
   },
+  server: {
+    fs: {
+      allow: [resolve(__dirname, '..')],
+    },
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,

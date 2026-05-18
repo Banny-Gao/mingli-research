@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Book } from '../data/book-types'
 import { ArrowRight } from 'lucide-react'
-import { skillDisplayNames } from '../data/ditiansui-site/skill'
+import { skillDisplayNames } from '../data/ditiansui-site'
 
 interface Props {
   book: Book

@@ -29,8 +29,9 @@
 | 安装 react-markdown remark-gfm rehype-raw | ✅ 完成 | react-markdown 10.1.0 |
 | 更新 ModalReader.tsx 渲染层 | ✅ 完成 | dangerouslySetInnerHTML → ReactMarkdown |
 | 修复 main.tsx 循环引用错误 | ✅ 完成 | ThemeToggle 抽取为独立组件 |
-| Playwright 验证内容渲染 | ✅ 完成 | 天道解读 modal 正常打开，内容正确 |
-| 内容迁移（.ts → .md） | 🔴 待做 | 201 个文件还未迁移，render 使用兼容模式 |
+| 修改 generate.js 不再生成内容文件 | ✅ 完成 | 改为 import.meta.glob 加载 books/ |
+| 清理 201 个冗余 .ts 内容文件 | ✅ 完成 | 三个目录各只剩 index.ts |
+| Playwright 验证内容加载 | ✅ 完成 | 天道解读 5365 字正常渲染 |
 
 ---
 
