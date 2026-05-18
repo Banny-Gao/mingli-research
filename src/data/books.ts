@@ -4,6 +4,7 @@ import type { Book } from './book-types';
 export const books: Book[] = [
   {
     "slug": "ditiansui-site",
+    "section": "命",
     "title": "滴天髓阐微",
     "author": "[明] 刘基 撰 / [清] 任铁樵 注",
     "version": "据《四库全书》本",

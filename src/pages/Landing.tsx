@@ -3,12 +3,23 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Flame, FileText } from 'lucide-react'
 import { books } from '../data/books'
+import type { ArtSection } from '../data/book-types'
 import SearchBar from '../components/SearchBar'
 import { useGlobalProgress } from '../hooks/useProgress'
-import { ThemeToggle } from '../main'
+import { ThemeToggle } from '../components/ThemeToggle'
+
+const SECTION_ORDER: ArtSection[] = ['命', '医', '山', '相', '卜']
 
 const Landing: React.FC = () => {
   const gp = useGlobalProgress()
+
+  const booksBySection = SECTION_ORDER.reduce<Record<ArtSection, typeof books>>((acc, sec) => {
+    acc[sec] = books.filter(b => b.section === sec)
+    return acc
+  }, {} as Record<ArtSection, typeof books>)
+
+  const activeSections = SECTION_ORDER.filter(sec => booksBySection[sec].length > 0)
+
   return (
     <div className="page-wrapper">
       <Helmet>
@@ -67,28 +78,33 @@ const Landing: React.FC = () => {
           </Link>
         </div>
 
-        {/* Book Grid */}
-        <div className="book-grid">
-          {books.map(book => (
-            <Link key={book.slug} to={`/${book.slug}`} className="book-card">
-              <div className="book-card-info">
-                <h2 className="book-card-title">《{book.title}》</h2>
-                <p className="book-card-meta">{book.author || ''}</p>
-              </div>
-              {book.description && <p className="book-card-desc">{book.description}</p>}
-              <div className="progress-bar">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${book.total > 0 ? (book.done / book.total) * 100 : 0}%` }}
-                />
-              </div>
-              <div className="progress-meta">
-                <span>已解读 {book.done} 篇</span>
-                <span>{book.total > 0 ? Math.round((book.done / book.total) * 100) : 0}% 完成</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* Book Grid by Section */}
+        {activeSections.map(sec => (
+          <div key={sec} className="section-group mb-8">
+            <h2 className="section-header">{sec}</h2>
+            <div className="book-grid">
+              {booksBySection[sec].map(book => (
+                <Link key={book.slug} to={`/${book.slug}`} className="book-card">
+                  <div className="book-card-info">
+                    <h2 className="book-card-title">《{book.title}》</h2>
+                    <p className="book-card-meta">{book.author || ''}</p>
+                  </div>
+                  {book.description && <p className="book-card-desc">{book.description}</p>}
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${book.total > 0 ? (book.done / book.total) * 100 : 0}%` }}
+                    />
+                  </div>
+                  <div className="progress-meta">
+                    <span>已解读 {book.done} 篇</span>
+                    <span>{book.total > 0 ? Math.round((book.done / book.total) * 100) : 0}% 完成</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
