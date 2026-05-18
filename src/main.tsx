@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
 import { Sun, Moon } from 'lucide-react'
@@ -51,14 +51,14 @@ ReactDOM.createRoot(document.body!).render(
           })();
         `}</script>
       </Helmet>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/:slug" element={<BookApp />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </HelmetProvider>
   </React.StrictMode>
 )

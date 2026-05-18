@@ -98,7 +98,7 @@ pnpm test       # Playwright E2E 测试
 ## 部署
 
 - **GitHub Pages**：push 到 `main` 分支自动部署
-- **域名**：`/mingli-research`（子路径部署）
+- 使用 Hash Router，URL 格式：`https://banny-gao.github.io/mingli-research/#/ditiansui-site`
 
 ---
 
