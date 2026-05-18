@@ -52,7 +52,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
 
   async function loadSearchIndex(): Promise<SearchEntry[]> {
     if (searchCacheRef.current) return searchCacheRef.current
-    const res = await fetch('/search-index.json')
+    const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
     const data = (await res.json()) as Array<{
       slug: string
       title: string
@@ -196,7 +196,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     setQuery('')
     const openParam = type === 'chapter' ? 'interp' : type
     navigate(
-      `/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
+      `/#/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
     )
   }
 
