@@ -1,6 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { getBookCompat, getBookSkill, getBookAssoc } from '../data/registry'
 import { ReadingProgress, BackToTop, TocSidebar } from '../components/ReadingTools'
 import AnnotationToolbar from '../components/AnnotationToolbar'
@@ -350,10 +353,14 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                   <code>{skillRawText || '加载中...'}</code>
                 </pre>
               ) : (
-                <div
-                  className={proseClass}
-                  dangerouslySetInnerHTML={{ __html: annotatedBody }}
-                />
+                <div className={proseClass}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                  >
+                    {annotatedBody}
+                  </ReactMarkdown>
+                </div>
               )}
             </div>
           </div>

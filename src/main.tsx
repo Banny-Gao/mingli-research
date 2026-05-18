@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { HelmetProvider } from 'react-helmet-async'
-import { Sun, Moon } from 'lucide-react'
 import './styles/index.css'
 import './styles/index.less'
 import Landing from './pages/Landing'
@@ -18,25 +17,6 @@ const initTheme = () => {
   } catch {}
 }
 initTheme()
-
-export function ThemeToggle() {
-  const [theme, setTheme] = useState(
-    () => document.documentElement.getAttribute('data-theme') || 'dark'
-  )
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('mingli_theme', theme)
-  }, [theme])
-  
-  return (
-    <button
-      onClick={() => setTheme(t => (t === 'dark' ? 'light' : 'dark'))}
-      className="theme-toggle-btn"
-    >
-      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-    </button>
-  )
-}
 
 ReactDOM.createRoot(document.body!).render(
   <React.StrictMode>
