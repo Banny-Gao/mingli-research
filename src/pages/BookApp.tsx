@@ -70,7 +70,7 @@ const BookApp: React.FC = () => {
     setModalType(null)
     setModalKey('')
     setScrollToText(null)
-    navigate(`/#/${bookSlug}`, { replace: true })
+    navigate(`/${bookSlug}`, { replace: true })
   }
 
   const openModal = (type: 'interp' | 'skill' | 'source', key: string) => {

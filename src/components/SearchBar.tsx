@@ -196,7 +196,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     setQuery('')
     const openParam = type === 'chapter' ? 'interp' : type
     navigate(
-      `/#/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
+      `/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
     )
   }
 
