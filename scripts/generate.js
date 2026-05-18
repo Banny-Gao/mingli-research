@@ -243,6 +243,7 @@ for (const bookSlug of BOOK_DIRS) {
     chapters,
     chaptersData,
     skillsData,
+    skillsRawData,
     sourceData,
     interpKeys,
     skillKeys,
@@ -508,6 +509,7 @@ const searchIndex = books.map(b => ({
   })),
   skill: b.skillKeys.map(k => ({
     key: k,
+    displayName: (b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k),
     text: stripHtml(b.skillsData[k] || ''),
   })),
   source: Object.keys(b.sourceData || {}).map(k => ({
