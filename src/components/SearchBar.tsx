@@ -7,6 +7,7 @@ interface SearchEntry {
   title: string
   type: 'chapter' | 'skill' | 'source'
   key: string
+  displayName?: string
   text: string
 }
 
@@ -57,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
       slug: string
       title: string
       interp: Array<{ key: string; text: string }>
-      skill: Array<{ key: string; text: string }>
+      skill: Array<{ key: string; displayName?: string; text: string }>
       source: Array<{ key: string; text: string }>
     }>
     const entries: SearchEntry[] = []
@@ -79,6 +80,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
             title: book.title,
             type: 'skill',
             key: sk.key,
+            displayName: sk.displayName,
             text: sk.text,
           })
       }
@@ -94,7 +96,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
       }
     }
     fuseRef.current = new Fuse(entries, {
-      keys: ['text', 'key', 'title'],
+      keys: ['text', 'key', 'displayName', 'title'],
       threshold: 0.0,
       includeScore: true,
       ignoreLocation: true,
@@ -256,7 +258,7 @@ return (
                 </span>
                 <div className="search-result-text">
                   <span className="search-book-title">《{r.title}》</span>
-                  <span className="search-item-name">{r.key}</span>
+                  <span className="search-item-name">{r.type === 'skill' && r.displayName ? r.displayName : r.key}</span>
                   {query && <div className="search-snippet">{getSnippet(r.text, query)}</div>}
                 </div>
               </button>
