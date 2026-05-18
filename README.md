@@ -1,79 +1,107 @@
-# 命理学术研究站点
+# 命理学术中心
 
-基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统性学术解读，并构建配套 AI 执行技能体系，用于学术研究与质疑处置。
+基于《滴天髓阐微》《渊海子平》等正统子平经典，对经典著作进行系统性学术解读与配图注释，支持全文检索、笔记标注与进度追踪。
+
+**在线访问**：https://banny-gao.github.io/mingli-research/
+
+---
+
+## 书籍
+
+| 书籍 | 状态 |
+|------|------|
+| 《滴天髓阐微》 | 上篇·通神论 / 下篇·六亲论，持续解读中 |
+| 《渊海子平》 | 整理中 |
+
+---
+
+## 功能特性
+
+- **原文·解读·技能三栏阅读**：点击任一篇目，原文、解读、相关技能可切换查看
+- **全文检索**：支持对所有已解读篇目进行模糊搜索，直接定位到具体段落
+- **笔记标注**：选中任意文字添加「重点 / 疑问 / 引用」三类标注，统一管理
+- **书签与进度**：自动追踪阅读进度、书签与连续学习天数
+- **主题切换**：支持浅色 / 深色模式
+- **键盘快捷键**：`J` / `K` 切换篇目，`B` 书签，`Escape` 关闭
+
+---
+
+## 技术栈
+
+| 层级 | 技术 |
+|------|------|
+| 框架 | React 19 + React Router v7 + TypeScript |
+| 构建 | Vite 6 |
+| 样式 | Tailwind CSS 4 + LESS 模块 |
+| 搜索 | Fuse.js（前端模糊搜索） |
+| 内容 | TypeScript 模块 + Marked（Markdown 渲染） |
+| 测试 | Playwright E2E |
+
+---
 
 ## 项目结构
 
 ```
-mingli-research/
-├── books/                      # 书籍源码目录
-│   ├── ditiansui-site/         # 《滴天髓阐微》站点
-│   │   ├── interpretations/    # 已解读篇章（10/64）
-│   │   ├── skills/            # Claude Code 执行技能（9个）
-│   │   ├── components/        # React 组件
-│   │   ├── pages/            # 页面组件
-│   │   ├── catalog.md         # 64篇总表（自动生成数据源）
-│   │   ├── meta/             # 元数据
-│   │   ├── scripts/          # 生成脚本
-│   │   └── deploy.js*        # 部署脚本
-│   └── yuanhaiziping/         # 《渊海子平》站点
-├── src/                        # 根目录 React 入口
-├── scripts/                    # 内容生成脚本（generate.js / postbuild.js）
-├── dist/                       # 构建产物
-├── SKILL-bazi-research-dispute.md  # 全局学术研究技能（v2.0）
-├── AGENTS.md                   # GitNexus 代码索引配置
-├── CLAUDE.md                   # 项目行为准则
-├── PROGRESS.md                 # 解读进度追踪
-└── README.md                   # 本文件
+src/
+├── main.tsx              # 入口、路由、主题初始化
+├── pages/
+│   ├── Landing.tsx        # 首页（书库、统计、学习天数徽章）
+│   ├── BookApp.tsx        # 书籍详情页（篇目列表 + 阅读器）
+│   └── Notes.tsx          # 笔记中心（跨书标注管理、导出）
+├── components/
+│   ├── ModalReader.tsx    # 核心阅读器（原文/解读/技能三栏）
+│   ├── ReadList.tsx       # 篇目分类列表
+│   ├── SearchBar.tsx      # 全局搜索（Fuse.js 驱动）
+│   ├── AnnotationToolbar.tsx  # 选中文本浮出标注工具
+│   ├── AnnotationPanel.tsx    # 标注侧边栏
+│   └── ui/                # shadcn/ui 基础组件
+├── data/
+│   ├── books.ts           # 书籍元数据（自动生成）
+│   ├── registry.ts        # 动态模块加载器
+│   └── ditiansui-site/    # 《滴天髓》数据
+│       ├── interp/        # 解读内容（按篇目分文件）
+│       ├── skill/         # 配套技能（按主题分文件）
+│       └── source/        # 经典原文
+├── hooks/
+│   ├── useAnnotations.ts  # 标注 CRUD（localStorage）
+│   ├── useProgress.ts     # 进度、书签、学习连续天数
+│   └── useNotesData.ts    # 跨书籍笔记聚合
+└── styles/                # LESS + Tailwind 样式模块
 ```
 
-## 技术栈
+---
 
-| 层级     | 技术                                     |
-| -------- | ---------------------------------------- |
-| 站点框架 | React 19 + React Router 7                |
-| 构建工具 | Vite 5 + TypeScript 5                    |
-| 样式     | Tailwind CSS 4 + @tailwindcss/typography |
-| 内容处理 | marked（Markdown → HTML）                |
-| 动画     | GSAP 3                                   |
+## 内容生成
 
-## 核心规范
+`scripts/generate.js` 从 `books/*/catalog.md` 读取篇目信息与状态，解析 `articles/` 下的解读与技能 Markdown，生成 `src/data/` 下的 TypeScript 数据文件供 React 使用。
 
-学术研究遵循 **14 条绝对红线禁令**，以经典原文为唯一判准：
-
-- 经典原文 > 一切名家注解 > 个人观点 > 网络杂论
-- 禁止自创理论、禁止传播网络伪论
-- 禁止武断流派争议，争议问题客观陈列多方依据
-- 错误观点按四步流程指正（正面回应→溯源经典→拆解逻辑→开放探讨）
-
-详见 `SKILL-bazi-research-dispute.md`。
-
-## 开发命令
+**更新内容后运行：**
 
 ```bash
-pnpm dev          # 启动开发服务器
-pnpm build        # 构建生产版本（tsc + vite build + postbuild）
-pnpm generate     # 仅运行内容生成脚本
-pnpm all          # generate + build
-pnpm preview      # 预览构建产物
+pnpm generate   # 仅重新生成数据文件
+pnpm build      # 构建生产版本
 ```
 
-## 内容生成机制
+---
 
-`scripts/generate.js` 从外部数据源 `/root/.hermes/mingli/` 读取各书籍的 `catalog.md`，根据"已解读"状态提取对应 `tutorial.md` 内容，生成 `src/data/` 下的类型文件供 React 使用。
+## 开发
 
-详见 `scripts/generate.js`。
+```bash
+pnpm dev        # 开发服务器
+pnpm build      # 生产构建
+pnpm preview    # 预览构建产物
+pnpm test       # Playwright E2E 测试
+```
 
-## 解读进度
+---
 
-- **滴天髓阐微**：10 / 64 篇（15.6%）
-- **渊海子平**：进行中
+## 部署
 
-详见 `PROGRESS.md`。
+- **GitHub Pages**：push 到 `main` 分支自动部署
+- **域名**：`/mingli-research`（子路径部署）
 
-## 内容来源
+---
 
-经典依据（按优先级）：
+## 学术准则
 
-1. **至高核心**：《渊海子平》《滴天髓》
-2. **辅助权威**：《子平真诠》《三命通会》《穷通宝鉴》《滴天髓阐微》《神峰通考》《千里命稿》《八字提要》《命理探源》《子平概要》
+基于经典原文为唯一判准，禁止自创理论与传播网络伪论。详见 [SKILL-bazi-research-dispute.md](./SKILL-bazi-research-dispute.md)。
