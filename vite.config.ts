@@ -5,8 +5,6 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  root: __dirname,
-  base: '/',
   resolve: {
     alias: { '@': resolve(__dirname, 'src') },
   },
@@ -14,7 +12,13 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: resolve(__dirname, 'src/main.tsx'),
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@base-ui/react', 'lucide-react'],
+        },
+      },
     },
+    chunkSizeWarningLimit: 1200,
   },
 });

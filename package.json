@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/postbuild.js",
+    "build": "tsc && vite build",
     "generate": "node scripts/generate.js",
     "all": "node scripts/generate.js && pnpm run build",
     "preview": "vite preview",
