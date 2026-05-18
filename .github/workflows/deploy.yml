@@ -18,8 +18,11 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Pull Vercel Environment
         run: npx vercel pull --yes --environment=preview
@@ -64,8 +67,11 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Pull Vercel Environment
         run: npx vercel pull --yes --environment=production
