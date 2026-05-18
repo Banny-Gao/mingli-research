@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>命理学术中心</title>
+  <script>
+    // GitHub Pages SPA 路由：
+    // 所有 404 请求重定向到 /mingli-research/index.html，由 React Router 处理前端路由
+    var url = window.location.pathname;
+    var base = '/mingli-research';
+    // 保留原始路径（含 /）和查询参数、hash
+    var params = window.location.search + window.location.hash;
+    var route = url.slice(url.indexOf(base) + base.length) || '/';
+    // 不以 / 开头就补上
+    if (route && !route.startsWith('/')) route = '/' + route;
+    window.location.href = base + route + params;
+  </script>
+</head>
+<body>
+  <p>正在跳转...</p>
+</body>
+</html>
