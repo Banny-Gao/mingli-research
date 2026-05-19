@@ -36,6 +36,7 @@ ReactDOM.createRoot(document.body!).render(
           <Route path="/" element={<Landing />} />
           <Route path="/notes" element={<Notes />} />
           <Route path="/:slug" element={<BookApp />} />
+          <Route path="/books/:section/:slug" element={<BookApp />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>

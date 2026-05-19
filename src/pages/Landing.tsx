@@ -84,7 +84,7 @@ const Landing: React.FC = () => {
             <h2 className="section-header">{sec}</h2>
             <div className="book-grid">
               {booksBySection[sec].map(book => (
-                <Link key={book.slug} to={`/${book.slug}`} className="book-card">
+                <Link key={book.slug} to={`/books/${book.section}/${book.slug}`} className="book-card">
                   <div className="book-card-info">
                     <h2 className="book-card-title">《{book.title}》</h2>
                     <p className="book-card-meta">{book.author || ''}</p>
