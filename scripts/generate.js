@@ -493,6 +493,7 @@ for (const b of books) {
 ensureDir(PUBLIC_DIR)
 const searchIndex = books.map(b => ({
   slug: b.slug,
+  section: b.section,
   title: b.title,
   interp: b.interpKeys.map(k => ({
     key: k,
