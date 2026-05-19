@@ -1,6 +1,7 @@
 # Catalog.md 格式规范
 
 > **用途：** 规范 `books/{book-slug}/catalog.md` 的格式
+> **版本：** 2.0 — 新增内容类型声明
 > **前置依赖：** 对应 `catalog.html`（人工维护）已存在
 > **面向受众：** AI 生成者 + generate.js 消费方
 
@@ -28,23 +29,25 @@ books/{book-slug}/catalog.md
 > 版本：据《四库全书》本
 > 简介：子平命理学核心经典，以天干地支五行生克为核心，通过六十余篇专题系统阐述命理原理。
 > 术数：命
+> 内容类型：interpretation, source, skill
 ```
 
 - 一级标题 ：书名 ，使用 `《》` 包裹
-- blockquote 元信息：包含 **作者**、**版本**、**简介**、**术数** 四行
+- blockquote 元信息：包含 **作者**、**版本**、**简介**、**术数**、**内容类型** 五行
 - 所有字段必填，简介不超过 200 字
 - 术数字段取值：`山` | `医` | `命` | `相` | `卜`，对应五术分类
+- 内容类型字段：逗号分隔的内容类型标识，如 `interpretation,source,skill`。declare 该书的章节包含哪些内容形式。generate.js 据此动态生成加载器和类型定义
 
 ### 2.2 分类与表格
 
 ```markdown
 ## 上篇 · 通神论
 
-| 编号 | 篇名 | 原文路径 | 解读路径 | 状态 | 关联技能 |
-| ---- | ---- | -------- | -------- | ---- | -------- |
-| 01   | 天道 | articles/天道/source.md | articles/天道/interpretation.md | 已解读 | tiandao |
-| 02   | 坤道 | articles/坤道/source.md | articles/坤道/interpretation.md | 已解读 | kundao |
-| 09   | 干支总论 | articles/干支总论/source.md | | 待解读 | |
+| 编号 | 篇名     | 原文路径                    | 解读路径                        | 状态   | 关联技能 |
+| ---- | -------- | --------------------------- | ------------------------------- | ------ | -------- |
+| 01   | 天道     | articles/天道/source.md     | articles/天道/interpretation.md | 已解读 | tiandao  |
+| 02   | 坤道     | articles/坤道/source.md     | articles/坤道/interpretation.md | 已解读 | kundao   |
+| 09   | 干支总论 | articles/干支总论/source.md |                                 | 待解读 |          |
 ```
 
 **规则：**
@@ -82,25 +85,27 @@ books/{book-slug}/catalog.md
 ## 三、解析规则（generate.js 消费者）
 
 1. 读取第一个 `#` 为书名
-2. 读取 `>` blockquote 四行，分别提取 author、version、description、section（术数）
+2. 读取 `>` blockquote 五行，分别提取 author、version、description、section（术数）、contentTypes（内容类型）
 3. 术数字段映射：`山` | `医` | `命` | `相` | `卜`
-4. 遍历每个 `##` 标题，记录为当前分类名
-5. 解析表格行：
+4. 内容类型为逗号分隔的标识，如 `interpretation,source,skill`。generate.js 据此生成对应类型的加载器
+5. 遍历每个 `##` 标题，记录为当前分类名
+6. 解析表格行：
    - 第 1 列：编号（数字）
    - 第 2 列：篇名（中文）
    - 第 3 列：原文路径 → `articles/{篇名}/source.md`
    - 第 4 列：解读路径 → `articles/{篇名}/interpretation.md`（待解读为空）
    - 第 5 列：状态（已解读/待解读）
    - 第 6 列：关联技能（英文标识，逗号分隔）
-6. 每行的分类为当前所在的 `##` 标题
+7. 每行的分类为当前所在的 `##` 标题
 
 ---
 
 ## 四、合规检查
 
 - [ ] 一级标题为书名 ，含有 `《》`
-- [ ] blockquote 包含 author、version、description、section 四行
+- [ ] blockquote 包含 author、version、description、section、contentTypes 五行
 - [ ] section 取值为 `山` | `医` | `命` | `相` | `卜`
+- [ ] contentTypes 为逗号分隔的内容类型标识
 - [ ] 每个分类使用 `##` 二级标题
 - [ ] 表格为 6 列，表头正确
 - [ ] 路径使用 `articles/` 格式
