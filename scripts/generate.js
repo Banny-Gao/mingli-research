@@ -20,6 +20,7 @@ const META_KEYS = {
   version: ['版本'],
   description: ['简介'],
   section: ['术数'],
+  contentTypes: ['内容类型'],
 }
 function buildMetaPattern(keys) {
   return new RegExp(`^>\\s*(?:${keys.join('|')})[：:]`)
@@ -31,7 +32,11 @@ const PUBLIC_DIR = path.join(__dirname, '../public')
 marked.setOptions({ gfm: true, breaks: false })
 
 function headingId(text) {
-  return text.replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase()
+  return text
+    .replace(/[^\w一-鿿\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .toLowerCase()
 }
 
 const renderer = {
@@ -116,6 +121,7 @@ const META_PATTERNS = {
   version: buildMetaPattern(META_KEYS.version),
   description: buildMetaPattern(META_KEYS.description),
   section: buildMetaPattern(META_KEYS.section),
+  contentTypes: buildMetaPattern(META_KEYS.contentTypes),
 }
 
 function parseBookMeta(filePath) {
@@ -128,15 +134,19 @@ function parseBookMeta(filePath) {
   let version = ''
   let description = ''
   let section = ''
+  let contentTypes = ''
   for (const line of content.split('\n')) {
     const t = line.trim()
     if (META_PATTERNS.author.test(t)) author = t.replace(META_PATTERNS.author, '').trim()
     else if (META_PATTERNS.version.test(t)) version = t.replace(META_PATTERNS.version, '').trim()
-    else if (META_PATTERNS.description.test(t)) description = t.replace(META_PATTERNS.description, '').trim()
+    else if (META_PATTERNS.description.test(t))
+      description = t.replace(META_PATTERNS.description, '').trim()
     else if (META_PATTERNS.section.test(t)) section = t.replace(META_PATTERNS.section, '').trim()
+    else if (META_PATTERNS.contentTypes.test(t))
+      contentTypes = t.replace(META_PATTERNS.contentTypes, '').trim()
   }
 
-  return { title, author, version, description, section }
+  return { title, author, version, description, section, contentTypes }
 }
 
 function ensureDir(dir) {
@@ -147,10 +157,7 @@ function ensureDir(dir) {
 
 const BOOK_DIRS = fs.readdirSync(ROOT).filter(f => {
   const p = path.join(ROOT, f)
-  return (
-    fs.statSync(p).isDirectory() &&
-    fs.existsSync(path.join(p, 'catalog.md'))
-  )
+  return fs.statSync(p).isDirectory() && fs.existsSync(path.join(p, 'catalog.md'))
 })
 
 const books = []
@@ -159,12 +166,22 @@ for (const bookSlug of BOOK_DIRS) {
   const bookRoot = path.join(ROOT, bookSlug)
   const catalogPath = path.join(bookRoot, 'catalog.md')
 
-  const meta = parseBookMeta(catalogPath) || { title: bookSlug, author: '', version: '', description: '', section: '' }
-  const title = meta.title
-  const author = meta.author
-  const version = meta.version
-  const description = meta.description
-  const section = meta.section
+  const defaultMeta = {
+    title: bookSlug,
+    author: '',
+    version: '',
+    description: '',
+    section: '',
+    contentTypes: '',
+  }
+  const meta = parseBookMeta(catalogPath) || defaultMeta
+  const { title, author, version, description, section, contentTypes } = meta
+  const contentTypesList = contentTypes
+    ? contentTypes
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+    : []
   const catalogRows = parseCatalog(catalogPath)
 
   const chapters = []
@@ -244,6 +261,7 @@ for (const bookSlug of BOOK_DIRS) {
     version,
     description,
     section,
+    contentTypes: contentTypesList,
     total: chapters.length,
     done: doneCount,
     chapters,
@@ -265,22 +283,47 @@ for (const bookSlug of BOOK_DIRS) {
     if (fs.existsSync(subDir)) fs.rmSync(subDir, { recursive: true })
   }
 
-  // 写入 content.ts（所有内容加载器 + extractPathKey 只写一次）
+  // 写入 content.ts（根据内容类型动态生成加载器）
   const sourceKeys = Object.keys(sourceData)
-  const contentTs = `// Auto-generated — do not edit manually
 
-const interpModules = import.meta.glob(
+  // 构建各内容类型的 glob + export
+  const contentTypeGlobs = {
+    interpretation: `const interpModules = import.meta.glob(
   '../../../books/${bookSlug}/articles/*/interpretation.md',
   { query: '?raw', import: 'default', eager: false }
-)
-const sourceModules = import.meta.glob(
+)`,
+    source: `const sourceModules = import.meta.glob(
   '../../../books/${bookSlug}/articles/*/source.md',
   { query: '?raw', import: 'default', eager: false }
-)
-const skillModules = import.meta.glob(
+)`,
+    skill: `const skillModules = import.meta.glob(
   '../../../books/${bookSlug}/articles/*/skill.md',
   { query: '?raw', import: 'default', eager: false }
-)
+)`,
+  }
+  const contentTypeExports = {
+    interpretation: `export const interpKeys = ${JSON.stringify(interpKeys)} as const;
+export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');`,
+    source: `export const sourceKeys = ${JSON.stringify(sourceKeys)} as const;
+export const sourceContent = extractPathKey(sourceModules as any, '/source.md');`,
+    skill: `export const skillKeys = ${JSON.stringify(skillKeys)} as const;
+export const skillContent = extractPathKey(skillModules as any, '/skill.md');
+export const skillRawContent = extractPathKey(skillModules as any, '/skill.md');
+export const skillDisplayNames: Record<string, string> = ${JSON.stringify(skillDisplayNames, null, 2)};`,
+  }
+
+  const selectedGlobs = contentTypesList
+    .filter(t => contentTypeGlobs[t])
+    .map(t => contentTypeGlobs[t])
+    .join('\n')
+  const selectedExports = contentTypesList
+    .filter(t => contentTypeExports[t])
+    .map(t => contentTypeExports[t])
+    .join('\n')
+
+  const contentTs = `// Auto-generated — do not edit manually
+
+${selectedGlobs}
 
 function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: string): Record<string, () => Promise<string>> {
   const result: Record<string, () => Promise<string>> = {};
@@ -295,14 +338,7 @@ function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: stri
   return result;
 }
 
-export const interpKeys = ${JSON.stringify(interpKeys)} as const;
-export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');
-export const sourceKeys = ${JSON.stringify(sourceKeys)} as const;
-export const sourceContent = extractPathKey(sourceModules as any, '/source.md');
-export const skillKeys = ${JSON.stringify(skillKeys)} as const;
-export const skillContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillRawContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillDisplayNames: Record<string, string> = ${JSON.stringify(skillDisplayNames, null, 2)};
+${selectedExports}
 `
   fs.writeFileSync(path.join(bookOutDir, 'content.ts'), contentTs)
 
@@ -313,20 +349,37 @@ export const skillToInterp: Record<string, string[]> = ${JSON.stringify(skillToI
 `
   fs.writeFileSync(path.join(bookOutDir, 'assoc.ts'), assocContent)
 
-  // 写入 book-level index.ts（平铺导出，无 namespace 嵌套）
-  const interpType = interpKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ')
-  const skillType = skillKeys.map(k => `'${k}'`).join(' | ')
-  const sourceType =
-    sourceKeys.length > 0 ? sourceKeys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ') : 'never'
+  // 写入 book-level index.ts（根据内容类型动态生成导出）
+  // 各内容类型到导出名的映射
+  const typeExportMap = {
+    interpretation: 'interpKeys, interpContent',
+    source: 'sourceKeys, sourceContent',
+    skill: 'skillKeys, skillContent, skillRawContent, skillDisplayNames',
+  }
+  const typeKeyMap = {
+    interpretation: { name: 'InterpKey', keys: interpKeys },
+    source: { name: 'SourceKey', keys: sourceKeys },
+    skill: { name: 'SkillKey', keys: skillKeys },
+  }
+
+  const idxSelectedExports = contentTypesList
+    .filter(t => typeExportMap[t])
+    .map(t => typeExportMap[t])
+    .join(', ')
+  const idxSelectedTypes = contentTypesList
+    .filter(t => typeKeyMap[t])
+    .map(t => {
+      const tk = typeKeyMap[t]
+      return `export type ${tk.name} = ${tk.keys.length > 0 ? tk.keys.map(k => `'${k.replace(/'/g, "\\'")}'`).join(' | ') : 'never'};`
+    })
+    .join('\n')
 
   const indexContent = `// Auto-generated — do not edit manually
-export { interpKeys, interpContent, sourceKeys, sourceContent, skillKeys, skillContent, skillRawContent, skillDisplayNames } from './content';
+export { ${idxSelectedExports} } from './content';
 export { interpToSkill, skillToInterp } from './assoc';
 
 // 类型定义
-export type InterpKey = ${interpType || 'never'};
-export type SkillKey = ${skillType || 'never'};
-export type SourceKey = ${sourceType || 'never'};
+${idxSelectedTypes}
 `
   fs.writeFileSync(path.join(bookOutDir, 'index.ts'), indexContent)
 }
@@ -363,7 +416,12 @@ fs.writeFileSync(path.join(OUT_DIR, 'book-types.ts'), bookTypesContent)
 const VALID_SECTIONS = ['山', '医', '命', '相', '卜']
 const bookData = books.map(b => ({
   slug: b.slug,
-  section: VALID_SECTIONS.includes(b.section) ? b.section : (() => { console.warn('  ⚠️ ' + b.slug + ' 术数无效: "' + b.section + '"，默认 "命"'); return '命' })(),
+  section: VALID_SECTIONS.includes(b.section)
+    ? b.section
+    : (() => {
+        console.warn('  ⚠️ ' + b.slug + ' 术数无效: "' + b.section + '"，默认 "命"')
+        return '命'
+      })(),
   title: b.title,
   author: b.author,
   version: b.version,
@@ -395,15 +453,21 @@ for (const book of books) {
 fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), indexExports)
 
 // 生成 registry.ts（多书动态加载，避免前端硬编码 slug）
-function safeIdent(slug) { return slug.replace(/[^a-zA-Z0-9_$]/g, '_') }
-const registryImports = books.map(b => {
-  const id = safeIdent(b.slug)
-  return `import * as _${id} from './${b.slug}';`
-}).join('\n')
-const registryMap = books.map(b => {
-  const id = safeIdent(b.slug)
-  return `  '${b.slug}': _${id},`
-}).join('\n')
+function safeIdent(slug) {
+  return slug.replace(/[^a-zA-Z0-9_$]/g, '_')
+}
+const registryImports = books
+  .map(b => {
+    const id = safeIdent(b.slug)
+    return `import * as _${id} from './${b.slug}';`
+  })
+  .join('\n')
+const registryMap = books
+  .map(b => {
+    const id = safeIdent(b.slug)
+    return `  '${b.slug}': _${id},`
+  })
+  .join('\n')
 const registryContent = `// Auto-generated — do not edit manually
 // 动态加载各典籍数据，避免前端代码硬编码 slug
 ${registryImports}
@@ -436,7 +500,8 @@ const searchIndex = books.map(b => ({
   })),
   skill: b.skillKeys.map(k => ({
     key: k,
-    displayName: (b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k),
+    displayName:
+      b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k,
     text: stripHtml(b.skillsData[k] || ''),
   })),
   source: Object.keys(b.sourceData || {}).map(k => ({
