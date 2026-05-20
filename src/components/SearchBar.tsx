@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useReader } from '../hooks/useReader'
 import Fuse from 'fuse.js'
 
 interface SearchEntry {
@@ -15,12 +15,23 @@ interface SearchBarProps {
   scopeSlug?: string // 限定搜索的典籍slug
 }
 
-function getSnippet(text: string, query: string, len = 60): string {
+function getSnippetParts(
+  text: string,
+  query: string
+): { before: string; match: string; after: string } | null {
   const idx = text.toLowerCase().indexOf(query.toLowerCase())
-  if (idx === -1) return text.slice(0, len)
+  if (idx === -1) return null
   const start = Math.max(0, idx - 20)
   const end = Math.min(text.length, idx + query.length + 40)
-  return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '')
+  const prefix = start > 0 ? '…' : ''
+  const suffix = end < text.length ? '…' : ''
+  const localIdx = idx - start // position of query within the extracted slice
+  const slice = text.slice(start, end)
+  return {
+    before: prefix + slice.slice(0, localIdx),
+    match: slice.slice(localIdx, localIdx + query.length),
+    after: slice.slice(localIdx + query.length) + suffix,
+  }
 }
 
 function fuzzySearch(entries: SearchEntry[], query: string): SearchEntry[] {
@@ -43,12 +54,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchEntry[]>([])
   const [loading, setLoading] = useState(false)
+  const [selectedIdx, setSelectedIdx] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const queryRef = useRef(query)
   const containerRef = useRef<HTMLDivElement>(null)
+  const resultRefs = useRef<(HTMLButtonElement | null)[]>([])
   const searchCacheRef = useRef<SearchEntry[] | null>(null)
   const fuseRef = useRef<Fuse<SearchEntry> | null>(null)
-  const navigate = useNavigate()
+  const { openReader } = useReader()
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   async function loadSearchIndex(): Promise<SearchEntry[]> {
@@ -155,6 +168,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
       }
       const filtered = filterByScope(results, scopeSlug)
       setResults(filtered.slice(0, 10))
+      setSelectedIdx(-1)
       setLoading(false)
     },
     [scopeSlug]
@@ -192,17 +206,25 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     if (open) inputRef.current?.focus()
   }, [open])
 
+  // Scroll selected result into view
+  useEffect(() => {
+    if (selectedIdx >= 0) resultRefs.current[selectedIdx]?.scrollIntoView({ block: 'nearest' })
+  }, [selectedIdx])
+
   const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill' | 'source') => {
     const match = queryRef.current.slice(0, 50)
     setOpen(false)
     setQuery('')
-    const openParam = type === 'chapter' ? 'interp' : type
-    navigate(
-      `/${slug}?open=${openParam}&key=${encodeURIComponent(key)}&match=${encodeURIComponent(match)}`
-    )
+    const normalizedType = type === 'chapter' ? 'interp' : type
+    openReader({
+      bookSlug: slug,
+      modalType: normalizedType as 'interp' | 'skill' | 'source',
+      modalKey: key,
+      scrollToText: match || undefined,
+    })
   }
 
-return (
+  return (
     <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
       <button onClick={() => setOpen(!open)} className="search-trigger-btn">
@@ -228,6 +250,19 @@ return (
               ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault()
+                  setSelectedIdx(i => Math.min(i + 1, results.length - 1))
+                } else if (e.key === 'ArrowUp') {
+                  e.preventDefault()
+                  setSelectedIdx(i => Math.max(i - 1, 0))
+                } else if (e.key === 'Enter' && selectedIdx >= 0 && selectedIdx < results.length) {
+                  e.preventDefault()
+                  const r = results[selectedIdx]
+                  handleNavigate(r.slug, r.key, r.type)
+                }
+              }}
               placeholder="搜索篇目、技能、注解内容..."
               className="search-input"
             />
@@ -242,14 +277,13 @@ return (
             {results.map((r, i) => (
               <button
                 key={i}
-                className="search-result-item"
+                ref={el => {
+                  resultRefs.current[i] = el
+                }}
+                className={`search-result-item${i === selectedIdx ? ' search-result-selected' : ''}`}
                 onClick={() => handleNavigate(r.slug, r.key, r.type)}
-                onMouseEnter={e =>
-                  ((e.currentTarget as HTMLElement).style.background = 'var(--color-bg-card-hover)')
-                }
-                onMouseLeave={e =>
-                  ((e.currentTarget as HTMLElement).style.background = 'transparent')
-                }
+                onMouseEnter={() => setSelectedIdx(i)}
+                tabIndex={-1}
               >
                 <span
                   className={`search-type-badge ${r.type === 'chapter' ? 'badge-chapter' : r.type === 'source' ? 'badge-source' : 'badge-skill'}`}
@@ -258,8 +292,26 @@ return (
                 </span>
                 <div className="search-result-text">
                   <span className="search-book-title">《{r.title}》</span>
-                  <span className="search-item-name">{r.type === 'skill' && r.displayName ? r.displayName : r.key}</span>
-                  {query && <div className="search-snippet">{getSnippet(r.text, query)}</div>}
+                  <span className="search-item-name">
+                    {r.type === 'skill' && r.displayName ? r.displayName : r.key}
+                  </span>
+                  {query &&
+                    (() => {
+                      const parts = getSnippetParts(r.text, query)
+                      return (
+                        <div className="search-snippet">
+                          {parts ? (
+                            <>
+                              {parts.before}
+                              <span className="search-highlight">{parts.match}</span>
+                              {parts.after}
+                            </>
+                          ) : (
+                            r.text.slice(0, 60)
+                          )}
+                        </div>
+                      )
+                    })()}
                 </div>
               </button>
             ))}

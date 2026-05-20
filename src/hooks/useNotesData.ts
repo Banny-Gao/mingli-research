@@ -28,10 +28,14 @@ export function deleteAnnotation(slug: string, chapter: string, annId: string) {
     const anns: Annotation[] = JSON.parse(raw).filter((a: Annotation) => a.id !== annId)
     if (anns.length === 0) localStorage.removeItem(key)
     else localStorage.setItem(key, JSON.stringify(anns))
-  } catch { /* ignore parse errors */ }
+  } catch {
+    /* ignore parse errors */
+  }
 }
 
-export function batchDeleteAnnotations(items: Array<{ slug: string; origChapter: string; id: string }>) {
+export function batchDeleteAnnotations(
+  items: Array<{ slug: string; origChapter: string; id: string }>
+) {
   for (const item of items) {
     deleteAnnotation(item.slug, item.origChapter, item.id)
   }
@@ -52,12 +56,17 @@ export function batchDeleteBookmarks(items: Array<{ slug: string; chapter: strin
       const filtered = all.filter(c => !chapters.has(c))
       if (filtered.length === 0) localStorage.removeItem(key)
       else localStorage.setItem(key, JSON.stringify(filtered))
-    } catch { /* ignore parse errors */ }
+    } catch {
+      /* ignore parse errors */
+    }
   }
 }
 
-export function loadAllBookmarks(): Array<{ slug: string; chapters: string[] }> {
-  const map = new Map<string, string[]>()
+export function loadAllBookmarks(): Array<{
+  slug: string
+  chapters: Array<{ name: string; type: string }>
+}> {
+  const map = new Map<string, Array<{ name: string; type: string }>>()
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
     if (!key?.startsWith(BOOKMARK_KEY)) continue
@@ -65,15 +74,34 @@ export function loadAllBookmarks(): Array<{ slug: string; chapters: string[] }> 
     try {
       const raw = localStorage.getItem(key)
       if (!raw) continue
-      const chapters: string[] = JSON.parse(raw)
-      if (chapters.length > 0) map.set(slug, chapters)
-    } catch { /* ignore parse errors */ }
+      const parsed = JSON.parse(raw)
+      const entries: Array<{ name: string; type: string }> = []
+      if (Array.isArray(parsed)) {
+        for (const item of parsed) {
+          if (typeof item === 'string') entries.push({ name: item, type: 'interp' })
+          else if (item?.key) entries.push({ name: item.key, type: item.type || 'interp' })
+        }
+      }
+      if (entries.length > 0) map.set(slug, entries)
+    } catch {
+      /* ignore parse errors */
+    }
   }
   return Array.from(map.entries()).map(([slug, chapters]) => ({ slug, chapters }))
 }
 
-export function loadAllAnnotations(): Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> {
-  const results: Array<{ slug: string; chapter: string; origChapter: string; annotation: Annotation }> = []
+export function loadAllAnnotations(): Array<{
+  slug: string
+  chapter: string
+  origChapter: string
+  annotation: Annotation
+}> {
+  const results: Array<{
+    slug: string
+    chapter: string
+    origChapter: string
+    annotation: Annotation
+  }> = []
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
     if (!key?.startsWith(ANN_KEY)) continue
@@ -91,12 +119,16 @@ export function loadAllAnnotations(): Array<{ slug: string; chapter: string; ori
       const anns: Annotation[] = JSON.parse(raw)
       const nc = normalizeChapter(origChapter)
       for (const ann of anns) results.push({ slug, chapter: nc, origChapter, annotation: ann })
-    } catch { /* ignore parse errors */ }
+    } catch {
+      /* ignore parse errors */
+    }
   }
   return results.sort((a, b) => b.annotation.createdAt - a.annotation.createdAt)
 }
 
-export function exportMarkdown(groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>) {
+export function exportMarkdown(
+  groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>
+) {
   let md = '# 读书笔记 — 命理学术中心\n\n'
   for (const group of groups) {
     md += `## 《${group.book}》\n\n`

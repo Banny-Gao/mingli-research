@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { X } from 'lucide-react'
+import { X, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 
 interface Props {
@@ -21,7 +22,13 @@ const TYPE_CLASS: Record<AnnotationType, string> = {
   quote: 'ann-type-quote',
 }
 
-const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote, onNavigate, onClose }) => {
+const AnnotationPanel: React.FC<Props> = ({
+  annotations,
+  onRemove,
+  onUpdateNote,
+  onNavigate,
+  onClose,
+}) => {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [noteVal, setNoteVal] = useState('')
 
@@ -30,13 +37,12 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
       <div className="ann-panel-header">
         <span className="ann-panel-title">批注列表</span>
         <div className="flex items-center gap-2">
-          {annotations.length > 0 && <span className="ann-panel-count">{annotations.length}条</span>}
-          <button
-            onClick={onClose}
-            className="bg-transparent border-none text-[var(--color-text-dim)] cursor-pointer p-0.5 flex"
-          >
-            <X size={14} />
-          </button>
+          {annotations.length > 0 && (
+            <span className="ann-panel-count">{annotations.length}条</span>
+          )}
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X size={18} />
+          </Button>
         </div>
       </div>
       <div className="ann-panel-body">
@@ -48,7 +54,7 @@ const AnnotationPanel: React.FC<Props> = ({ annotations, onRemove, onUpdateNote,
                 {TYPE_LABELS[ann.type]}
               </span>
               <button className="ann-item-remove" onClick={() => onRemove(ann.id)} title="删除">
-                <X size={12} />
+                <Trash2 size={12} />
               </button>
             </div>
             <div className="ann-item-text" onClick={() => onNavigate(ann)} title="点击跳转到原文">
