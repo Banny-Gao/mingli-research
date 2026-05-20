@@ -19,14 +19,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate data
+        run: node scripts/generate.js
+
       - name: Type check
         run: npx tsc --noEmit
 
       - name: Build
-        run: npm run build
-
-      - name: Generate data
-        run: node scripts/generate.js
-
-      - name: Verify build after generation
         run: npm run build
