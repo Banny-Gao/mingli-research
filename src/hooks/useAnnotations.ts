@@ -8,6 +8,7 @@ export interface Annotation {
   selectedText: string
   rangeStart: number
   rangeEnd: number
+  matchIndex?: number
   note: string
   createdAt: number
   fromSource?: boolean
@@ -33,23 +34,34 @@ export function useAnnotations(slug: string, chapter: string, isSource?: boolean
 
   // 切换篇目时从 localStorage 重新加载批注
   useEffect(() => {
-    if (!chapter) { setAnnotations([]); return }
+    if (!chapter) {
+      setAnnotations([])
+      return
+    }
     try {
       const raw = localStorage.getItem(key)
       setAnnotations(raw ? JSON.parse(raw) : [])
-    } catch { setAnnotations([]) }
+    } catch {
+      setAnnotations([])
+    }
   }, [key, chapter])
 
   // 仅在 modalKey 非空时保存，避免 closeModal 将批注写到空 key 下
   useEffect(() => {
     if (!chapter) return
-    try { localStorage.setItem(key, JSON.stringify(annotations)) } catch {}
+    try {
+      localStorage.setItem(key, JSON.stringify(annotations))
+    } catch {}
   }, [annotations, key, chapter])
 
   const add = (ann: Omit<Annotation, 'id' | 'createdAt'>) => {
     setAnnotations(prev => [
       ...prev,
-      { ...ann, id: Date.now().toString(36) + Math.random().toString(36).slice(2), createdAt: Date.now() },
+      {
+        ...ann,
+        id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+        createdAt: Date.now(),
+      },
     ])
   }
 
@@ -58,7 +70,7 @@ export function useAnnotations(slug: string, chapter: string, isSource?: boolean
   }
 
   const updateNote = (id: string, note: string) => {
-    setAnnotations(prev => prev.map(a => a.id === id ? { ...a, note } : a))
+    setAnnotations(prev => prev.map(a => (a.id === id ? { ...a, note } : a)))
   }
 
   return { annotations, add, remove, updateNote }

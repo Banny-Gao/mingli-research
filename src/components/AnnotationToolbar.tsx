@@ -1,37 +1,86 @@
-import React, { useEffect, useRef } from 'react'
-import { X } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
+import { X, Copy, Highlighter, FileQuestion, Quote } from 'lucide-react'
 import type { AnnotationType } from '../hooks/useAnnotations'
 
 interface Props {
   position: { x: number; y: number }
+  selectedText?: string
   onSelect: (type: AnnotationType) => void
   onClose: () => void
 }
 
-const Toolbar: React.FC<Props> = ({ position, onSelect, onClose }) => {
+const isMobile = () => window.innerWidth <= 640
+
+const Toolbar: React.FC<Props> = ({ position, selectedText, onSelect, onClose }) => {
   const ref = useRef<HTMLDivElement>(null)
+  const [mobile, setMobile] = useState(isMobile())
 
   useEffect(() => {
-    // Clamp toolbar to viewport
+    const update = () => setMobile(isMobile())
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  // Desktop: clamp floating toolbar to viewport
+  useEffect(() => {
+    if (mobile) return
     const el = ref.current
-    if (el) {
-      const rect = el.getBoundingClientRect()
-      if (rect.right > window.innerWidth) {
-        el.style.left = `${window.innerWidth - rect.width - 8}px`
-      }
-      if (rect.top < 8) {
-        el.style.top = `${position.y + 20}px`
-      }
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    if (rect.right > window.innerWidth) {
+      el.style.left = `${window.innerWidth - rect.width - 8}px`
     }
-  }, [position])
+    if (rect.top < 8) {
+      el.style.top = `${position.y + 20}px`
+    }
+  }, [position, mobile])
 
+  // Desktop: close on outside click
   useEffect(() => {
+    if (mobile) return
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose()
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
-  }, [onClose])
+  }, [onClose, mobile])
+
+  const handleCopy = async () => {
+    if (selectedText) {
+      try {
+        await navigator.clipboard.writeText(selectedText)
+      } catch {}
+    }
+    onClose()
+  }
+
+  if (mobile) {
+    return (
+      <div className="ann-toolbar-mobile" onTouchStart={e => e.preventDefault()}>
+        <span className="ann-toolbar-mobile-label">标记为</span>
+        <button className="ann-toolbar-btn ann-emphasis" onClick={() => onSelect('emphasis')}>
+          <Highlighter size={14} />
+          <span>重点</span>
+        </button>
+        <button className="ann-toolbar-btn ann-question" onClick={() => onSelect('question')}>
+          <FileQuestion size={14} />
+          <span>疑问</span>
+        </button>
+        <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>
+          <Quote size={14} />
+          <span>引用</span>
+        </button>
+        {selectedText && (
+          <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+            <Copy size={14} />
+          </button>
+        )}
+        <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
+          <X size={14} />
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div ref={ref} className="ann-toolbar" style={{ left: position.x, top: position.y }}>
@@ -44,6 +93,11 @@ const Toolbar: React.FC<Props> = ({ position, onSelect, onClose }) => {
       <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>
         引用
       </button>
+      {selectedText && (
+        <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+          <Copy size={14} />
+        </button>
+      )}
       <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
         <X size={14} />
       </button>
