@@ -111,6 +111,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
   onScrollToTextConsumed,
 }) => {
   const modalBodyRef = useRef<HTMLDivElement>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [toolbarPos, setToolbarPos] = useState<{ x: number; y: number } | null>(null)
   const [showPanel, setShowPanel] = useState(false)
   const [pendingSelection, setPendingSelection] = useState<{
@@ -244,7 +245,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
             if (parent) {
               const idx = Array.from(parent.childNodes).indexOf(targetNode)
               parent.replaceChild(frag, targetNode)
-              setTimeout(() => {
+              timerRef.current = setTimeout(() => {
                 const combined = document.createTextNode(
                   (parent.childNodes[idx] as Text).textContent! +
                     (parent.childNodes[idx + 1] as HTMLElement).textContent! +
@@ -254,6 +255,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                 parent.removeChild(parent.childNodes[idx + 1])
                 parent.removeChild(parent.childNodes[idx + 1])
                 onScrollToTextConsumed()
+                timerRef.current = null
               }, 4000)
             }
           } catch {
@@ -261,6 +263,11 @@ const ModalReader: React.FC<ModalReaderProps> = ({
           }
         }
       }
+    }
+    // Cleanup: cancel pending restore timer
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = null
     }
   }, [modalKey, scrollToText, onScrollToTextConsumed, loadedContent, contentLoading, skillRawText])
 
@@ -463,7 +470,8 @@ const ModalReader: React.FC<ModalReaderProps> = ({
               onTouchEnd={
                 modalType !== 'skill'
                   ? e => {
-                      e.preventDefault()
+                      const sel = window.getSelection()
+                      if (sel && !sel.isCollapsed) e.preventDefault()
                       handleMouseUp(e)
                     }
                   : undefined
