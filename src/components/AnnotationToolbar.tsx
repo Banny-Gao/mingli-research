@@ -33,7 +33,7 @@ const Toolbar: React.FC<Props> = ({ position, selectedText, onSelect, onClose })
     if (rect.top < 8) {
       el.style.top = `${position.y + 20}px`
     }
-  }, [position, mobile])
+  }, [position.x, position.y, mobile])
 
   // Desktop: close on outside click
   useEffect(() => {

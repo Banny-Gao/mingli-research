@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft, Trash2 } from 'lucide-react'
@@ -23,8 +23,9 @@ const Notes: React.FC = () => {
   const [refresh, setRefresh] = useState(0)
   const { openReader, closeVersion } = useReader()
   // Refresh data when modal closes (bookmark/annotation may have changed)
-  React.useEffect(() => {
+  useEffect(() => {
     setRefresh(v => v + 1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [closeVersion])
   const [tab, setTab] = useState<'bookmark' | 'annotation'>('annotation')
   const [typeFilter, setTypeFilter] = useState<AnnotationType | 'all'>('all')
@@ -87,6 +88,30 @@ const Notes: React.FC = () => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
+      return next
+    })
+  }
+
+  const toggleBmKeys = (keys: string[]) => {
+    setSelectedBm(prev => {
+      const allSelected = keys.every(k => prev.has(k))
+      const next = new Set(prev)
+      for (const k of keys) {
+        if (allSelected) next.delete(k)
+        else next.add(k)
+      }
+      return next
+    })
+  }
+
+  const toggleAnnIds = (ids: string[]) => {
+    setSelectedAnn(prev => {
+      const allSelected = ids.every(id => prev.has(id))
+      const next = new Set(prev)
+      for (const id of ids) {
+        if (allSelected) next.delete(id)
+        else next.add(id)
+      }
       return next
     })
   }
@@ -248,15 +273,7 @@ const Notes: React.FC = () => {
                             )}
                             onCheckedChange={() => {
                               const keys = bm.chapters.map(chm => `${bm.slug}::${chm.name}`)
-                              setSelectedBm(prev => {
-                                const allSelected = keys.every(k => prev.has(k))
-                                const next = new Set(prev)
-                                for (const k of keys) {
-                                  if (allSelected) next.delete(k)
-                                  else next.add(k)
-                                }
-                                return next
-                              })
+                              toggleBmKeys(keys)
                             }}
                           />
                           <Link
@@ -365,15 +382,7 @@ const Notes: React.FC = () => {
                           )}
                           onCheckedChange={() => {
                             const ids = group.chapters.flatMap(ch => ch.annotations.map(a => a.id))
-                            setSelectedAnn(prev => {
-                              const allSelected = ids.every(id => prev.has(id))
-                              const next = new Set(prev)
-                              for (const id of ids) {
-                                if (allSelected) next.delete(id)
-                                else next.add(id)
-                              }
-                              return next
-                            })
+                            toggleAnnIds(ids)
                           }}
                         />
                         <Link

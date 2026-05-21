@@ -49,6 +49,9 @@ function filterByScope(entries: SearchEntry[], scopeSlug: string | undefined): S
   return entries.filter(e => e.slug === scopeSlug)
 }
 
+const MAX_RESULTS = 10
+const SCROLL_TEXT_PREVIEW = 50
+
 const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -167,7 +170,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
         results = fuzzySearch(entries, q)
       }
       const filtered = filterByScope(results, scopeSlug)
-      setResults(filtered.slice(0, 10))
+      setResults(filtered.slice(0, MAX_RESULTS))
       setSelectedIdx(-1)
       setLoading(false)
     },
@@ -212,7 +215,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
   }, [selectedIdx])
 
   const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill' | 'source') => {
-    const match = queryRef.current.slice(0, 50)
+    const match = queryRef.current.slice(0, SCROLL_TEXT_PREVIEW)
     setOpen(false)
     setQuery('')
     const normalizedType = type === 'chapter' ? 'interp' : type
@@ -222,6 +225,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
       modalKey: key,
       scrollToText: match || undefined,
     })
+  }
+
+  const renderSnippet = (text: string, q: string) => {
+    const parts = getSnippetParts(text, q)
+    if (!parts) return <div className="search-snippet">{text.slice(0, 60)}</div>
+    return (
+      <div className="search-snippet">
+        {parts.before}
+        <span className="search-highlight">{parts.match}</span>
+        {parts.after}
+      </div>
+    )
   }
 
   return (
@@ -295,23 +310,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
                   <span className="search-item-name">
                     {r.type === 'skill' && r.displayName ? r.displayName : r.key}
                   </span>
-                  {query &&
-                    (() => {
-                      const parts = getSnippetParts(r.text, query)
-                      return (
-                        <div className="search-snippet">
-                          {parts ? (
-                            <>
-                              {parts.before}
-                              <span className="search-highlight">{parts.match}</span>
-                              {parts.after}
-                            </>
-                          ) : (
-                            r.text.slice(0, 60)
-                          )}
-                        </div>
-                      )
-                    })()}
+                  {query && renderSnippet(r.text, query)}
                 </div>
               </button>
             ))}

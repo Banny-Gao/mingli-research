@@ -26,7 +26,9 @@ const SkillGrid: React.FC<Props> = ({ book, onSkillClick }) => {
               <div className="text-[15px] font-bold text-[var(--color-gold)] mb-2">
                 {displayName}
               </div>
-              <div className="flex items-center gap-0.5 text-xs text-[#5070a0]">skills/{sk.name}/SKILL.md <ArrowRight size={11} /></div>
+              <div className="flex items-center gap-0.5 text-xs text-[#5070a0]">
+                skills/{sk.name}/SKILL.md <ArrowRight size={11} />
+              </div>
             </div>
           )
         })}

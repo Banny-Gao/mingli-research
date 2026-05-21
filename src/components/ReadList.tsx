@@ -73,7 +73,18 @@ function CategorySection({
   return (
     <div className="category-section">
       <div
-        className="category-header cursor-pointer flex items-center justify-between px-4 py-3 rounded-lg select-none mt-3"
+        className={[
+          'category-header',
+          'cursor-pointer',
+          'flex',
+          'items-center',
+          'justify-between',
+          'px-4',
+          'py-3',
+          'rounded-lg',
+          'select-none',
+          'mt-3',
+        ].join(' ')}
         onClick={() => setCollapsed(v => !v)}
         role="button"
         tabIndex={0}
