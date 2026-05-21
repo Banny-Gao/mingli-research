@@ -86,9 +86,7 @@ const BookApp: React.FC = () => {
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
-            <h1
-              className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1 hero-title-glow"
-            >
+            <h1 className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1 hero-title-glow">
               《{book.title}》
             </h1>
             {book.author && (

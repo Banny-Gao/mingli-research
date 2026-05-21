@@ -41,7 +41,9 @@ const Mermaid: React.FC<Props> = ({ children }) => {
 
   return (
     <div className="mermaid-wrapper">
-      <div ref={ref} className="mermaid">{children}</div>
+      <div ref={ref} className="mermaid">
+        {children}
+      </div>
     </div>
   )
 }

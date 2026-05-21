@@ -16,6 +16,7 @@ articles/{篇名}/source.md
 - 不得重名、空格、特殊字符
 
 **示例：**
+
 ```
 articles/天道/source.md
 articles/坤道/source.md
@@ -50,35 +51,44 @@ articles/八格/source.md
 ### 逐区块说明
 
 #### 第一区块：篇名
+
 ```markdown
 # 天道
 ```
+
 - 严格使用 `#` 一级标题
 - 标题文字仅篇名，无序号、无副标题、无括号
 
 #### 第二区块：开篇诗文
+
 ```
 欲识三元万法宗，先观帝载与神功。
 ```
+
 - 直接录入，不加任何标记符号
 - 不分段，全文照录原文诗文
 - 不加句读注释
 
 #### 第三区块：原注
+
 ```
 【原注】天有阴阳，故春木、夏火、秋金、冬水、季土，随时候显其神功，命于天地人三元之理，悉本于此。
 ```
+
 - 严格使用【原注】标记开头
 - 原文照录，不改字，不加译，不解释
 
 #### 第四区块：任氏曰
+
 ```
 【任氏曰】干为天元，支为地元，支中所藏为人元。人之禀命，万有不齐，总不越三元之理，所谓万法宗也。阴阳本乎太极，是谓帝载，五行播于四时，是谓神功，乃三才之统系，万物之本原。《滴天髓》首明天道如此。
 ```
+
 - 严格使用【任氏曰】标记开头
 - 原文照录，不改字，不分段，不加译
 
 #### 第五区块：结束
+
 - 文件到此结束
 - 不得追加任何解读、注释、分析、总结
 
@@ -134,6 +144,7 @@ generate.js 按以下字段解析 source 文件（路径：`articles/{篇名}/so
 ```
 
 解析规则：
+
 - 第一个 `#` 后的文字提取为 `title`
 - `#` 之后、`【原注】` 之前的文字合并为 `poetry`
 - `【原注】` 之后、`【任氏曰】` 之前为 `yuanzhu`
@@ -143,22 +154,22 @@ generate.js 按以下字段解析 source 文件（路径：`articles/{篇名}/so
 
 ## 七、现有文件合规检查
 
-| 文件 | 状态 |
-|------|------|
-| `articles/天道/source.md` | 合规 |
-| `articles/坤道/source.md` | 合规 |
-| `articles/人道/source.md` | 合规 |
-| `articles/知命/source.md` | 合规 |
-| `articles/理气/source.md` | 合规 |
-| `articles/配合/source.md` | 合规 |
-| `articles/天干/source.md` | 合规 |
-| `articles/地支/source.md` | 合规 |
-| `articles/源流/source.md` | 合规 |
-| `articles/干支总论/source.md` | 合规 |
-| `articles/形象/source.md` | 合规 |
-| `articles/方局/source.md` | 合规 |
-| `articles/八格/source.md` | 合规 |
-| 其余 50 篇 | 待按本规范复核 |
+| 文件                          | 状态           |
+| ----------------------------- | -------------- |
+| `articles/天道/source.md`     | 合规           |
+| `articles/坤道/source.md`     | 合规           |
+| `articles/人道/source.md`     | 合规           |
+| `articles/知命/source.md`     | 合规           |
+| `articles/理气/source.md`     | 合规           |
+| `articles/配合/source.md`     | 合规           |
+| `articles/天干/source.md`     | 合规           |
+| `articles/地支/source.md`     | 合规           |
+| `articles/源流/source.md`     | 合规           |
+| `articles/干支总论/source.md` | 合规           |
+| `articles/形象/source.md`     | 合规           |
+| `articles/方局/source.md`     | 合规           |
+| `articles/八格/source.md`     | 合规           |
+| 其余 50 篇                    | 待按本规范复核 |
 
 ---
 

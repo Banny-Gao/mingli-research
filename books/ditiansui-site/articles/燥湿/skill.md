@@ -56,30 +56,30 @@ interface ZaoShiReport {
   /** 燥湿判定 */
   moistureAssessment: {
     score: {
-      water: number;        // 水类（亥子辰丑）得分
-      fire: number;         // 火类（巳午未戌）得分
-    };
-    verdict: "偏湿" | "偏燥" | "平衡";
-    intensity: "过" | "中" | "微";  // 偏离的强度
-  };
+      water: number // 水类（亥子辰丑）得分
+      fire: number // 火类（巳午未戌）得分
+    }
+    verdict: '偏湿' | '偏燥' | '平衡'
+    intensity: '过' | '中' | '微' // 偏离的强度
+  }
   /** 土类识别 */
   soilAnalysis: {
-    drySoil: string[];       // 燥土地支列表（未/戌）
-    wetSoil: string[];       // 湿土地支列表（辰/丑）
-    effect: string;          // 土的实际作用描述
-  };
+    drySoil: string[] // 燥土地支列表（未/戌）
+    wetSoil: string[] // 湿土地支列表（辰/丑）
+    effect: string // 土的实际作用描述
+  }
   /** 调候策略 */
   adjustment: {
-    direction: "用湿" | "用燥" | "无需调候";
-    primaryTool: string[];    // 主要调候手段（如["壬癸水", "辰丑湿土"]）
-    caution: string[];        // 应避免之物（如["未戌燥土"]）
-    specialCase: string | null; // 特殊情境（如"木火伤官"或"金水伤官"）
-  };
+    direction: '用湿' | '用燥' | '无需调候'
+    primaryTool: string[] // 主要调候手段（如["壬癸水", "辰丑湿土"]）
+    caution: string[] // 应避免之物（如["未戌燥土"]）
+    specialCase: string | null // 特殊情境（如"木火伤官"或"金水伤官"）
+  }
   /** 行运建议 */
   luckAdvice: {
-    favorable: string[];      // 利好运向
-    unfavorable: string[];    // 不利运向
-    note: string;             // 行运总评
-  };
+    favorable: string[] // 利好运向
+    unfavorable: string[] // 不利运向
+    note: string // 行运总评
+  }
 }
 ```

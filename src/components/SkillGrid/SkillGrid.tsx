@@ -20,9 +20,7 @@ const SkillGrid: React.FC<Props> = ({ book, onSkillClick }) => {
           const displayName = skillDisplayNames[sk.name] || sk.name
           return (
             <div key={sk.name} onClick={() => onSkillClick(sk.name)} className="skill-card">
-              <div className="section-badge mb-2 inline-block">
-                {sk.name}
-              </div>
+              <div className="section-badge mb-2 inline-block">{sk.name}</div>
               <div className="text-[15px] font-bold text-[var(--color-gold)] mb-2">
                 {displayName}
               </div>

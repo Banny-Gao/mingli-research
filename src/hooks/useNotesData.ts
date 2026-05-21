@@ -16,7 +16,9 @@ const AnnotationRepository = {
       const raw = localStorage.getItem(AnnotationRepository.key(slug, chapter))
       if (!raw) return []
       return JSON.parse(raw)
-    } catch { return [] }
+    } catch {
+      return []
+    }
   },
 
   save: (slug: string, chapter: string, anns: Annotation[]) => {
@@ -36,8 +38,14 @@ const BookmarkRepository = {
       if (!raw) return []
       const parsed = JSON.parse(raw)
       if (!Array.isArray(parsed)) return []
-      return parsed.map(item => typeof item === 'string' ? { name: item, type: 'interp' } : { name: item.key ?? '', type: item.type ?? 'interp' })
-    } catch { return [] }
+      return parsed.map(item =>
+        typeof item === 'string'
+          ? { name: item, type: 'interp' }
+          : { name: item.key ?? '', type: item.type ?? 'interp' }
+      )
+    } catch {
+      return []
+    }
   },
 
   save: (slug: string, entries: Array<{ name: string; type: string }>) => {

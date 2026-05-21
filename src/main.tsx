@@ -17,7 +17,9 @@ const initTheme = () => {
   try {
     const saved = localStorage.getItem('mingli_theme')
     if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light')
-  } catch { /* ignore theme errors */ }
+  } catch {
+    /* ignore theme errors */
+  }
 }
 function GlobalModal() {
   const { state, chapters, openReader, closeReader, consumeScrollToText } = useReader()

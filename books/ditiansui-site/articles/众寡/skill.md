@@ -52,30 +52,30 @@ interface ZhongGuaReport {
   /** 阵营划分 */
   factions: {
     strong: {
-      name: string;             // 强方名称（如"日主方"或"官星方"）
-      members: string[];        // 成员列表
-      score: number;            // 力量评分
-      label: "强众" | "强寡";
-    };
+      name: string // 强方名称（如"日主方"或"官星方"）
+      members: string[] // 成员列表
+      score: number // 力量评分
+      label: '强众' | '强寡'
+    }
     weak: {
-      name: string;
-      members: string[];
-      score: number;
-    };
-  };
+      name: string
+      members: string[]
+      score: number
+    }
+  }
   /** 局面类型 */
-  situation: "强众敌寡" | "强寡敌众";
+  situation: '强众敌寡' | '强寡敌众'
   /** 正确策略 */
   strategy: {
-    direction: "扶众抑寡" | "扶寡抑众" | "成众";
-    description: string;
-    favorableLuck: string[];    // 利好运向
-    unfavorableLuck: string[];  // 不利运向
-  };
+    direction: '扶众抑寡' | '扶寡抑众' | '成众'
+    description: string
+    favorableLuck: string[] // 利好运向
+    unfavorableLuck: string[] // 不利运向
+  }
   /** 日主符合检查 */
   alignment: {
-    status: "符合" | "背离";
-    reason: string;
-  };
+    status: '符合' | '背离'
+    reason: string
+  }
 }
 ```

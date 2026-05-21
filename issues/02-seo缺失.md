@@ -12,13 +12,13 @@
 
 具体缺失项：
 
-| 维度 | 现状 |
-|------|------|
-| sitemap.xml | 无 |
-| canonical URL | 无 |
-| structured data（JSON-LD） | 无 |
-| open graph | 无（微信/公众号分享无卡片） |
-| meta 标签 | 依赖 react-helmet-async，但无统一规范 |
+| 维度                       | 现状                                  |
+| -------------------------- | ------------------------------------- |
+| sitemap.xml                | 无                                    |
+| canonical URL              | 无                                    |
+| structured data（JSON-LD） | 无                                    |
+| open graph                 | 无（微信/公众号分享无卡片）           |
+| meta 标签                  | 依赖 react-helmet-async，但无统一规范 |
 
 ---
 
@@ -33,12 +33,14 @@
 ## 建议方案
 
 **短期（本周）：**
+
 - 生成 `public/sitemap.xml`，包含所有 slug 路由
 - 统一配置每个页面的 og:title / og:description / og:image
 - 添加 robots.txt 允许爬取
 - 提交 Google Search Console / 百度搜索资源平台
 
 **中期：**
+
 - 引入 SSR/SSG（Vite + @vitejs/plugin-ssr 或 Nuxt），解决 JS 渲染问题
 - 添加 JSON-LD structured data（Book / Article 类型）
 - 为每篇解读生成独立的 meta description

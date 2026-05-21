@@ -72,9 +72,27 @@ function CategorySection({
   const doneCount = chapters.filter(c => c.isDone).length
 
   const ACTION_CONFIG = [
-    { key: 'source', label: '原文', condition: (ch: ChapterInfo) => sourceNames.includes(ch.name), action: (name: string) => onSourceClick(name), className: 'btn-text chapter-action action-source' },
-    { key: 'interp', label: '解读', condition: (ch: ChapterInfo) => ch.isDone, action: (name: string) => onChapterClick(name), className: 'btn-text chapter-action' },
-    { key: 'skill', label: '技能', condition: (ch: ChapterInfo) => !!interpToSkill?.[ch.name]?.length, action: (_n: string) => onSkillClick?.(interpToSkill?.[_n]?.[0] ?? ''), className: 'btn-text chapter-action action-skill' },
+    {
+      key: 'source',
+      label: '原文',
+      condition: (ch: ChapterInfo) => sourceNames.includes(ch.name),
+      action: (name: string) => onSourceClick(name),
+      className: 'btn-text chapter-action action-source',
+    },
+    {
+      key: 'interp',
+      label: '解读',
+      condition: (ch: ChapterInfo) => ch.isDone,
+      action: (name: string) => onChapterClick(name),
+      className: 'btn-text chapter-action',
+    },
+    {
+      key: 'skill',
+      label: '技能',
+      condition: (ch: ChapterInfo) => !!interpToSkill?.[ch.name]?.length,
+      action: (_n: string) => onSkillClick?.(interpToSkill?.[_n]?.[0] ?? ''),
+      className: 'btn-text chapter-action action-skill',
+    },
   ] as const
 
   return (
@@ -84,7 +102,9 @@ function CategorySection({
         onClick={() => setCollapsed(v => !v)}
         role="button"
         tabIndex={0}
-        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setCollapsed(v => !v) }}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') setCollapsed(v => !v)
+        }}
       >
         <div className="flex items-center gap-2">
           <ChevronDown size={14} className={`category-chevron${collapsed ? ' rotated' : ''}`} />
@@ -104,7 +124,11 @@ function CategorySection({
                 <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
                 <div className="chapter-actions">
                   {validActions.map(cfg => (
-                    <button key={cfg.key} className={cfg.className} onClick={() => cfg.action(ch.name)}>
+                    <button
+                      key={cfg.key}
+                      className={cfg.className}
+                      onClick={() => cfg.action(ch.name)}
+                    >
                       {cfg.label}
                     </button>
                   ))}

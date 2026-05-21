@@ -29,7 +29,10 @@ export const ReadingProgress: React.FC<Props> = ({ scrollRef }) => {
   if (progress <= 0) return null
 
   return (
-    <div className="reading-progress" style={{ '--progress-w': `${progress}%` } as React.CSSProperties} />
+    <div
+      className="reading-progress"
+      style={{ '--progress-w': `${progress}%` } as React.CSSProperties}
+    />
   )
 }
 
@@ -126,7 +129,10 @@ export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, o
       let current = ''
       for (const item of toc) {
         const target = el.querySelector(`[id="${CSS.escape(item.id)}"]`) as HTMLElement | null
-        if (target && target.getBoundingClientRect().top - el.getBoundingClientRect().top < SCROLL_SPY_OFFSET) {
+        if (
+          target &&
+          target.getBoundingClientRect().top - el.getBoundingClientRect().top < SCROLL_SPY_OFFSET
+        ) {
           current = item.id
         }
       }
