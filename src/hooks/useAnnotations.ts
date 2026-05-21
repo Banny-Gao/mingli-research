@@ -27,9 +27,7 @@ export function useAnnotations(slug: string, chapter: string, isSource?: boolean
     try {
       const raw = localStorage.getItem(key)
       return raw ? JSON.parse(raw) : []
-    } catch {
-      return []
-    }
+    } catch { /* ignore parse/LS errors */ }
   })
 
   // 切换篇目时从 localStorage 重新加载批注
@@ -41,9 +39,7 @@ export function useAnnotations(slug: string, chapter: string, isSource?: boolean
     try {
       const raw = localStorage.getItem(key)
       setAnnotations(raw ? JSON.parse(raw) : [])
-    } catch {
-      setAnnotations([])
-    }
+    } catch { /* ignore parse/LS errors */ }
   }, [key, chapter])
 
   // 仅在 modalKey 非空时保存，避免 closeModal 将批注写到空 key 下
@@ -51,7 +47,7 @@ export function useAnnotations(slug: string, chapter: string, isSource?: boolean
     if (!chapter) return
     try {
       localStorage.setItem(key, JSON.stringify(annotations))
-    } catch {}
+    } catch { /* ignore write errors */ }
   }, [annotations, key, chapter])
 
   const add = (ann: Omit<Annotation, 'id' | 'createdAt'>) => {
