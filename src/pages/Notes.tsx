@@ -9,7 +9,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { books } from '../data/books'
 import {
   TYPE_LABELS,
-  TYPE_COLORS,
   deleteAnnotation,
   batchDeleteAnnotations,
   batchDeleteBookmarks,
@@ -137,13 +136,11 @@ const Notes: React.FC = () => {
   }
 
   const handleBatchDeleteBm = () => {
-    const toDelete: Array<{ slug: string; chapter: string }> = []
-    for (const bm of bookmarks) {
-      for (const ch of bm.chapters) {
-        if (selectedBm.has(`${bm.slug}::${ch.name}`))
-          toDelete.push({ slug: bm.slug, chapter: ch.name })
-      }
-    }
+    const toDelete = bookmarks.flatMap(bm =>
+      bm.chapters
+        .filter(chm => selectedBm.has(`${bm.slug}::${chm.name}`))
+        .map(chm => ({ slug: bm.slug, chapter: chm.name }))
+    )
     batchDeleteBookmarks(toDelete)
     setSelectedBm(new Set())
     setRefresh(v => v + 1)
@@ -160,8 +157,7 @@ const Notes: React.FC = () => {
           <div className="book-hero">
             <div className="book-hero-glow" />
             <h1
-              className="text-3xl text-[var(--color-gold)] font-bold tracking-widest mb-[10px]"
-              style={{ textShadow: '0 0 30px var(--color-gold-glow)' }}
+              className="text-3xl text-[var(--color-gold)] font-bold tracking-widest mb-[10px] hero-title-glow"
             >
               个人中心
             </h1>
@@ -292,11 +288,10 @@ const Notes: React.FC = () => {
                               <Checkbox
                                 checked={selectedBm.has(`${bm.slug}::${chm.name}`)}
                                 onCheckedChange={() => {
+                                  const key = `${bm.slug}::${chm.name}`
                                   setSelectedBm(prev => {
                                     const n = new Set(prev)
-                                    if (n.has(`${bm.slug}::${chm.name}`))
-                                      n.delete(`${bm.slug}::${chm.name}`)
-                                    else n.add(`${bm.slug}::${chm.name}`)
+                                    n.has(key) ? n.delete(key) : n.add(key)
                                     return n
                                   })
                                 }}
@@ -403,16 +398,7 @@ const Notes: React.FC = () => {
                                     checked={selectedAnn.has(ann.id)}
                                     onCheckedChange={() => toggleAnnSelect(ann.id)}
                                   />
-                                  <span
-                                    style={{
-                                      fontSize: 10,
-                                      padding: '1px 6px',
-                                      borderRadius: 3,
-                                      background: TYPE_COLORS[ann.type] + '22',
-                                      color: TYPE_COLORS[ann.type],
-                                      border: `1px solid ${TYPE_COLORS[ann.type]}55`,
-                                    }}
-                                  >
+                                  <span className={`ann-type-${ann.type}`}>
                                     {TYPE_LABELS[ann.type]}
                                   </span>
                                 </div>

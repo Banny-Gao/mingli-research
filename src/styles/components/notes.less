@@ -26,6 +26,9 @@
 .related-section {
   padding: 12px 16px 16px;
   border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .related-tags {
   display: flex;
@@ -233,17 +236,30 @@ mark.ann-quote {
   padding: 1px 6px;
   border-radius: 3px;
 }
+/* ===== Annotation type badge (dynamic color per type) ===== */
 .ann-type-emphasis {
   background: rgba(240, 192, 96, 0.2);
   color: var(--color-gold);
+  border: 1px solid rgba(240, 192, 96, 0.4);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
 }
 .ann-type-question {
   background: rgba(220, 80, 80, 0.2);
-  color: --color-danger;
+  color: var(--color-danger);
+  border: 1px solid rgba(220, 80, 80, 0.4);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
 }
 .ann-type-quote {
   background: rgba(96, 160, 96, 0.2);
-  color: --color-quote;
+  color: var(--color-quote);
+  border: 1px solid rgba(96, 160, 96, 0.4);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
 }
 .ann-item-remove {
   background: none;

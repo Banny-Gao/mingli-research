@@ -87,8 +87,7 @@ const BookApp: React.FC = () => {
           <div className="book-hero">
             <div className="book-hero-glow" />
             <h1
-              className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1"
-              style={{ textShadow: '0 0 30px var(--color-gold-glow)' }}
+              className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1 hero-title-glow"
             >
               《{book.title}》
             </h1>

@@ -1,10 +1,49 @@
 import { skillToInterp } from '../data/ditiansui-site/assoc'
 import type { Annotation, AnnotationType } from './useAnnotations'
 
+// Constants
 const ANN_KEY = 'mingli_annotations'
 const BOOKMARK_KEY = 'mingli_bookmarks'
 const MARKDOWN_TYPE = 'text/markdown;charset=utf-8'
 const DEFAULT_FILENAME = '命理学术笔记.md'
+
+// DP-1: Repository pattern - data access abstraction layer
+const AnnotationRepository = {
+  key: (slug: string, chapter: string) => `${ANN_KEY}_${slug}_${chapter}`,
+
+  load: (slug: string, chapter: string): Annotation[] => {
+    try {
+      const raw = localStorage.getItem(AnnotationRepository.key(slug, chapter))
+      if (!raw) return []
+      return JSON.parse(raw)
+    } catch { return [] }
+  },
+
+  save: (slug: string, chapter: string, anns: Annotation[]) => {
+    if (anns.length === 0) localStorage.removeItem(AnnotationRepository.key(slug, chapter))
+    else localStorage.setItem(AnnotationRepository.key(slug, chapter), JSON.stringify(anns))
+  },
+
+  deleteOne: (annId: string) => (ann: Annotation) => ann.id !== annId,
+}
+
+const BookmarkRepository = {
+  key: (slug: string) => `${BOOKMARK_KEY}_${slug}`,
+
+  load: (slug: string): Array<{ name: string; type: string }> => {
+    try {
+      const raw = localStorage.getItem(BookmarkRepository.key(slug))
+      if (!raw) return []
+      const parsed = JSON.parse(raw)
+      if (!Array.isArray(parsed)) return []
+      return parsed.map(item => typeof item === 'string' ? { name: item, type: 'interp' } : { name: item.key ?? '', type: item.type ?? 'interp' })
+    } catch { return [] }
+  },
+
+  save: (slug: string, entries: Array<{ name: string; type: string }>) => {
+    localStorage.setItem(BookmarkRepository.key(slug), JSON.stringify(entries))
+  },
+}
 
 export const TYPE_LABELS: Record<AnnotationType, string> = {
   emphasis: '重点',
@@ -13,8 +52,8 @@ export const TYPE_LABELS: Record<AnnotationType, string> = {
 }
 export const TYPE_COLORS: Record<AnnotationType, string> = {
   emphasis: 'var(--color-gold)',
-  question: '#d05050',
-  quote: '#60c060',
+  question: 'var(--color-danger)',
+  quote: 'var(--color-quote)',
 }
 
 export function normalizeChapter(chapter: string): string {
@@ -23,16 +62,8 @@ export function normalizeChapter(chapter: string): string {
 }
 
 export function deleteAnnotation(slug: string, chapter: string, annId: string) {
-  const key = `${ANN_KEY}_${slug}_${chapter}`
-  try {
-    const raw = localStorage.getItem(key)
-    if (!raw) return
-    const anns: Annotation[] = JSON.parse(raw).filter((a: Annotation) => a.id !== annId)
-    if (anns.length === 0) localStorage.removeItem(key)
-    else localStorage.setItem(key, JSON.stringify(anns))
-  } catch {
-    /* ignore parse errors */
-  }
+  const anns = AnnotationRepository.load(slug, chapter)
+  AnnotationRepository.save(slug, chapter, anns.filter(AnnotationRepository.deleteOne(annId)))
 }
 
 export function batchDeleteAnnotations(
@@ -50,17 +81,10 @@ export function batchDeleteBookmarks(items: Array<{ slug: string; chapter: strin
     bySlug.get(item.slug)!.add(item.chapter)
   }
   for (const [slug, chapters] of bySlug) {
-    const key = `${BOOKMARK_KEY}_${slug}`
-    try {
-      const raw = localStorage.getItem(key)
-      if (!raw) continue
-      const all: string[] = JSON.parse(raw)
-      const filtered = all.filter(c => !chapters.has(c))
-      if (filtered.length === 0) localStorage.removeItem(key)
-      else localStorage.setItem(key, JSON.stringify(filtered))
-    } catch {
-      /* ignore parse errors */
-    }
+    const all = BookmarkRepository.load(slug)
+    const filtered = all.filter(c => !chapters.has(c.name))
+    if (filtered.length === 0) localStorage.removeItem(BookmarkRepository.key(slug))
+    else BookmarkRepository.save(slug, filtered)
   }
 }
 
@@ -73,21 +97,8 @@ export function loadAllBookmarks(): Array<{
     const key = localStorage.key(i)
     if (!key?.startsWith(BOOKMARK_KEY)) continue
     const slug = key.replace(BOOKMARK_KEY + '_', '')
-    try {
-      const raw = localStorage.getItem(key)
-      if (!raw) continue
-      const parsed = JSON.parse(raw)
-      const entries: Array<{ name: string; type: string }> = []
-      if (Array.isArray(parsed)) {
-        for (const item of parsed) {
-          if (typeof item === 'string') entries.push({ name: item, type: 'interp' })
-          else if (item?.key) entries.push({ name: item.key, type: item.type || 'interp' })
-        }
-      }
-      if (entries.length > 0) map.set(slug, entries)
-    } catch {
-      /* ignore parse errors */
-    }
+    const entries = BookmarkRepository.load(slug)
+    if (entries.length > 0) map.set(slug, entries)
   }
   return Array.from(map.entries()).map(([slug, chapters]) => ({ slug, chapters }))
 }
