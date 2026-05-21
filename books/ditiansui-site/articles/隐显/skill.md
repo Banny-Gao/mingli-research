@@ -50,35 +50,35 @@ interface YinXianReport {
   /** 十神藏露全景 */
   shiShenVisibility: {
     good: Array<{
-      name: string;         // 十神名称
-      element: string;      // 五行
-      position: "露" | "藏";
-      pillar: string;       // 所在柱
-      rootStatus: "通根" | "无根" | "弱根";
-    }>;
+      name: string // 十神名称
+      element: string // 五行
+      position: '露' | '藏'
+      pillar: string // 所在柱
+      rootStatus: '通根' | '无根' | '弱根'
+    }>
     bad: Array<{
-      name: string;
-      element: string;
-      position: "露" | "藏";
-      pillar: string;
-      rootStatus: "旺相" | "休囚";
-    }>;
-  };
+      name: string
+      element: string
+      position: '露' | '藏'
+      pillar: string
+      rootStatus: '旺相' | '休囚'
+    }>
+  }
   /** 风险评估 */
   riskAssessment: {
     items: Array<{
-      target: string;       // 风险来源
-      type: "吉神太露" | "凶物深藏" | "安全";
-      severity: "高" | "中" | "低";
-      reason: string;
-    }>;
-    overallRisk: "高" | "中" | "低";
-  };
+      target: string // 风险来源
+      type: '吉神太露' | '凶物深藏' | '安全'
+      severity: '高' | '中' | '低'
+      reason: string
+    }>
+    overallRisk: '高' | '中' | '低'
+  }
   /** 制化策略 */
   strategy: {
-    protect: string[];      // 需要保护的吉神及方法
-    control: string[];      // 需要控制的凶物及方法
-    luckHint: string;       // 大运方位建议
-  };
+    protect: string[] // 需要保护的吉神及方法
+    control: string[] // 需要控制的凶物及方法
+    luckHint: string // 大运方位建议
+  }
 }
 ```

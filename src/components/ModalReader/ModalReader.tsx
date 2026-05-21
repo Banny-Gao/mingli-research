@@ -479,11 +479,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                   <code>{skillRawText || '加载中...'}</code>
                 </pre>
               ) : contentLoading ? (
-                <div
-                  className={`${proseClass} loading-center`}
-                >
-                  加载中...
-                </div>
+                <div className={`${proseClass} loading-center`}>加载中...</div>
               ) : (
                 <div className={proseClass}>
                   <ReactMarkdown
@@ -510,19 +506,37 @@ const ModalReader: React.FC<ModalReaderProps> = ({
           </div>
           {modalKey && (
             <div className="related-section">
-              {([
-                { key: 'interp', data: interpToSkill[modalKey], label: '关联技能', navigateType: 'skill' as const, displayName: skillDisplayNames },
-                { key: 'skill', data: skillToInterp[modalKey], label: '相关篇目', navigateType: 'interp' as const, displayName: null as Record<string, string> | null },
-              ].filter(item => item.data?.length)).map(({ key, data, label, navigateType, displayName }) => (
-                <div key={key} className="related-tags">
-                  <span className="related-label">{label}</span>
-                  {(data as string[]).map(item => (
-                    <button key={item} className={`related-tag related-tag-${key}`} onClick={() => onNavigate(navigateType, item)}>
-                      {displayName ? displayName[item] || item : item}
-                    </button>
-                  ))}
-                </div>
-              ))}
+              {[
+                {
+                  key: 'interp',
+                  data: interpToSkill[modalKey],
+                  label: '关联技能',
+                  navigateType: 'skill' as const,
+                  displayName: skillDisplayNames,
+                },
+                {
+                  key: 'skill',
+                  data: skillToInterp[modalKey],
+                  label: '相关篇目',
+                  navigateType: 'interp' as const,
+                  displayName: null as Record<string, string> | null,
+                },
+              ]
+                .filter(item => item.data?.length)
+                .map(({ key, data, label, navigateType, displayName }) => (
+                  <div key={key} className="related-tags">
+                    <span className="related-label">{label}</span>
+                    {(data as string[]).map(item => (
+                      <button
+                        key={item}
+                        className={`related-tag related-tag-${key}`}
+                        onClick={() => onNavigate(navigateType, item)}
+                      >
+                        {displayName ? displayName[item] || item : item}
+                      </button>
+                    ))}
+                  </div>
+                ))}
 
               <BackToTop scrollRef={modalBodyRef} />
             </div>

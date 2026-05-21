@@ -69,8 +69,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
 
   const BADGE_CONFIG = {
     chapter: { className: 'badge-chapter', label: '解读' },
-    source:  { className: 'badge-source', label: '原文' },
-    skill:   { className: 'badge-skill',  label: '技能' },
+    source: { className: 'badge-source', label: '原文' },
+    skill: { className: 'badge-skill', label: '技能' },
   } as const
 
   async function loadSearchIndex(): Promise<SearchEntry[]> {

@@ -49,35 +49,37 @@ description: 基于滴天髓小儿篇的小儿与成人异论，以日主强弱+
 interface XiaoErReport {
   /** 适用范围确认 */
   applicable: {
-    isChild: boolean;
-    message: string;
-  };
+    isChild: boolean
+    message: string
+  }
   /** 日主分析 */
   riZhu: {
-    ganZhi: string;
-    wuXing: string;
-    status: "健旺" | "衰颓" | "中和";
-    basis: string;            // 月令等判定依据
-  };
+    ganZhi: string
+    wuXing: string
+    status: '健旺' | '衰颓' | '中和'
+    basis: string // 月令等判定依据
+  }
   /** 印比分析 */
   yinBi: {
-    yin: Array<{              // 印星列表
-      ganZhi: string;
-      type: "正印" | "偏印";
-      strength: "强" | "中" | "弱";
-    }>;
-    bi: Array<{               // 比劫列表
-      ganZhi: string;
-      type: "比肩" | "劫财";
-      strength: "强" | "中" | "弱";
-    }>;
-    summary: "帮身有力" | "帮身不足" | "无援";
-  };
+    yin: Array<{
+      // 印星列表
+      ganZhi: string
+      type: '正印' | '偏印'
+      strength: '强' | '中' | '弱'
+    }>
+    bi: Array<{
+      // 比劫列表
+      ganZhi: string
+      type: '比肩' | '劫财'
+      strength: '强' | '中' | '弱'
+    }>
+    summary: '帮身有力' | '帮身不足' | '无援'
+  }
   /** 综合评估 */
   assessment: {
-    level: "无虞" | "有灾" | "中平";
-    description: string;      // 基于小儿篇的中文评估
-    recommendation: string;   // 养育建议（基于五行禀赋）
-  };
+    level: '无虞' | '有灾' | '中平'
+    description: string // 基于小儿篇的中文评估
+    recommendation: string // 养育建议（基于五行禀赋）
+  }
 }
 ```

@@ -37,7 +37,11 @@ const ActionBar: React.FC<ActionBarProps> = ({
     const raw = (skillRawContent as Record<string, () => Promise<string>>)[modalKey]
     if (!raw) return
     const text = await raw()
-    try { await navigator.clipboard.writeText(text) } catch { /* ignore */ }
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      /* ignore */
+    }
     setCopied(true)
     setTimeout(() => setCopied(false), COPIED_RESET_MS)
   }
@@ -47,8 +51,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
       {modalKey && (modalType === 'interp' || modalType === 'source') && (
         <DropdownMenu open={actionPopoverOpen} onOpenChange={setActionPopoverOpen}>
           <DropdownMenuTrigger>
-            <span className="inline-flex items-center justify-center border border-[var(--color-border)] rounded-md px-2 py-1.5 cursor-pointer text-[var(--color-text-dim)] hover:text-[var(--color-gold)]"
-            >
+            <span className="inline-flex items-center justify-center border border-[var(--color-border)] rounded-md px-2 py-1.5 cursor-pointer text-[var(--color-text-dim)] hover:text-[var(--color-gold)]">
               <MoreHorizontal size={16} />
             </span>
           </DropdownMenuTrigger>
@@ -83,10 +86,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
         </DropdownMenu>
       )}
       {modalType === 'skill' && modalKey && (
-        <Button
-          onClick={handleCopy}
-          className={`action-copy-btn${copied ? ' copied' : ''}`}
-        >
+        <Button onClick={handleCopy} className={`action-copy-btn${copied ? ' copied' : ''}`}>
           <Copy size={14} />
           {copied ? '已复制' : '复制'}
         </Button>

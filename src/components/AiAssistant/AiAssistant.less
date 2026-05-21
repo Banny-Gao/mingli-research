@@ -13,7 +13,7 @@
   border: 1px solid var(--color-border-hover);
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 .ai-assistant-header {
   font-size: 12px;
@@ -23,7 +23,7 @@
   letter-spacing: 1px;
 }
 .ai-assistant-body {
-  background: rgba(122,79,170,0.08);
+  background: rgba(122, 79, 170, 0.08);
   border: 1px dashed var(--color-purple);
   border-radius: 8px;
   padding: 16px 12px;
@@ -42,7 +42,9 @@
   font-size: 12px;
   cursor: pointer;
   transition: color 0.2s;
-  &:hover { color: var(--color-gold); }
+  &:hover {
+    color: var(--color-gold);
+  }
 }
 .ai-assistant-fab {
   width: 48px;
@@ -54,14 +56,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(122,79,170,0.4);
+  box-shadow: 0 4px 16px rgba(122, 79, 170, 0.4);
   font-size: 20px;
   transition: transform 0.2s;
-  &:hover { transform: scale(1.1); }
+  &:hover {
+    transform: scale(1.1);
+  }
 }
-.ai-assistant-name { color: var(--color-gold); }
+.ai-assistant-name {
+  color: var(--color-gold);
+}
 
 @media (max-width: 640px) {
-  .ai-assistant { bottom: 16px; right: 16px; }
-  .ai-assistant-panel { width: 280px; }
+  .ai-assistant {
+    bottom: 16px;
+    right: 16px;
+  }
+  .ai-assistant-panel {
+    width: 280px;
+  }
 }

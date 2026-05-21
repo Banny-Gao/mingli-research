@@ -5,7 +5,11 @@ export type ChapterState = 'unread' | 'reading' | 'annotated' | 'completed'
 export type BookmarkType = 'interp' | 'source' | 'skill'
 
 // DP-3: State transition helper
-export function getChapterState(isDone: boolean, hasAnnotations: boolean, hasStartTime: boolean): ChapterState {
+export function getChapterState(
+  isDone: boolean,
+  hasAnnotations: boolean,
+  hasStartTime: boolean
+): ChapterState {
   if (isDone && hasAnnotations) return 'annotated'
   if (isDone) return 'completed'
   if (hasStartTime) return 'reading'
@@ -52,7 +56,9 @@ function loadGlobal(): GlobalProgress {
   try {
     const raw = localStorage.getItem(GLOBAL_KEY)
     if (raw) return JSON.parse(raw)
-  } catch { /* ignore LS errors */ }
+  } catch {
+    /* ignore LS errors */
+  }
   return {
     currentBook: null,
     lastReadChapter: null,
@@ -65,7 +71,9 @@ function loadGlobal(): GlobalProgress {
 function saveGlobal(g: GlobalProgress) {
   try {
     localStorage.setItem(GLOBAL_KEY, JSON.stringify(g))
-  } catch { /* ignore LS errors */ }
+  } catch {
+    /* ignore LS errors */
+  }
 }
 
 export function useGlobalProgress() {
@@ -108,7 +116,9 @@ export function useReadProgress(slug: string) {
     try {
       const raw = localStorage.getItem(`${READ_KEY}_${slug}`)
       if (raw) setReadSet(new Set(JSON.parse(raw)))
-    } catch { /* ignore LS errors */ }
+    } catch {
+      /* ignore LS errors */
+    }
   }, [slug])
 
   const markRead = (name: string) => {
@@ -117,7 +127,9 @@ export function useReadProgress(slug: string) {
       next.add(name)
       try {
         localStorage.setItem(`${READ_KEY}_${slug}`, JSON.stringify([...next]))
-      } catch { /* ignore LS errors */ }
+      } catch {
+        /* ignore LS errors */
+      }
       return next
     })
   }
@@ -150,7 +162,9 @@ export function useBookmarks(slug: string) {
           setBookmarks(map)
         }
       }
-    } catch { /* ignore LS errors */ }
+    } catch {
+      /* ignore LS errors */
+    }
   }, [slug])
 
   const toggle = (name: string, type?: string) => {
@@ -162,7 +176,9 @@ export function useBookmarks(slug: string) {
         const data: BookmarkEntry[] = []
         next.forEach((t, k) => data.push({ key: k, type: t }))
         localStorage.setItem(`${BOOKMARK_KEY}_${slug}`, JSON.stringify(data))
-      } catch { /* ignore LS errors */ }
+      } catch {
+        /* ignore LS errors */
+      }
       return next
     })
   }

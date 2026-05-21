@@ -13,10 +13,13 @@ const SECTION_ORDER: ArtSection[] = ['命', '医', '山', '相', '卜']
 const Landing: React.FC = () => {
   const gp = useGlobalProgress()
 
-  const booksBySection = SECTION_ORDER.reduce<Record<ArtSection, typeof books>>((acc, sec) => {
-    acc[sec] = books.filter(b => b.section === sec)
-    return acc
-  }, {} as Record<ArtSection, typeof books>)
+  const booksBySection = SECTION_ORDER.reduce<Record<ArtSection, typeof books>>(
+    (acc, sec) => {
+      acc[sec] = books.filter(b => b.section === sec)
+      return acc
+    },
+    {} as Record<ArtSection, typeof books>
+  )
 
   const progressPercent = (done: number, total: number) =>
     total > 0 ? Math.round((done / total) * 100) : 0
@@ -73,10 +76,7 @@ const Landing: React.FC = () => {
 
         {/* 笔记入口 */}
         <div className="flex justify-end mb-5 w-full max-w-[900px]">
-          <Link
-            to="/notes"
-            className="notes-cta-btn flex items-center gap-1.5"
-          >
+          <Link to="/notes" className="notes-cta-btn flex items-center gap-1.5">
             <FileText size={16} /> 个人中心
           </Link>
         </div>
@@ -87,7 +87,11 @@ const Landing: React.FC = () => {
             <h2 className="section-header">{sec}</h2>
             <div className="book-grid">
               {booksBySection[sec].map(book => (
-                <Link key={book.slug} to={`/books/${book.section}/${book.slug}`} className="book-card">
+                <Link
+                  key={book.slug}
+                  to={`/books/${book.section}/${book.slug}`}
+                  className="book-card"
+                >
                   <div className="book-card-info">
                     <h2 className="book-card-title">《{book.title}》</h2>
                     <p className="book-card-meta">{book.author || ''}</p>

@@ -54,7 +54,9 @@ const Toolbar: React.FC<Props> = ({ position, selectedText, onSelect, onClose })
     if (selectedText) {
       try {
         await navigator.clipboard.writeText(selectedText)
-      } catch { /* ignore clipboard errors */ }
+      } catch {
+        /* ignore clipboard errors */
+      }
     }
     onClose()
   }
