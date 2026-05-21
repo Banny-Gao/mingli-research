@@ -100,6 +100,11 @@ function injectAnnotations(
   return div.innerHTML
 }
 
+const SCROLL_OFFSET = 100
+const ANNOTATION_SCROLL_OFFSET = 80
+const AUTO_FADE_MS = 4000
+const MOBILE_BREAKPOINT = 640
+
 const ModalReader: React.FC<ModalReaderProps> = ({
   chapters,
   bookSlug,
@@ -166,8 +171,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
         setLoadedContent(content)
         setContentLoading(false)
       })
-      .catch(err => {
-        console.error('[DEBUG] Load error:', err)
+      .catch(() => {
         setContentLoading(false)
       })
   }, [modalKey, modalType])
@@ -227,7 +231,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
             range.setEnd(targetNode, validEndOffset)
             const rect = range.getBoundingClientRect()
             container.scrollTo({
-              top: container.scrollTop + rect.top - 100,
+              top: container.scrollTop + rect.top - SCROLL_OFFSET,
               behavior: 'smooth',
             })
 
@@ -256,7 +260,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                 parent.removeChild(parent.childNodes[idx + 1])
                 onScrollToTextConsumed()
                 timerRef.current = null
-              }, 4000)
+              }, AUTO_FADE_MS)
             }
           } catch {
             container.scrollTo({ top: 0, behavior: 'smooth' })
@@ -381,7 +385,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
     if (target) {
       const containerRect = el.getBoundingClientRect()
       const targetRect = target.getBoundingClientRect()
-      el.scrollBy({ top: targetRect.top - containerRect.top - 80, behavior: 'smooth' })
+      el.scrollBy({ top: targetRect.top - containerRect.top - ANNOTATION_SCROLL_OFFSET, behavior: 'smooth' })
     }
   }
 
@@ -459,7 +463,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
                 scrollRef={modalBodyRef}
                 open={tocOpen}
                 onItemClick={() => {
-                  if (window.innerWidth <= 640) setTocOpen(false)
+                  if (window.innerWidth <= MOBILE_BREAKPOINT) setTocOpen(false)
                 }}
               />
             )}

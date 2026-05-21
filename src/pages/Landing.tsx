@@ -18,6 +18,9 @@ const Landing: React.FC = () => {
     return acc
   }, {} as Record<ArtSection, typeof books>)
 
+  const progressPercent = (done: number, total: number) =>
+    total > 0 ? Math.round((done / total) * 100) : 0
+
   const activeSections = SECTION_ORDER.filter(sec => booksBySection[sec].length > 0)
 
   return (
@@ -93,12 +96,12 @@ const Landing: React.FC = () => {
                   <div className="progress-bar">
                     <div
                       className="progress-fill"
-                      style={{ width: `${book.total > 0 ? (book.done / book.total) * 100 : 0}%` }}
+                      style={{ width: `${progressPercent(book.done, book.total)}%` }}
                     />
                   </div>
                   <div className="progress-meta">
                     <span>已解读 {book.done} 篇</span>
-                    <span>{book.total > 0 ? Math.round((book.done / book.total) * 100) : 0}% 完成</span>
+                    <span>{progressPercent(book.done, book.total)}% 完成</span>
                   </div>
                 </Link>
               ))}

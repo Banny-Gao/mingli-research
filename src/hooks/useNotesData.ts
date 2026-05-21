@@ -3,6 +3,8 @@ import type { Annotation, AnnotationType } from './useAnnotations'
 
 const ANN_KEY = 'mingli_annotations'
 const BOOKMARK_KEY = 'mingli_bookmarks'
+const MARKDOWN_TYPE = 'text/markdown;charset=utf-8'
+const DEFAULT_FILENAME = '命理学术笔记.md'
 
 export const TYPE_LABELS: Record<AnnotationType, string> = {
   emphasis: '重点',
@@ -17,7 +19,7 @@ export const TYPE_COLORS: Record<AnnotationType, string> = {
 
 export function normalizeChapter(chapter: string): string {
   const interp = (skillToInterp as Record<string, string[]>)[chapter]
-  return interp && interp.length > 0 ? interp[0] : chapter
+  return interp?.length ? interp[0] : chapter
 }
 
 export function deleteAnnotation(slug: string, chapter: string, annId: string) {
@@ -141,11 +143,11 @@ export function exportMarkdown(
       }
     }
   }
-  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' })
+  const blob = new Blob([md], { type: MARKDOWN_TYPE })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = '命理学术笔记.md'
+  a.download = DEFAULT_FILENAME
   a.click()
   URL.revokeObjectURL(url)
 }

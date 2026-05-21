@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import mermaid from 'mermaid'
 
 mermaid.initialize({
@@ -21,17 +21,18 @@ interface Props {
 const Mermaid: React.FC<Props> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [error, setError] = useState(false)
+  const uid = useId()
 
   useEffect(() => {
     if (!ref.current || !children) return
-    const id = 'mermaid-' + Math.random().toString(36).slice(2, 8)
+    const id = 'mermaid-' + uid.replace(/:/g, '')
     mermaid
       .run({
         nodes: [{ id, node: ref.current } as any],
         suppressErrors: true,
       })
       .catch(() => setError(true))
-  }, [children])
+  }, [children, uid])
 
   if (error)
     return (

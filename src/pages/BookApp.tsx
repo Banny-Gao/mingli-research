@@ -40,6 +40,7 @@ const BookApp: React.FC = () => {
       scrollToText: params.get('match') ? decodeURIComponent(params.get('match')!) : undefined,
     })
     window.history.replaceState(null, '', hash.slice(0, qIdx))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'

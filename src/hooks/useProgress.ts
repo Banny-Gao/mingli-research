@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 const READ_KEY = 'mingli_read'
 const BOOKMARK_KEY = 'mingli_bookmarks'
 const GLOBAL_KEY = 'mingli_global_v2'
+const MAX_RECENT = 5
 
 export interface RecentChapter {
   slug: string
@@ -79,7 +80,7 @@ export function useGlobalProgress() {
       recentChapters: [
         { slug, chapter, ts: Date.now() },
         ...gp.recentChapters.filter(r => !(r.slug === slug && r.chapter === chapter)),
-      ].slice(0, 5),
+      ].slice(0, MAX_RECENT),
     }
     saveGlobal(next)
     setGp(next)
