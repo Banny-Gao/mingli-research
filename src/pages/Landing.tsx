@@ -31,8 +31,16 @@ const Landing = () => {
         <title>豫知五行 · 传统国学 </title>
         <meta
           name="description"
-          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统性学术解读。"
+          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。"
         />
+        <meta property="og:title" content="豫知五行 · 传统国学" />
+        <meta
+          property="og:description"
+          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.origin + window.location.pathname} />
+        <link rel="canonical" href={window.location.origin + window.location.pathname} />
       </Helmet>
 
       {/* 顶部悬浮功能区 */}
@@ -40,7 +48,7 @@ const Landing = () => {
         {gp.streakDays > 0 && (
           <div className="streak-badge">
             <Flame size={16} fill="var(--color-gold)" color="var(--color-gold)" />
-            <div className="streak-tooltip">坚持学习命理经典，连续{gp.streakDays}天不间断</div>
+            <div className="streak-tooltip">坚持学习，连续{gp.streakDays}天不间断</div>
           </div>
         )}
 
@@ -54,7 +62,7 @@ const Landing = () => {
         <div className="hero-section">
           <div className="hero-glow" />
           <h1 className="hero-title">豫知学堂</h1>
-          <p className="hero-subtitle">经典原文 · 专业注解 · 学术整理</p>
+          <p className="hero-subtitle">经典原文 · 系统解读 · 技能沉淀</p>
         </div>
 
         {/* Stats */}

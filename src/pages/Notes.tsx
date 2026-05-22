@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
@@ -150,8 +149,13 @@ const Notes = () => {
   return (
     <>
       <Helmet>
-        <title>读书笔记 — 命理学术中心</title>
+        <title>读书笔记 — 玄学文化馆</title>
         <meta name="description" content={`已收录 ${total} 条批注`} />
+        <meta property="og:title" content={`读书笔记 — 玄学文化馆`} />
+        <meta property="og:description" content={`已收录 ${total} 条批注`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.origin + window.location.pathname} />
+        <link rel="canonical" href={window.location.origin + window.location.pathname} />
       </Helmet>
       <div className="page-wrapper">
         <div className="top-actions">
@@ -290,7 +294,8 @@ const Notes = () => {
                                   const key = `${bm.slug}::${chm.name}`
                                   setSelectedBm(prev => {
                                     const n = new Set(prev)
-                                    n.has(key) ? n.delete(key) : n.add(key)
+                                    if (n.has(key)) n.delete(key)
+                                    else n.add(key)
                                     return n
                                   })
                                 }}

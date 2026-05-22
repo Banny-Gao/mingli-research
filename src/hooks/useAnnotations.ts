@@ -14,7 +14,7 @@ export interface Annotation {
   fromSource?: boolean
 }
 
-const ANN_KEY = 'mingli_annotations'
+import { ANN_KEY } from '../lib/constants'
 
 function makeKey(slug: string, chapter: string, isSource?: boolean) {
   return `${ANN_KEY}_${slug}_${chapter}${isSource ? '__source' : ''}`

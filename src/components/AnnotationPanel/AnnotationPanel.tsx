@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { X, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { Annotation, AnnotationType } from '../../hooks/useAnnotations'
+import { TYPE_LABELS } from '../../hooks/useNotesData'
 
 interface Props {
   annotations: Annotation[]
@@ -11,11 +12,6 @@ interface Props {
   onClose: () => void
 }
 
-const TYPE_LABELS: Record<AnnotationType, string> = {
-  emphasis: '重点',
-  question: '疑问',
-  quote: '引用',
-}
 const TYPE_CLASS: Record<AnnotationType, string> = {
   emphasis: 'ann-type-emphasis',
   question: 'ann-type-question',

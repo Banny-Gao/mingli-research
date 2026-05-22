@@ -23,12 +23,9 @@ const BookApp = () => {
   const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
   const skillKeys = Object.keys(skillContent || {})
 
-  // Handle URL params for search navigation — extract from hash on mount, clean up after
+  // Handle URL params for search navigation — extract from query string on mount, clean up after
   useEffect(() => {
-    const hash = window.location.hash
-    const qIdx = hash.indexOf('?')
-    if (qIdx === -1) return
-    const params = new URLSearchParams(hash.slice(qIdx))
+    const params = new URLSearchParams(window.location.search)
     const open = params.get('open')
     const key = params.get('key')
     if (!open || !key) return
@@ -39,11 +36,11 @@ const BookApp = () => {
       modalKey: decodeURIComponent(key),
       scrollToText: params.get('match') ? decodeURIComponent(params.get('match')!) : undefined,
     })
-    window.history.replaceState(null, '', hash.slice(0, qIdx))
+    window.history.replaceState(null, '', window.location.pathname)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const pageTitle = book ? `《${book.title}》- 命理学术中心` : '404 - 命理学术中心'
+  const pageTitle = book ? `《${book.title}》- 玄学文化馆` : '404 - 玄学文化馆'
   const pageDesc = book
     ? `共${book.total}篇·已解读${book.done}篇·已有${skillKeys.length}个技能`
     : '未找到该典籍'
@@ -78,6 +75,11 @@ const BookApp = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDesc} />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDesc} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={window.location.origin + window.location.pathname} />
+        <link rel="canonical" href={window.location.origin + window.location.pathname} />
       </Helmet>
       <div className="page-wrapper">
         <div className="top-actions">

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { X, Copy, Highlighter, FileQuestion, Quote } from 'lucide-react'
 import type { AnnotationType } from '../../hooks/useAnnotations'
 import './AnnotationToolbar.less'
@@ -12,6 +12,12 @@ interface Props {
 
 const MOBILE_BREAKPOINT = 640
 const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT
+
+const ANN_TYPE_CONFIG = [
+  { type: 'emphasis' as const, Icon: Highlighter, label: '重点', className: 'ann-emphasis' },
+  { type: 'question' as const, Icon: FileQuestion, label: '疑问', className: 'ann-question' },
+  { type: 'quote' as const, Icon: Quote, label: '引用', className: 'ann-quote' },
+]
 
 const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
@@ -50,7 +56,7 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
     return () => document.removeEventListener('mousedown', handler)
   }, [onClose, mobile])
 
-  const handleCopy = async () => {
+  const handleCopy = useCallback(async () => {
     if (selectedText) {
       try {
         await navigator.clipboard.writeText(selectedText)
@@ -59,24 +65,18 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
       }
     }
     onClose()
-  }
+  }, [selectedText, onClose])
 
   if (mobile) {
     return (
       <div className="ann-toolbar-mobile" onTouchStart={e => e.preventDefault()}>
         <span className="ann-toolbar-mobile-label">标记为</span>
-        <button className="ann-toolbar-btn ann-emphasis" onClick={() => onSelect('emphasis')}>
-          <Highlighter size={14} />
-          <span>重点</span>
-        </button>
-        <button className="ann-toolbar-btn ann-question" onClick={() => onSelect('question')}>
-          <FileQuestion size={14} />
-          <span>疑问</span>
-        </button>
-        <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>
-          <Quote size={14} />
-          <span>引用</span>
-        </button>
+        {ANN_TYPE_CONFIG.map(({ type, Icon, label, className }) => (
+          <button key={type} className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+            <Icon size={14} />
+            <span>{label}</span>
+          </button>
+        ))}
         {selectedText && (
           <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
             <Copy size={14} />
@@ -91,15 +91,11 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
 
   return (
     <div ref={ref} className="ann-toolbar">
-      <button className="ann-toolbar-btn ann-emphasis" onClick={() => onSelect('emphasis')}>
-        重点
-      </button>
-      <button className="ann-toolbar-btn ann-question" onClick={() => onSelect('question')}>
-        疑问
-      </button>
-      <button className="ann-toolbar-btn ann-quote" onClick={() => onSelect('quote')}>
-        引用
-      </button>
+      {ANN_TYPE_CONFIG.map(({ type, label, className }) => (
+        <button key={type} className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+          {label}
+        </button>
+      ))}
       {selectedText && (
         <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
           <Copy size={14} />
