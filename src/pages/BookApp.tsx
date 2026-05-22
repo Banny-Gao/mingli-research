@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { ArrowLeft } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import { books } from '../data/books'
 import { getBook } from '../data/registry'
 import ReadList from '../components/ReadList'
@@ -81,6 +81,9 @@ const BookApp: React.FC = () => {
       </Helmet>
       <div className="page-wrapper">
         <div className="top-actions">
+          <Link to="/" className="back-link flex items-center gap-1">
+            <ChevronLeft size={14} />
+          </Link>
           <SearchBar scopeSlug={bookSlug} />
         </div>
         <div className="page-container-narrow">
@@ -107,9 +110,6 @@ const BookApp: React.FC = () => {
                 <div className="stat-label">已解读</div>
               </div>
             </div>
-            <Link to="/" className="back-link flex items-center gap-1">
-              <ArrowLeft size={14} /> 返回典籍首页
-            </Link>
           </div>
           <div className="container-wide animate-fade-up">
             <ReadList

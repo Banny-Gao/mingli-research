@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { skillToInterp } from '@/data/ditiansui-site/assoc'
 import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -34,7 +35,9 @@ const ActionBar: React.FC<ActionBarProps> = ({
 
   const handleCopy = async () => {
     if (modalType !== 'skill') return
-    const raw = (skillRawContent as Record<string, () => Promise<string>>)[modalKey]
+    // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
+    const contentKey = (skillToInterp as Record<string, string[]>)[modalKey]?.[0] || modalKey
+    const raw = (skillRawContent as Record<string, () => Promise<string>>)[contentKey]
     if (!raw) return
     const text = await raw()
     try {
@@ -86,7 +89,11 @@ const ActionBar: React.FC<ActionBarProps> = ({
         </DropdownMenu>
       )}
       {modalType === 'skill' && modalKey && (
-        <Button onClick={handleCopy} className={`action-copy-btn${copied ? ' copied' : ''}`}>
+        <Button
+          variant="ghost"
+          onClick={handleCopy}
+          className={['action-copy-btn', copied ? ' copied' : ''].join(' ')}
+        >
           <Copy size={14} />
           {copied ? '已复制' : '复制'}
         </Button>
