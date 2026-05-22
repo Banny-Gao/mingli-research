@@ -19,7 +19,7 @@ interface ActionBarProps {
   skillRawContent: Record<string, any>
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({
+const ActionBar = ({
   modalType,
   modalKey,
   isBookmarked,
@@ -27,7 +27,7 @@ const ActionBar: React.FC<ActionBarProps> = ({
   annotationsCount,
   onTogglePanel,
   skillRawContent,
-}) => {
+}: ActionBarProps) => {
   const [actionPopoverOpen, setActionPopoverOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 

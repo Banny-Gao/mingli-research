@@ -19,7 +19,7 @@ import {
 } from '../hooks/useNotesData'
 import type { Annotation, AnnotationType } from '../hooks/useAnnotations'
 
-const Notes: React.FC = () => {
+const Notes = () => {
   const [refresh, setRefresh] = useState(0)
   const { openReader, closeVersion } = useReader()
   // Refresh data when modal closes (bookmark/annotation may have changed)

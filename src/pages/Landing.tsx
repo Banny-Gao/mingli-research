@@ -10,7 +10,7 @@ import { ThemeToggle } from '../components/ThemeToggle'
 
 const SECTION_ORDER: ArtSection[] = ['命', '医', '山', '相', '卜']
 
-const Landing: React.FC = () => {
+const Landing = () => {
   const gp = useGlobalProgress()
 
   const booksBySection = SECTION_ORDER.reduce<Record<ArtSection, typeof books>>(

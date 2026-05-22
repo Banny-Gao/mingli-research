@@ -19,7 +19,7 @@ interface Props {
   children: string
 }
 
-const Mermaid: React.FC<Props> = ({ children }) => {
+const Mermaid = ({ children }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const [error, setError] = useState(false)
   const uid = useId()

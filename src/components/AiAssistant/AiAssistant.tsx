@@ -6,7 +6,7 @@ interface Props {
   chapter?: string
 }
 
-const AiAssistant: React.FC<Props> = ({ chapter }) => {
+const AiAssistant = ({ chapter }: Props) => {
   const [open, setOpen] = useState(false)
 
   return (
