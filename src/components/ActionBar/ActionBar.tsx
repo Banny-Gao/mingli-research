@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { skillToInterp } from '@/data/ditiansui-site/assoc'
 import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
+import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react'
 import { books } from '../data/books'
 import { useReadProgress, useGlobalProgress } from './useProgress'
 
@@ -25,7 +25,7 @@ interface ReaderContextType {
 
 const ReaderContext = createContext<ReaderContextType | null>(null)
 
-export function ReaderProvider({ children }: { children: React.ReactNode }) {
+export function ReaderProvider({ children }: { children: ReactNode }) {
   const [bookSlug, setBookSlug] = useState('')
   const [modalType, setModalType] = useState<'interp' | 'skill' | 'source' | null>(null)
   const [modalKey, setModalKey] = useState('')

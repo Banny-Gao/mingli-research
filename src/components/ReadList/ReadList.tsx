@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import type { Book, ChapterInfo } from '../../data/book-types'
 import { ChevronDown } from 'lucide-react'
 import './ReadList.less'

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { X, Copy, Highlighter, FileQuestion, Quote } from 'lucide-react'
 import type { AnnotationType } from '../../hooks/useAnnotations'
 import './AnnotationToolbar.less'

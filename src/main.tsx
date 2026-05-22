@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
@@ -43,7 +43,7 @@ function GlobalModal() {
 initTheme()
 
 ReactDOM.createRoot(document.body!).render(
-  <React.StrictMode>
+  <StrictMode>
     <HelmetProvider>
       <Helmet>
         <script>{`
@@ -68,5 +68,5 @@ ReactDOM.createRoot(document.body!).render(
         </ReaderProvider>
       </HashRouter>
     </HelmetProvider>
-  </React.StrictMode>
+  </StrictMode>
 )

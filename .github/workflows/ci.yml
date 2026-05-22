@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -26,10 +24,10 @@ jobs:
         run: pnpm install
 
       - name: Generate data
-        run: pnpm run generate:data
+        run: pnpm run generate
 
       - name: Type check
-        run: pnpm run typecheck
+        run: pnpm exec tsc --noEmit
 
       - name: Build
         run: pnpm run build

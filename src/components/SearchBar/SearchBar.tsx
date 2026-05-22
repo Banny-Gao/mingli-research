@@ -76,7 +76,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     skill: { className: 'badge-skill', label: '技能' },
   } as const
 
-  async function loadSearchIndex(): Promise<SearchEntry[]> {
+  const loadSearchIndex = useCallback(async (): Promise<SearchEntry[]> => {
     if (searchCacheRef.current) return searchCacheRef.current
     const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
     const data = (await res.json()) as Array<{
