@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Filter, Bookmark, MessageSquare, ArrowRight, ArrowLeft, Trash2 } from 'lucide-react'
+import { Filter, Bookmark, MessageSquare, ArrowRight, ChevronLeft, Trash2 } from 'lucide-react'
 import { useReader } from '../hooks/useReader'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -153,18 +154,18 @@ const Notes: React.FC = () => {
         <meta name="description" content={`已收录 ${total} 条批注`} />
       </Helmet>
       <div className="page-wrapper">
+        <div className="top-actions">
+          <Link to="/" className="back-link flex items-center gap-1">
+            <ChevronLeft size={14} />
+          </Link>
+        </div>
+
         <div className="page-container-narrow">
           <div className="book-hero">
             <div className="book-hero-glow" />
             <h1 className="text-3xl text-[var(--color-gold)] font-bold tracking-widest mb-[10px] hero-title-glow">
               个人中心
             </h1>
-          </div>
-
-          <div className="flex mt-3 mb-6 w-full">
-            <Link to="/" className="back-link inline-flex items-center gap-1">
-              <ArrowLeft size={14} /> 返回典籍首页
-            </Link>
           </div>
 
           <div className="container-wide">

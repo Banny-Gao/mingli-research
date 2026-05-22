@@ -2,6 +2,5 @@
 export { default as Landing } from '../pages/Landing'
 export { default as BookApp } from '../pages/BookApp'
 export { default as ReadList } from '../components/ReadList'
-export { default as SkillGrid } from '../components/SkillGrid'
 export { default as SearchBar } from '../components/SearchBar'
 export { ReadingProgress, BackToTop, TocSidebar, extractTOC } from '../components/ReadingTools'

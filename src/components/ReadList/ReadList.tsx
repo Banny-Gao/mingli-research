@@ -29,12 +29,6 @@ const ReadList: React.FC<Props> = ({
 
   return (
     <>
-      <div className="section-header">
-        <span className="section-title">篇目总览</span>
-        <span className="section-badge">
-          共{book.total}篇 · 已解读{book.done}篇
-        </span>
-      </div>
       {Array.from(categories.entries()).map(([category, chapters]) => (
         <CategorySection
           key={category}
@@ -98,7 +92,7 @@ function CategorySection({
   return (
     <div className="category-section">
       <div
-        className={`category-header${collapsed ? ' collapsed' : ''}`}
+        className="category-header flex items-center justify-between cursor-pointer mb-3"
         onClick={() => setCollapsed(v => !v)}
         role="button"
         tabIndex={0}
@@ -107,7 +101,10 @@ function CategorySection({
         }}
       >
         <div className="flex items-center gap-2">
-          <ChevronDown size={14} className={`category-chevron${collapsed ? ' rotated' : ''}`} />
+          <ChevronDown
+            size={14}
+            className={['category-chevron', collapsed ? ' rotated' : ''].join(' ')}
+          />
           <span className="font-semibold text-sm">{category}</span>
         </div>
         <span className="section-badge text-xs">
@@ -115,7 +112,7 @@ function CategorySection({
         </span>
       </div>
       {!collapsed && (
-        <div className="chapter-list mt-0">
+        <div className="chapter-list mb-3">
           {chapters.map(ch => {
             const validActions = ACTION_CONFIG.filter(cfg => cfg.condition(ch))
             return (
