@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, type CSSProperties, type RefObject } from 'react'
 import { ChevronUp } from 'lucide-react'
 import './ReadingTools.less'
 
@@ -7,11 +7,7 @@ const BACK_TO_TOP_THRESHOLD = 300
 const SCROLL_SPY_OFFSET = 80
 const SCROLL_OFFSET = 16
 
-interface Props {
-  scrollRef: React.RefObject<HTMLDivElement | null>
-}
-
-export const ReadingProgress: React.FC<Props> = ({ scrollRef }) => {
+export const ReadingProgress = ({ scrollRef }: { scrollRef: RefObject<HTMLDivElement | null> }) => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -31,14 +27,12 @@ export const ReadingProgress: React.FC<Props> = ({ scrollRef }) => {
   return (
     <div
       className="reading-progress"
-      style={{ '--progress-w': `${progress}%` } as React.CSSProperties}
+      style={{ '--progress-w': `${progress}%` } as CSSProperties}
     />
   )
 }
 
-export const BackToTop: React.FC<{ scrollRef: React.RefObject<HTMLDivElement | null> }> = ({
-  scrollRef,
-}) => {
+export const BackToTop = ({ scrollRef }: { scrollRef: RefObject<HTMLDivElement | null> }) => {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -100,7 +94,7 @@ interface TocSidebarProps {
   onItemClick?: () => void
 }
 
-export const TocSidebar: React.FC<TocSidebarProps> = ({ html, scrollRef, open, onItemClick }) => {
+export const TocSidebar = ({ html, scrollRef, open, onItemClick }: TocSidebarProps) => {
   const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([])
   const [activeId, setActiveId] = useState('')
 
