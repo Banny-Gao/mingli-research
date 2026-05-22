@@ -106,7 +106,7 @@ const ANNOTATION_SCROLL_OFFSET = 80
 const AUTO_FADE_MS = 4000
 const MOBILE_BREAKPOINT = 640
 
-const ModalReader: React.FC<ModalReaderProps> = ({
+const ModalReader = ({
   chapters,
   bookSlug,
   modalType,
@@ -115,7 +115,7 @@ const ModalReader: React.FC<ModalReaderProps> = ({
   onClose,
   onNavigate,
   onScrollToTextConsumed,
-}) => {
+}: ModalReaderProps) => {
   const modalBodyRef = useRef<HTMLDivElement>(null)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [toolbarPos, setToolbarPos] = useState<{ x: number; y: number } | null>(null)

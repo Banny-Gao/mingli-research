@@ -22,13 +22,13 @@ const TYPE_CLASS: Record<AnnotationType, string> = {
   quote: 'ann-type-quote',
 }
 
-const AnnotationPanel: React.FC<Props> = ({
+const AnnotationPanel = ({
   annotations,
   onRemove,
   onUpdateNote,
   onNavigate,
   onClose,
-}) => {
+}: Props) => {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [noteVal, setNoteVal] = useState('')
 

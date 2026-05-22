@@ -8,7 +8,7 @@ import ReadList from '../components/ReadList'
 import SearchBar from '../components/SearchBar'
 import { useReader } from '../hooks/useReader'
 
-const BookApp: React.FC = () => {
+const BookApp = () => {
   const { slug } = useParams<{ slug: string }>()
   const { openReader } = useReader()
 

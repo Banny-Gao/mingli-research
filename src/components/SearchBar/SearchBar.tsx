@@ -15,17 +15,20 @@ interface SearchBarProps {
   scopeSlug?: string // 限定搜索的典籍slug
 }
 
+const SNIPPET_PREFIX = 20
+  const SNIPPET_SUFFIX = 40
+
 function getSnippetParts(
   text: string,
   query: string
 ): { before: string; match: string; after: string } | null {
   const idx = text.toLowerCase().indexOf(query.toLowerCase())
   if (idx === -1) return null
-  const start = Math.max(0, idx - 20)
-  const end = Math.min(text.length, idx + query.length + 40)
+  const start = Math.max(0, idx - SNIPPET_PREFIX)
+  const end = Math.min(text.length, idx + query.length + SNIPPET_SUFFIX)
   const prefix = start > 0 ? '…' : ''
   const suffix = end < text.length ? '…' : ''
-  const localIdx = idx - start // position of query within the extracted slice
+  const localIdx = idx - start
   const slice = text.slice(start, end)
   return {
     before: prefix + slice.slice(0, localIdx),
@@ -83,40 +86,30 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
       skill: Array<{ key: string; displayName?: string; text: string }>
       source: Array<{ key: string; text: string }>
     }>
-    const entries: SearchEntry[] = []
-    for (const book of data) {
-      for (const ch of book.interp) {
-        if (ch.text)
-          entries.push({
-            slug: book.slug,
-            title: book.title,
-            type: 'chapter',
-            key: ch.key,
-            text: ch.text,
-          })
-      }
-      for (const sk of book.skill) {
-        if (sk.text)
-          entries.push({
-            slug: book.slug,
-            title: book.title,
-            type: 'skill',
-            key: sk.key,
-            displayName: sk.displayName,
-            text: sk.text,
-          })
-      }
-      for (const src of book.source || []) {
-        if (src.text)
-          entries.push({
-            slug: book.slug,
-            title: book.title,
-            type: 'source',
-            key: src.key,
-            text: src.text,
-          })
-      }
-    }
+    const entries: SearchEntry[] = data.flatMap(book => [
+      ...book.interp.filter(ch => ch.text).map(ch => ({
+        slug: book.slug,
+        title: book.title,
+        type: 'chapter' as const,
+        key: ch.key,
+        text: ch.text,
+      })),
+      ...book.skill.filter(sk => sk.text).map(sk => ({
+        slug: book.slug,
+        title: book.title,
+        type: 'skill' as const,
+        key: sk.key,
+        displayName: sk.displayName,
+        text: sk.text,
+      })),
+      ...(book.source || []).filter(src => src.text).map(src => ({
+        slug: book.slug,
+        title: book.title,
+        type: 'source' as const,
+        key: src.key,
+        text: src.text,
+      })),
+    ])
     fuseRef.current = new Fuse(entries, {
       keys: ['text', 'key', 'displayName', 'title'],
       threshold: 0.0,
@@ -127,7 +120,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
     })
     searchCacheRef.current = entries
     return entries
-  }
+  }, [])
 
   // Close on outside click
   useEffect(() => {

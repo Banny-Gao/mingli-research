@@ -13,7 +13,7 @@ interface Props {
 const MOBILE_BREAKPOINT = 640
 const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT
 
-const Toolbar: React.FC<Props> = ({ position, selectedText, onSelect, onClose }) => {
+const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const [mobile, setMobile] = useState(isMobile())
 

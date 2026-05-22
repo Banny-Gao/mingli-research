@@ -12,14 +12,14 @@ interface Props {
   interpToSkill?: Record<string, string[]>
 }
 
-const ReadList: React.FC<Props> = ({
+const ReadList = ({
   book,
   onChapterClick,
   onSourceClick,
   onSkillClick,
   sourceNames,
   interpToSkill,
-}) => {
+}: Props) => {
   const categories = new Map<string, ChapterInfo[]>()
   for (const ch of book.chapters) {
     const cat = ch.category || '未分类'
