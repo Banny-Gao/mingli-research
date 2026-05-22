@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://banny-gao.github.io/mingli-research/sitemap.xml

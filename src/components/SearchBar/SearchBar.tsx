@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useReader } from '../../hooks/useReader'
 import Fuse from 'fuse.js'
 
@@ -16,7 +16,7 @@ interface SearchBarProps {
 }
 
 const SNIPPET_PREFIX = 20
-  const SNIPPET_SUFFIX = 40
+const SNIPPET_SUFFIX = 40
 
 function getSnippetParts(
   text: string,
@@ -55,7 +55,7 @@ function filterByScope(entries: SearchEntry[], scopeSlug: string | undefined): S
 const MAX_RESULTS = 10
 const SCROLL_TEXT_PREVIEW = 50
 
-const SearchBar: React.FC<SearchBarProps> = ({ scopeSlug }) => {
+const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchEntry[]>([])

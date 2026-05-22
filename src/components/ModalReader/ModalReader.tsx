@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
@@ -27,6 +27,15 @@ interface ModalReaderProps {
   onClose: () => void
   onNavigate: (type: 'interp' | 'skill' | 'source', key: string) => void
   onScrollToTextConsumed: () => void
+}
+
+interface BookData {
+  interpContent?: Record<string, () => Promise<string>>
+  sourceContent?: Record<string, () => Promise<string>>
+  skillRawContent?: Record<string, () => Promise<string>>
+  skillDisplayNames?: Record<string, string>
+  interpToSkill?: Record<string, string[]>
+  skillToInterp?: Record<string, string[]>
 }
 
 function injectAnnotations(
@@ -131,14 +140,14 @@ const ModalReader = ({
   const [loadedContent, setLoadedContent] = useState('')
   const [contentLoading, setContentLoading] = useState(false)
 
-  const bookData = getBook(bookSlug)
+  const bookData = getBook(bookSlug) as BookData
 
-  const interpContent = (bookData.interpContent as Record<string, () => Promise<string>>) || {}
-  const sourceContent = (bookData.sourceContent as Record<string, () => Promise<string>>) || {}
-  const skillRawContent = bookData.skillRawContent || {}
-  const skillDisplayNames = bookData.skillDisplayNames || {}
-  const interpToSkill = (bookData.interpToSkill ?? {}) as Record<string, string[]>
-  const skillToInterp = (bookData.skillToInterp ?? {}) as Record<string, string[]>
+  const interpContent = bookData.interpContent ?? {}
+  const sourceContent = bookData.sourceContent ?? {}
+  const skillRawContent = bookData.skillRawContent ?? {}
+  const skillDisplayNames = bookData.skillDisplayNames ?? {}
+  const interpToSkill = bookData.interpToSkill ?? {}
+  const skillToInterp = bookData.skillToInterp ?? {}
 
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(bookSlug)
   const { annotations, add, remove, updateNote } = useAnnotations(
@@ -155,11 +164,9 @@ const ModalReader = ({
 
     let loader: (() => Promise<string>) | undefined
     if (modalType === 'interp') {
-      const contentMap = interpContent as Record<string, () => Promise<string>>
-      loader = contentMap[modalKey]
+      loader = interpContent[modalKey]
     } else if (modalType === 'source') {
-      const contentMap = sourceContent as Record<string, () => Promise<string>>
-      loader = contentMap[modalKey]
+      loader = sourceContent[modalKey]
     }
 
     if (!loader) {
@@ -306,8 +313,8 @@ const ModalReader = ({
       return
     }
     // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
-    const contentKey = (skillToInterp as Record<string, string[]>)[modalKey]?.[0] || modalKey
-    const loader = (skillRawContent as Record<string, () => Promise<string>>)[contentKey]
+    const contentKey = skillToInterp[modalKey]?.[0] || modalKey
+    const loader = skillRawContent[contentKey]
     if (!loader) return
     loader().then(text => setSkillRawText(text))
   }, [modalType, modalKey])

@@ -1,11 +1,10 @@
+import { ANN_KEY, BOOKMARK_KEY } from '../lib/constants'
 import { skillToInterp } from '../data/ditiansui-site/assoc'
 import type { Annotation, AnnotationType } from './useAnnotations'
 
 // Constants
-const ANN_KEY = 'mingli_annotations'
-const BOOKMARK_KEY = 'mingli_bookmarks'
 const MARKDOWN_TYPE = 'text/markdown;charset=utf-8'
-const DEFAULT_FILENAME = '命理学术笔记.md'
+const getDownloadFileName = () => `读书笔记-${new Date().toISOString().slice(0, 10)}.md`
 
 // DP-1: Repository pattern - data access abstraction layer
 const AnnotationRepository = {
@@ -65,7 +64,7 @@ export const TYPE_COLORS: Record<AnnotationType, string> = {
 }
 
 export function normalizeChapter(chapter: string): string {
-  const interp = (skillToInterp as Record<string, string[]>)[chapter]
+  const interp = skillToInterp[chapter]
   return interp?.length ? interp[0] : chapter
 }
 
@@ -150,7 +149,7 @@ export function loadAllAnnotations(): Array<{
 export function exportMarkdown(
   groups: Array<{ book: string; chapters: Array<{ name: string; annotations: Annotation[] }> }>
 ) {
-  let md = '# 读书笔记 — 命理学术中心\n\n'
+  let md = '# 读书笔记 — 玄学文化馆\n\n'
   for (const group of groups) {
     md += `## 《${group.book}》\n\n`
     for (const ch of group.chapters) {
@@ -166,7 +165,7 @@ export function exportMarkdown(
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = DEFAULT_FILENAME
+  a.download = getDownloadFileName()
   a.click()
   URL.revokeObjectURL(url)
 }

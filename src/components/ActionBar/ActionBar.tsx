@@ -16,7 +16,7 @@ interface ActionBarProps {
   toggleBookmark: (key: string, type?: string) => void
   annotationsCount: number
   onTogglePanel: () => void
-  skillRawContent: Record<string, any>
+  skillRawContent: Record<string, () => Promise<string>>
 }
 
 const ActionBar = ({
@@ -36,10 +36,10 @@ const ActionBar = ({
   const handleCopy = async () => {
     if (modalType !== 'skill') return
     // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
-    const contentKey = (skillToInterp as Record<string, string[]>)[modalKey]?.[0] || modalKey
-    const raw = (skillRawContent as Record<string, () => Promise<string>>)[contentKey]
-    if (!raw) return
-    const text = await raw()
+    const contentKey = skillToInterp[modalKey]?.[0] || modalKey
+    const loader = skillRawContent[contentKey]
+    if (!loader) return
+    const text = await loader()
     try {
       await navigator.clipboard.writeText(text)
     } catch {

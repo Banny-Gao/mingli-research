@@ -16,8 +16,9 @@ export function getChapterState(
   return 'unread'
 }
 
+import { BOOKMARK_KEY } from '../lib/constants'
+
 const READ_KEY = 'mingli_read'
-const BOOKMARK_KEY = 'mingli_bookmarks'
 const GLOBAL_KEY = 'mingli_global_v2'
 const MAX_RECENT = 5
 

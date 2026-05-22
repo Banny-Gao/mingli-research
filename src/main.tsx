@@ -1,7 +1,6 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import './styles/index.css'
 import './styles/index.less'
@@ -21,6 +20,7 @@ const initTheme = () => {
     /* ignore theme errors */
   }
 }
+
 function GlobalModal() {
   const { state, chapters, openReader, closeReader, consumeScrollToText } = useReader()
   if (!state.modalType) return null
@@ -45,28 +45,18 @@ initTheme()
 ReactDOM.createRoot(document.body!).render(
   <StrictMode>
     <HelmetProvider>
-      <Helmet>
-        <script>{`
-          (function(){
-            try{
-              var t=localStorage.getItem('mingli_theme');
-              if(t==='light')document.documentElement.setAttribute('data-theme','light');
-            }catch(e){}
-          })();
-        `}</script>
-      </Helmet>
-      <HashRouter>
+      <BrowserRouter basename="/mingli-research">
         <ReaderProvider>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/notes" element={<Notes />} />
-            <Route path="/:slug" element={<BookApp />} />
             <Route path="/books/:section/:slug" element={<BookApp />} />
+            <Route path="/:slug" element={<BookApp />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <GlobalModal />
         </ReaderProvider>
-      </HashRouter>
+      </BrowserRouter>
     </HelmetProvider>
   </StrictMode>
 )

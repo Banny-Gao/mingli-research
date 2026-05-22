@@ -1,13 +1,13 @@
-# CI 集成
+# CI 集成指南
 
-## GitHub Actions 示例
+## 在 CI 中使用代码合规审查
+
+在 CI pipeline 中通过 Claude Code CLI 执行合规审查。（当前为参考方案，需要项目已配置 Anthropic API 访问。）
 
 ```yaml
 name: Code Compliance Check
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -17,66 +17,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run compliance check
+      - name: Run Claude Code compliance review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          npx --yes @claude/code check /coding-compliance --ci --output sarif --files .
-
-      - name: Upload SARIF results
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: compliance-results.sarif
-
-      - name: Fail on errors
-        run: |
-          if grep -q '"severity":"error"' compliance-results.json; then
-            exit 1
-          fi
+          claude -p "Review this PR's git diff using coding-compliance skill. \
+            Focus on security, naming, React/Vue patterns, and style issues. \
+            Report with severity levels (Error/Warning/Suggestion)." \
+            --print
 ```
 
-## CI 模式行为
+## 本地预提交
 
-| 行为     | 说明                                           |
-| -------- | ---------------------------------------------- |
-| 触发方式 | `/coding-compliance --ci` 或环境变量 `CI=true` |
-| 检查范围 | git diff（仅检查变更文件）                     |
-| 输出格式 | `--output json`（默认）/ `sarif` / `junit`     |
-| 交互模式 | 无用户提示，检测到问题直接退出非零             |
-| 输出文件 | `compliance-results.<format>`                  |
+```bash
+# 审查当前变更
+claude -p "Run coding-compliance on the current git diff changes."
 
-## 输出格式
-
-### JSON（默认）
-
-```json
-{
-  "results": [
-    {
-      "rule": "F-1",
-      "severity": "warning",
-      "file": "src/components/ModalReader.tsx",
-      "line": 42,
-      "message": "重复 JSX 建议提取为配置数组",
-      "fixable": true
-    }
-  ],
-  "summary": {
-    "total": 5,
-    "error": 0,
-    "warning": 4,
-    "suggestion": 1
-  },
-  "tsconfig": {
-    "target": "ES2020",
-    "supported": ["ES2020", "ES2021", "ES2022"]
-  }
-}
+# 审查指定文件
+claude -p "Review these files with coding-compliance" -f src/components/
 ```
 
-### SARIF
+## 审查输出要点
 
-符合 GitHub Code Scanning 格式，可直接上传到 Security tab。
+每次审查结果应包含：
 
-### JUnit XML
-
-CI 系统（如 Jenkins）兼容性格式。
+- 问题描述与文件位置
+- 严重级别（Error/Warning/Suggestion）
+- 对应规则编号（如 `common.md §2.1`）
+- 修复建议
+- 预计修复难度
