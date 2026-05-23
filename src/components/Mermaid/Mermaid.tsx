@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import mermaid from 'mermaid'
 import './Mermaid.less'
 
@@ -22,15 +22,16 @@ interface Props {
 const Mermaid = ({ children }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const [error, setError] = useState(false)
-  const uid = useId()
 
   useEffect(() => {
     if (!ref.current || !children) return
-    const id = 'mermaid-' + uid.replace(/:/g, '')
-    mermaid
-      .run({ nodes: [{ id, node: ref.current }] as any, suppressErrors: true })
+    ;(mermaid.run as (opts: unknown) => Promise<void>)({
+      nodes: [ref.current],
+      suppressErrors: true,
+    })
+      .then(() => setError(false))
       .catch(() => setError(true))
-  }, [children, uid])
+  }, [children])
 
   if (error)
     return (
