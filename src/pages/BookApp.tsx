@@ -18,7 +18,7 @@ const BookApp = () => {
 
   const skillContent = (bookCompat.skillContent as Record<string, any>) || {}
   const sourceContent = (bookCompat.sourceContent as Record<string, any>) || {}
-  const interpToSkill = bookCompat.interpToSkill || {}
+  const chapterToSkills = bookCompat.chapterToSkills || {}
 
   const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
   const skillKeys = Object.keys(skillContent || {})
@@ -120,7 +120,7 @@ const BookApp = () => {
               onSourceClick={n => openModal('source', n)}
               onSkillClick={sk => openModal('skill', sk)}
               sourceNames={bookSourceKeys}
-              interpToSkill={interpToSkill}
+              chapterToSkills={chapterToSkills}
             />
           </div>
         </div>
