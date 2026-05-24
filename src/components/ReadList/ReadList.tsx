@@ -9,7 +9,7 @@ interface Props {
   onSourceClick: (name: string) => void
   onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
-  interpToSkill?: Record<string, string[]>
+  chapterToSkills?: Record<string, string[]>
 }
 
 const ReadList = ({
@@ -18,7 +18,7 @@ const ReadList = ({
   onSourceClick,
   onSkillClick,
   sourceNames,
-  interpToSkill,
+  chapterToSkills,
 }: Props) => {
   const categories = new Map<string, ChapterInfo[]>()
   for (const ch of book.chapters) {
@@ -38,7 +38,7 @@ const ReadList = ({
           onSourceClick={onSourceClick}
           onSkillClick={onSkillClick}
           sourceNames={sourceNames}
-          interpToSkill={interpToSkill}
+          chapterToSkills={chapterToSkills}
         />
       ))}
     </>
@@ -52,7 +52,7 @@ function CategorySection({
   onSourceClick,
   onSkillClick,
   sourceNames,
-  interpToSkill,
+  chapterToSkills,
 }: {
   category: string
   chapters: ChapterInfo[]
@@ -60,7 +60,7 @@ function CategorySection({
   onSourceClick: (name: string) => void
   onSkillClick?: (skillKey: string) => void
   sourceNames: string[]
-  interpToSkill?: Record<string, string[]>
+  chapterToSkills?: Record<string, string[]>
 }) {
   const [collapsed, setCollapsed] = useState(false)
   const doneCount = chapters.filter(c => c.isDone).length
@@ -83,8 +83,8 @@ function CategorySection({
     {
       key: 'skill',
       label: '技能',
-      condition: (ch: ChapterInfo) => !!interpToSkill?.[ch.name]?.length,
-      action: (_n: string) => onSkillClick?.(interpToSkill?.[_n]?.[0] ?? ''),
+      condition: (ch: ChapterInfo) => !!chapterToSkills?.[ch.name]?.length,
+      action: (_n: string) => onSkillClick?.(chapterToSkills?.[_n]?.[0] ?? ''),
       className: 'btn-text chapter-action action-skill',
     },
   ] as const
