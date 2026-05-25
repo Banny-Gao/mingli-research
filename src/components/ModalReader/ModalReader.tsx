@@ -159,6 +159,7 @@ const ModalReader = ({
   // 加载内容（异步函数）
   useEffect(() => {
     if (!modalKey || !modalType || modalType === 'skill') return
+    let cancelled = false
     setContentLoading(true)
     setLoadedContent('')
 
@@ -176,12 +177,12 @@ const ModalReader = ({
 
     loader()
       .then(content => {
-        setLoadedContent(content)
-        setContentLoading(false)
+        if (!cancelled) { setLoadedContent(content); setContentLoading(false) }
       })
       .catch(() => {
-        setContentLoading(false)
+        if (!cancelled) setContentLoading(false)
       })
+    return () => { cancelled = true }
   }, [modalKey, modalType])
 
   // Reset internal UI state when navigating between chapters
@@ -400,13 +401,6 @@ const ModalReader = ({
     }
   }
 
-  const skillDisplayName = modalKey ? skillDisplayNames[modalKey] || modalKey : ''
-  const modalTitle =
-    modalType === 'interp'
-      ? `【${modalKey}】原文解读`
-      : modalType === 'skill'
-        ? `【${skillDisplayName}】技能`
-        : `【${modalKey}】原文`
 
   // 统一 ChapterKey 下的跨内容导航：同一篇章的 source / interp / skill 互相跳转
   const chapterName =
@@ -446,7 +440,6 @@ const ModalReader = ({
                 {tocOpen ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
               </button>
             )}
-            <span className="modal-title">{modalTitle}</span>
             <div className="flex-1" />
             <ActionBar
               key={modalKey}
