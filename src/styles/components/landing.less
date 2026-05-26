@@ -94,7 +94,6 @@
 }
 .book-card {
   background: var(--color-bg-card);
-  border: 1px solid var(--color-border-card);
   border-radius: 12px;
   padding: 20px;
   cursor: pointer;
@@ -120,12 +119,10 @@
   height: 100%;
 }
 .book-card:hover {
-  border-color: var(--color-border-hover);
   background: var(--color-bg-card-hover);
   transform: translateY(-3px);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    0 0 0 1px var(--color-border-hover);
+    0 12px 40px rgba(0, 0, 0, 0.5)
 }
 .book-card-info {
   flex: 1;
@@ -203,20 +200,44 @@
   color: var(--color-text-muted);
 }
 
+/* ===== Section sidebar layout ===== */
+.section-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.section-sidebar {
+  width: 150px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 80px;
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 8px;
+  background: var(--color-bg-card-hover);
+}
+
+.section-content {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .section-layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .section-sidebar {
+    width: 100%;
+    position: static;
+  }
+}
+
 /* ===== Section Group ===== */
 .section-group {
   width: 100%;
   max-width: 900px;
-}
-.section-header {
-  font-size: 16px;
-  color: var(--color-gold);
-  letter-spacing: 4px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--color-border-card);
-  text-align: left;
 }
 
 /* ===== Responsive: mobile ===== */

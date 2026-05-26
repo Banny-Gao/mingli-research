@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { ChevronLeft } from 'lucide-react'
+import { buttonVariants } from '../components/ui/button'
+import { cn } from '../lib/utils'
 import { books } from '../data/books'
 import { getBook } from '../data/registry'
 import ReadList from '../components/ReadList'
@@ -18,7 +20,7 @@ const BookApp = () => {
 
   const skillContent = (bookCompat.skillContent as Record<string, any>) || {}
   const sourceContent = (bookCompat.sourceContent as Record<string, any>) || {}
-  const interpToSkill = bookCompat.interpToSkill || {}
+  const chapterToSkills = bookCompat.chapterToSkills || {}
 
   const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
   const skillKeys = Object.keys(skillContent || {})
@@ -56,9 +58,7 @@ const BookApp = () => {
             <div className="not-found-inner">
               <div className="not-found-code">404</div>
               <p className="not-found-msg">未找到该典籍</p>
-              <Link to="/" className="btn-primary">
-                返回首页
-              </Link>
+              <Link to="/" className={cn(buttonVariants({ variant: 'outline' }))}>返回首页</Link>
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ const BookApp = () => {
               onSourceClick={n => openModal('source', n)}
               onSkillClick={sk => openModal('skill', sk)}
               sourceNames={bookSourceKeys}
-              interpToSkill={interpToSkill}
+              chapterToSkills={chapterToSkills}
             />
           </div>
         </div>
