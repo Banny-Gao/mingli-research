@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { skillToInterp } from '@/data/ditiansui-site/assoc'
 import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,8 +7,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
+import { getBook } from '@/data/registry'
 
 interface ActionBarProps {
+  bookSlug: string
   modalType: 'interp' | 'skill' | 'source'
   modalKey: string
   isBookmarked: (key: string) => boolean
@@ -20,6 +21,7 @@ interface ActionBarProps {
 }
 
 const ActionBar = ({
+  bookSlug,
   modalType,
   modalKey,
   isBookmarked,
@@ -35,8 +37,8 @@ const ActionBar = ({
 
   const handleCopy = async () => {
     if (modalType !== 'skill') return
-    // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
-    const contentKey = skillToInterp[modalKey]?.[0] || modalKey
+    const { skillToChapters } = getBook(bookSlug)
+    const contentKey = skillToChapters?.[modalKey]?.[0] || modalKey
     const loader = skillRawContent[contentKey]
     if (!loader) return
     const text = await loader()

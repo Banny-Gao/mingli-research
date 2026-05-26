@@ -35,8 +35,8 @@ interface BookData {
   sourceContent?: Record<string, () => Promise<string>>
   skillRawContent?: Record<string, () => Promise<string>>
   skillDisplayNames?: Record<string, string>
-  interpToSkill?: Record<string, string[]>
-  skillToInterp?: Record<string, string[]>
+  chapterToSkills?: Record<string, string[]>
+  skillToChapters?: Record<string, string[]>
 }
 
 const SCROLL_OFFSET = 100
@@ -75,8 +75,8 @@ const ModalReader = ({
   const sourceContent = bookData.sourceContent ?? {}
   const skillRawContent = bookData.skillRawContent ?? {}
   const skillDisplayNames = bookData.skillDisplayNames ?? {}
-  const interpToSkill = bookData.interpToSkill ?? {}
-  const skillToInterp = bookData.skillToInterp ?? {}
+  const chapterToSkills = bookData.chapterToSkills ?? {}
+  const skillToChapters = bookData.skillToChapters ?? {}
 
   const { toggle: toggleBookmark, isBookmarked } = useBookmarks(bookSlug)
   const { annotations, add, remove, updateNote } = useAnnotations(
@@ -88,6 +88,7 @@ const ModalReader = ({
   // 加载内容（异步函数）
   useEffect(() => {
     if (!modalKey || !modalType || modalType === 'skill') return
+    let cancelled = false
     setContentLoading(true)
     setLoadedContent('')
 
@@ -105,12 +106,12 @@ const ModalReader = ({
 
     loader()
       .then(content => {
-        setLoadedContent(content)
-        setContentLoading(false)
+        if (!cancelled) { setLoadedContent(content); setContentLoading(false) }
       })
       .catch(() => {
-        setContentLoading(false)
+        if (!cancelled) setContentLoading(false)
       })
+    return () => { cancelled = true }
   }, [modalKey, modalType])
 
   // Reset internal UI state when navigating between chapters
@@ -241,8 +242,8 @@ const ModalReader = ({
       setSkillRawText('')
       return
     }
-    // skillRawContent 按章节文件夹名索引，需通过 skillToInterp 映射
-    const contentKey = skillToInterp[modalKey]?.[0] || modalKey
+    // skillRawContent 按章节文件夹名索引，需通过 skillToChapters 映射
+    const contentKey = skillToChapters[modalKey]?.[0] || modalKey
     const loader = skillRawContent[contentKey]
     if (!loader) return
     loader().then(text => setSkillRawText(text))
@@ -329,13 +330,20 @@ const ModalReader = ({
     }
   }
 
-  const skillDisplayName = modalKey ? skillDisplayNames[modalKey] || modalKey : ''
-  const modalTitle =
-    modalType === 'interp'
-      ? `【${modalKey}】原文解读`
-      : modalType === 'skill'
-        ? `【${skillDisplayName}】技能`
-        : `【${modalKey}】原文`
+
+  // 统一 ChapterKey 下的跨内容导航：同一篇章的 source / interp / skill 互相跳转
+  const chapterName =
+    modalType === 'skill' ? skillToChapters[modalKey]?.[0] || modalKey : modalKey
+  const chapterSkillName = chapterToSkills[chapterName]?.[0]
+  const hasSource = !!sourceContent[chapterName]
+  const hasInterp = !!interpContent[chapterName]
+  const hasSkill = !!skillRawContent[chapterName]
+
+  const contentNavItems = [
+    { type: 'source' as const, label: '原文', show: hasSource && modalType !== 'source', navKey: chapterName },
+    { type: 'interp' as const, label: '解读', show: hasInterp && modalType !== 'interp', navKey: chapterName },
+    { type: 'skill' as const, label: '技能', show: hasSkill && modalType !== 'skill' && !!chapterSkillName, navKey: chapterSkillName || '' },
+  ].filter(c => c.show)
   const rawBody = contentLoading
     ? ''
     : loadedContent ||
@@ -361,10 +369,10 @@ const ModalReader = ({
                 {tocOpen ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
               </button>
             )}
-            <span className="modal-title">{modalTitle}</span>
             <div className="flex-1" />
             <ActionBar
               key={modalKey}
+              bookSlug={bookSlug}
               modalType={modalType}
               modalKey={modalKey}
               isBookmarked={isBookmarked}
@@ -442,17 +450,35 @@ const ModalReader = ({
           </div>
           {modalKey && (
             <div className="related-section">
+              {/* 同一篇章内的跨内容导航 */}
+              {contentNavItems.length > 0 && (
+                <div className="related-tags">
+                  <span className="related-label">本篇内容</span>
+                  {contentNavItems.map(({ type, label, navKey }) => (
+                    <button
+                      key={type}
+                      className={`related-tag related-tag-${type}`}
+                      onClick={() => onNavigate(type, navKey)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {[
                 {
                   key: 'interp',
-                  data: interpToSkill[modalKey],
+                  data: (chapterToSkills[chapterName] || []).filter(
+                    s => modalType !== 'skill' || s !== modalKey
+                  ),
                   label: '关联技能',
                   navigateType: 'skill' as const,
                   displayName: skillDisplayNames,
                 },
                 {
                   key: 'skill',
-                  data: skillToInterp[modalKey],
+                  data: skillToChapters[modalKey],
                   label: '相关篇目',
                   navigateType: 'interp' as const,
                   displayName: null as Record<string, string> | null,

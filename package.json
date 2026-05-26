@@ -1,10 +1,10 @@
 {
-  "name": "di-tian-sui-site",
+  "name": "yuzhi-books",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build && node -e \"require('fs').copyFileSync('dist/index.html', 'dist/404.html')\"",
+    "dev": "pnpm run generate && vite",
+    "build": "pnpm run generate && tsc && vite build && node -e \"require('fs').copyFileSync('dist/index.html', 'dist/404.html')\"",
     "generate": "node scripts/generate.js",
     "all": "node scripts/generate.js && pnpm run build",
     "preview": "vite preview",

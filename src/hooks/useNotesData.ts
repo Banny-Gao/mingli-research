@@ -1,5 +1,5 @@
 import { ANN_KEY, BOOKMARK_KEY } from '../lib/constants'
-import { skillToInterp } from '../data/ditiansui-site/assoc'
+import { getBook } from '../data/registry'
 import type { Annotation, AnnotationType } from './useAnnotations'
 
 // Constants
@@ -63,9 +63,10 @@ export const TYPE_COLORS: Record<AnnotationType, string> = {
   quote: 'var(--color-quote)',
 }
 
-export function normalizeChapter(chapter: string): string {
-  const interp = skillToInterp[chapter]
-  return interp?.length ? interp[0] : chapter
+export function normalizeChapter(chapter: string, bookSlug: string): string {
+  const { skillToChapters } = getBook(bookSlug)
+  const mapped = skillToChapters?.[chapter]
+  return mapped?.length ? mapped[0] : chapter
 }
 
 export function deleteAnnotation(slug: string, chapter: string, annId: string) {
@@ -137,7 +138,7 @@ export function loadAllAnnotations(): Array<{
       const raw = localStorage.getItem(key)
       if (!raw) continue
       const anns: Annotation[] = JSON.parse(raw)
-      const nc = normalizeChapter(origChapter)
+      const nc = normalizeChapter(origChapter, slug)
       for (const ann of anns) results.push({ slug, chapter: nc, origChapter, annotation: ann })
     } catch {
       /* ignore parse errors */
