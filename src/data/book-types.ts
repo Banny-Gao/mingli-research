@@ -12,6 +12,7 @@ export interface ChapterInfo {
 export interface Book {
   slug: string;
   section: ArtSection;
+  category: string;
   title: string;
   author: string;
   version: string;

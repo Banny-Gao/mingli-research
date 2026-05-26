@@ -42,6 +42,7 @@ const META_KEYS = {
   version: ['版本'],
   description: ['简介'],
   section: ['术数'],
+  category: ['类别'],
   contentTypes: ['内容类型'],
 }
 
@@ -54,7 +55,7 @@ const parseBookMeta = filePath => {
   const content = fs.readFileSync(filePath, 'utf-8')
   const title = (content.match(/# 《([^》]+)》/) || [])[1] || null
 
-  const meta = { author: '', version: '', description: '', section: '', contentTypes: '' }
+  const meta = { author: '', version: '', description: '', section: '', category: '', contentTypes: '' }
   for (const line of content.split('\n')) {
     const t = line.trim()
     for (const [key, pattern] of Object.entries(META_PATTERNS)) {
@@ -165,6 +166,7 @@ const processBook = bookSlug => {
     version: meta.version,
     description: meta.description,
     section: meta.section,
+    category: meta.category,
     contentTypes,
     total: chapters.length,
     done: chapters.filter(c => c.isDone).length,
@@ -273,6 +275,7 @@ const generateGlobalFiles = books => {
   const bookData = books.map(b => ({
     slug: b.slug,
     section: validateSection(b),
+    category: b.category,
     title: b.title,
     author: b.author,
     version: b.version,
@@ -298,6 +301,7 @@ export interface ChapterInfo {
 export interface Book {
   slug: string;
   section: ArtSection;
+  category: string;
   title: string;
   author: string;
   version: string;
@@ -316,8 +320,13 @@ import type { Book } from './book-types';
 export const books: Book[] = ${JSON.stringify(bookData, null, 2)};
 `)
 
-  const indexExports = books.map(b => `export * from './${b.slug}';`).join('\n')
-  fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), `// Auto-generated — do not edit manually\n${indexExports}\n`)
+  // 全局 index.ts（不再使用 export *，避免多书同名类型冲突；前端通过 getBook() 访问）
+  const indexExports = books.map(b => `// see registry.ts for dynamic access`).join('\n')
+  fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), `// Auto-generated — do not edit manually
+// 前端请使用 import { getBook } from '@/data/registry' 访问各书数据
+export { books } from './books'
+export type { Book, ChapterInfo, ArtSection } from './book-types'
+`)
 
   const safeIdent = slug => slug.replace(/[^a-zA-Z0-9_$]/g, '_')
   fs.writeFileSync(path.join(OUT_DIR, 'registry.ts'), `// Auto-generated — do not edit manually

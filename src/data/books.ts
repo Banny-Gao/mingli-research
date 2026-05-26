@@ -5,6 +5,7 @@ export const books: Book[] = [
   {
     "slug": "渊海子平",
     "section": "命",
+    "category": "八字",
     "title": "渊海子平",
     "author": "[宋] 徐大升 编纂",
     "version": "据通行本（渊海/渊源合编本）",
@@ -1498,13 +1499,22 @@ export const books: Book[] = [
         "name": "宝法第一"
       },
       {
+        "name": "碧渊赋"
+      },
+      {
         "name": "病药说"
+      },
+      {
+        "name": "掣要捷驰玄妙诀"
       },
       {
         "name": "从革格"
       },
       {
         "name": "从革诗诀"
+      },
+      {
+        "name": "寸金搜髓论"
       },
       {
         "name": "带疾诗诀"
@@ -1577,6 +1587,9 @@ export const books: Book[] = [
       },
       {
         "name": "继善篇"
+      },
+      {
+        "name": "夹丘格"
       },
       {
         "name": "稼穑格"
@@ -1885,6 +1898,9 @@ export const books: Book[] = [
         "name": "墓库诗诀"
       },
       {
+        "name": "女命大义"
+      },
+      {
         "name": "女命富贵贫贱篇"
       },
       {
@@ -2056,6 +2072,9 @@ export const books: Book[] = [
         "name": "天元一气诗诀"
       },
       {
+        "name": "万金赋"
+      },
+      {
         "name": "渭泾篇"
       },
       {
@@ -2083,6 +2102,9 @@ export const books: Book[] = [
         "name": "详解定真论"
       },
       {
+        "name": "心镜歌"
+      },
+      {
         "name": "刑冲诗诀"
       },
       {
@@ -2101,10 +2123,16 @@ export const books: Book[] = [
         "name": "玄武当权诗诀"
       },
       {
+        "name": "崖泉摘锦"
+      },
+      {
         "name": "炎上格"
       },
       {
         "name": "炎上格诗诀"
+      },
+      {
+        "name": "羊刃诗诀"
       },
       {
         "name": "妖祥赋"
@@ -2192,6 +2220,7 @@ export const books: Book[] = [
   {
     "slug": "滴天髓阐微",
     "section": "命",
+    "category": "八字",
     "title": "滴天髓阐微",
     "author": "[明] 刘基 撰 / [清] 任铁樵 注",
     "version": "据《四库全书》本",
