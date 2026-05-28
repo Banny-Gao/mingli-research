@@ -40,7 +40,9 @@ const fetchPage = async (url, retries = MAX_RETRIES) => {
       const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } })
       if (res.status === 429) {
         const wait = RETRY_BASE_MS * Math.pow(2, attempt - 1) + Math.random() * 1000
-        console.warn(`\n  ⚠️ 429 Too Many Requests, ${Math.round(wait / 1000)}s 后重试 (${attempt}/${retries})`)
+        console.warn(
+          `\n  ⚠️ 429 Too Many Requests, ${Math.round(wait / 1000)}s 后重试 (${attempt}/${retries})`
+        )
         await sleep(wait)
         continue
       }
@@ -61,8 +63,15 @@ const parseCatalogMd = bookDir => {
   if (!fs.existsSync(p)) return null
   const content = fs.readFileSync(p, 'utf-8')
   const bookTitle = (content.match(/^#\s*《(.+?)》/m) || [])[1] || null
-  const names = content.split('\n')
-    .map(l => l.trim().split('|').map(c => c.trim()).filter(c => c))
+  const names = content
+    .split('\n')
+    .map(l =>
+      l
+        .trim()
+        .split('|')
+        .map(c => c.trim())
+        .filter(c => c)
+    )
     .filter(cells => cells.length >= 2 && /^\d+$/.test(cells[0]))
     .map(cells => cells[1])
   return { bookTitle, names: names.length > 0 ? names : null }
@@ -84,74 +93,108 @@ const parseCatalogHtml = bookDir => {
   return map.size > 0 ? map : null
 }
 
-// ===== 内容提取 =====
+// ===== 内容提取器 =====
+// 按 URL 域名自动匹配策略。新网站只需添加一个提取器到 EXTRACTORS 数组
 
-const extractContent = (html, chapterName, bookTitle) => {
-  const div = html.match(/<div\s+class="book-detail-content">([\s\S]*?)<\/div>/i)
-  return div ? extractFromParagraphs(div[1], chapterName) : extractFromGenericPage(html, chapterName, bookTitle)
-}
-
-const extractFromParagraphs = (innerHtml, chapterName) => {
+const extractParagraphs = (innerHtml, chapterName, opts = {}) => {
   const pMatches = innerHtml.match(/<p[^>]*>(.*?)<\/p>/gi)
   if (!pMatches) return null
 
   const skipExact = new Set([chapterName])
+  const { skipHtml } = opts
   const lines = []
   let prevEmpty = false
 
   for (const p of pMatches) {
     const inner = p.replace(/<\/?p[^>]*>/gi, '').trim()
-    if (/^<font\s+class=['"]gold['"]>\s*.+?\s*<\/font>\s*$/i.test(inner)) continue
+    if (skipHtml && skipHtml.test(inner)) continue
     const text = stripHtml(p).trim()
     if (skipExact.has(text) && text.length < 20) continue
-    if (text) { lines.push(text); prevEmpty = false }
-    else if (!prevEmpty) { lines.push(''); prevEmpty = true }
+    if (text) {
+      lines.push(text)
+      prevEmpty = false
+    } else if (!prevEmpty) {
+      lines.push('')
+      prevEmpty = true
+    }
   }
 
   return lines.join('\n')
 }
 
-const extractFromGenericPage = (html, chapterName, bookTitle) => {
-  const text = stripHtml(html)
+const extractFromText = (text, chapterName, bookTitle) => {
   const escapedName = chapterName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const startPatterns = [
     new RegExp(`《${bookTitle || '[^》]+'}》[^第]*第\\d+章\\s*${escapedName}`),
     /《[^》]+》[^第]*第\d+章\s*\S+/,
   ]
 
-  const startIdx = startPatterns.reduce((idx, pat) => idx === -1 ? text.search(pat) : idx, -1)
+  const startIdx = startPatterns.reduce((idx, pat) => (idx === -1 ? text.search(pat) : idx), -1)
   if (startIdx === -1) return null
 
   const afterHeader = text.slice(startIdx).split('\n').slice(1).join('\n').trim()
   if (bookTitle) {
-    const footerRe = new RegExp(`\\n${bookTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\n\\s*\\[`)
+    const footerRe = new RegExp(
+      `\\n${bookTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*\\n\\s*\\[`
+    )
     const endIdx = afterHeader.search(footerRe)
     if (endIdx !== -1) return afterHeader.slice(0, endIdx)
   }
   return afterHeader
 }
 
+const EXTRACTORS = [
+  {
+    name: 'iwzbz',
+    match: url => /iwzbz\.com/.test(url),
+    extract(html, chapterName) {
+      const div = html.match(/<div\s+class="book-detail-content">([\s\S]*?)<\/div>/i)
+      if (!div) return null
+      return extractParagraphs(div[1], chapterName, {
+        skipHtml: /^<font\s+class=['"]gold['"]>\s*.+?\s*<\/font>\s*$/i,
+      })
+    },
+  },
+  {
+    name: 'generic',
+    match: () => true,
+    extract(html, chapterName, bookTitle) {
+      return extractFromText(stripHtml(html), chapterName, bookTitle)
+    },
+  },
+]
+
+function getExtractor(url) {
+  return EXTRACTORS.find(ex => ex.match(url)) || EXTRACTORS[EXTRACTORS.length - 1]
+}
+
 // ===== 清理 =====
 
-const cleanContent = text => text
-  .split('\n')
-  .filter(line => {
-    const t = line.trim()
-    return !t
-      || (!/^第\s*[一二三四五六七八九十百千\d]+\s*页\s*$/.test(t)
-        && !/^《[^》]+》.*第\d+章\s*\S/.test(t))
-  })
-  .join('\n')
+const cleanContent = text =>
+  text
+    .split('\n')
+    .filter(line => {
+      const t = line.trim()
+      return (
+        !t ||
+        (!/^第\s*[一二三四五六七八九十百千\d]+\s*页\s*$/.test(t) &&
+          !/^《[^》]+》.*第\d+章\s*\S/.test(t))
+      )
+    })
+    .join('\n')
 
 // ===== SPEC-source 格式化 =====
 
 const renderAnnotationBlock = block => {
   const blines = block.lines.join('\n').trim()
   if (!blines) return ''
-  const parts = blines.split('\n\n').map((p, i) => {
-    const t = p.trim()
-    return t ? (i === 0 ? `> ${block.marker}${t}` : `>\n> ${t}`) : ''
-  }).filter(Boolean)
+  const parts = blines
+    .split('\n\n')
+    .map((p, i) => {
+      const t = p.trim()
+      return t ? (i === 0 ? `> ${block.marker}${t}` : `>\n> ${t}`) : ''
+    })
+    .filter(Boolean)
   parts.push('')
   return parts.join('\n')
 }
@@ -160,11 +203,12 @@ const formatSourceMarkdown = (chapterName, rawContent) => {
   const lines = rawContent.split('\n').map(l => l.trim())
   const mainLines = []
   const annotationBlocks = []
-  let currentBlock = null, inMain = true
+  let currentBlock = null,
+    inMain = true
 
   for (const line of lines) {
     if (!line) {
-      (currentBlock ? currentBlock.lines : mainLines).push('')
+      ;(currentBlock ? currentBlock.lines : mainLines).push('')
       continue
     }
 
@@ -178,6 +222,14 @@ const formatSourceMarkdown = (chapterName, rawContent) => {
       if (currentBlock) annotationBlocks.push({ ...currentBlock })
       inMain = false
       currentBlock = { marker: mName, lines: markerMatch[2] ? [markerMatch[2]] : [] }
+      continue
+    }
+
+    const meipiMatch = line.match(/^(眉批|眉注|眉解)[：:](.*)/)
+    if (meipiMatch) {
+      if (currentBlock) annotationBlocks.push({ ...currentBlock })
+      inMain = false
+      currentBlock = { marker: `【${meipiMatch[1]}】`, lines: meipiMatch[2] ? [meipiMatch[2]] : [] }
       continue
     }
 
@@ -209,9 +261,13 @@ const formatSourceMarkdown = (chapterName, rawContent) => {
 // ===== 书籍发现 =====
 
 const discoverBooks = targetSlug => {
-  const dirs = fs.readdirSync(BOOKS_DIR).filter(f =>
-    fs.statSync(path.join(BOOKS_DIR, f)).isDirectory() && fs.existsSync(path.join(BOOKS_DIR, f, 'catalog.md'))
-  )
+  const dirs = fs
+    .readdirSync(BOOKS_DIR)
+    .filter(
+      f =>
+        fs.statSync(path.join(BOOKS_DIR, f)).isDirectory() &&
+        fs.existsSync(path.join(BOOKS_DIR, f, 'catalog.md'))
+    )
   return targetSlug ? dirs.filter(d => d === targetSlug) : dirs
 }
 
@@ -231,7 +287,8 @@ const matchUrl = (name, urlMap) => {
       htmlName.endsWith(`-${name}`) ||
       htmlName.startsWith(`${name}(`) ||
       htmlName.startsWith(`${name}-`) ||
-      (htmlName.includes(`-${name}(`) || htmlName.includes(`-${name}-`))
+      htmlName.includes(`-${name}(`) ||
+      htmlName.includes(`-${name}-`)
     ) {
       return url
     }
@@ -247,49 +304,78 @@ const processBook = async (bookSlug, batchChapters = null) => {
   const startTime = Date.now()
 
   const catalog = parseCatalogMd(bookDir)
-  if (!catalog?.names) { console.log('  ⚠️ 跳过: catalog.md 无效'); return { done: 0, skipped: 0, failed: 0 } }
+  if (!catalog?.names) {
+    console.log('  ⚠️ 跳过: catalog.md 无效')
+    return { done: 0, skipped: 0, failed: 0 }
+  }
   const { bookTitle, names: chapterNames } = catalog
 
   const urlMap = parseCatalogHtml(bookDir)
-  if (!urlMap) { console.log('  ⚠️ 跳过: catalog.html 不存在或无效'); return { done: 0, skipped: 0, failed: 0 } }
+  if (!urlMap) {
+    console.log('  ⚠️ 跳过: catalog.html 不存在或无效')
+    return { done: 0, skipped: 0, failed: 0 }
+  }
 
   const targetNames = batchChapters?.length ? batchChapters : chapterNames
   const isBatch = !!batchChapters?.length
-  const chapters = [], missing = []
+  const chapters = [],
+    missing = []
   for (const name of targetNames) {
     const url = matchUrl(name, urlMap)
     url ? chapters.push({ name, url }) : missing.push(name)
   }
 
-  console.log(`  《${bookTitle}》 catalog.md: ${chapterNames.length} 篇, 匹配 URL: ${chapters.length} 篇${isBatch ? ` (指定 ${targetNames.length} 篇)` : ''}`)
-  if (missing.length > 0) console.log(`  ⚠️ 未匹配: ${missing.slice(0, 5).join(', ')}${missing.length > 5 ? ` ...等${missing.length}篇` : ''}`)
+  console.log(
+    `  《${bookTitle}》 catalog.md: ${chapterNames.length} 篇, 匹配 URL: ${chapters.length} 篇${isBatch ? ` (指定 ${targetNames.length} 篇)` : ''}`
+  )
+  if (missing.length > 0)
+    console.log(
+      `  ⚠️ 未匹配: ${missing.slice(0, 5).join(', ')}${missing.length > 5 ? ` ...等${missing.length}篇` : ''}`
+    )
   if (chapters.length === 0) return { done: 0, skipped: 0, failed: missing.length }
-  if (DRY_RUN) { console.log(`  [dry-run] 将抓取 ${chapters.length} 篇`); return { done: 0, skipped: chapters.length, failed: 0 } }
+  if (DRY_RUN) {
+    console.log(`  [dry-run] 将抓取 ${chapters.length} 篇`)
+    return { done: 0, skipped: chapters.length, failed: 0 }
+  }
 
   fs.mkdirSync(outDir, { recursive: true })
 
-  let done = 0, skipped = 0, failed = 0
-  const errors = [], total = chapters.length
+  let done = 0,
+    skipped = 0,
+    failed = 0
+  const errors = [],
+    total = chapters.length
 
   for (let i = 0; i < total; i++) {
     const { name, url } = chapters[i]
     const chapterDir = path.join(outDir, name)
     const outPath = path.join(chapterDir, 'source.md')
 
-    if (fs.existsSync(outPath) && !FORCE) { skipped++; continue }
+    if (fs.existsSync(outPath) && !FORCE) {
+      skipped++
+      continue
+    }
     fs.mkdirSync(chapterDir, { recursive: true })
 
     try {
       const elapsed = formatDuration(Date.now() - startTime)
-      const eta = done > 0 ? formatDuration(((Date.now() - startTime) / (i + 1)) * (total - i - 1)) : '--'
-      process.stdout.write(`\r  ${progressBar(i + 1, total)}  ${i + 1}/${total}  ${elapsed}  ETA ${eta}  ${name.padEnd(14)}`)
+      const eta =
+        done > 0 ? formatDuration(((Date.now() - startTime) / (i + 1)) * (total - i - 1)) : '--'
+      process.stdout.write(
+        `\r  ${progressBar(i + 1, total)}  ${i + 1}/${total}  ${elapsed}  ETA ${eta}  ${name.padEnd(14)}`
+      )
 
       const html = await fetchPage(url)
-      const raw = extractContent(html, name, bookTitle)
+      const extractor = getExtractor(url)
+      const raw = extractor.extract(html, name, bookTitle)
 
       if (!raw || raw.trim().length < MIN_CONTENT_CHARS) {
         failed++
-        errors.push({ chapter: name, url, reason: !raw ? '内容提取失败' : `内容过短 (${raw.trim().length} 字符)` })
+        errors.push({
+          chapter: name,
+          url,
+          reason: !raw ? '内容提取失败' : `内容过短 (${raw.trim().length} 字符)`,
+        })
         process.stdout.write(` ✗ ${errors[errors.length - 1].reason}\n`)
         continue
       }
@@ -317,8 +403,10 @@ const processBook = async (bookSlug, batchChapters = null) => {
     const logPath = path.join(ROOT, 'fetch-errors.log')
     // 每次运行覆盖日志，避免无限增长
     const existing = fs.existsSync(logPath) && i === 0 ? '' : ''
-    fs.writeFileSync(logPath,
-      errors.map(e => `[${bookSlug}] ${e.chapter} | ${e.url} | ${e.reason}`).join('\n') + '\n')
+    fs.writeFileSync(
+      logPath,
+      errors.map(e => `[${bookSlug}] ${e.chapter} | ${e.url} | ${e.reason}`).join('\n') + '\n'
+    )
   }
 
   return { done, skipped, failed }
@@ -329,22 +417,36 @@ const processBook = async (bookSlug, batchChapters = null) => {
 const args = process.argv.slice(2).filter(a => !a.startsWith('-'))
 const [targetSlug, ...chapterArgs] = args
 // 支持批量篇章：逗号分隔 或 空格分隔
-const targetChapters = chapterArgs.length > 0
-  ? chapterArgs.flatMap(a => a.split(',')).map(s => s.trim()).filter(Boolean)
-  : []
+const targetChapters =
+  chapterArgs.length > 0
+    ? chapterArgs
+        .flatMap(a => a.split(','))
+        .map(s => s.trim())
+        .filter(Boolean)
+    : []
 const books = discoverBooks(targetSlug)
 
-if (books.length === 0) { console.log('未发现含 catalog.md 的典籍。'); process.exit(0) }
+if (books.length === 0) {
+  console.log('未发现含 catalog.md 的典籍。')
+  process.exit(0)
+}
 
 console.log(`🔧 fetch-sources.js — 通用典籍原文抓取`)
 console.log(`   FORCE=${FORCE}  DRY_RUN=${DRY_RUN}`)
 console.log(`   发现 ${books.length} 本书: ${books.join(', ')}\n`)
 
-let totalDone = 0, totalSkipped = 0, totalFailed = 0
+let totalDone = 0,
+  totalSkipped = 0,
+  totalFailed = 0
 for (const book of books) {
   console.log(`📖 ${book}`)
-  const { done, skipped, failed } = await processBook(book, targetChapters.length > 0 ? targetChapters : null)
+  const { done, skipped, failed } = await processBook(
+    book,
+    targetChapters.length > 0 ? targetChapters : null
+  )
   console.log(`  ${failed === 0 ? '✅' : '⚠️'} ${done} 新建, ${skipped} 跳过, ${failed} 失败\n`)
-  totalDone += done; totalSkipped += skipped; totalFailed += failed
+  totalDone += done
+  totalSkipped += skipped
+  totalFailed += failed
 }
 console.log(`✅ 总计: ${totalDone} 新建, ${totalSkipped} 跳过, ${totalFailed} 失败`)
