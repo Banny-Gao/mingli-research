@@ -2805,578 +2805,816 @@ export const books: Book[] = [
     "section": "命",
     "category": "紫微斗数",
     "title": "紫微斗数全书",
-    "author": "陈抟（传）撰 / 潘希尹补辑",
-    "version": "据明刊本（《新刻希夷陈先生紫微斗数全书》）",
-    "description": "紫微斗数经典著作，托名宋初陈抟撰，明代潘希尹补辑。包含太微赋、骨髓赋等核心赋文及安星诀法，为紫微斗数学习的重要典籍。另有《续道藏》三卷本紫微斗数撰人不详，可参考对照。",
-    "total": 94,
+    "author": "[宋] 陈抟 撰",
+    "version": "据《正统道藏》本",
+    "description": "紫微斗数经典著作，托名宋初陈抟撰。包含太微赋、骨髓赋等核心赋文及安星诀法。",
+    "total": 89,
     "done": 0,
     "chapters": [
       {
         "num": "01",
-        "name": "太微赋",
+        "name": "羅序",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "02",
-        "name": "形性赋",
+        "name": "太微賦",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "03",
-        "name": "星垣论",
+        "name": "形性賦",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "04",
-        "name": "斗数准绳",
+        "name": "星垣論",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "05",
-        "name": "重补斗数彀率",
+        "name": "斗數準繩",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "06",
-        "name": "斗数发微论",
+        "name": "斗數發微論",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "07",
-        "name": "增补太微赋",
+        "name": "重補斗數彀率",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "08",
-        "name": "诸星问答论",
+        "name": "增補太微賦",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "09",
-        "name": "斗数骨髓赋",
+        "name": "問紫微所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "10",
-        "name": "女命骨髓赋",
+        "name": "問天機所主如何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "11",
-        "name": "定富贵贫贱等诀",
+        "name": "問太陽所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "12",
-        "name": "定富贵贫贱十等论",
+        "name": "問武曲星所主為何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "13",
-        "name": "十二宫诸星得地诀",
+        "name": "問天同星所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "14",
-        "name": "十二宫诸星失陷诀",
+        "name": "問廉貞所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "15",
-        "name": "诸星得地富贵论",
+        "name": "問天府所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "16",
-        "name": "诸星失陷贫贱论",
+        "name": "問太陰星所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "17",
-        "name": "定富局",
+        "name": "問貪狼所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "18",
-        "name": "定贵局",
+        "name": "問巨門所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "19",
-        "name": "定贫贱局",
+        "name": "問天相星所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "20",
-        "name": "定杂局",
+        "name": "問天梁星所主若何？",
         "isDone": false,
-        "category": "卷一 · 论命纲领"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "21",
-        "name": "安身命例",
+        "name": "問七殺星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "22",
-        "name": "安十二宫例",
+        "name": "問破軍所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "23",
-        "name": "起五行例",
+        "name": "問文昌星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "24",
-        "name": "花甲纳音歌",
+        "name": "问文曲星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "25",
-        "name": "安南北斗诸星诀",
+        "name": "问流年昌曲若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "26",
-        "name": "安文昌文曲星诀",
+        "name": "问左辅所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "27",
-        "name": "安左辅右弼星诀",
+        "name": "问右弼所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "28",
-        "name": "安天魁天钺诀",
+        "name": "问天魁天钺星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "29",
-        "name": "安天马星诀",
+        "name": "问禄存星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "30",
-        "name": "安禄存星诀",
+        "name": "问天马星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "31",
-        "name": "安擎羊陀罗二星诀",
+        "name": "问化禄星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "32",
-        "name": "安火铃二星诀",
+        "name": "问化权星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "33",
-        "name": "安禄权科忌四星变化诀",
+        "name": "问化科星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "34",
-        "name": "天空地劫诀",
+        "name": "问化忌星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "35",
-        "name": "安天伤天使诀",
+        "name": "问擎羊星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "36",
-        "name": "安十二宫太岁杀禄诀",
+        "name": "问陀罗星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "37",
-        "name": "安天刑天姚星诀",
+        "name": "羊陀二星总论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "38",
-        "name": "安三台八座二星诀",
+        "name": "问火星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "39",
-        "name": "安天哭天虚星诀",
+        "name": "问铃星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "40",
-        "name": "安龙池凤阁诀",
+        "name": "羊陀火铃四星总论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "41",
-        "name": "安台辅封诰诀",
+        "name": "问天空地劫所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "42",
-        "name": "安红鸾天喜诀",
+        "name": "问天伤天使所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "43",
-        "name": "安丧门白虎吊客官府四飞星诀",
+        "name": "问天刑星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "44",
-        "name": "安斗君诀",
+        "name": "问天姚星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "45",
-        "name": "安天德月德解神诀",
+        "name": "问天哭天虚二星所主若何？",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "46",
-        "name": "安飞天三杀诀",
+        "name": "斗数骨髓赋",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "47",
-        "name": "安截路空亡诀",
+        "name": "女命骨髓赋",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "48",
-        "name": "安旬中空亡诀",
+        "name": "定富贵贫贱十等论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "49",
-        "name": "安大限诀",
+        "name": "十二宫诸星得地合格诀",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "50",
-        "name": "安小限诀",
+        "name": "十二宫诸星失陷破格诀",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "51",
-        "name": "安童限诀",
+        "name": "十二宫诸星得地富贵论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "52",
-        "name": "安命主",
+        "name": "十二宫诸星失陷贫贱论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "53",
-        "name": "安身主",
+        "name": "定富局",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "54",
-        "name": "论安命金锁铁蛇关",
+        "name": "定贵局",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "55",
-        "name": "定男女竹萝三限",
+        "name": "定贫贱局",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "56",
-        "name": "定十二宫弱强",
+        "name": "定杂局",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗數全書卷一"
       },
       {
         "num": "57",
-        "name": "定十二宫星辰落闲",
+        "name": "安身命例",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "58",
-        "name": "安流禄流羊流陀诀",
+        "name": "一 命宫",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "59",
-        "name": "论星辰生克制化",
+        "name": "二兄弟",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "60",
-        "name": "论诸星分属南北斗化吉凶并分属五行",
+        "name": "三妻妾",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "61",
-        "name": "十二宫庙旺落陷图",
+        "name": "四子女",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "62",
-        "name": "论命宫诀",
+        "name": "五财帛",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "63",
-        "name": "论兄弟诀",
+        "name": "六疾厄",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "64",
-        "name": "论妻妾诀",
+        "name": "七迁移",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "65",
-        "name": "论子女诀",
+        "name": "八奴仆",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "66",
-        "name": "论财帛诀",
+        "name": "九官禄",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "67",
-        "name": "论疾厄诀",
+        "name": "十田宅",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "68",
-        "name": "论迁移诀",
+        "name": "十一福德",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "69",
-        "name": "论奴仆诀",
+        "name": "十二父母",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷二"
       },
       {
         "num": "70",
-        "name": "论官禄诀",
+        "name": "谈星要论",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "71",
-        "name": "论田宅诀",
+        "name": "论人命入格",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "72",
-        "name": "论福德诀",
+        "name": "论格星数高下",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "73",
-        "name": "论父母诀",
+        "name": "论男女命同异",
         "isDone": false,
-        "category": "卷二 · 安星诀法"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "74",
-        "name": "谈星要论",
+        "name": "论小儿命",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "75",
-        "name": "论人命入格",
+        "name": "定小儿生时诀",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "76",
-        "name": "论格星数高下",
+        "name": "论人生时安命吉凶",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "77",
-        "name": "论男女命同异",
+        "name": "论人生时要审的确",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "78",
-        "name": "论小儿命",
+        "name": "论小儿克亲",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "79",
-        "name": "定小儿生时诀",
+        "name": "论命先贫后富",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "80",
-        "name": "论人生时安命吉凶",
+        "name": "论大限十年祸福何如",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "81",
-        "name": "论人生时要审的确",
+        "name": "论二限太岁吉凶",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "82",
-        "name": "论小儿克亲",
+        "name": "论行限分南北斗",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "83",
-        "name": "论命先贫后富",
+        "name": "论流年太岁吉凶星杀",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "84",
-        "name": "论大限十年祸福何如",
+        "name": "论阴骘延寿",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "85",
-        "name": "论二限太岁吉凶",
+        "name": "论羊陀迭并",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "86",
-        "name": "论行限分南北斗",
+        "name": "论七杀重逢",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "87",
-        "name": "论流年太岁吉凶星杀",
+        "name": "论大小限星辰过十二宫遇十二支所忌诀",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "88",
-        "name": "论阴骘延寿",
+        "name": "论立命行限宫歌",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       },
       {
         "num": "89",
-        "name": "论羊陀迭并",
-        "isDone": false,
-        "category": "卷三 · 论命要论"
-      },
-      {
-        "num": "90",
-        "name": "论七杀重逢",
-        "isDone": false,
-        "category": "卷三 · 论命要论"
-      },
-      {
-        "num": "91",
-        "name": "论大小限星辰过十二宫遇十二支所忌诀",
-        "isDone": false,
-        "category": "卷三 · 论命要论"
-      },
-      {
-        "num": "92",
-        "name": "论立命行限宫歌",
-        "isDone": false,
-        "category": "卷三 · 论命要论"
-      },
-      {
-        "num": "93",
-        "name": "论太岁小限星辰庙陷遇十二宫中吉凶",
-        "isDone": false,
-        "category": "卷三 · 论命要论"
-      },
-      {
-        "num": "94",
         "name": "论诸星同垣各司所宜分别富贵贫贱夭寿",
         "isDone": false,
-        "category": "卷三 · 论命要论"
+        "category": "紫微斗数全书卷三"
       }
     ],
     "skills": [],
-    "sources": []
+    "sources": [
+      {
+        "name": "安身命例"
+      },
+      {
+        "name": "八奴仆"
+      },
+      {
+        "name": "定富贵贫贱十等论"
+      },
+      {
+        "name": "定富局"
+      },
+      {
+        "name": "定贵局"
+      },
+      {
+        "name": "定贫贱局"
+      },
+      {
+        "name": "定小儿生时诀"
+      },
+      {
+        "name": "定杂局"
+      },
+      {
+        "name": "斗数骨髓赋"
+      },
+      {
+        "name": "斗數發微論"
+      },
+      {
+        "name": "斗數準繩"
+      },
+      {
+        "name": "二兄弟"
+      },
+      {
+        "name": "九官禄"
+      },
+      {
+        "name": "六疾厄"
+      },
+      {
+        "name": "论大限十年祸福何如"
+      },
+      {
+        "name": "论大小限星辰过十二宫遇十二支所忌诀"
+      },
+      {
+        "name": "论二限太岁吉凶"
+      },
+      {
+        "name": "论格星数高下"
+      },
+      {
+        "name": "论立命行限宫歌"
+      },
+      {
+        "name": "论流年太岁吉凶星杀"
+      },
+      {
+        "name": "论命先贫后富"
+      },
+      {
+        "name": "论男女命同异"
+      },
+      {
+        "name": "论七杀重逢"
+      },
+      {
+        "name": "论人命入格"
+      },
+      {
+        "name": "论人生时安命吉凶"
+      },
+      {
+        "name": "论人生时要审的确"
+      },
+      {
+        "name": "论小儿克亲"
+      },
+      {
+        "name": "论小儿命"
+      },
+      {
+        "name": "论行限分南北斗"
+      },
+      {
+        "name": "论羊陀迭并"
+      },
+      {
+        "name": "论阴骘延寿"
+      },
+      {
+        "name": "论诸星同垣各司所宜分别富贵贫贱夭寿"
+      },
+      {
+        "name": "羅序"
+      },
+      {
+        "name": "女命骨髓赋"
+      },
+      {
+        "name": "七迁移"
+      },
+      {
+        "name": "三妻妾"
+      },
+      {
+        "name": "十二父母"
+      },
+      {
+        "name": "十二宫诸星得地富贵论"
+      },
+      {
+        "name": "十二宫诸星得地合格诀"
+      },
+      {
+        "name": "十二宫诸星失陷贫贱论"
+      },
+      {
+        "name": "十二宫诸星失陷破格诀"
+      },
+      {
+        "name": "十田宅"
+      },
+      {
+        "name": "十一福德"
+      },
+      {
+        "name": "四子女"
+      },
+      {
+        "name": "太微賦"
+      },
+      {
+        "name": "谈星要论"
+      },
+      {
+        "name": "问化忌星所主若何？"
+      },
+      {
+        "name": "问化科星所主若何？"
+      },
+      {
+        "name": "问化禄星所主若何？"
+      },
+      {
+        "name": "问化权星所主若何？"
+      },
+      {
+        "name": "问火星所主若何？"
+      },
+      {
+        "name": "问铃星所主若何？"
+      },
+      {
+        "name": "问流年昌曲若何？"
+      },
+      {
+        "name": "问禄存星所主若何？"
+      },
+      {
+        "name": "问擎羊星所主若何？"
+      },
+      {
+        "name": "问天空地劫所主若何？"
+      },
+      {
+        "name": "问天哭天虚二星所主若何？"
+      },
+      {
+        "name": "问天魁天钺星所主若何？"
+      },
+      {
+        "name": "问天马星所主若何？"
+      },
+      {
+        "name": "问天伤天使所主若何？"
+      },
+      {
+        "name": "问天刑星所主若何？"
+      },
+      {
+        "name": "问天姚星所主若何？"
+      },
+      {
+        "name": "问陀罗星所主若何？"
+      },
+      {
+        "name": "问文曲星所主若何？"
+      },
+      {
+        "name": "问右弼所主若何？"
+      },
+      {
+        "name": "问左辅所主若何？"
+      },
+      {
+        "name": "問巨門所主若何？"
+      },
+      {
+        "name": "問廉貞所主若何？"
+      },
+      {
+        "name": "問破軍所主若何？"
+      },
+      {
+        "name": "問七殺星所主若何？"
+      },
+      {
+        "name": "問太陽所主若何？"
+      },
+      {
+        "name": "問太陰星所主若何？"
+      },
+      {
+        "name": "問貪狼所主若何？"
+      },
+      {
+        "name": "問天府所主若何？"
+      },
+      {
+        "name": "問天機所主如何？"
+      },
+      {
+        "name": "問天梁星所主若何？"
+      },
+      {
+        "name": "問天同星所主若何？"
+      },
+      {
+        "name": "問天相星所主若何？"
+      },
+      {
+        "name": "問文昌星所主若何？"
+      },
+      {
+        "name": "問武曲星所主為何？"
+      },
+      {
+        "name": "問紫微所主若何？"
+      },
+      {
+        "name": "五财帛"
+      },
+      {
+        "name": "星垣論"
+      },
+      {
+        "name": "形性賦"
+      },
+      {
+        "name": "羊陀二星总论"
+      },
+      {
+        "name": "羊陀火铃四星总论"
+      },
+      {
+        "name": "一 命宫"
+      },
+      {
+        "name": "增補太微賦"
+      },
+      {
+        "name": "重補斗數彀率"
+      }
+    ]
   }
 ];
