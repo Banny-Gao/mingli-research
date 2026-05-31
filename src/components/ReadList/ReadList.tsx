@@ -116,7 +116,11 @@ function CategorySection({
           {chapters.map(ch => {
             const validActions = ACTION_CONFIG.filter(cfg => cfg.condition(ch))
             return (
-              <div key={ch.name} className={`chapter-row ${ch.isDone ? 'done' : 'undone'}`}>
+              <div
+                key={ch.name}
+                className={`chapter-row ${ch.isDone ? 'done' : 'undone'}`}
+                onClick={() => sourceNames.includes(ch.name) && onSourceClick(ch.name)}
+              >
                 <div className="chapter-num">{ch.num}</div>
                 <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
                 <div className="chapter-actions">
@@ -124,7 +128,10 @@ function CategorySection({
                     <button
                       key={cfg.key}
                       className={cfg.className}
-                      onClick={() => cfg.action(ch.name)}
+                      onClick={e => {
+                        e.stopPropagation()
+                        cfg.action(ch.name)
+                      }}
                     >
                       {cfg.label}
                     </button>

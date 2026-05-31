@@ -6,6 +6,7 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
+  hasSkill: boolean;
   category: string;
 }
 
