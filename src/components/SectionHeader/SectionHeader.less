@@ -43,7 +43,11 @@
   font-size: 13px;
   font-family: inherit;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s,
+    border-color 0.2s;
+  border-radius: 2px 4px 4px 2px;
 
   &:hover {
     background: var(--color-bg-card-hover);
@@ -73,7 +77,9 @@
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
 
-    &::-webkit-scrollbar { display: none; }
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .hidden-mobile {
@@ -97,9 +103,13 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: color 0.2s, background 0.2s;
+    transition:
+      color 0.2s,
+      background 0.2s;
 
-    &:hover { color: var(--color-text-body); }
+    &:hover {
+      color: var(--color-text-body);
+    }
 
     &.active {
       color: var(--color-gold);

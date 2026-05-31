@@ -88,9 +88,10 @@ const BookApp = () => {
           </Link>
           <SearchBar scopeSlug={bookSlug} />
         </div>
+        <div className="book-hero-glow" />
+        
         <div className="page-container-narrow">
           <div className="book-hero">
-            <div className="book-hero-glow" />
             <h1 className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1 hero-title-glow">
               《{book.title}》
             </h1>

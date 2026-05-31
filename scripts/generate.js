@@ -20,11 +20,14 @@ marked.setOptions({ gfm: true, breaks: false })
 
 // ===== 工具 =====
 
-const buildMetaPattern = keys =>
-  new RegExp(`^>\\s*(?:${keys.join('|')})[：:]`)
+const buildMetaPattern = keys => new RegExp(`^>\\s*(?:${keys.join('|')})[：:]`)
 
 const headingId = text =>
-  text.replace(/[^\w一-鿿\s-]/g, '').trim().replace(/\s+/g, '-').toLowerCase()
+  text
+    .replace(/[^\w一-鿿\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .toLowerCase()
 
 const parseMarkdown = md => {
   if (!md) return ''
@@ -32,8 +35,7 @@ const parseMarkdown = md => {
   return String(marked.parse(clean))
 }
 
-const truncateText = (text, max) =>
-  text.length > max ? text.slice(0, max) : text
+const truncateText = (text, max) => (text.length > max ? text.slice(0, max) : text)
 
 // ===== catalog.md 解析 =====
 
@@ -55,7 +57,14 @@ const parseBookMeta = filePath => {
   const content = fs.readFileSync(filePath, 'utf-8')
   const title = (content.match(/# 《([^》]+)》/) || [])[1] || null
 
-  const meta = { author: '', version: '', description: '', section: '', category: '', contentTypes: '' }
+  const meta = {
+    author: '',
+    version: '',
+    description: '',
+    section: '',
+    category: '',
+    contentTypes: '',
+  }
   for (const line of content.split('\n')) {
     const t = line.trim()
     for (const [key, pattern] of Object.entries(META_PATTERNS)) {
@@ -73,17 +82,17 @@ const parseCatalog = catalogPath => {
   for (const line of content.split('\n')) {
     const t = line.trim()
     if (!t) continue
-    if (/^##\s/.test(t)) { currentCategory = t.replace(/^##\s*/, ''); continue }
+    if (/^##\s/.test(t)) {
+      currentCategory = t.replace(/^##\s*/, '')
+      continue
+    }
     if (/^#\s/.test(t) || t.match(/^\|[-\s:|]+\|$/)) continue
-    const cells = t.split('|').map(c => c.trim()).filter(c => c)
-    if (cells.length < 3 || !/^\d+$/.test(cells[0])) continue
-    rows.push({
-      num: cells[0],
-      title: cells[1],
-      status: cells[2] || '',
-      skills: cells[3] ? cells[3].split(',').map(s => s.trim()).filter(Boolean) : [],
-      category: currentCategory,
-    })
+    const cells = t
+      .split('|')
+      .map(c => c.trim())
+      .filter(c => c)
+    if (cells.length < 2 || !/^\d+$/.test(cells[0])) continue
+    rows.push({ num: cells[0], title: cells[1], category: currentCategory })
   }
   return rows
 }
@@ -92,15 +101,15 @@ const parseCatalog = catalogPath => {
 
 const readChapterContent = (bookRoot, row, chaptersData, interpKeys, sourceData) => {
   const interpPath = `articles/${row.title}/interpretation.md`
-  const isDone = row.status === '已解读' && fs.existsSync(path.join(bookRoot, interpPath))
+  const skillPath = `articles/${row.title}/skill.md`
+  const isDone = fs.existsSync(path.join(bookRoot, interpPath))
+  const hasSkill = fs.existsSync(path.join(bookRoot, skillPath))
 
   if (isDone) {
     const fullPath = path.join(bookRoot, interpPath)
     if (fs.existsSync(fullPath)) {
       chaptersData[row.title] = parseMarkdown(fs.readFileSync(fullPath, 'utf-8'))
       interpKeys.push(row.title)
-    } else {
-      console.warn(`  ⚠️ 跳过缺失解读文件: ${fullPath}`)
     }
   }
 
@@ -109,55 +118,63 @@ const readChapterContent = (bookRoot, row, chaptersData, interpKeys, sourceData)
     sourceData[row.title] = parseMarkdown(fs.readFileSync(srcPath, 'utf-8'))
   }
 
-  return { num: row.num, name: row.title, isDone, category: row.category }
+  return { num: row.num, name: row.title, isDone, hasSkill, category: row.category }
 }
 
 const readSkills = (bookRoot, catalogRows) => {
-  const data = {}, rawData = {}, displayNames = {}, keys = []
-  for (const row of catalogRows) {
-    if (!row.skills?.length) continue
-    for (const sk of row.skills) {
-      const p = path.join(bookRoot, 'articles', row.title, 'skill.md')
-      if (!fs.existsSync(p)) { console.warn(`  ⚠️ 跳过缺失技能文件: ${p}`); continue }
-      const content = fs.readFileSync(p, 'utf-8')
-      data[sk] = parseMarkdown(content)
-      rawData[sk] = content
-      const dn = content.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)
-      if (dn) displayNames[sk] = dn[1].trim()
-      if (!keys.includes(sk)) keys.push(sk)
-    }
-  }
-  return { data, rawData, displayNames, keys }
-}
+  const data = {},
+    rawData = {},
+    displayNames = {},
+    keys = []
+  const chapterToSkills = {},
+    skillToChapters = {}
 
-const buildAssoc = catalogRows => {
-  const chapterToSkills = {}, skillToChapters = {}
   for (const row of catalogRows) {
-    if (!row.skills.length) continue
-    chapterToSkills[row.title] = row.skills
-    for (const sk of row.skills) {
-      if (!skillToChapters[sk]) skillToChapters[sk] = []
-      if (!skillToChapters[sk].includes(row.title)) skillToChapters[sk].push(row.title)
-    }
+    const skillPath = path.join(bookRoot, 'articles', row.title, 'skill.md')
+    if (!fs.existsSync(skillPath)) continue
+
+    const content = fs.readFileSync(skillPath, 'utf-8')
+    data[row.title] = parseMarkdown(content)
+    rawData[row.title] = content
+
+    const dn = content.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)
+    if (dn) displayNames[row.title] = dn[1].trim()
+    keys.push(row.title)
+
+    chapterToSkills[row.title] = [row.title]
+    skillToChapters[row.title] = [row.title]
   }
-  return { chapterToSkills, skillToChapters }
+  return { data, rawData, displayNames, keys, chapterToSkills, skillToChapters }
 }
 
 const processBook = bookSlug => {
   const bookRoot = path.join(ROOT, bookSlug)
   const catalogPath = path.join(bookRoot, 'catalog.md')
-  const meta = parseBookMeta(catalogPath) || { title: bookSlug, author: '', version: '', description: '', section: '', contentTypes: '' }
-  const contentTypes = meta.contentTypes ? meta.contentTypes.split(',').map(s => s.trim()).filter(Boolean) : []
+  const meta = parseBookMeta(catalogPath) || {
+    title: bookSlug,
+    author: '',
+    version: '',
+    description: '',
+    section: '',
+    contentTypes: '',
+  }
+  const contentTypes = meta.contentTypes
+    ? meta.contentTypes
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+    : []
   const catalogRows = parseCatalog(catalogPath)
 
-  const chaptersData = {}, sourceData = {}
+  const chaptersData = {},
+    sourceData = {}
   const interpKeys = []
   const chapters = catalogRows.map(row =>
     readChapterContent(bookRoot, row, chaptersData, interpKeys, sourceData)
   )
 
   const skills = readSkills(bookRoot, catalogRows)
-  const { chapterToSkills, skillToChapters } = buildAssoc(catalogRows)
+  const { chapterToSkills, skillToChapters } = skills
 
   return {
     slug: bookSlug,
@@ -225,9 +242,14 @@ export const skillDisplayNames: Record<string, string> = ${JSON.stringify(book.s
 
   const selected = type => book.contentTypes.includes(type)
 
-  fs.writeFileSync(path.join(outDir, 'content.ts'), `// Auto-generated — do not edit manually
+  fs.writeFileSync(
+    path.join(outDir, 'content.ts'),
+    `// Auto-generated — do not edit manually
 
-${book.contentTypes.filter(t => globs[t]).map(t => globs[t]).join('\n')}
+${book.contentTypes
+  .filter(t => globs[t])
+  .map(t => globs[t])
+  .join('\n')}
 
 function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: string): Record<string, () => Promise<string>> {
   const result: Record<string, () => Promise<string>> = {};
@@ -242,35 +264,49 @@ function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: stri
   return result;
 }
 
-${book.contentTypes.filter(t => exports[t]).map(t => exports[t]).join('\n')}
-`)
+${book.contentTypes
+  .filter(t => exports[t])
+  .map(t => exports[t])
+  .join('\n')}
+`
+  )
 
-  fs.writeFileSync(path.join(outDir, 'assoc.ts'), `// Auto-generated — do not edit manually
+  fs.writeFileSync(
+    path.join(outDir, 'assoc.ts'),
+    `// Auto-generated — do not edit manually
 export const chapterToSkills: Record<string, string[]> = ${JSON.stringify(book.chapterToSkills, null, 2)};
 export const skillToChapters: Record<string, string[]> = ${JSON.stringify(book.skillToChapters, null, 2)};
-`)
+`
+  )
 
   const typeExports = {
     interpretation: 'interpKeys, interpContent',
     source: 'sourceKeys, sourceContent',
     skill: 'skillKeys, skillContent, skillRawContent, skillDisplayNames',
   }
-  const idxExports = book.contentTypes.filter(t => typeExports[t]).map(t => typeExports[t]).join(', ')
-  const chapterKey = book.chapters.length > 0
-    ? book.chapters.map(c => JSON.stringify(c.name)).join(' | ')
-    : 'never'
+  const idxExports = book.contentTypes
+    .filter(t => typeExports[t])
+    .map(t => typeExports[t])
+    .join(', ')
+  const chapterKey =
+    book.chapters.length > 0 ? book.chapters.map(c => JSON.stringify(c.name)).join(' | ') : 'never'
 
-  fs.writeFileSync(path.join(outDir, 'index.ts'), `// Auto-generated — do not edit manually
+  fs.writeFileSync(
+    path.join(outDir, 'index.ts'),
+    `// Auto-generated — do not edit manually
 export { ${idxExports} } from './content';
 export { chapterToSkills, skillToChapters } from './assoc';
 
 export type ChapterKey = ${chapterKey};
-`)
+`
+  )
 }
 
 const generateGlobalFiles = books => {
   const validateSection = book =>
-    VALID_SECTIONS.includes(book.section) ? book.section : (console.warn(`  ⚠️ ${book.slug} 术数无效: "${book.section}"，默认 "命"`), '命')
+    VALID_SECTIONS.includes(book.section)
+      ? book.section
+      : (console.warn(`  ⚠️ ${book.slug} 术数无效: "${book.section}"，默认 "命"`), '命')
 
   const bookData = books.map(b => ({
     slug: b.slug,
@@ -283,11 +319,17 @@ const generateGlobalFiles = books => {
     total: b.total,
     done: b.done,
     chapters: b.chapters,
-    skills: Object.keys(b.skillsData).sort((a, b) => a.localeCompare(b, 'zh')).map(name => ({ name })),
-    sources: Object.keys(b.sourceData || {}).sort((a, b) => a.localeCompare(b, 'zh')).map(name => ({ name })),
+    skills: Object.keys(b.skillsData)
+      .sort((a, b) => a.localeCompare(b, 'zh'))
+      .map(name => ({ name })),
+    sources: Object.keys(b.sourceData || {})
+      .sort((a, b) => a.localeCompare(b, 'zh'))
+      .map(name => ({ name })),
   }))
 
-  fs.writeFileSync(path.join(OUT_DIR, 'book-types.ts'), `// Auto-generated by scripts/generate.js — do not edit manually
+  fs.writeFileSync(
+    path.join(OUT_DIR, 'book-types.ts'),
+    `// Auto-generated by scripts/generate.js — do not edit manually
 
 export type ArtSection = '山' | '医' | '命' | '相' | '卜';
 
@@ -295,6 +337,7 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
+  hasSkill: boolean;
   category: string;
 }
 
@@ -312,24 +355,33 @@ export interface Book {
   skills: { name: string }[];
   sources: { name: string }[];
 }
-`)
+`
+  )
 
-  fs.writeFileSync(path.join(OUT_DIR, 'books.ts'), `// Auto-generated by scripts/generate.js — do not edit manually
+  fs.writeFileSync(
+    path.join(OUT_DIR, 'books.ts'),
+    `// Auto-generated by scripts/generate.js — do not edit manually
 import type { Book } from './book-types';
 
 export const books: Book[] = ${JSON.stringify(bookData, null, 2)};
-`)
+`
+  )
 
   // 全局 index.ts（不再使用 export *，避免多书同名类型冲突；前端通过 getBook() 访问）
   const indexExports = books.map(b => `// see registry.ts for dynamic access`).join('\n')
-  fs.writeFileSync(path.join(OUT_DIR, 'index.ts'), `// Auto-generated — do not edit manually
+  fs.writeFileSync(
+    path.join(OUT_DIR, 'index.ts'),
+    `// Auto-generated — do not edit manually
 // 前端请使用 import { getBook } from '@/data/registry' 访问各书数据
 export { books } from './books'
 export type { Book, ChapterInfo, ArtSection } from './book-types'
-`)
+`
+  )
 
   const safeIdent = slug => slug.replace(/[^a-zA-Z0-9_$]/g, '_')
-  fs.writeFileSync(path.join(OUT_DIR, 'registry.ts'), `// Auto-generated — do not edit manually
+  fs.writeFileSync(
+    path.join(OUT_DIR, 'registry.ts'),
+    `// Auto-generated — do not edit manually
 // 动态加载各典籍数据，避免前端代码硬编码 slug
 ${books.map(b => `import * as _${safeIdent(b.slug)} from './${b.slug}';`).join('\n')}
 
@@ -340,7 +392,8 @@ ${books.map(b => `  '${b.slug}': _${safeIdent(b.slug)},`).join('\n')}
 export function getBook(slug: string) {
   return registry[slug] ?? {};
 }
-`)
+`
+  )
 }
 
 const generateSearchIndex = books => {
@@ -349,9 +402,29 @@ const generateSearchIndex = books => {
     slug: b.slug,
     section: b.section,
     title: b.title,
-    interp: b.interpKeys.map(k => ({ key: k, text: truncateText(stripHtml(b.chaptersData[k] || '', { collapseWhitespace: true }), MAX_SEARCH_TEXT) })),
-    skill: b.skillKeys.map(k => ({ key: k, displayName: b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k, text: truncateText(stripHtml(b.skillsData[k] || '', { collapseWhitespace: true }), MAX_SEARCH_TEXT) })),
-    source: Object.keys(b.sourceData || {}).map(k => ({ key: k, text: truncateText(stripHtml(b.sourceData[k] || '', { collapseWhitespace: true }), MAX_SEARCH_TEXT) })),
+    interp: b.interpKeys.map(k => ({
+      key: k,
+      text: truncateText(
+        stripHtml(b.chaptersData[k] || '', { collapseWhitespace: true }),
+        MAX_SEARCH_TEXT
+      ),
+    })),
+    skill: b.skillKeys.map(k => ({
+      key: k,
+      displayName:
+        b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k,
+      text: truncateText(
+        stripHtml(b.skillsData[k] || '', { collapseWhitespace: true }),
+        MAX_SEARCH_TEXT
+      ),
+    })),
+    source: Object.keys(b.sourceData || {}).map(k => ({
+      key: k,
+      text: truncateText(
+        stripHtml(b.sourceData[k] || '', { collapseWhitespace: true }),
+        MAX_SEARCH_TEXT
+      ),
+    })),
   }))
   fs.writeFileSync(path.join(PUBLIC_DIR, 'search-index.json'), JSON.stringify(index, null, 2))
   console.log('search-index.json generated.')
@@ -359,11 +432,21 @@ const generateSearchIndex = books => {
 
 // ===== 入口 =====
 
-marked.use({ renderer: { heading({ text, depth }) { return `<h${depth} id="${headingId(text)}">${text}</h${depth}>` } } })
+marked.use({
+  renderer: {
+    heading({ text, depth }) {
+      return `<h${depth} id="${headingId(text)}">${text}</h${depth}>`
+    },
+  },
+})
 
-const BOOK_DIRS = fs.readdirSync(ROOT).filter(f =>
-  fs.statSync(path.join(ROOT, f)).isDirectory() && fs.existsSync(path.join(ROOT, f, 'catalog.md'))
-)
+const BOOK_DIRS = fs
+  .readdirSync(ROOT)
+  .filter(
+    f =>
+      fs.statSync(path.join(ROOT, f)).isDirectory() &&
+      fs.existsSync(path.join(ROOT, f, 'catalog.md'))
+  )
 
 const books = BOOK_DIRS.map(processBook)
 

@@ -164,9 +164,10 @@ const Notes = () => {
           </Link>
         </div>
 
+        <div className="book-hero-glow" />
+
         <div className="page-container-narrow">
           <div className="book-hero">
-            <div className="book-hero-glow" />
             <h1 className="text-3xl text-[var(--color-gold)] font-bold tracking-widest mb-[10px] hero-title-glow">
               个人中心
             </h1>

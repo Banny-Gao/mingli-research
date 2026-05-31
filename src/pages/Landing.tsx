@@ -1,13 +1,12 @@
 import { useState, useRef, useLayoutEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Flame, FileText } from 'lucide-react'
+import { UserStar } from 'lucide-react'
 import gsap from 'gsap'
 import { books } from '../data/books'
 import type { ArtSection } from '../data/book-types'
 import SearchBar from '../components/SearchBar'
 import SectionHeader, { type CategoryTree } from '../components/SectionHeader'
-import { useGlobalProgress } from '../hooks/useProgress'
 import { ThemeToggle } from '../components/ThemeToggle'
 
 const SECTION_ORDER: ArtSection[] = ['命', '医', '山', '相', '卜']
@@ -21,14 +20,16 @@ const CATEGORY_TREE: CategoryTree[] = [
 ]
 
 const Landing = () => {
-  const gp = useGlobalProgress()
   const [activeSection, setActiveSection] = useState<ArtSection>('命')
   const [activeCategory, setActiveCategory] = useState('八字')
   const gridRef = useRef<HTMLDivElement>(null)
   const ctxRef = useRef<gsap.Context | null>(null)
 
   const booksBySection = SECTION_ORDER.reduce<Record<ArtSection, typeof books>>(
-    (acc, section) => { acc[section] = books.filter(b => b.section === section); return acc },
+    (acc, section) => {
+      acc[section] = books.filter(b => b.section === section)
+      return acc
+    },
     {} as Record<ArtSection, typeof books>
   )
 
@@ -52,7 +53,8 @@ const Landing = () => {
     if (!gridRef.current) return
     ctxRef.current?.revert()
     ctxRef.current = gsap.context(() => {
-      gsap.fromTo(gridRef.current,
+      gsap.fromTo(
+        gridRef.current,
         { x: 60, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.5, ease: 'power3.out', overwrite: 'auto' }
       )
@@ -64,51 +66,34 @@ const Landing = () => {
     <div className="page-wrapper">
       <Helmet>
         <title>豫知学堂 · 传统国学</title>
-        <meta name="description" content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。" />
+        <meta
+          name="description"
+          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。"
+        />
         <meta property="og:title" content="豫知学堂 · 传统国学" />
-        <meta property="og:description" content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。" />
+        <meta
+          property="og:description"
+          content="基于《渊海子平》《滴天髓》等正统子平经典，对经典著作进行系统解读。"
+        />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.origin + window.location.pathname} />
         <link rel="canonical" href={window.location.origin + window.location.pathname} />
       </Helmet>
 
       <div className="top-actions">
-        {gp.streakDays > 0 && (
-          <div className="streak-badge">
-            <Flame size={16} fill="var(--color-gold)" color="var(--color-gold)" />
-            <div className="streak-tooltip">坚持学习，连续{gp.streakDays}天不间断</div>
-          </div>
-        )}
+        <Link to="/notes">
+          <UserStar color="var(--color-purple-light)" size={20} />
+        </Link>
         <SearchBar />
         <ThemeToggle />
       </div>
 
+      <div className="hero-glow" />
+
       <div className="page-container">
         <div className="hero-section">
-          <div className="hero-glow" />
           <h1 className="hero-title">豫知学堂</h1>
           <p className="hero-subtitle">经典原文 · 系统解读 · 技能沉淀</p>
-        </div>
-
-        <div className="hero-stats">
-          <div className="stat-item">
-            <div className="stat-num">{books.length}</div>
-            <div className="stat-label">典籍</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-num">{books.reduce((s, b) => s + b.total, 0)}</div>
-            <div className="stat-label">总篇章</div>
-          </div>
-          <div className="stat-item">
-            <div className="stat-num">{books.reduce((s, b) => s + b.done, 0)}</div>
-            <div className="stat-label">已解读</div>
-          </div>
-        </div>
-
-        <div className="flex justify-end mb-5 w-full max-w-[900px]">
-          <Link to="/notes" className="notes-cta-btn flex items-center gap-1.5">
-            <FileText size={16} /> 个人中心
-          </Link>
         </div>
 
         <div className="section-group mb-8">
@@ -137,7 +122,10 @@ const Landing = () => {
                       </div>
                       {book.description && <p className="book-card-desc">{book.description}</p>}
                       <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${progressPercent(book.done, book.total)}%` }} />
+                        <div
+                          className="progress-fill"
+                          style={{ width: `${progressPercent(book.done, book.total)}%` }}
+                        />
                       </div>
                       <div className="progress-meta">
                         <span>已解读 {book.done} 篇</span>
@@ -146,7 +134,10 @@ const Landing = () => {
                     </Link>
                   ))
                 ) : (
-                  <div className="stat-label" style={{ textAlign: 'center', padding: '40px 0', gridColumn: '1 / -1' }}>
+                  <div
+                    className="stat-label"
+                    style={{ textAlign: 'center', padding: '40px 0', gridColumn: '1 / -1' }}
+                  >
                     此分类暂无典籍，内容正在筹备中
                   </div>
                 )}
