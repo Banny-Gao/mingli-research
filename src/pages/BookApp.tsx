@@ -58,7 +58,9 @@ const BookApp = () => {
             <div className="not-found-inner">
               <div className="not-found-code">404</div>
               <p className="not-found-msg">未找到该典籍</p>
-              <Link to="/" className={cn(buttonVariants({ variant: 'outline' }))}>返回首页</Link>
+              <Link to="/" className={cn(buttonVariants({ variant: 'outline' }))}>
+                返回首页
+              </Link>
             </div>
           </div>
         </div>
@@ -89,7 +91,7 @@ const BookApp = () => {
           <SearchBar scopeSlug={bookSlug} />
         </div>
         <div className="book-hero-glow" />
-        
+
         <div className="page-container-narrow">
           <div className="book-hero">
             <h1 className="text-xl text-[var(--color-gold)] font-bold tracking-[5px] mb-1 hero-title-glow">

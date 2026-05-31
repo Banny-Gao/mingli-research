@@ -574,6 +574,47 @@
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
+.search-filter-row {
+  display: flex;
+  gap: 6px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+.search-filter-pill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.search-filter-pill:hover {
+  background: rgba(122, 79, 170, 0.1);
+  border-color: var(--color-purple);
+  color: var(--color-purple-light);
+}
+.search-filter-pill.active {
+  background: rgba(122, 79, 170, 0.2);
+  border-color: var(--color-purple);
+  color: var(--color-purple-light);
+}
+.search-filter-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--color-border);
+  margin: 0 2px;
+  align-self: center;
+}
+.search-filter-pill.section {
+  font-size: 11px;
+}
+.search-filter-pill.section.active {
+  background: rgba(233, 146, 64, 0.2);
+  border-color: rgba(233, 146, 64, 0.5);
+  color: var(--color-accent);
+}
 .search-results {
   max-height: 80vh;
   overflow-y: auto;
@@ -583,6 +624,53 @@
   text-align: center;
   color: var(--color-text-dim);
   font-size: 13px;
+}
+.search-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px 4px;
+}
+.search-history-title {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.search-history-icon {
+  margin-top: 3px;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+.search-history-clear {
+  font-size: 11px;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.search-history-clear:hover {
+  color: var(--color-text-dim);
+  background: rgba(122, 79, 170, 0.1);
+}
+.search-history-delete {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 3px;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.search-result-item:hover .search-history-delete {
+  opacity: 1;
+}
+.search-history-delete:hover {
+  color: var(--color-text-dim);
+  background: rgba(122, 79, 170, 0.1);
 }
 .search-result-item {
   display: flex;
