@@ -6,6 +6,7 @@ import { useReader } from '../hooks/useReader'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
 import { books } from '../data/books'
 import {
   TYPE_LABELS,
@@ -303,7 +304,9 @@ const Notes = () => {
                               />
                               <div className="notes-chapter-name pt-2.5 pb-1.5">{chm.name}</div>
                             </div>
-                            <button
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               onClick={() =>
                                 openReader({
                                   bookSlug: bm.slug,
@@ -311,10 +314,10 @@ const Notes = () => {
                                   modalKey: chm.name,
                                 })
                               }
-                              className="text-xs text-[var(--color-text-muted)] bg-transparent border-0 cursor-pointer flex items-center gap-1"
+                              className="notes-item-link"
                             >
                               继续阅读 <ArrowRight size={12} />
-                            </button>
+                            </Button>
                           </div>
                         ))}
                       </div>
@@ -403,9 +406,9 @@ const Notes = () => {
                                     checked={selectedAnn.has(ann.id)}
                                     onCheckedChange={() => toggleAnnSelect(ann.id)}
                                   />
-                                  <span className={`ann-type-${ann.type}`}>
+                                  <Badge variant="secondary" className={`ann-type-${ann.type}`}>
                                     {TYPE_LABELS[ann.type]}
-                                  </span>
+                                  </Badge>
                                 </div>
                                 <span className="text-[11px] text-[var(--color-text-muted)]">
                                   {new Date(ann.createdAt).toLocaleDateString('zh-CN')}
@@ -414,7 +417,9 @@ const Notes = () => {
                               <div className="notes-item-text">「{ann.selectedText}」</div>
                               {ann.note && <div className="notes-item-note">{ann.note}</div>}
                               <div className="notes-item-actions">
-                                <button
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
                                   onClick={() =>
                                     openReader({
                                       bookSlug: group.slug,
@@ -423,11 +428,13 @@ const Notes = () => {
                                       scrollToText: ann.selectedText,
                                     })
                                   }
-                                  className="notes-item-link inline-flex items-center gap-1"
+                                  className="notes-item-link"
                                 >
                                   查看批注 <ArrowRight size={12} />
-                                </button>
-                                <button
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
                                   onClick={() => {
                                     deleteAnnotation(
                                       group.slug,
@@ -436,10 +443,9 @@ const Notes = () => {
                                     )
                                     setRefresh(v => v + 1)
                                   }}
-                                  className="bg-transparent border-0 text-[var(--color-text-muted)] cursor-pointer text-xs p-0"
                                 >
                                   删除
-                                </button>
+                                </Button>
                               </div>
                             </div>
                           ))}

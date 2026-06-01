@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { Book, ChapterInfo } from '../../data/book-types'
 import { ChevronDown } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import './ReadList.less'
 
 interface Props {
@@ -107,9 +109,9 @@ function CategorySection({
           />
           <span className="font-semibold text-sm">{category}</span>
         </div>
-        <span className="section-badge text-xs">
+        <Badge variant="secondary" className="section-badge text-xs">
           {doneCount}/{chapters.length} 已解读
-        </span>
+        </Badge>
       </div>
       {!collapsed && (
         <div className="chapter-list mb-3">
@@ -125,8 +127,10 @@ function CategorySection({
                 <div className={`chapter-name ${ch.isDone ? 'done' : 'undone'}`}>{ch.name}</div>
                 <div className="chapter-actions">
                   {validActions.map(cfg => (
-                    <button
+                    <Button
                       key={cfg.key}
+                      variant="ghost"
+                      size="sm"
                       className={cfg.className}
                       onClick={e => {
                         e.stopPropagation()
@@ -134,7 +138,7 @@ function CategorySection({
                       }}
                     >
                       {cfg.label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>

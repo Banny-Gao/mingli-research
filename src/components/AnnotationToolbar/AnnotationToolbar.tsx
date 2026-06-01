@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { X, Copy, Highlighter, FileQuestion, Quote } from 'lucide-react'
 import type { AnnotationType } from '../../hooks/useAnnotations'
+import { Button } from '@/components/ui/button'
 import './AnnotationToolbar.less'
 
 interface Props {
@@ -72,19 +73,19 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
       <div className="ann-toolbar-mobile" onTouchStart={e => e.preventDefault()}>
         <span className="ann-toolbar-mobile-label">标记为</span>
         {ANN_TYPE_CONFIG.map(({ type, Icon, label, className }) => (
-          <button key={type} className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+          <Button key={type} variant="ghost" size="sm" className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
             <Icon size={14} />
             <span>{label}</span>
-          </button>
+          </Button>
         ))}
         {selectedText && (
-          <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+          <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
             <Copy size={14} />
-          </button>
+          </Button>
         )}
-        <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
+        <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
           <X size={14} />
-        </button>
+        </Button>
       </div>
     )
   }
@@ -92,18 +93,18 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
   return (
     <div ref={ref} className="ann-toolbar">
       {ANN_TYPE_CONFIG.map(({ type, label, className }) => (
-        <button key={type} className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+        <Button key={type} variant="ghost" size="sm" className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
           {label}
-        </button>
+        </Button>
       ))}
       {selectedText && (
-        <button className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+        <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
           <Copy size={14} />
-        </button>
+        </Button>
       )}
-      <button className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
+      <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
         <X size={14} />
-      </button>
+      </Button>
     </div>
   )
 }

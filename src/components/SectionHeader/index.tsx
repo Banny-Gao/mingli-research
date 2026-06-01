@@ -1,4 +1,5 @@
 import type { ArtSection } from '../../data/book-types'
+import { Button } from '@/components/ui/button'
 
 export interface CategoryTree {
   section: ArtSection
@@ -19,13 +20,15 @@ const SectionHeader = ({ tree, activeSection, activeCategory, onSelectCategory, 
     {onSelectSection && (
       <div className="section-nav-labels">
         {tree.map(({ section }) => (
-          <button
+          <Button
             key={section}
+            variant="ghost"
+            size="sm"
             className={`section-nav-label${section === activeSection ? ' active' : ''}`}
             onClick={() => onSelectSection(section)}
           >
             {section}
-          </button>
+          </Button>
         ))}
       </div>
     )}
@@ -41,15 +44,16 @@ const SectionHeader = ({ tree, activeSection, activeCategory, onSelectCategory, 
 
         <div className="section-nav-items">
           {categories.map(cat => {
-            
             return (
-              <button
+              <Button
                 key={cat}
+                variant="ghost"
+                size="sm"
                 className={`section-nav-item${cat === activeCategory ? ' active' : ''}`}
                 onClick={() => onSelectCategory(cat)}
               >
                 {cat}
-              </button>
+              </Button>
             )
           })}
         </div>

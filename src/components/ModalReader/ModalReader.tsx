@@ -361,13 +361,16 @@ const ModalReader = ({
         <div className="modal-card">
           <div className="modal-header">
             {modalType === 'interp' && (
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => setTocOpen(v => !v)}
                 title="目录"
                 className={`toc-toggle-btn${tocOpen ? ' active' : ''}`}
+                aria-label="切换目录"
               >
                 {tocOpen ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
-              </button>
+              </Button>
             )}
             <div className="flex-1" />
             <ActionBar
@@ -455,13 +458,15 @@ const ModalReader = ({
                 <div className="related-tags">
                   <span className="related-label">本篇内容</span>
                   {contentNavItems.map(({ type, label, navKey }) => (
-                    <button
+                    <Button
                       key={type}
+                      variant="ghost"
+                      size="sm"
                       className={`related-tag related-tag-${type}`}
                       onClick={() => onNavigate(type, navKey)}
                     >
                       {label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               )}
@@ -489,13 +494,15 @@ const ModalReader = ({
                   <div key={key} className="related-tags">
                     <span className="related-label">{label}</span>
                     {(data as string[]).map(item => (
-                      <button
+                      <Button
                         key={item}
+                        variant="ghost"
+                        size="sm"
                         className={`related-tag related-tag-${key}`}
                         onClick={() => onNavigate(navigateType, item)}
                       >
                         {displayName ? displayName[item] || item : item}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 ))}

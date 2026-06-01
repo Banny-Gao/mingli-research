@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Sparkles } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import './AiAssistant.less'
 
 interface Props {
@@ -24,18 +25,21 @@ const AiAssistant = ({ chapter }: Props) => {
               </>
             )}
           </div>
-          <button className="ai-assistant-close" onClick={() => setOpen(false)}>
+          <Button variant="ghost" size="sm" className="ai-assistant-close" onClick={() => setOpen(false)}>
             关闭
-          </button>
+          </Button>
         </div>
       )}
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         className="ai-assistant-fab"
         onClick={() => setOpen(v => !v)}
         title="AI 助手（开发中）"
+        aria-label="AI 助手"
       >
         <Sparkles size={20} />
-      </button>
+      </Button>
     </div>
   )
 }

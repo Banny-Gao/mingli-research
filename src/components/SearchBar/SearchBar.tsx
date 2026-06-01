@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import { useReader } from '../../hooks/useReader'
 import { SEARCH_HISTORY_KEY } from '../../lib/constants'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 
 interface SearchEntry {
   slug: string
@@ -126,18 +128,18 @@ function saveHistory(entries: HistoryEntry[]) {
 }
 
 const AllFilterPill = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
-  <button className={`search-filter-pill section${active ? ' active' : ''}`} onClick={onClick}>
+  <Button variant="ghost" size="sm" className={`search-filter-pill section${active ? ' active' : ''}`} onClick={onClick}>
     全部
-  </button>
+  </Button>
 )
 
 const CategoryPill = ({ label, active, count, onClick }: { label: string; active: boolean; count?: number; onClick: () => void }) => (
-  <button className={`search-filter-pill category${active ? ' active' : ''}`} onClick={onClick}>
+  <Button variant="ghost" size="sm" className={`search-filter-pill category${active ? ' active' : ''}`} onClick={onClick}>
     {label}
     {count != null && count > 0 && (
       <span className="search-filter-count">{count}</span>
     )}
-  </button>
+  </Button>
 )
 
 const SearchBar = ({ scopeSlug }: SearchBarProps) => {
@@ -439,10 +441,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   return (
     <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
-      <button onClick={() => setOpen(!open)} className="search-trigger-btn">
+      <Button variant="ghost" size="sm" onClick={() => setOpen(!open)} className="search-trigger-btn" aria-label="打开搜索">
         <SearchIcon />
         <span>搜索</span>
-      </button>
+      </Button>
 
       {/* Search dropdown */}
       {open && (
@@ -491,8 +493,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
 
           <div className="search-filter-row">
             {TYPE_FILTERS.map(f => (
-              <button
+              <Button
                 key={f.value}
+                variant="ghost"
+                size="sm"
                 className={`search-filter-pill${typeFilter === f.value ? ' active' : ''}`}
                 onClick={() => setTypeFilter(f.value)}
                 title={f.shortcut}
@@ -501,20 +505,22 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                 {typeCounts[f.value] > 0 && f.value !== 'all' && (
                   <span className="search-filter-count">{typeCounts[f.value]}</span>
                 )}
-              </button>
+              </Button>
             ))}
             {availableSections.size >= 2 && (
               <>
                 <span className="search-filter-sep" />
                 <AllFilterPill active={sectionFilter === 'all'} onClick={() => setSectionFilter('all')} />
                 {ART_SECTIONS.filter(s => availableSections.has(s)).map(s => (
-                  <button
+                  <Button
                     key={s}
+                    variant="ghost"
+                    size="sm"
                     className={`search-filter-pill section${sectionFilter === s ? ' active' : ''}`}
                     onClick={() => setSectionFilter(s)}
                   >
                     {s}
-                  </button>
+                  </Button>
                 ))}
               </>
             )}
@@ -546,13 +552,15 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
               <div className="search-history">
                 <div className="search-history-header">
                   <span className="search-history-title">搜索历史</span>
-                  <button className="search-history-clear" onClick={clearHistory}>
+                  <Button variant="ghost" size="sm" className="search-history-clear" onClick={clearHistory}>
                     清除全部
-                  </button>
+                  </Button>
                 </div>
                 {history.map((h, i) => (
-                  <button
+                  <Button
                     key={h.query}
+                    variant="ghost"
+                    size="sm"
                     className={`search-result-item${i === historyIdx ? ' search-result-selected' : ''}`}
                     onClick={() => setQuery(h.query)}
                     onMouseEnter={() => setHistoryIdx(i)}
@@ -562,19 +570,22 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                     <div className="search-result-text">
                       <span className="search-item-name">{h.query}</span>
                     </div>
-                    <button
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
                       className="search-history-delete"
                       onClick={e => {
                         e.stopPropagation()
                         removeFromHistory(h.query)
                       }}
                       tabIndex={-1}
+                      aria-label="删除该条历史"
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M18 6 6 18M6 6l12 12" />
                       </svg>
-                    </button>
-                  </button>
+                    </Button>
+                  </Button>
                 ))}
               </div>
             )}
@@ -595,8 +606,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                     {group.category && <span className="search-book-category"> · {group.category}</span>}
                   </div>
                   {group.items.map(({ entry: r, idx: i }) => (
-                    <button
+                    <Button
                       key={`${r.slug}-${r.type}-${r.key}`}
+                      variant="ghost"
+                      size="sm"
                       ref={el => {
                         resultRefs.current[i] = el
                       }}
@@ -606,11 +619,9 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                       onMouseEnter={() => setSelectedIdx(i)}
                       tabIndex={-1}
                     >
-                      <span
-                        className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}
-                      >
+                      <Badge variant="secondary" className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}>
                         {BADGE_CONFIG[r.type]?.label ?? BADGE_CONFIG.skill.label}
-                      </span>
+                      </Badge>
                       <div className="search-result-text">
                         <span className="search-item-name">
                           {(r.type === 'skill' && r.displayName) || r.key}
@@ -620,7 +631,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                         </span>
                         {query && renderSnippet(r.text, query)}
                       </div>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               ))}

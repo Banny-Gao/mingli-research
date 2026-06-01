@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import type { Annotation, AnnotationType } from '../../hooks/useAnnotations'
 import { TYPE_LABELS } from '../../hooks/useNotesData'
 
@@ -46,12 +47,12 @@ const AnnotationPanel = ({
         {annotations.map(ann => (
           <div key={ann.id} className="ann-item">
             <div className="ann-item-header">
-              <span className={`ann-type-badge ${TYPE_CLASS[ann.type]}`}>
+              <Badge variant="secondary" className={`ann-type-badge ${TYPE_CLASS[ann.type]}`}>
                 {TYPE_LABELS[ann.type]}
-              </span>
-              <button className="ann-item-remove" onClick={() => onRemove(ann.id)} title="删除">
+              </Badge>
+              <Button variant="ghost" size="icon-xs" className="ann-item-remove" onClick={() => onRemove(ann.id)} title="删除" aria-label="删除批注">
                 <Trash2 size={12} />
-              </button>
+              </Button>
             </div>
             <div className="ann-item-text" onClick={() => onNavigate(ann)} title="点击跳转到原文">
               「{ann.selectedText}」
@@ -66,7 +67,9 @@ const AnnotationPanel = ({
                   className="ann-note-input"
                 />
                 <div className="ann-note-actions">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     className="ann-note-save"
                     onClick={() => {
                       onUpdateNote(ann.id, noteVal)
@@ -74,16 +77,18 @@ const AnnotationPanel = ({
                     }}
                   >
                     保存
-                  </button>
-                  <button className="ann-note-cancel" onClick={() => setEditingId(null)}>
+                  </Button>
+                  <Button variant="ghost" size="sm" className="ann-note-cancel" onClick={() => setEditingId(null)}>
                     取消
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : (
               <>
                 {ann.note && <div className="ann-note-text">{ann.note}</div>}
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className="ann-note-add-btn"
                   onClick={() => {
                     setEditingId(ann.id)
@@ -91,7 +96,7 @@ const AnnotationPanel = ({
                   }}
                 >
                   {ann.note ? '编辑批注' : '添加批注'}
-                </button>
+                </Button>
               </>
             )}
           </div>
