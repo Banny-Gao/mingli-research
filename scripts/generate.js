@@ -398,34 +398,44 @@ export function getBook(slug: string) {
 
 const generateSearchIndex = books => {
   fs.mkdirSync(PUBLIC_DIR, { recursive: true })
-  const index = books.map(b => ({
-    slug: b.slug,
-    section: b.section,
-    title: b.title,
-    interp: b.interpKeys.map(k => ({
-      key: k,
-      text: truncateText(
-        stripHtml(b.chaptersData[k] || '', { collapseWhitespace: true }),
-        MAX_SEARCH_TEXT
-      ),
-    })),
-    skill: b.skillKeys.map(k => ({
-      key: k,
-      displayName:
-        b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k,
-      text: truncateText(
-        stripHtml(b.skillsData[k] || '', { collapseWhitespace: true }),
-        MAX_SEARCH_TEXT
-      ),
-    })),
-    source: Object.keys(b.sourceData || {}).map(k => ({
-      key: k,
-      text: truncateText(
-        stripHtml(b.sourceData[k] || '', { collapseWhitespace: true }),
-        MAX_SEARCH_TEXT
-      ),
-    })),
-  }))
+  const index = books.map(b => {
+    const chapterCatMap = Object.fromEntries(
+      b.chapters.map(c => [c.name, c.category])
+    )
+    return {
+      slug: b.slug,
+      section: b.section,
+      category: b.category,
+      author: b.author,
+      title: b.title,
+      interp: b.interpKeys.map(k => ({
+        key: k,
+        chapterCategory: chapterCatMap[k] || '',
+        text: truncateText(
+          stripHtml(b.chaptersData[k] || '', { collapseWhitespace: true }),
+          MAX_SEARCH_TEXT
+        ),
+      })),
+      skill: b.skillKeys.map(k => ({
+        key: k,
+        chapterCategory: chapterCatMap[k] || '',
+        displayName:
+          b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k,
+        text: truncateText(
+          stripHtml(b.skillsData[k] || '', { collapseWhitespace: true }),
+          MAX_SEARCH_TEXT
+        ),
+      })),
+      source: Object.keys(b.sourceData || {}).map(k => ({
+        key: k,
+        chapterCategory: chapterCatMap[k] || '',
+        text: truncateText(
+          stripHtml(b.sourceData[k] || '', { collapseWhitespace: true }),
+          MAX_SEARCH_TEXT
+        ),
+      })),
+    }
+  })
   fs.writeFileSync(path.join(PUBLIC_DIR, 'search-index.json'), JSON.stringify(index, null, 2))
   console.log('search-index.json generated.')
 }

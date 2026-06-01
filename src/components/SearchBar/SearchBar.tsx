@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import { useReader } from '../../hooks/useReader'
 import { SEARCH_HISTORY_KEY } from '../../lib/constants'
@@ -7,6 +7,9 @@ interface SearchEntry {
   slug: string
   title: string
   section?: string
+  category?: string
+  author?: string
+  chapterCategory?: string
   type: 'chapter' | 'skill' | 'source'
   key: string
   displayName?: string
@@ -15,6 +18,25 @@ interface SearchEntry {
 
 interface SearchBarProps {
   scopeSlug?: string // 限定搜索的典籍slug
+}
+
+interface SearchIndexJson {
+  slug: string
+  title: string
+  section?: string
+  category?: string
+  author?: string
+  interp: Array<{ key: string; chapterCategory?: string; text: string }>
+  skill: Array<{ key: string; chapterCategory?: string; displayName?: string; text: string }>
+  source: Array<{ key: string; chapterCategory?: string; text: string }>
+}
+
+interface ResultGroup {
+  slug: string
+  title: string
+  author?: string
+  category?: string
+  items: { entry: SearchEntry; idx: number }[]
 }
 
 const SNIPPET_PREFIX = 20
@@ -58,6 +80,13 @@ function filterByScope(entries: SearchEntry[], scopeSlug: string | undefined): S
 const MAX_RESULTS = 10
 const SCROLL_TEXT_PREVIEW = 50
 
+const SearchIcon = ({ className, size = 14 }: { className?: string; size?: number }) => (
+  <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+)
+
 type TypeFilter = 'all' | 'source' | 'chapter' | 'skill'
 
 const TYPE_FILTERS: { value: TypeFilter; label: string; shortcut: string }[] = [
@@ -67,7 +96,7 @@ const TYPE_FILTERS: { value: TypeFilter; label: string; shortcut: string }[] = [
   { value: 'skill', label: '技能', shortcut: 'Ctrl+4' },
 ]
 
-const TYPE_TO_FILTER: Record<string, TypeFilter> = {
+const TYPE_TO_FILTER: Record<SearchEntry['type'], TypeFilter> = {
   source: 'source',
   chapter: 'chapter',
   skill: 'skill',
@@ -96,6 +125,21 @@ function saveHistory(entries: HistoryEntry[]) {
   localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(entries))
 }
 
+const AllFilterPill = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
+  <button className={`search-filter-pill section${active ? ' active' : ''}`} onClick={onClick}>
+    全部
+  </button>
+)
+
+const CategoryPill = ({ label, active, count, onClick }: { label: string; active: boolean; count?: number; onClick: () => void }) => (
+  <button className={`search-filter-pill category${active ? ' active' : ''}`} onClick={onClick}>
+    {label}
+    {count != null && count > 0 && (
+      <span className="search-filter-count">{count}</span>
+    )}
+  </button>
+)
+
 const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -107,6 +151,11 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const [historyIdx, setHistoryIdx] = useState(-1)
   const [sectionFilter, setSectionFilter] = useState<SectionFilter>('all')
   const [availableSections, setAvailableSections] = useState<Set<string>>(new Set())
+  const [categoryFilter, setCategoryFilter] = useState<string>('all')
+  const [availableCategories, setAvailableCategories] = useState<Set<string>>(new Set())
+  const [fetchError, setFetchError] = useState(false)
+  const [typeCounts, setTypeCounts] = useState<Record<TypeFilter, number>>({ all: 0, source: 0, chapter: 0, skill: 0 })
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const inputRef = useRef<HTMLInputElement>(null)
   const queryRef = useRef(query)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -117,6 +166,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const typeFilterRef = useRef<TypeFilter>('all')
   const sectionFilterRef = useRef<SectionFilter>('all')
+  const categoryFilterRef = useRef<string>('all')
 
   const BADGE_CONFIG = {
     chapter: { className: 'badge-chapter', label: '解读' },
@@ -126,56 +176,69 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
 
   const loadSearchIndex = useCallback(async (): Promise<SearchEntry[]> => {
     if (searchCacheRef.current) return searchCacheRef.current
-    const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
-    const data = (await res.json()) as Array<{
-      slug: string
-      title: string
-      section?: string
-      interp: Array<{ key: string; text: string }>
-      skill: Array<{ key: string; displayName?: string; text: string }>
-      source: Array<{ key: string; text: string }>
-    }>
-    const sections = new Set<string>()
-    const entries: SearchEntry[] = data.flatMap(book => {
-      if (book.section) sections.add(book.section)
-      return [
-      ...book.interp.filter(ch => ch.text).map(ch => ({
-        slug: book.slug,
-        title: book.title,
-        section: book.section,
-        type: 'chapter' as const,
-        key: ch.key,
-        text: ch.text,
-      })),
-      ...book.skill.filter(sk => sk.text).map(sk => ({
-        slug: book.slug,
-        title: book.title,
-        section: book.section,
-        type: 'skill' as const,
-        key: sk.key,
-        displayName: sk.displayName,
-        text: sk.text,
-      })),
-      ...(book.source || []).filter(src => src.text).map(src => ({
-        slug: book.slug,
-        title: book.title,
-        section: book.section,
-        type: 'source' as const,
-        key: src.key,
-        text: src.text,
-      })),
-    ]})
-    fuseRef.current = new Fuse(entries, {
-      keys: ['text', 'key', 'displayName', 'title'],
-      threshold: 0.0,
-      includeScore: true,
-      ignoreLocation: true,
-      useExtendedSearch: true,
-      minMatchCharLength: 2,
-    })
-    setAvailableSections(sections)
-    searchCacheRef.current = entries
-    return entries
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}search-index.json`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = (await res.json()) as SearchIndexJson[]
+      const sections = new Set<string>()
+      const categories = new Set<string>()
+      const entries: SearchEntry[] = data.flatMap(book => {
+        if (book.section) sections.add(book.section)
+        if (book.category) categories.add(book.category)
+        return [
+        ...book.interp.filter(ch => ch.text).map(ch => ({
+          slug: book.slug,
+          title: book.title,
+          section: book.section,
+          category: book.category,
+          author: book.author,
+          chapterCategory: ch.chapterCategory,
+          type: 'chapter' as const,
+          key: ch.key,
+          text: ch.text,
+        })),
+        ...book.skill.filter(sk => sk.text).map(sk => ({
+          slug: book.slug,
+          title: book.title,
+          section: book.section,
+          category: book.category,
+          author: book.author,
+          chapterCategory: sk.chapterCategory,
+          type: 'skill' as const,
+          key: sk.key,
+          displayName: sk.displayName,
+          text: sk.text,
+        })),
+        ...(book.source || []).filter(src => src.text).map(src => ({
+          slug: book.slug,
+          title: book.title,
+          section: book.section,
+          category: book.category,
+          author: book.author,
+          chapterCategory: src.chapterCategory,
+          type: 'source' as const,
+          key: src.key,
+          text: src.text,
+        })),
+      ]})
+      fuseRef.current = new Fuse(entries, {
+        keys: ['text', 'key', 'displayName', 'title'],
+        threshold: 0.0,
+        includeScore: true,
+        ignoreLocation: true,
+        useExtendedSearch: true,
+        minMatchCharLength: 1,
+      })
+      setAvailableSections(sections)
+      setAvailableCategories(categories)
+      setFetchError(false)
+      searchCacheRef.current = entries
+      return entries
+    } catch (err) {
+      console.error('Search index load failed:', err)
+      setFetchError(true)
+      return []
+    }
   }, [])
 
   // Close on outside click
@@ -195,7 +258,8 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   useEffect(() => {
     typeFilterRef.current = typeFilter
     sectionFilterRef.current = sectionFilter
-  }, [typeFilter, sectionFilter])
+    categoryFilterRef.current = categoryFilter
+  }, [typeFilter, sectionFilter, categoryFilter])
 
   // Keep queryRef in sync
   useEffect(() => {
@@ -231,14 +295,27 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
         results = fuzzySearch(entries, q)
       }
       results = filterByScope(results, scopeSlug)
-      // Apply type + section filters before truncation so filter changes see full result set
-      const tf = typeFilterRef.current
-      const sf = sectionFilterRef.current
-      if (tf !== 'all') {
-        results = results.filter(r => TYPE_TO_FILTER[r.type] === tf)
+      // Compute counts from the full (query+scope filtered) result set before further filtering
+      const counts: Record<TypeFilter, number> = { all: results.length, source: 0, chapter: 0, skill: 0 }
+      const catCounts: Record<string, number> = {}
+      for (const r of results) {
+        counts[TYPE_TO_FILTER[r.type]]++
+        if (r.category) catCounts[r.category] = (catCounts[r.category] || 0) + 1
       }
-      if (sf !== 'all') {
-        results = results.filter(r => r.section === sf)
+      setTypeCounts(counts)
+      setCategoryCounts(catCounts)
+      // Apply type + section + category filters before truncation
+      const typeF = typeFilterRef.current
+      const sectionF = sectionFilterRef.current
+      const catF = categoryFilterRef.current
+      if (typeF !== 'all') {
+        results = results.filter(r => TYPE_TO_FILTER[r.type] === typeF)
+      }
+      if (sectionF !== 'all') {
+        results = results.filter(r => r.section === sectionF)
+      }
+      if (catF !== 'all') {
+        results = results.filter(r => r.category === catF)
       }
       setResults(results.slice(0, MAX_RESULTS))
       setSelectedIdx(-1)
@@ -255,23 +332,25 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [query, typeFilter, sectionFilter, doSearch])
+  }, [query, typeFilter, sectionFilter, categoryFilter, doSearch])
 
   // keyboard: / to open, Esc to close
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      const tag = document.activeElement?.tagName
       if (e.key === '/' && !open) {
-        const tag = document.activeElement?.tagName
         if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
           e.preventDefault()
           setOpen(true)
         }
       }
       if (e.key === 'Escape') {
+        if (!open) return
         setOpen(false)
         setQuery('')
       }
       if (e.ctrlKey && e.key >= '1' && e.key <= '4') {
+        if (tag === 'INPUT' || tag === 'TEXTAREA') return
         e.preventDefault()
         setTypeFilter(TYPE_FILTERS[Number(e.key) - 1].value)
       }
@@ -343,21 +422,25 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     )
   }
 
+  const groupedResults = useMemo(() => {
+    const groups: ResultGroup[] = []
+    const seen = new Set<string>()
+    for (let i = 0; i < results.length; i++) {
+      const r = results[i]
+      if (!seen.has(r.slug)) {
+        seen.add(r.slug)
+        groups.push({ slug: r.slug, title: r.title, author: r.author, category: r.category, items: [] })
+      }
+      groups[groups.length - 1].items.push({ entry: r, idx: i })
+    }
+    return groups
+  }, [results])
+
   return (
     <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
       <button onClick={() => setOpen(!open)} className="search-trigger-btn">
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
+        <SearchIcon />
         <span>搜索</span>
       </button>
 
@@ -368,7 +451,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
             <input
               ref={inputRef}
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={e => {
+                setQuery(e.target.value)
+                if (historyIdx >= 0) setHistoryIdx(-1)
+              }}
               onKeyDown={e => {
                 const inHistoryMode = !query && history.length > 0
                 if (e.key === 'ArrowDown') {
@@ -412,17 +498,15 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                 title={f.shortcut}
               >
                 {f.label}
+                {typeCounts[f.value] > 0 && f.value !== 'all' && (
+                  <span className="search-filter-count">{typeCounts[f.value]}</span>
+                )}
               </button>
             ))}
             {availableSections.size >= 2 && (
               <>
                 <span className="search-filter-sep" />
-                <button
-                  className={`search-filter-pill section${sectionFilter === 'all' ? ' active' : ''}`}
-                  onClick={() => setSectionFilter('all')}
-                >
-                  全部
-                </button>
+                <AllFilterPill active={sectionFilter === 'all'} onClick={() => setSectionFilter('all')} />
                 {ART_SECTIONS.filter(s => availableSections.has(s)).map(s => (
                   <button
                     key={s}
@@ -434,13 +518,31 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                 ))}
               </>
             )}
+            {availableCategories.size >= 2 && (
+              <>
+                <span className="search-filter-sep" />
+                <AllFilterPill active={categoryFilter === 'all'} onClick={() => setCategoryFilter('all')} />
+                {[...availableCategories].sort().map(c => (
+                  <CategoryPill
+                    key={c}
+                    label={c}
+                    active={categoryFilter === c}
+                    count={categoryCounts[c]}
+                    onClick={() => setCategoryFilter(c)}
+                  />
+                ))}
+              </>
+            )}
           </div>
 
           <div className="search-results">
-            {!query && history.length === 0 && (
+            {fetchError && (
+              <div className="search-empty">搜索索引加载失败，请刷新页面重试</div>
+            )}
+            {!fetchError && !query && history.length === 0 && (
               <div className="search-empty">输入关键词全文搜索篇目和技能</div>
             )}
-            {!query && history.length > 0 && (
+            {!fetchError && !query && history.length > 0 && (
               <div className="search-history">
                 <div className="search-history-header">
                   <span className="search-history-title">搜索历史</span>
@@ -456,10 +558,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                     onMouseEnter={() => setHistoryIdx(i)}
                     tabIndex={-1}
                   >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="search-history-icon">
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="m21 21-4.35-4.35" />
-                    </svg>
+                    <SearchIcon className="search-history-icon" size={12} />
                     <div className="search-result-text">
                       <span className="search-item-name">{h.query}</span>
                     </div>
@@ -479,35 +578,52 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                 ))}
               </div>
             )}
-            {query && !loading && results.length === 0 && (
+            {!fetchError && query && !loading && results.length === 0 && (
               <div className="search-empty">未找到「{query}」相关篇目</div>
             )}
-            {results
-              .map((r, i) => (
-              <button
-                key={i}
-                ref={el => {
-                  resultRefs.current[i] = el
-                }}
-                className={`search-result-item${i === selectedIdx ? ' search-result-selected' : ''}`}
-                onClick={() => handleNavigate(r.slug, r.key, r.type)}
-                onMouseEnter={() => setSelectedIdx(i)}
-                tabIndex={-1}
-              >
-                <span
-                  className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}
-                >
-                  {BADGE_CONFIG[r.type]?.label ?? BADGE_CONFIG.skill.label}
-                </span>
-                <div className="search-result-text">
-                  <span className="search-book-title">《{r.title}》</span>
-                  <span className="search-item-name">
-                    {(r.type === 'skill' && r.displayName) || r.key}
-                  </span>
-                  {query && renderSnippet(r.text, query)}
+            {!fetchError && query && results.length > 0 && (
+              <div className="search-result-count">
+                找到 {typeCounts.all} 条结果{results.length < typeCounts.all ? `，显示前 ${results.length} 条` : ''}
+              </div>
+            )}
+            {!fetchError &&
+              groupedResults.map(group => (
+                <div key={group.slug} className="search-book-group">
+                  <div className="search-book-header">
+                    《{group.title}》
+                    {group.author && <span className="search-book-author"> — {group.author}</span>}
+                    {group.category && <span className="search-book-category"> · {group.category}</span>}
+                  </div>
+                  {group.items.map(({ entry: r, idx: i }) => (
+                    <button
+                      key={`${r.slug}-${r.type}-${r.key}`}
+                      ref={el => {
+                        resultRefs.current[i] = el
+                      }}
+                      className={`search-result-item${i === selectedIdx ? ' search-result-selected' : ''}`}
+                      // eslint-disable-next-line react-hooks/refs -- handleNavigate only reads queryRef in click handler, not during render
+                      onClick={() => handleNavigate(r.slug, r.key, r.type)}
+                      onMouseEnter={() => setSelectedIdx(i)}
+                      tabIndex={-1}
+                    >
+                      <span
+                        className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}
+                      >
+                        {BADGE_CONFIG[r.type]?.label ?? BADGE_CONFIG.skill.label}
+                      </span>
+                      <div className="search-result-text">
+                        <span className="search-item-name">
+                          {(r.type === 'skill' && r.displayName) || r.key}
+                          {r.chapterCategory && (
+                            <span className="search-chapter-category"> — {r.chapterCategory}</span>
+                          )}
+                        </span>
+                        {query && renderSnippet(r.text, query)}
+                      </div>
+                    </button>
+                  ))}
                 </div>
-              </button>
-            ))}
+              ))}
           </div>
         </div>
       )}

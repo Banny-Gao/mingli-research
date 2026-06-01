@@ -615,6 +615,19 @@
   border-color: rgba(233, 146, 64, 0.5);
   color: var(--color-accent);
 }
+.search-filter-pill.category {
+  font-size: 11px;
+}
+.search-filter-pill.category.active {
+  background: rgba(96, 160, 96, 0.18);
+  border-color: rgba(96, 160, 96, 0.4);
+  color: var(--color-quote);
+}
+.search-filter-count {
+  margin-left: 3px;
+  font-size: 10px;
+  opacity: 0.7;
+}
 .search-results {
   max-height: 80vh;
   overflow-y: auto;
@@ -624,6 +637,34 @@
   text-align: center;
   color: var(--color-text-dim);
   font-size: 13px;
+}
+.search-result-count {
+  padding: 6px 14px 0;
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.search-book-group {
+  border-bottom: 1px solid var(--color-border);
+}
+.search-book-group:last-child {
+  border-bottom: none;
+}
+.search-book-header {
+  padding: 8px 14px 4px;
+  font-size: 13px;
+  color: var(--color-gold);
+}
+.search-book-author {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+.search-book-category {
+  font-size: 11px;
+  color: var(--color-accent);
+}
+.search-chapter-category {
+  font-size: 11px;
+  color: var(--color-text-muted);
 }
 .search-history-header {
   display: flex;
@@ -721,10 +762,6 @@
   flex-direction: column;
   gap: 2px;
   min-width: 0;
-}
-.search-book-title {
-  font-size: 13px;
-  color: var(--color-gold);
 }
 .search-item-name {
   font-size: 12px;
