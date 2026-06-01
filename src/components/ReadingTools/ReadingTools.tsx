@@ -1,5 +1,6 @@
 import { useState, useEffect, type CSSProperties, type RefObject } from 'react'
 import { ChevronUp } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import './ReadingTools.less'
 
 // Constants
@@ -46,13 +47,15 @@ export const BackToTop = ({ scrollRef }: { scrollRef: RefObject<HTMLDivElement |
   if (!visible) return null
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })}
       className="back-to-top"
       aria-label="回到顶部"
     >
       <ChevronUp size={18} />
-    </button>
+    </Button>
   )
 }
 
@@ -156,13 +159,14 @@ export const TocSidebar = ({ html, scrollRef, open, onItemClick }: TocSidebarPro
       <div className="toc-header">目录</div>
       <div className="toc-list">
         {toc.map(item => (
-          <button
+          <Button
             key={item.id}
-            className={`toc-item ${item.level === 3 ? 'toc-sub' : ''} ${activeId === item.id ? 'active' : ''}`}
+            variant="ghost"
             onClick={() => scrollTo(item.id)}
+            className={`toc-item ${item.level === 3 ? 'toc-sub' : ''} ${activeId === item.id ? 'active' : ''}`.trim()}
           >
             {item.text}
-          </button>
+          </Button>
         ))}
       </div>
     </div>
