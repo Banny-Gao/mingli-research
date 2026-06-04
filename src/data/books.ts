@@ -2471,19 +2471,19 @@ export const books: Book[] = [
     "version": "据《四库全书》本",
     "description": "子平命理学核心经典，以天干地支五行生克为核心，共六十一篇专题系统阐述命理原理",
     "total": 63,
-    "done": 0,
+    "done": 3,
     "chapters": [
       {
         "num": "01",
         "name": "天道",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "02",
         "name": "坤道",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "上篇 · 通神论"
       },
@@ -2581,7 +2581,7 @@ export const books: Book[] = [
       {
         "num": "16",
         "name": "生时",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "上篇 · 通神论"
       },
@@ -3749,6 +3749,9 @@ export const books: Book[] = [
         "name": "安身命例"
       },
       {
+        "name": "财帛"
+      },
+      {
         "name": "定富贵贫贱十等论"
       },
       {
@@ -3774,6 +3777,18 @@ export const books: Book[] = [
       },
       {
         "name": "斗數準繩"
+      },
+      {
+        "name": "福德"
+      },
+      {
+        "name": "父母"
+      },
+      {
+        "name": "官禄"
+      },
+      {
+        "name": "疾厄"
       },
       {
         "name": "论大限十年祸福何如"
@@ -3833,7 +3848,19 @@ export const books: Book[] = [
         "name": "羅序"
       },
       {
+        "name": "命宫"
+      },
+      {
+        "name": "奴仆"
+      },
+      {
         "name": "女命骨髓赋"
+      },
+      {
+        "name": "妻妾"
+      },
+      {
+        "name": "迁移"
       },
       {
         "name": "十二宫诸星得地富贵论"
@@ -3852,6 +3879,9 @@ export const books: Book[] = [
       },
       {
         "name": "谈星要论"
+      },
+      {
+        "name": "田宅"
       },
       {
         "name": "问化忌星所主若何？"
@@ -3965,6 +3995,9 @@ export const books: Book[] = [
         "name": "形性賦"
       },
       {
+        "name": "兄弟"
+      },
+      {
         "name": "羊陀二星总论"
       },
       {
@@ -3975,6 +4008,9 @@ export const books: Book[] = [
       },
       {
         "name": "重補斗數彀率"
+      },
+      {
+        "name": "子女"
       }
     ]
   }
