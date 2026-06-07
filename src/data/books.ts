@@ -11,7 +11,7 @@ export const books: Book[] = [
     "version": "据通行本（渊海/渊源合编本）",
     "description": "子平命理学开山之作，五卷汇编体，涵盖干支五行、十神格局、六亲赋文、诗诀口诀，共三百余篇",
     "total": 245,
-    "done": 0,
+    "done": 48,
     "chapters": [
       {
         "num": "01",
@@ -534,14 +534,14 @@ export const books: Book[] = [
       {
         "num": "75",
         "name": "倒冲格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "76",
         "name": "六乙鼠贵格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -569,7 +569,7 @@ export const books: Book[] = [
       {
         "num": "80",
         "name": "井栏叉格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -583,14 +583,14 @@ export const books: Book[] = [
       {
         "num": "82",
         "name": "六阴朝阳格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "83",
         "name": "刑合格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -625,21 +625,21 @@ export const books: Book[] = [
       {
         "num": "88",
         "name": "六壬趋艮格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "89",
         "name": "六甲趋干格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "90",
         "name": "勾陈得位格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -667,7 +667,7 @@ export const books: Book[] = [
       {
         "num": "94",
         "name": "从革格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -702,7 +702,7 @@ export const books: Book[] = [
       {
         "num": "99",
         "name": "伤官生财格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -716,7 +716,7 @@ export const books: Book[] = [
       {
         "num": "101",
         "name": "伤官带杀格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -744,14 +744,14 @@ export const books: Book[] = [
       {
         "num": "105",
         "name": "两干不杂格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "106",
         "name": "五行俱足格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -765,14 +765,14 @@ export const books: Book[] = [
       {
         "num": "108",
         "name": "六亲总论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "109",
         "name": "六亲捷要歌",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -884,7 +884,7 @@ export const books: Book[] = [
       {
         "num": "125",
         "name": "化气十段锦",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -905,7 +905,7 @@ export const books: Book[] = [
       {
         "num": "128",
         "name": "神趣八法-从象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -940,7 +940,7 @@ export const books: Book[] = [
       {
         "num": "133",
         "name": "神趣八法-伏象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -996,7 +996,7 @@ export const books: Book[] = [
       {
         "num": "141",
         "name": "伤官说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -1045,7 +1045,7 @@ export const books: Book[] = [
       {
         "num": "148",
         "name": "五行元理消息赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -1059,7 +1059,7 @@ export const books: Book[] = [
       {
         "num": "150",
         "name": "碧渊赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1073,7 +1073,7 @@ export const books: Book[] = [
       {
         "num": "152",
         "name": "人鉴论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1087,7 +1087,7 @@ export const books: Book[] = [
       {
         "num": "154",
         "name": "万金赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1136,7 +1136,7 @@ export const books: Book[] = [
       {
         "num": "161",
         "name": "五言独步",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1164,7 +1164,7 @@ export const books: Book[] = [
       {
         "num": "165",
         "name": "偏官诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1185,7 +1185,7 @@ export const books: Book[] = [
       {
         "num": "168",
         "name": "偏财诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1199,7 +1199,7 @@ export const books: Book[] = [
       {
         "num": "170",
         "name": "伤官诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1213,7 +1213,7 @@ export const books: Book[] = [
       {
         "num": "172",
         "name": "刑合诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1283,7 +1283,7 @@ export const books: Book[] = [
       {
         "num": "182",
         "name": "六乙鼠贵诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1311,7 +1311,7 @@ export const books: Book[] = [
       {
         "num": "186",
         "name": "井栏叉格诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1325,7 +1325,7 @@ export const books: Book[] = [
       {
         "num": "188",
         "name": "六阴朝阳诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1339,21 +1339,21 @@ export const books: Book[] = [
       {
         "num": "190",
         "name": "六甲趋干诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "191",
         "name": "六壬趋艮诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "192",
         "name": "勾陈得位诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1374,7 +1374,7 @@ export const books: Book[] = [
       {
         "num": "195",
         "name": "从革诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1437,28 +1437,28 @@ export const books: Book[] = [
       {
         "num": "204",
         "name": "化气诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "205",
         "name": "刑冲诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "206",
         "name": "克妻诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "207",
         "name": "克子诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1521,14 +1521,14 @@ export const books: Book[] = [
       {
         "num": "216",
         "name": "冠带诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "217",
         "name": "临官诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1570,7 +1570,7 @@ export const books: Book[] = [
       {
         "num": "223",
         "name": "五行生克赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1591,7 +1591,7 @@ export const books: Book[] = [
       {
         "num": "226",
         "name": "会命要说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1619,7 +1619,7 @@ export const books: Book[] = [
       {
         "num": "230",
         "name": "动静说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1647,7 +1647,7 @@ export const books: Book[] = [
       {
         "num": "234",
         "name": "看命口诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1661,7 +1661,7 @@ export const books: Book[] = [
       {
         "num": "236",
         "name": "元理赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1675,7 +1675,7 @@ export const books: Book[] = [
       {
         "num": "238",
         "name": "六神篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1689,7 +1689,7 @@ export const books: Book[] = [
       {
         "num": "240",
         "name": "一行禅师天元赋注解",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },

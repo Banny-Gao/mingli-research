@@ -431,10 +431,15 @@ const ModalReader = ({
                 <div className={proseClass}>
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw, rehypeSlug, rehypeHighlight, rehypeAutolinkHeadings]}
+                    rehypePlugins={[
+                      rehypeRaw,
+                      rehypeSlug,
+                      [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
+                      rehypeAutolinkHeadings,
+                    ]}
                     components={{
                       code({ className, children, ...props }) {
-                        const isMermaid = className === 'language-mermaid'
+                        const isMermaid = /\blanguage-mermaid\b/.test(className || '')
                         const codeText = String(children).replace(/\n$/, '')
                         if (isMermaid) return <Mermaid>{codeText}</Mermaid>
                         return (
