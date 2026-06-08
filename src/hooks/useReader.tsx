@@ -1,7 +1,11 @@
 import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react'
+import { useLocation } from 'react-router-dom'
 import { books } from '../data/books'
 import { useReadProgress, useGlobalProgress } from './useProgress'
+import { useMediaQuery } from './useMediaQuery'
+import { useReaderRoute, buildReaderPath, READER_PATH_RE } from './useReaderRoute'
 
+const MOBILE_QUERY = '(max-width: 640px)'
 export interface ReaderParams {
   bookSlug: string
   modalType: 'interp' | 'skill' | 'source'
@@ -20,7 +24,7 @@ interface ReaderContextType {
     scrollToText: string | null
   }
   chapters: Array<{ name: string }>
-  closeVersion: number // increments each time modal closes, for consumer refresh
+  closeVersion: number
 }
 
 const ReaderContext = createContext<ReaderContextType | null>(null)
@@ -33,10 +37,29 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   const [closeVersion, setCloseVersion] = useState(0)
   const { touchChapter } = useGlobalProgress()
   const { markRead } = useReadProgress(bookSlug)
+  const location = useLocation()
+  const isMobile = useMediaQuery(MOBILE_QUERY)
 
   const chapters = useMemo(() => {
     return books.find(b => b.slug === bookSlug)?.chapters || []
   }, [bookSlug])
+
+  const clearState = useCallback(() => {
+    setModalType(null)
+    setModalKey('')
+    setBookSlug('')
+    setScrollToText(null)
+    setCloseVersion(v => v + 1)
+  }, [])
+
+  // 移动端 reader 路由状态机：封装 popstate / 路由变化 / 断点兜底
+  const { enterRoute, exitRoute } = useReaderRoute({
+    isMobile,
+    modalType,
+    bookSlug,
+    modalKey,
+    onExit: clearState,
+  })
 
   const openReader = useCallback(
     (p: ReaderParams) => {
@@ -45,18 +68,21 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       setModalKey(p.modalKey)
       setScrollToText(p.scrollToText || null)
       touchChapter(p.bookSlug, p.modalKey)
+
+      if (!isMobile) return
+
+      const path = buildReaderPath(p.bookSlug, p.modalType, p.modalKey)
+      const replace = READER_PATH_RE.test(location.pathname)
+      enterRoute(path, { replace })
     },
-    [touchChapter]
+    [isMobile, location.pathname, enterRoute, touchChapter]
   )
 
   const closeReader = useCallback(() => {
     if (modalType === 'interp' && modalKey) markRead(modalKey)
-    setModalType(null)
-    setModalKey('')
-    setBookSlug('')
-    setScrollToText(null)
-    setCloseVersion(v => v + 1)
-  }, [modalType, modalKey, markRead])
+    exitRoute()
+    clearState()
+  }, [modalType, modalKey, markRead, exitRoute, clearState])
 
   const consumeScrollToText = useCallback(() => {
     setScrollToText(null)

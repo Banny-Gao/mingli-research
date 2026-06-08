@@ -106,12 +106,17 @@ const ModalReader = ({
 
     loader()
       .then(content => {
-        if (!cancelled) { setLoadedContent(content); setContentLoading(false) }
+        if (!cancelled) {
+          setLoadedContent(content)
+          setContentLoading(false)
+        }
       })
       .catch(() => {
         if (!cancelled) setContentLoading(false)
       })
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [modalKey, modalType])
 
   // Reset internal UI state when navigating between chapters
@@ -330,19 +335,32 @@ const ModalReader = ({
     }
   }
 
-
   // 统一 ChapterKey 下的跨内容导航：同一篇章的 source / interp / skill 互相跳转
-  const chapterName =
-    modalType === 'skill' ? skillToChapters[modalKey]?.[0] || modalKey : modalKey
+  const chapterName = modalType === 'skill' ? skillToChapters[modalKey]?.[0] || modalKey : modalKey
   const chapterSkillName = chapterToSkills[chapterName]?.[0]
   const hasSource = !!sourceContent[chapterName]
   const hasInterp = !!interpContent[chapterName]
   const hasSkill = !!skillRawContent[chapterName]
 
   const contentNavItems = [
-    { type: 'source' as const, label: '原文', show: hasSource && modalType !== 'source', navKey: chapterName },
-    { type: 'interp' as const, label: '解读', show: hasInterp && modalType !== 'interp', navKey: chapterName },
-    { type: 'skill' as const, label: '技能', show: hasSkill && modalType !== 'skill' && !!chapterSkillName, navKey: chapterSkillName || '' },
+    {
+      type: 'source' as const,
+      label: '原文',
+      show: hasSource && modalType !== 'source',
+      navKey: chapterName,
+    },
+    {
+      type: 'interp' as const,
+      label: '解读',
+      show: hasInterp && modalType !== 'interp',
+      navKey: chapterName,
+    },
+    {
+      type: 'skill' as const,
+      label: '技能',
+      show: hasSkill && modalType !== 'skill' && !!chapterSkillName,
+      navKey: chapterSkillName || '',
+    },
   ].filter(c => c.show)
   const rawBody = contentLoading
     ? ''
@@ -384,7 +402,7 @@ const ModalReader = ({
               onTogglePanel={() => setShowPanel(v => !v)}
               skillRawContent={skillRawContent}
             />
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} className="modal-close-btn">
               <X size={18} />
             </Button>
             <ReadingProgress scrollRef={modalBodyRef} />
