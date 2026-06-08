@@ -1,5 +1,7 @@
-.not-found-msg {
-  color: #8080a0;
-  text-align: center;
-  padding: 40px 0;
+/* 移动端（<= 640px）隐藏 ModalReader 右上角关闭按钮
+   移动端走 /read/... 路由，系统返回键/手势就是关闭方式，不需要 X */
+@media (max-width: 640px) {
+  .modal-close-btn {
+    display: none !important;
+  }
 }

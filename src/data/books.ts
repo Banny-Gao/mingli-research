@@ -11,523 +11,523 @@ export const books: Book[] = [
     "version": "据通行本（渊海/渊源合编本）",
     "description": "子平命理学开山之作，五卷汇编体，涵盖干支五行、十神格局、六亲赋文、诗诀口诀，共三百余篇",
     "total": 245,
-    "done": 48,
+    "done": 241,
     "chapters": [
       {
         "num": "01",
         "name": "题记与引",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "02",
         "name": "论五行所生之始",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "03",
         "name": "论天地干支所出",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "04",
         "name": "天干相合",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "05",
         "name": "十干所属方位十二支所属论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "06",
         "name": "论十二地支阴阳所属",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "07",
         "name": "论十二支六合",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "08",
         "name": "论十二支三合",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "09",
         "name": "论十二支相冲",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "10",
         "name": "论十二支相穿",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "11",
         "name": "论十二支相刑",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "12",
         "name": "论干支字义",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "13",
         "name": "论六十花甲子纳音并注解",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "14",
         "name": "论天干生旺死绝",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "15",
         "name": "天干五阳通变",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "16",
         "name": "天干五阴通变",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "17",
         "name": "论年上起月例",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "18",
         "name": "论日上起时例",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "19",
         "name": "论起玉堂天乙贵人",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "20",
         "name": "论三奇贵人",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "21",
         "name": "论月德贵人",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "22",
         "name": "论天德贵人",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "23",
         "name": "论三元",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "24",
         "name": "论十干禄",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "25",
         "name": "论驿马",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "26",
         "name": "论天赦",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "27",
         "name": "论华盖",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "28",
         "name": "论六甲空亡",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "29",
         "name": "论四大空亡",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "30",
         "name": "论天罗地网",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "31",
         "name": "论羊刃",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "32",
         "name": "论起大运法",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "33",
         "name": "论行小运法",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "34",
         "name": "论五行相生相克",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "35",
         "name": "论天地干支暗藏总诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "36",
         "name": "地支藏遁歌",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "37",
         "name": "论日为主",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "38",
         "name": "论月令",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "39",
         "name": "论生旺",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "40",
         "name": "又论五行生旺衰绝吉凶",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "41",
         "name": "论五行墓库财印",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "42",
         "name": "论官杀混杂要制伏",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "43",
         "name": "论五行生克制化各有所喜所害例",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "44",
         "name": "子平举要歌",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "45",
         "name": "详解定真论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "46",
         "name": "喜忌篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "47",
         "name": "继善篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "48",
         "name": "正官论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "49",
         "name": "论官星太过",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "50",
         "name": "论偏官即七杀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "51",
         "name": "论七杀即偏官",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "52",
         "name": "论印绶",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "53",
         "name": "论正财",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "54",
         "name": "论偏财",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "55",
         "name": "论食神",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "56",
         "name": "论倒食",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "57",
         "name": "论伤官",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "58",
         "name": "论劫财",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "59",
         "name": "论羊刃",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "60",
         "name": "论刑合",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "61",
         "name": "论福德秀气",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "62",
         "name": "论杂气",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "63",
         "name": "论日贵",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "64",
         "name": "论日德",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "65",
         "name": "论日刃",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "66",
         "name": "论魁罡",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "67",
         "name": "论金神",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "68",
         "name": "论时墓",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "69",
         "name": "正官格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "70",
         "name": "杂气财官格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "71",
         "name": "月上偏官格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "72",
         "name": "时上偏财格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "73",
         "name": "时上一位贵格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "74",
         "name": "飞天禄马格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -548,21 +548,21 @@ export const books: Book[] = [
       {
         "num": "77",
         "name": "合禄格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "78",
         "name": "子遥巳格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "79",
         "name": "壬骑龙背格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -576,7 +576,7 @@ export const books: Book[] = [
       {
         "num": "81",
         "name": "归禄格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -597,28 +597,28 @@ export const books: Book[] = [
       {
         "num": "84",
         "name": "拱贵格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "85",
         "name": "拱禄格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "86",
         "name": "印绶格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "87",
         "name": "杂气印绶格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -646,21 +646,21 @@ export const books: Book[] = [
       {
         "num": "91",
         "name": "玄武当权格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "92",
         "name": "炎上格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "93",
         "name": "润下格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -674,28 +674,28 @@ export const books: Book[] = [
       {
         "num": "95",
         "name": "稼穑格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "96",
         "name": "曲直格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "97",
         "name": "日德秀气格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "98",
         "name": "弃命从财格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -709,7 +709,7 @@ export const books: Book[] = [
       {
         "num": "100",
         "name": "弃命从杀格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -723,21 +723,21 @@ export const books: Book[] = [
       {
         "num": "102",
         "name": "岁德扶杀格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "103",
         "name": "岁德扶财格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "104",
         "name": "夹丘格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -779,105 +779,105 @@ export const books: Book[] = [
       {
         "num": "110",
         "name": "论父",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "111",
         "name": "论母",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "112",
         "name": "论妻妾",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "113",
         "name": "论兄弟姐妹",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "114",
         "name": "论子息",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "115",
         "name": "论妇人总诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "116",
         "name": "阴命赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "117",
         "name": "女命富贵贫贱篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "118",
         "name": "论小儿",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "119",
         "name": "论小儿关杀例",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "120",
         "name": "论性情",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "121",
         "name": "论疾病",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "122",
         "name": "论大运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "123",
         "name": "论太岁吉凶",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "124",
         "name": "论运化气",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -891,14 +891,14 @@ export const books: Book[] = [
       {
         "num": "126",
         "name": "神趣八法-类象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "127",
         "name": "神趣八法-属象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -912,28 +912,28 @@ export const books: Book[] = [
       {
         "num": "129",
         "name": "神趣八法-化象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "130",
         "name": "神趣八法-照象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "131",
         "name": "神趣八法-返象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "132",
         "name": "神趣八法-鬼象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -947,49 +947,49 @@ export const books: Book[] = [
       {
         "num": "134",
         "name": "杂论口诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "135",
         "name": "群兴论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "136",
         "name": "论兴亡",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "137",
         "name": "宝法第一",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "138",
         "name": "宝法第二",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "139",
         "name": "寸金搜髓论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "140",
         "name": "论命细法",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -1003,42 +1003,42 @@ export const books: Book[] = [
       {
         "num": "142",
         "name": "心镜歌",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "143",
         "name": "妖祥赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "144",
         "name": "络绎赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "145",
         "name": "相心赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "146",
         "name": "玄机赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "147",
         "name": "幽微赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
@@ -1052,7 +1052,7 @@ export const books: Book[] = [
       {
         "num": "149",
         "name": "金玉赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1066,7 +1066,7 @@ export const books: Book[] = [
       {
         "num": "151",
         "name": "造微论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1080,7 +1080,7 @@ export const books: Book[] = [
       {
         "num": "153",
         "name": "爱憎赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1094,42 +1094,42 @@ export const books: Book[] = [
       {
         "num": "155",
         "name": "掣要捷驰玄妙诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "156",
         "name": "渊源集说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "157",
         "name": "子平百章歌",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "158",
         "name": "四言独步",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "159",
         "name": "身弱论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "160",
         "name": "弃命从杀论",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
@@ -1143,21 +1143,21 @@ export const books: Book[] = [
       {
         "num": "162",
         "name": "十干体象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "163",
         "name": "十二支体象",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "164",
         "name": "正官诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1171,14 +1171,14 @@ export const books: Book[] = [
       {
         "num": "166",
         "name": "印绶诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "167",
         "name": "正财诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1192,7 +1192,7 @@ export const books: Book[] = [
       {
         "num": "169",
         "name": "食神诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1206,7 +1206,7 @@ export const books: Book[] = [
       {
         "num": "171",
         "name": "羊刃诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1220,63 +1220,63 @@ export const books: Book[] = [
       {
         "num": "173",
         "name": "日贵诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "174",
         "name": "金神诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "175",
         "name": "日德诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "176",
         "name": "魁罡诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "177",
         "name": "时墓诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "178",
         "name": "杂气财官诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "179",
         "name": "时上偏财诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "180",
         "name": "时上一位贵诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "181",
         "name": "飞天禄马诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1290,21 +1290,21 @@ export const books: Book[] = [
       {
         "num": "183",
         "name": "合禄诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "184",
         "name": "子遥巳诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "185",
         "name": "壬骑龙背诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1318,7 +1318,7 @@ export const books: Book[] = [
       {
         "num": "187",
         "name": "归禄格诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1332,7 +1332,7 @@ export const books: Book[] = [
       {
         "num": "189",
         "name": "拱禄拱贵诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1360,14 +1360,14 @@ export const books: Book[] = [
       {
         "num": "193",
         "name": "玄武当权诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "194",
         "name": "润下诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1381,56 +1381,56 @@ export const books: Book[] = [
       {
         "num": "196",
         "name": "稼穑诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "197",
         "name": "曲直格诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "198",
         "name": "炎上格诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "199",
         "name": "福德格诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "200",
         "name": "弃命从财诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "201",
         "name": "弃命从杀诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "202",
         "name": "杀重有救诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "203",
         "name": "天元一气诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1465,56 +1465,56 @@ export const books: Book[] = [
       {
         "num": "208",
         "name": "运晦诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "209",
         "name": "运通诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "210",
         "name": "带疾诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "211",
         "name": "寿元诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "212",
         "name": "飘荡诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "213",
         "name": "女命诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "214",
         "name": "长生诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "215",
         "name": "沐浴诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1535,35 +1535,35 @@ export const books: Book[] = [
       {
         "num": "218",
         "name": "帝旺诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "219",
         "name": "衰病死诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "220",
         "name": "墓库诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "221",
         "name": "胞胎诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "222",
         "name": "胎养诗诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1577,14 +1577,14 @@ export const books: Book[] = [
       {
         "num": "224",
         "name": "珞琭子消息赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "225",
         "name": "论八字撮要法",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
@@ -1598,7 +1598,7 @@ export const books: Book[] = [
       {
         "num": "227",
         "name": "病药说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1612,7 +1612,7 @@ export const books: Book[] = [
       {
         "num": "229",
         "name": "损益生长四药说类",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1626,21 +1626,21 @@ export const books: Book[] = [
       {
         "num": "231",
         "name": "盖头说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "232",
         "name": "玉井奥诀",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "233",
         "name": "气象篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1654,7 +1654,7 @@ export const books: Book[] = [
       {
         "num": "235",
         "name": "巫咸撮要",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1668,7 +1668,7 @@ export const books: Book[] = [
       {
         "num": "237",
         "name": "明通赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
@@ -1696,28 +1696,28 @@ export const books: Book[] = [
       {
         "num": "241",
         "name": "崖泉摘锦",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "242",
         "name": "渭泾篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "243",
         "name": "女命大义",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "244",
         "name": "讲命捷径赋",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
