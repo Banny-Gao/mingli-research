@@ -6,6 +6,7 @@
 > 术数：命
 > 类别：八字
 > 内容类型：source, interpretation, skill
+> 字形策略：原文照录
 
 ## 序言起例
 
