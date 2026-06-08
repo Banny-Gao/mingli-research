@@ -22,7 +22,12 @@ const BookApp = () => {
   const sourceContent = (bookCompat.sourceContent as Record<string, any>) || {}
   const chapterToSkills = bookCompat.chapterToSkills || {}
 
-  const bookSourceKeys = Object.keys(sourceContent) as unknown as string[]
+  // sourceKeys 为 generate.js 静态生成，比 import.meta.glob 运行时结果更可靠
+  const staticSourceKeys = (bookCompat.sourceKeys as readonly string[]) || []
+  const bookSourceKeys =
+    staticSourceKeys.length > 0
+      ? [...staticSourceKeys]
+      : (Object.keys(sourceContent) as unknown as string[])
   const skillKeys = Object.keys(skillContent || {})
 
   // Handle URL params for search navigation — extract from query string on mount, clean up after
@@ -101,7 +106,7 @@ const BookApp = () => {
               <p className="text-xs text-[var(--color-text-dim)] mb-1">{book.author}</p>
             )}
             {book.description && (
-              <p className="text-xs text-[var(--color-text-dim)] leading-relaxed max-w-[600px] mx-auto mb-2">
+              <p className="text-xs text-left text-[var(--color-text-dim)] leading-relaxed max-lg:w-2/3 max-w-[400px] mx-auto mb-2">
                 {book.description}
               </p>
             )}
@@ -116,7 +121,7 @@ const BookApp = () => {
               </div>
             </div>
           </div>
-          <div className="container-wide animate-fade-up">
+          <div className="container-wide animate-fade-up readlist-scroll">
             <ReadList
               book={book}
               onChapterClick={n => openModal('interp', n)}

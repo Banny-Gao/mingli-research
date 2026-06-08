@@ -24,11 +24,29 @@
 
 /* ===== Related Items ===== */
 .related-section {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   padding: 12px 16px 16px;
   border-top: 1px solid var(--color-border);
+}
+.related-left {
+  grid-column: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chapter-nav-center {
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+}
+.related-right {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .related-tags {
   display: flex;
@@ -40,14 +58,6 @@
   font-size: 12px;
   color: var(--color-text-muted);
   flex-shrink: 0;
-}
-.related-tag {
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid;
 }
 .related-tag-skill {
   background: rgba(122, 79, 170, 0.1);
