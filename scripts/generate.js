@@ -378,15 +378,15 @@ export type { Book, ChapterInfo, ArtSection } from './book-types'
 `
   )
 
-  const safeIdent = slug => slug.replace(/[^a-zA-Z0-9_$]/g, '_')
+  const safeIdent = (_, i) => `book${i}`
   fs.writeFileSync(
     path.join(OUT_DIR, 'registry.ts'),
     `// Auto-generated — do not edit manually
 // 动态加载各典籍数据，避免前端代码硬编码 slug
-${books.map(b => `import * as _${safeIdent(b.slug)} from './${b.slug}';`).join('\n')}
+${books.map((b, i) => `import * as _${safeIdent(b.slug, i)} from './${b.slug}';`).join('\n')}
 
 const registry: Record<string, any> = {
-${books.map(b => `  '${b.slug}': _${safeIdent(b.slug)},`).join('\n')}
+${books.map((b, i) => `  '${b.slug}': _${safeIdent(b.slug, i)},`).join('\n')}
 };
 
 export function getBook(slug: string) {
@@ -399,9 +399,7 @@ export function getBook(slug: string) {
 const generateSearchIndex = books => {
   fs.mkdirSync(PUBLIC_DIR, { recursive: true })
   const index = books.map(b => {
-    const chapterCatMap = Object.fromEntries(
-      b.chapters.map(c => [c.name, c.category])
-    )
+    const chapterCatMap = Object.fromEntries(b.chapters.map(c => [c.name, c.category]))
     return {
       slug: b.slug,
       section: b.section,

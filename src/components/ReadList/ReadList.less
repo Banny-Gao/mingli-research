@@ -1,6 +1,14 @@
 .category-header {
-  background: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-bg-base);
   transition: background 0.2s;
+}
+
+.readlist-scroll {
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
 }
 
 .category-chevron {

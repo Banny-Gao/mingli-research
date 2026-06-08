@@ -78,7 +78,16 @@ Behavioral guidelines to reduce common LLM coding mistakes.
 | 审查 | 使用 superpowers code-reviewer 审核代码           |
 | 测试 | 使用 superpowers TDD 能力生成测试用例             |
 
-### 5.3 自检清单
+### 5.3 组件库优先
+
+**所有原子 UI 需求必须优先使用项目中已有的组件。禁止手写 div 模拟已有组件。**
+
+- 布局/分组类需求 -> 首先查询 shadcn/ui 组件库（ButtonGroup、InputGroup、Tabs 等）
+- 不确定是否存在对应组件时 -> 先查 `src/components/ui/` 和 shadcn 文档，再动手
+- 如需新组件 -> `pnpm dlx shadcn@latest add <component>` 安装后再使用
+- 仅在组件库确实无对应组件时，才手写 CSS + div
+
+### 5.4 自检清单
 
 交付前确认：
 
@@ -86,7 +95,7 @@ Behavioral guidelines to reduce common LLM coding mistakes.
 - [ ] build：构建成功
 - [ ] 无硬编码敏感信息
 
-### 5.4 详细规范
+### 5.5 详细规范
 
 详见 `docs/` 目录。
 

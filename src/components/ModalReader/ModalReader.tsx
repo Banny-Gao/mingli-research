@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup, ButtonGroupText } from '@/components/ui/button-group'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
@@ -342,6 +343,13 @@ const ModalReader = ({
   const hasInterp = !!interpContent[chapterName]
   const hasSkill = !!skillRawContent[chapterName]
 
+  // 上一篇 / 下一篇 导航
+  const chapterIndex = chapters.findIndex(c => c.name === chapterName)
+  const hasPrev = chapterIndex > 0
+  const hasNext = chapterIndex >= 0 && chapterIndex < chapters.length - 1
+  const prevChapter = hasPrev ? chapters[chapterIndex - 1].name : null
+  const nextChapter = hasNext ? chapters[chapterIndex + 1].name : null
+
   const contentNavItems = [
     {
       type: 'source' as const,
@@ -476,61 +484,94 @@ const ModalReader = ({
           </div>
           {modalKey && (
             <div className="related-section">
-              {/* 同一篇章内的跨内容导航 */}
-              {contentNavItems.length > 0 && (
-                <div className="related-tags">
-                  <span className="related-label">本篇内容</span>
-                  {contentNavItems.map(({ type, label, navKey }) => (
-                    <Button
-                      key={type}
-                      variant="ghost"
-                      size="sm"
-                      className={`related-tag related-tag-${type}`}
-                      onClick={() => onNavigate(type, navKey)}
-                    >
-                      {label}
-                    </Button>
-                  ))}
-                </div>
-              )}
-
-              {[
-                {
-                  key: 'interp',
-                  data: (chapterToSkills[chapterName] || []).filter(
-                    s => modalType !== 'skill' || s !== modalKey
-                  ),
-                  label: '关联技能',
-                  navigateType: 'skill' as const,
-                  displayName: skillDisplayNames,
-                },
-                {
-                  key: 'skill',
-                  data: skillToChapters[modalKey],
-                  label: '相关篇目',
-                  navigateType: 'interp' as const,
-                  displayName: null as Record<string, string> | null,
-                },
-              ]
-                .filter(item => item.data?.length)
-                .map(({ key, data, label, navigateType, displayName }) => (
-                  <div key={key} className="related-tags">
-                    <span className="related-label">{label}</span>
-                    {(data as string[]).map(item => (
+              <div className="related-left">
+                {/* 同一篇章内的跨内容导航 */}
+                {contentNavItems.length > 0 && (
+                  <div className="related-tags">
+                    <span className="related-label">本篇内容</span>
+                    {contentNavItems.map(({ type, label, navKey }) => (
                       <Button
-                        key={item}
+                        key={type}
                         variant="ghost"
                         size="sm"
-                        className={`related-tag related-tag-${key}`}
-                        onClick={() => onNavigate(navigateType, item)}
+                        className={`related-tag-${type}`}
+                        onClick={() => onNavigate(type, navKey)}
                       >
-                        {displayName ? displayName[item] || item : item}
+                        {label}
                       </Button>
                     ))}
                   </div>
-                ))}
+                )}
 
-              <BackToTop scrollRef={modalBodyRef} />
+                {[
+                  {
+                    key: 'interp',
+                    data: (chapterToSkills[chapterName] || []).filter(
+                      s => modalType !== 'skill' || s !== modalKey
+                    ),
+                    label: '关联技能',
+                    navigateType: 'skill' as const,
+                    displayName: skillDisplayNames,
+                  },
+                  {
+                    key: 'skill',
+                    data: skillToChapters[modalKey],
+                    label: '相关篇目',
+                    navigateType: 'interp' as const,
+                    displayName: null as Record<string, string> | null,
+                  },
+                ]
+                  .filter(item => item.data?.length)
+                  .map(({ key, data, label, navigateType, displayName }) => (
+                    <div key={key} className="related-tags">
+                      <span className="related-label">{label}</span>
+                      {(data as string[]).map(item => (
+                        <Button
+                          key={item}
+                          variant="ghost"
+                          size="xs"
+                          className={`related-tag-${key}`}
+                          onClick={() => onNavigate(navigateType, item)}
+                        >
+                          {displayName ? displayName[item] || item : item}
+                        </Button>
+                      ))}
+                    </div>
+                  ))}
+              </div>
+
+              {/* 上一篇 / 下一篇 */}
+              {chapters.length > 1 && (
+                <div className="chapter-nav-center">
+                  <ButtonGroup>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled={!hasPrev}
+                      onClick={() => prevChapter && onNavigate(modalType, prevChapter)}
+                      title={prevChapter || undefined}
+                    >
+                      上一篇
+                    </Button>
+                    <ButtonGroupText>
+                      {chapterIndex + 1} / {chapters.length}
+                    </ButtonGroupText>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled={!hasNext}
+                      onClick={() => nextChapter && onNavigate(modalType, nextChapter)}
+                      title={nextChapter || undefined}
+                    >
+                      下一篇
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              )}
+
+              <div className="related-right">
+                <BackToTop scrollRef={modalBodyRef} />
+              </div>
             </div>
           )}
 

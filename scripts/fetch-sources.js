@@ -16,6 +16,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { stripHtml, progressBar, formatDuration } from './lib/utils.js'
+import { t2s } from './t2s.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -63,6 +64,13 @@ const parseCatalogMd = bookDir => {
   if (!fs.existsSync(p)) return null
   const content = fs.readFileSync(p, 'utf-8')
   const bookTitle = (content.match(/^#\s*《(.+?)》/m) || [])[1] || null
+
+  // 解析字形策略: 截取第一个 ## 之前的 metadata blockquote
+  const firstSectionIndex = content.search(/^## /m)
+  const metadataSection = firstSectionIndex !== -1 ? content.slice(0, firstSectionIndex) : content
+  const glyphMatch = metadataSection.match(/^>\s*字形策略[：:]\s*(.+)$/m)
+  const glyphStrategy = glyphMatch ? glyphMatch[1].trim() : null
+
   const names = content
     .split('\n')
     .map(l =>
@@ -74,7 +82,7 @@ const parseCatalogMd = bookDir => {
     )
     .filter(cells => cells.length >= 2 && /^\d+$/.test(cells[0]))
     .map(cells => cells[1])
-  return { bookTitle, names: names.length > 0 ? names : null }
+  return { bookTitle, names: names.length > 0 ? names : null, glyphStrategy }
 }
 
 // ===== catalog.html 解析 → 篇章名→URL =====
@@ -348,7 +356,8 @@ const processBook = async (bookSlug, batchChapters = null) => {
 
   for (let i = 0; i < total; i++) {
     const { name, url } = chapters[i]
-    const chapterDir = path.join(outDir, name)
+    const outputName = catalog.glyphStrategy === '简体规范化' ? t2s(name) : name
+    const chapterDir = path.join(outDir, outputName)
     const outPath = path.join(chapterDir, 'source.md')
 
     if (fs.existsSync(outPath) && !FORCE) {
@@ -362,7 +371,7 @@ const processBook = async (bookSlug, batchChapters = null) => {
       const eta =
         done > 0 ? formatDuration(((Date.now() - startTime) / (i + 1)) * (total - i - 1)) : '--'
       process.stdout.write(
-        `\r  ${progressBar(i + 1, total)}  ${i + 1}/${total}  ${elapsed}  ETA ${eta}  ${name.padEnd(14)}`
+        `\r  ${progressBar(i + 1, total)}  ${i + 1}/${total}  ${elapsed}  ETA ${eta}  ${outputName.padEnd(14)}`
       )
 
       const html = await fetchPage(url)
@@ -380,7 +389,11 @@ const processBook = async (bookSlug, batchChapters = null) => {
         continue
       }
 
-      fs.writeFileSync(outPath, formatSourceMarkdown(name, cleanContent(raw)), 'utf-8')
+      let content = formatSourceMarkdown(outputName, cleanContent(raw))
+      if (catalog.glyphStrategy === '简体规范化') {
+        content = t2s(content)
+      }
+      fs.writeFileSync(outPath, content, 'utf-8')
       done++
       if (i < total - 1) await sleep(randomDelay())
     } catch (err) {
@@ -393,7 +406,9 @@ const processBook = async (bookSlug, batchChapters = null) => {
   process.stdout.write('\n')
 
   if (!isBatch) {
-    const validNames = new Set(chapterNames)
+    const validNames = new Set(
+      catalog.glyphStrategy === '简体规范化' ? chapterNames.map(n => t2s(n)) : chapterNames
+    )
     for (const d of fs.readdirSync(outDir)) {
       if (!validNames.has(d)) fs.rmSync(path.join(outDir, d), { recursive: true })
     }
