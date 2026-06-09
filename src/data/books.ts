@@ -4608,7 +4608,7 @@ export const books: Book[] = [
     "author": "[宋] 徐大升 编纂",
     "version": "据通行本（渊海/渊源合编本）",
     "description": "子平命理学开山之作，五卷汇编体，涵盖干支五行、十神格局、六亲赋文、诗诀口诀，共三百余篇",
-    "total": 245,
+    "total": 244,
     "done": 244,
     "chapters": [
       {
@@ -5350,13 +5350,6 @@ export const books: Book[] = [
         "num": "106",
         "name": "五行俱足格",
         "isDone": true,
-        "hasSkill": false,
-        "category": "卷二 · 格局十神"
-      },
-      {
-        "num": "107",
-        "name": "天元一气",
-        "isDone": false,
         "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
@@ -6910,9 +6903,6 @@ export const books: Book[] = [
       },
       {
         "name": "天干相合"
-      },
-      {
-        "name": "天元一气"
       },
       {
         "name": "天元一气诗诀"
