@@ -7680,6 +7680,812 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "神峰通考",
+    "section": "命",
+    "category": "八字",
+    "title": "神峰通考",
+    "author": "[明] 张楠",
+    "version": "据《续修四库全书》本",
+    "description": "明代命理名著，以格局法为纲、补以古法论命、兼采赋文为参考；与《三命通会》《渊海子平》《子平真诠》《星平会海》并称\"五大命学全书\"。",
+    "total": 113,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "五星正说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "02",
+        "name": "五星谬说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "03",
+        "name": "男女合婚说",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "04",
+        "name": "总论子平谬说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "05",
+        "name": "动静说",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "06",
+        "name": "盖头说",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "07",
+        "name": "六亲说",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "08",
+        "name": "病药说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "09",
+        "name": "雕桔旺弱四病说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "10",
+        "name": "损益生长四药说类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "11",
+        "name": "正官格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "12",
+        "name": "偏官格 附弃命从杀格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "13",
+        "name": "时上一位贵格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "14",
+        "name": "附官杀去留杂格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷一"
+      },
+      {
+        "num": "15",
+        "name": "月支正财格 附弃从财格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "16",
+        "name": "时上偏财格 附月偏财格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "17",
+        "name": "伤官食神格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "18",
+        "name": "印绶格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "19",
+        "name": "阳刃格 附比劫、建禄格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "20",
+        "name": "杂气财官印绶格 附时墓格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "21",
+        "name": "金神格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷二"
+      },
+      {
+        "num": "22",
+        "name": "飞天禄马格 附倒冲禄马格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "23",
+        "name": "子遥巳格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "24",
+        "name": "丑遥巳格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "25",
+        "name": "壬骑龙背格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "26",
+        "name": "井栏叉格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "27",
+        "name": "六乙鼠贵格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "28",
+        "name": "六阴朝阳格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "29",
+        "name": "刑合格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "30",
+        "name": "合禄格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "31",
+        "name": "曲直仁寿格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "32",
+        "name": "稼穑格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "33",
+        "name": "炎上格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "34",
+        "name": "润下格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "35",
+        "name": "从革格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "36",
+        "name": "年时上官星格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "37",
+        "name": "从化格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "38",
+        "name": "来兵拱财格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "39",
+        "name": "岁德扶杀格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "40",
+        "name": "专财格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "41",
+        "name": "日德格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "42",
+        "name": "日贵格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "43",
+        "name": "魁罡格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "44",
+        "name": "勾陈得位格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "45",
+        "name": "玄武当权格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "46",
+        "name": "财官双美格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "47",
+        "name": "拱禄拱贵二格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "48",
+        "name": "日禄归时格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "49",
+        "name": "四位纯全格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "50",
+        "name": "天元一气格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "51",
+        "name": "三合聚集格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "52",
+        "name": "福德格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "53",
+        "name": "神趣八法",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "54",
+        "name": "论大运",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "55",
+        "name": "论太岁",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "56",
+        "name": "认格局生死之歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "57",
+        "name": "五星论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "58",
+        "name": "金不换骨髓歌断",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷三"
+      },
+      {
+        "num": "59",
+        "name": "十天干体象全编论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "60",
+        "name": "十二支咏",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "61",
+        "name": "总咏",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "62",
+        "name": "吉神类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "63",
+        "name": "凶神类",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "64",
+        "name": "起八字诀",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "65",
+        "name": "子平举要",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "66",
+        "name": "男女命小运定局",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "67",
+        "name": "天干阴阳通变、定格局决",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "68",
+        "name": "子平泛论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "69",
+        "name": "十干从化定诀",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "70",
+        "name": "十段锦",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "71",
+        "name": "十段化气",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "72",
+        "name": "五阴歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "73",
+        "name": "天元一字歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "74",
+        "name": "运晦运通歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "75",
+        "name": "刑克歌 刑妻歌 克子歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "76",
+        "name": "带疾歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "77",
+        "name": "寿元歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "78",
+        "name": "飘荡歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "79",
+        "name": "女命歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "80",
+        "name": "月建生克",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "81",
+        "name": "看命捷歌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "82",
+        "name": "论诸格有救",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "83",
+        "name": "取格指诀歌断",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "84",
+        "name": "节气歌断",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "85",
+        "name": "万尚书琼玑三盘赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "86",
+        "name": "崖泉男女命赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "87",
+        "name": "讲命捷径赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "88",
+        "name": "四言独步 身弱论 弃命从杀格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "89",
+        "name": "五步独言",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷四"
+      },
+      {
+        "num": "90",
+        "name": "喜忌篇",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "91",
+        "name": "继善篇",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "92",
+        "name": "六神篇",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "93",
+        "name": "气象篇",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "94",
+        "name": "渭泾论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "95",
+        "name": "定真篇",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷五"
+      },
+      {
+        "num": "96",
+        "name": "五行元理消息赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "97",
+        "name": "五行生克赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "98",
+        "name": "一行禅师天元赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "99",
+        "name": "捷驰千里马赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "100",
+        "name": "络绎赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "101",
+        "name": "玄机赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "102",
+        "name": "憎爱赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "103",
+        "name": "万金赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "104",
+        "name": "相心赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "105",
+        "name": "仙机赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "106",
+        "name": "金玉赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "107",
+        "name": "人鉴论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "108",
+        "name": "渊源集说",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "109",
+        "name": "妖祥赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "110",
+        "name": "幽微天干赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "111",
+        "name": "人元消息赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "112",
+        "name": "地支赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      },
+      {
+        "num": "113",
+        "name": "病源赋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "神峰通考卷六"
+      }
+    ],
+    "skills": [],
+    "sources": []
+  },
+  {
     "slug": "穷通宝鉴",
     "section": "命",
     "category": "八字",
