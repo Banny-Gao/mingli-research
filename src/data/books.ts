@@ -10,7 +10,7 @@ export const books: Book[] = [
     "author": "[明] 万民英（字育吾，号兰谷，明嘉靖二十九年进士）",
     "version": "据明万历六年（1578）初刻本 / 清《四库全书》本",
     "description": "子平命理学集大成之作，十二卷汇编体；前九卷分列十天干，以日为主、月为核心、时为辅，定人吉凶；后三卷载大量平古歌赋；\"命学四书\"之一，与《滴天髓》《子平真诠》《穷通宝鉴》齐名",
-    "total": 382,
+    "total": 380,
     "done": 0,
     "chapters": [
       {
@@ -2297,13 +2297,6 @@ export const books: Book[] = [
       },
       {
         "num": "327",
-        "name": "玉井奥诀四",
-        "isDone": false,
-        "hasSkill": false,
-        "category": "卷十 · 看命口诀与玉井奥诀"
-      },
-      {
-        "num": "328",
         "name": "玉井奥诀五",
         "isDone": false,
         "hasSkill": false,
@@ -2507,13 +2500,6 @@ export const books: Book[] = [
       },
       {
         "num": "357",
-        "name": "消息赋七",
-        "isDone": false,
-        "hasSkill": false,
-        "category": "卷十一 · 赋文"
-      },
-      {
-        "num": "358",
         "name": "消息赋八",
         "isDone": false,
         "hasSkill": false,
@@ -3690,9 +3676,6 @@ export const books: Book[] = [
         "name": "消息赋六"
       },
       {
-        "name": "消息赋七"
-      },
-      {
         "name": "消息赋三"
       },
       {
@@ -3775,9 +3758,6 @@ export const books: Book[] = [
       },
       {
         "name": "玉井奥诀十一"
-      },
-      {
-        "name": "玉井奥诀四"
       },
       {
         "name": "玉井奥诀五"
