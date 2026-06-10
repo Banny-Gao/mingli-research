@@ -4062,7 +4062,7 @@ export const books: Book[] = [
     "author": "[清] 沈孝瞻 撰（乾隆四年进士）/ [民国] 徐乐吾 评注",
     "version": "据民国徐乐吾评注本",
     "description": "子平命理学\"前三本\"之一，体系严密地论述用神、相神、格局、宫分六亲等核心理论；徐乐吾以《滴天髓》《穷通宝鉴》为之作注，与任铁樵《滴天髓》注称姊妹篇",
-    "total": 51,
+    "total": 50,
     "done": 0,
     "chapters": [
       {
@@ -4414,22 +4414,12 @@ export const books: Book[] = [
         "isDone": false,
         "hasSkill": false,
         "category": "杂格"
-      },
-      {
-        "num": "51",
-        "name": "后记 命理书籍点评",
-        "isDone": false,
-        "hasSkill": false,
-        "category": "后记"
       }
     ],
     "skills": [],
     "sources": [
       {
         "name": "附论杂格取运"
-      },
-      {
-        "name": "后记 命理书籍点评"
       },
       {
         "name": "论财"
