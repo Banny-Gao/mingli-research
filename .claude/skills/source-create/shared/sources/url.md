@@ -33,7 +33,7 @@
 | 输入 | URL 1 个 |
 | 处理 | `mcp__playwright__browser_navigate` 加载 → `browser_snapshot` 取渲染后 DOM → LLM 提取 |
 | 适配 | JS 渲染 SPA（维基百科部分页面 / 现代博客 / 学术平台）|
-| 触发 | WebFetch 拿不到正文（空 / placeholder / 明显骨架）→ 询问用户是否 L3 |
+| 触发 | WebFetch 拿不到正文（空 / placeholder / 明显骨架）→ 询问用户 L2/L3 |
 
 ## Auto-detect 流程（Step 3 内部）
 

@@ -1,7 +1,7 @@
 ---
 name: source-create
 description: 录入原文技能。4 源模式（URL 含 L1/L2/L3 三子模式 / 文本 / 图片-PDF / 调脚本批量）+ 单/批双模 + 5 步引导式状态机 + 1 次字形策略 gate + 落盘冲突 4 选项，按 SPEC-source.md 严格生成 books/{slug}/articles/{篇名}/source.md。
-trigger: 录入|录入原文|补录|录入
+trigger: 录入|录入原文|补录|录原文
 ---
 
 # source-create 录入原文技能（主入口）
