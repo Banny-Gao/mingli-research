@@ -63,7 +63,6 @@ trigger: 建书|创建书籍|新建目录
 
 - 详见 `shared/gate.md` 的 Gate 2
 - 6 字段：作者/版本/简介/术数/类别/内容类型
-- 智能推测字段标 `[AI 推测]`
 - 实时校验：shu 取值 / category 注册 / contentTypes 必含 source
 - AskUserQuestion 4 选项
 - 状态写：`confirmed_meta: BookDraft`

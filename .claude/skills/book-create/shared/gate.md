@@ -26,8 +26,7 @@ book-create 流程有 2 次强人工 gate。每次必走，不可跳过。
 
 **主 agent 动作：**
 1. 展示拟填入的 6 个 blockquote 字段
-2. 智能推测的字段标注 `[AI 推测]`；用户明确给过的字段标注 `[用户提供]`
-3. 实时校验：
+2. 实时校验：
    - `shu` ∈ {山, 医, 命, 相, 卜}
    - `category` 在 `src/pages/Landing.tsx` 的 `CATEGORY_TREE` 已注册
    - `contentTypes` 至少包含 `source`
