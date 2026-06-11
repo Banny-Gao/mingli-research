@@ -4055,6 +4055,84 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "命理探原",
+    "section": "命",
+    "category": "八字",
+    "title": "命理探原",
+    "author": "[民国] 袁树珊",
+    "version": "据 iwzbz.com 录本",
+    "description": "民国命理著作，全八卷——卷一本原、卷二起例、卷三强弱、卷四宜忌、卷五化合刑冲、卷六先贤名论、卷七润德堂藏稿、卷八星家十要，附跋；系统整理前人子平命理口诀，发其秘奥，嘉惠后学。",
+    "total": 9,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "本原",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷一 本原"
+      },
+      {
+        "num": "02",
+        "name": "起例",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷二 起例"
+      },
+      {
+        "num": "03",
+        "name": "强弱",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷三 强弱"
+      },
+      {
+        "num": "04",
+        "name": "宜忌",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷四 宜忌"
+      },
+      {
+        "num": "05",
+        "name": "化合刑冲",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷五 化合刑冲"
+      },
+      {
+        "num": "06",
+        "name": "先贤名论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷六 先贤名论"
+      },
+      {
+        "num": "07",
+        "name": "润德堂藏稿",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷七 润德堂藏稿"
+      },
+      {
+        "num": "08",
+        "name": "星家十要",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷八 星家十要"
+      },
+      {
+        "num": "09",
+        "name": "跋",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "跋"
+      }
+    ],
+    "skills": [],
+    "sources": []
+  },
+  {
     "slug": "子平真诠",
     "section": "命",
     "category": "八字",
@@ -7030,7 +7108,7 @@ export const books: Book[] = [
     "title": "滴天髓阐微",
     "author": "[明] 刘基 撰 / [清] 任铁樵 注",
     "version": "据《四库全书》本",
-    "description": "子平命理学核心经典，以天干地支五行生克为核心，共六十一篇专题系统阐述命理原理",
+    "description": "子平命理学核心经典，以天干地支五行生克为核心，共六十三篇专题系统阐述命理原理",
     "total": 63,
     "done": 63,
     "chapters": [
