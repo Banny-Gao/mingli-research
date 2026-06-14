@@ -1,4 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import { generateInterpretations } from '../llm-batch.js'
 
 // Mock @anthropic-ai/sdk
@@ -26,32 +29,50 @@ const FAKE_CONFIG = {
   model: 'claude-opus-4-8',
 }
 
+const TEST_SLUG = 'test-book'
+const TEST_CHAPTER = 'test-chapter'
+
 describe('generateInterpretations', () => {
+  let TMP_ROOT
+  let TMP_BOOK_DIR
+
   beforeEach(() => {
     vi.clearAllMocks()
+    // 每次测试用全新 tmpdir，避免污染真实项目 books/
+    TMP_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-batch-test-'))
+    TMP_BOOK_DIR = path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/${TEST_CHAPTER}`)
+    fs.mkdirSync(TMP_BOOK_DIR, { recursive: true })
+    fs.writeFileSync(path.join(TMP_BOOK_DIR, 'source.md'), '# Test Source\n\n源文内容。', 'utf-8')
+  })
+
+  afterEach(() => {
+    // 测试后清理 tmpdir
+    if (TMP_ROOT) {
+      fs.rmSync(TMP_ROOT, { recursive: true, force: true })
+    }
   })
 
   it('returns success array for one chapter', async () => {
     const results = await generateInterpretations({
-      slug: '子平真诠',
-      chapters: ['论用神'],
+      slug: TEST_SLUG,
+      chapters: [TEST_CHAPTER],
       specBundle: FAKE_BUNDLE,
       config: FAKE_CONFIG,
-      projectRoot: '/Users/gaozhipeng/Desktop/mingli-research',
+      projectRoot: TMP_ROOT,
       force: true,
     })
     expect(results).toHaveLength(1)
-    expect(results[0].chapter).toBe('论用神')
+    expect(results[0].chapter).toBe(TEST_CHAPTER)
     expect(results[0].status).toBe('success')
   })
 
   it('skips chapter when source.md missing', async () => {
     const results = await generateInterpretations({
-      slug: '子平真诠',
-      chapters: ['不存在的篇章'],
+      slug: TEST_SLUG,
+      chapters: ['nonexistent-chapter'],
       specBundle: FAKE_BUNDLE,
       config: FAKE_CONFIG,
-      projectRoot: '/Users/gaozhipeng/Desktop/mingli-research',
+      projectRoot: TMP_ROOT,
       force: true,
     })
     expect(results[0].status).toBe('skipped')
@@ -59,13 +80,15 @@ describe('generateInterpretations', () => {
   })
 
   it('skips chapter when interpretation.md exists and !force', async () => {
-    // 假设 论用神 已有 interpretation.md（在 fixture 中）
+    // 预创建 interpretation.md 模拟已存在
+    fs.writeFileSync(path.join(TMP_BOOK_DIR, 'interpretation.md'), 'old content', 'utf-8')
+
     const results = await generateInterpretations({
-      slug: '子平真诠',
-      chapters: ['论用神'],
+      slug: TEST_SLUG,
+      chapters: [TEST_CHAPTER],
       specBundle: FAKE_BUNDLE,
       config: FAKE_CONFIG,
-      projectRoot: '/Users/gaozhipeng/Desktop/mingli-research',
+      projectRoot: TMP_ROOT,
       force: false,
     })
     expect(results[0].status).toBe('skipped')
@@ -75,15 +98,15 @@ describe('generateInterpretations', () => {
   it('invokes onProgress callback per chapter', async () => {
     const onProgress = vi.fn()
     await generateInterpretations({
-      slug: '子平真诠',
-      chapters: ['论用神'],
+      slug: TEST_SLUG,
+      chapters: [TEST_CHAPTER],
       specBundle: FAKE_BUNDLE,
       config: FAKE_CONFIG,
-      projectRoot: '/Users/gaozhipeng/Desktop/mingli-research',
+      projectRoot: TMP_ROOT,
       force: true,
       onProgress,
     })
-    expect(onProgress).toHaveBeenCalledWith(1, 1, '论用神', expect.any(String))
+    expect(onProgress).toHaveBeenCalledWith(1, 1, TEST_CHAPTER, expect.any(String))
   })
 
   it('retries 3 times on 429 rate limit', async () => {
@@ -106,11 +129,11 @@ describe('generateInterpretations', () => {
     }))
 
     const results = await generateInterpretations({
-      slug: '子平真诠',
-      chapters: ['论用神'],
+      slug: TEST_SLUG,
+      chapters: [TEST_CHAPTER],
       specBundle: FAKE_BUNDLE,
       config: FAKE_CONFIG,
-      projectRoot: '/Users/gaozhipeng/Desktop/mingli-research',
+      projectRoot: TMP_ROOT,
       force: true,
       retryBaseMs: 1,
     })
