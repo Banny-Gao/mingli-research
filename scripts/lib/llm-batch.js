@@ -51,7 +51,7 @@ async function callClaudeWithRetry({ client, model, system, user, signal, retryB
   throw lastErr
 }
 
-async function generateOne({ chapter, specBundle, config, projectRoot, force, signal, onProgress, client, retryBaseMs }) {
+async function generateOne({ chapter, specBundle, config, projectRoot, force, signal, client, retryBaseMs }) {
   const articlesDir = path.join(projectRoot, `books/${config.slug}/articles/${chapter}`)
   const sourcePath = path.join(articlesDir, 'source.md')
   const interpPath = path.join(articlesDir, 'interpretation.md')
@@ -128,7 +128,6 @@ export async function generateInterpretations(opts) {
         projectRoot,
         force,
         signal,
-        onProgress,
         client,
         retryBaseMs,
       })
