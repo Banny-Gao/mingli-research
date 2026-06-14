@@ -16,11 +16,11 @@
 为五术研究项目提供**针对 source.md 生成解读**的入口：
 
 - **入口**：`/interpretation-create` 起手
-- **2 模式**：单点（聚焦 1 篇）/ 批量（整本或子集）
-- **过程**：6 步引导式状态机（批量模式在收源后多 1 步 dry-run gate，共 7 步） + 1 次强装载 gate + 1 次原文体检 gate + 落盘前 self-check 合规门
+- **2 模式**：单点（聚焦 1 篇）/ 批量（整本或子集，双轨：subagent 派发 + CLI 脚本）
+- **过程**：6 步引导式状态机（单点）/ 7 步（批量含 dry-run gate） + 1 次强装载 gate + 1 次原文体检 gate + 落盘前 self-check 合规门
 - **输出**：`books/{slug}/articles/{篇名}/interpretation.md`
 - **强约束**：每次解读严格遵守 `research-dispute/SPEC-interpretation.md` + `research-dispute/general.md` + 术数专项（如 `bazi.md`）
-- **写入方式**：主 agent 直写（单点） / 调 `scripts/generate-interpretations.js`（批量，新写）
+- **写入方式**：主 agent 直写（单点） / 双轨批量（subagent 派发或 CLI 脚本，共调 `scripts/lib/llm-batch.js` 核心库）
 - **与 source-create 的关键边界**：interpretation-create 的"源"就是 source.md 本身——**不**复用 source-create 的 URL / 文本 / 图片-PDF 三种"补录原文"模式
 
 ---
@@ -38,8 +38,14 @@
     ├── condition-check.md                # 原文体检 gate：6 项检查清单
     ├── pipeline.md                       # 主体 9 步流水线（套 §五 Step 3-9 + §七 自评）
     ├── skeleton.md                       # interpretation.md 落盘规则
-    ├── quality-gate.md                   # 落盘前 self-check-interpretation 调用协议
-    └── script.md                         # 批量模式：调 generate-interpretations.js
+    ├── quality-gate.md                   # 落盘前 self-check 调用协议
+    ├── subagent-batch.md                 # 批量模式：subagent 派发调度协议（入口 A）
+    └── script-batch.md                   # 批量模式：CLI 脚本调用约定（入口 B）
+
+scripts/
+├── generate-interpretations.js           # 批量模式 CLI 入口（v1 新写，~80 行 wrapper）
+└── lib/
+    └── llm-batch.js                      # 核心库：装订 5 份规范 + 调 Anthropic API + 落盘 + 合规门
 ```
 
 **为什么 interpretation-create 不复用 source-create 的 4 源：**
@@ -65,7 +71,7 @@ source-create 的 4 源（URL / 文本 / 图片-PDF / 调脚本）解决的是"*
 | 模式 | 适用 | 自动化路径 |
 |------|------|------------|
 | **单点** | 1 篇 source.md → 1 篇 interpretation.md | 主 agent 强装载 5 份 + 体检 + 9 步流水线 + self-check 合规门 + 直写 |
-| **批量** | N 篇 source.md → N 篇 interpretation.md | 调 `node scripts/generate-interpretations.js`（新写） + 主 agent 复核 + 报告 |
+| **批量** | N 篇 source.md → N 篇 interpretation.md | **双轨**：subagent 派发（交互式）/ CLI 脚本（后台/CI）；两者共调 `scripts/lib/llm-batch.js` 核心库 |
 
 ### 3.1 模式：单点
 
@@ -84,47 +90,206 @@ source-create 的 4 源（URL / 文本 / 图片-PDF / 调脚本）解决的是"*
 **输出：**
 - `books/{slug}/articles/{篇名}/interpretation.md`
 
-### 3.2 模式：批量
+### 3.2 模式：批量（双轨设计）
 
-**输入：**
-- 书 slug（与 `books/{slug}/` 一致）
-- 篇章列表（逗号分隔；缺省 = 整本所有未解读篇章）
-- 篇章对应的 `source.md` 必须已存在
+**双轨分工：**
+
+| 入口 | 调度主体 | 适用场景 | 进度可见性 | 可中断性 |
+|------|---------|---------|-----------|---------|
+| **A. subagent 派发** | Claude Code 主 agent dispatch N 个 subagent | 用户在 Claude Code 会话内跑 | ✅ 实时进度 + 章节状态 | ✅ AbortSignal |
+| **B. CLI 脚本** | 用户在终端跑 `node scripts/generate-interpretations.js` | 后台跑 / CI / 脱离 Claude Code 会话 | ✅ stdout 进度条 | ✅ SIGINT |
+
+**两者共调 `scripts/lib/llm-batch.js` 核心库**——9 步流水线 / 5/4/3 自评 / 落盘前 self-check 写一次，双轨同等地位。详见 §3.3。
+
+**为什么不直接复用其中一种：**
+- 纯 subagent 派发：用户跑批量时主 agent 上下文会被进度反馈填满，且无法后台 / CI
+- 纯 CLI 脚本：用户在 Claude Code 会话内跑批量时失去"可中断 / 可看每篇产物预览"的体验
+- 双轨互补：subagent 是交互式入口，脚本是后台入口
+
+**v1 范围内双轨都做。** v2 待评估是否需要并发 N subagent（v1 仅串行）。
+
+#### 3.2.1 入口 A：subagent 派发
 
 **主 agent 动作：**
 1. Step 1 选模式：批量
 2. Step 2 收源：书 slug + 篇章列表
-3. Step 3 强装载 gate：主 agent 强装载 5 份规范
-4. Step 4 拼命令并 dry-run：
-   ```bash
-   node scripts/generate-interpretations.js <slug> <chapter1>,<chapter2> --force --dry-run
-   ```
-5. 用户确认 → 去掉 `--dry-run` 实跑
-6. 脚本内部 per-篇：体检 + 9 步流水线 + self-check 合规门 + 落盘
-7. 主 agent 收尾：扫 `books/{slug}/articles/*/interpretation.md` 完整性 + 抽样复核
+3. Step 3 强装载 gate：主 agent 强装载 5 份规范（详见 §4）
+4. Step 4 拼参数：`{ slug, chapters, specBundle, force, onProgress }`
+5. Step 5 dry-run：列出 N 篇 + 估算耗时 + 用户确认
+6. Step 6 dispatch 1 个 subagent（v1 仅串行）：
+   - subagent prompt 内嵌"调 `node -e "import('./scripts/lib/llm-batch.js').then(m => m.generateInterpretations({...}))"` 或 subagent 直接 inline 跑
+   - subagent 通过 `onProgress` 回调把进度回吐主 agent
+7. Step 7 收尾：聚合 subagent 返回的 results 数组
+
+**subagent 调度协议：** 详见 `shared/subagent-batch.md`。
+
+#### 3.2.2 入口 B：CLI 脚本
+
+**用户命令：**
+```bash
+# dry-run 预览
+node scripts/generate-interpretations.js 子平真诠 论用神,论格局 --force --dry-run
+
+# 实跑
+node scripts/generate-interpretations.js 子平真诠 论用神,论格局 --force
+
+# 整本所有未解读篇章
+node scripts/generate-interpretations.js 子平真诠 --force
+```
+
+**脚本入口 = `scripts/generate-interpretations.js`（v1 新写，~80 行 wrapper）**：
+- 解析 CLI 参数
+- 加载 specBundle
+- 调 `lib/llm-batch.js` 的 `generateInterpretations()` 主函数
+- 收尾报告（成功 N / 失败 M / 跳过 K / fatal 列表）
+- 失败 → exit 1
+
+**脚本细节：** 详见 `shared/script-batch.md`。
 
 **脚本能力继承清单（v1 必含）：**
 - 读 `books/{slug}/catalog.md` 元信息（术数 / 类别 / 强装载规范清单）
 - 遍历指定篇章的 `source.md`
-- per-篇：调 subagent（隔离主 agent 上下文）跑 9 步流水线（脚本负责 subagent prompt 装订 5 份规范）
-- per-篇：调 self-check-interpretation 作为合规门
+- per-篇：调 `lib/llm-batch.js` 跑体检 + 9 步流水线 + self-check 合规门
 - 失败篇章：记日志 + 跳过 + 收尾报告汇总
 - `--force`：覆盖已存在 interpretation.md
 - `--dry-run`：预览
+- `--api-key <key>` / `--base-url <url>`：CLI 覆盖 env（详见 §3.4）
 - 进度条 + 错误日志 + 模糊篇章名匹配
 
 **v1 不扩充的项：**
 - 不处理 OCR 错字二次订正（v2 待）
 - 不做跨篇章关联（SPEC §一.2 ❌项 5 严格禁止）
 - 不做"LLM 二次元标签自动检测"（v2 待 LLM 评估器集成）
+- 不做 N subagent 并发（v2 待）
+- 不做"subagent 跑失败的篇章回退到脚本"（v2 待评估）
 
-**批量预期耗时（同 source-create 模式 D）：**
-| 篇章数 | 典型耗时 |
-|--------|---------|
+**批量预期耗时：**
+| 篇章数 | 典型耗时（每篇 30-90s） |
+|--------|-----------------------|
 | 1-10 篇 | 1-3 分钟 |
 | 10-50 篇 | 3-15 分钟 |
 | 50-200 篇 | 15-60 分钟 |
 | 200+ 篇 | 60+ 分钟，建议分批 |
+
+### 3.3 核心库 `scripts/lib/llm-batch.js`（v1 新写，~300 行）
+
+**职责：** 装订 5 份规范 + 调 Anthropic API + 落盘 + 合规门。所有 LLM 相关逻辑封装在此，**不**泄露到 subagent prompt / CLI 脚本。
+
+**主函数签名：**
+
+```javascript
+/**
+ * 批量生成 interpretation.md
+ * @param {Object} opts
+ * @param {string} opts.slug - 书 slug
+ * @param {string[]} opts.chapters - 篇章名数组
+ * @param {Object} opts.specBundle - 5 份规范装订结果
+ * @param {boolean} [opts.force=false] - 覆盖已存在文件
+ * @param {Function} [opts.onProgress] - (current, total, chapter, status) => void
+ * @param {AbortSignal} [opts.signal] - 中断信号（subagent 用）
+ * @returns {Promise<Array<{chapter: string, status: 'success'|'skipped'|'failed', reason?: string, score?: number, report?: Object}>>}
+ */
+export async function generateInterpretations(opts) { ... }
+```
+
+**内部流水线（per-篇）：**
+
+```
+1. 收源：Read books/{slug}/articles/{chapter}/source.md
+2. 前置检查：source.md 缺失 → 跳过；已存在 interpretation.md 且 !force → 跳过
+3. 体检 gate：跑 6 项检查（详见 §5），输出 condition 报告
+4. 装订 prompt：source.md + condition 报告 + 9 步流水线指令 + §七 自评指令
+5. 调 Claude API：
+   - 走 @anthropic-ai/sdk
+   - model: claude-opus-4-8（与项目主 agent 同源）
+   - 错误重试：3 次指数退避（2s / 4s / 8s）+ 429 special case
+   - 中断：监听 opts.signal
+6. 5/4/3 自评：套 SPEC §七，< 4 分 → 现场重写（最多 3 次）
+7. 落盘前 self-check 合规门：详见 §7
+8. 冲突检查：interpretation.md 已存在 → 4 选项
+9. 落盘：Write 文件
+10. 调 onProgress 回调
+```
+
+**5 份规范装订顺序**（与 §4 一致）：
+1. SPEC-interpretation.md
+2. general.md
+3. 术数专项（如 bazi.md）
+4. catalog.md
+5. source.md
+
+**token 预算估算（per-篇）：**
+- 5 份规范合计：~30-50K tokens（含 SPEC-interpretation 337 行 / general / bazi / catalog）
+- source.md 平均：~3-10K tokens
+- 9 步 prompt 指令：~2K tokens
+- **input 合计**：~35-62K tokens / 篇
+- output（interpretation.md）：~5-15K tokens / 篇
+- **单篇总成本**：~40-77K tokens
+
+**50 篇批量预估：** 2-4M tokens，需注意 rate limit 与成本。
+
+### 3.4 API key / baseUrl 配置方案
+
+**优先级（D 方案：env 优先 + CLI 覆盖）：**
+
+| 配置项 | env var 名 | CLI 参数 | 默认 |
+|--------|-----------|---------|------|
+| API key | `ANTHROPIC_API_KEY` | `--api-key <key>` | 必填，无默认 |
+| Base URL | `ANTHROPIC_BASE_URL` | `--base-url <url>` | 官方 `https://api.anthropic.com` |
+| Model | `ANTHROPIC_MODEL` | `--model <id>` | `claude-opus-4-8` |
+
+**实现细节：**
+- `lib/llm-batch.js` 启动时读 `process.env`
+- 解析 CLI 参数时如有 `--api-key` 则覆盖 env
+- 配置项缺失（API key 必填）→ 启动时报错退出，给清晰指引
+- **不**引入 `dotenv` 依赖——`node --env-file=.env scripts/generate-interpretations.js ...`（Node 20.6+ 原生支持）由用户决定是否用
+
+**`.env.example` 模板：**
+```bash
+# 必填：Anthropic API key（去 https://console.anthropic.com 拿）
+ANTHROPIC_API_KEY=sk-ant-...
+
+# 可选：自定义 base URL（兼容自定义网关 / 代理）
+# ANTHROPIC_BASE_URL=https://your-gateway.example.com
+
+# 可选：模型 ID
+# ANTHROPIC_MODEL=claude-opus-4-8
+```
+
+**subagent 派发如何读 env：**
+- subagent 与主 agent 共享同一进程 env，env 自动继承
+- 不需要 subagent 内重新读 env
+
+**配置缺失错误信息模板：**
+```
+❌ 缺少 ANTHROPIC_API_KEY 环境变量
+
+请按以下任一方式配置：
+1. 在 .env 中设置（推荐，参考 .env.example）
+2. 在 shell 中 export：export ANTHROPIC_API_KEY=sk-ant-...
+3. 用 CLI 参数：--api-key sk-ant-...
+
+获取 API key：https://console.anthropic.com/settings/keys
+```
+
+### 3.5 双轨 UI 形态对比
+
+| 阶段 | subagent 派发（A 入口）| CLI 脚本（B 入口）|
+|------|---------------------|------------------|
+| 用户输入 | Claude Code 会话内 `/interpretation-create batch` | 终端 `node scripts/generate-interpretations.js ...` |
+| 选范围 | AskUserQuestion 4 选项（slug + 篇章 + force + dry-run）| CLI 参数 |
+| 强装载 | 主 agent Read 5 份规范 + 打印确认 | 脚本读 env 与 5 份规范（不打印"⏳正在通读⏳"那种 agent-style 日志）|
+| 进度反馈 | onProgress 回调 → 主 agent 流式输出 "▌正在处理 论用神 (3/10) ▐"` | stdout 进度条 `████░░░░ 30% 论用神 ...` |
+| 中断 | AbortSignal → subagent 优雅退出 | SIGINT → 脚本完成当前篇后退出 |
+| 收尾报告 | 主 agent 聊天窗口 | 终端文本汇总 + exit code |
+| 失败重试 | subagent 内调用 `lib/llm-batch.js` 自带 3 次重试 + 5/4/3 自评 3 次重写 | 同（脚本调用同核心库）|
+| self-check | `lib/llm-batch.js` 内调 Node 实现 | 同（无差异）|
+
+**v1 内 self-check 在 Node 端实现（不调 self-check-interpretation subagent）**：
+- self-check-interpretation 当前是 subagent 形式，CLI 脚本无法直接调
+- `lib/llm-batch.js` 内实现一份"精简版 self-check"——按 SPEC §七 + §一.4 §6 跑 grep 检查
+- v1 范围内：精简版自检覆盖致命错误 + 格式错误（共 13 项），内容检查（3 项）仅做轻量检查
+- v2 评估：是否把精简版合并回 self-check-interpretation，或调用 subagent 调 self-check
 
 ---
 
@@ -343,20 +508,31 @@ python3 scripts/self-check-fingerprint.py | grep -E "SPEC-interpretation|general
 
 ## 10. 测试策略
 
-**v1 最小测试集：**
+**v1 测试集：**
 
-1. **契约单测**：每份 `shared/*.md` 契约可在 spec fixture 库跑校验
-   - `condition-check.md` 6 项检查规则化后可被 grep 验证
-   - `pipeline.md` 9 步列表可被结构化解析验证
+1. **`lib/llm-batch.js` 单元契约测试**（Node 端 fixture）
+   - 5 份规范装订顺序与 token 估算
+   - 体检 gate 6 项检查规则化
+   - 5/4/3 自评决策表
+   - env / CLI 参数解析（4 组合：env-only / CLI-only / env+CLI override / 缺 API key）
+   - 4 选项冲突检查（mock 文件系统）
 2. **端到端单点测试**：对 1 篇已存在的 source.md（如 `子平真诠/articles/论用神/source.md`）跑 `/interpretation-create single`，主 agent 确认：
    - 产物路径 `interpretation.md` 存在
-   - self-check-interpretation 报告 0 fatal
+   - self-check 合规门报告 0 fatal
    - 反元自我引用 grep 全 0
-3. **批量回归**：对 1 本书的 5-10 篇跑批量模式，确认：
-   - 脚本产出 N 个 interpretation.md
+3. **批量回归（CLI 脚本）**：对 1 本书的 5-10 篇跑 `node scripts/generate-interpretations.js 子平真诠 --force`，确认：
+   - 脚本退出码 0
+   - 产出 N 个 interpretation.md
    - 失败篇章有日志
-   - 主 agent 抽样复核通过
-4. **红线回归**：人工 spot-check 1-2 篇"易违规"原文（流派分歧 / 异文 / 案例 / 短篇），确认产物：
+4. **批量回归（subagent 派发）**：对 1 本书的 3-5 篇跑 `/interpretation-create batch`，主 agent 确认：
+   - subagent 成功返回
+   - 进度反馈正常
+   - 与 CLI 脚本产出等价
+5. **配置缺失测试**：
+   - 缺 `ANTHROPIC_API_KEY` → 启动报错并打印配置指引
+   - `--api-key` CLI 覆盖 env → 生效
+   - 自定义 `--base-url` → 走自定义网关
+6. **红线回归**：人工 spot-check 1-2 篇"易违规"原文（流派分歧 / 异文 / 案例 / 短篇），确认产物：
    - 无自创理论
    - 无元自我引用
    - 注家标识统一
@@ -373,6 +549,10 @@ python3 scripts/self-check-fingerprint.py | grep -E "SPEC-interpretation|general
 - source.md 侧 `.meta.json` 机制（v2 源侧扩展）
 - interpretation 跨术数迁移（v2 待紫微斗数等专项文件）
 - 协作式 / 注入式 / 反馈式等"非主路径"模式（v2 视用户反馈再考虑）
+- N subagent 并发批量（v1 仅串行）
+- "subagent 跑失败回退到 CLI 脚本"自动重试（v2 待评估）
+- CLI 脚本内调 self-check-interpretation subagent（v1 用 Node 端精简版自检，v2 评估合并）
+- 自定义 gateway 鉴权（除 base URL 外的高级鉴权，v2 待）
 
 ---
 
@@ -415,6 +595,10 @@ python3 scripts/self-check-fingerprint.py | grep -E "SPEC-interpretation|general
 - source.md `.meta.json` 机制（OCR 异文 / 脱漏位置结构化）
 - 紫微斗数 / 六爻等术数专项文件
 - 与 skill-create 的衔接（v2 启动后再设计）
+- N subagent 并发批量（基于 v1 串行数据决定并发数与 rate limit 策略）
+- subagent 失败回退到 CLI 脚本的统一重试机制
+- CLI 脚本内调 self-check-interpretation subagent（与精简版自检合并）
+- 自定义 gateway 高级鉴权（OAuth / 证书 / 代理池等）
 
 ---
 
