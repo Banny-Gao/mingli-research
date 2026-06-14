@@ -123,4 +123,30 @@ describe('runSelfCheckLite', () => {
     const result = runSelfCheckLite(text)
     expect(result.issues.format.some(i => i.includes('标题机械化'))).toBe(true)
   })
+
+  it('detects §七 self-eval section reproduction (fatal — rule 8 hardened)', () => {
+    const text = `## 解读
+
+正文内容。
+
+## 6. 自评合规分
+
+**致命错误**：0 项
+- 无断章取义、无野诀。
+
+**格式错误**：0 项
+
+**内容检查**：0 项
+`
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('元自我自评'))).toBe(true)
+  })
+
+  it('detects 前承/后启 cross-chapter assertions (fatal — rule 9 hardened)', () => {
+    const text = '## 定位\n\n前承《论X》之基础，后启《论Y》《论Z》等篇章。'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
+  })
 })
