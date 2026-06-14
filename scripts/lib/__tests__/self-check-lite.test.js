@@ -82,4 +82,45 @@ describe('runSelfCheckLite', () => {
     expect(result.fatal).toBeGreaterThan(0)
     expect(result.issues.fatal.some(i => i.includes('截取半句'))).toBe(true)
   })
+
+  it('detects meta self-eval assertions (fatal — rule 8)', () => {
+    const text = '## 解读\n\n本篇无野诀 ✓\n无断章取义。\n深化洞见无野诀 ✓'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('元自我自评'))).toBe(true)
+  })
+
+  it('detects self-check report language (fatal — rule 8)', () => {
+    const text = '## 自评表\n\n| 致命错误（8 项） | 全部通过——无截取半句 |'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('元自我自评'))).toBe(true)
+  })
+
+  it('detects cross-chapter specific assertions (fatal — rule 9)', () => {
+    const text = '## 全书定位\n\n前数篇论用神成败、变化、纯杂，至此则论 X。'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
+  })
+
+  it('detects explicit chapter position cross-refs (fatal — rule 9)', () => {
+    const text = '## 定位\n\n本篇与第 31 章呼应。\n上承"用神论"之通论，下启"各格详论"。'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
+  })
+
+  it('detects cross-book citation (fatal — rule 10)', () => {
+    const text = '## 旁参\n\n《滴天髓征义》卷五亦为重要参考。'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('跨书引述'))).toBe(true)
+  })
+
+  it('detects mechanical section-label headings (format — rule 11)', () => {
+    const text = '## 原注申说\n\n> 【原注】注整句。\n\n解读。\n\n## 段一\n\n更多解读。'
+    const result = runSelfCheckLite(text)
+    expect(result.issues.format.some(i => i.includes('标题机械化'))).toBe(true)
+  })
 })
