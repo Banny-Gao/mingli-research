@@ -88,7 +88,7 @@ async function main() {
   console.log(`书: ${args.slug} | 篇章: ${chapters.length} 篇 | 模型: ${config.model}\n`)
 
   const start = Date.now()
-  const specBundle = loadSpecBundle(args.slug, chapters[0], { projectRoot: ROOT })
+  const specBundle = loadSpecBundle(args.slug, { projectRoot: ROOT })
 
   const results = await generateInterpretations({
     slug: args.slug,
