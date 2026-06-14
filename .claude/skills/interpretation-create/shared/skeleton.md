@@ -51,23 +51,18 @@
 - 通俗注释融入写作语言（无独立【白话】行）
 - 案例必须原典/原注自带，禁自创
 
-## 冲突 4 选项（Step 6 内部）
+## 落盘前自动备份（Step 6 内部）
 
 **触发：** interpretation.md 已存在
 
-| 选项 | 含义 | 后续动作 |
-|------|------|---------|
-| A. 覆盖 | 替换现有文件 | 写新内容，旧文件丢失 |
-| B. 备份为 .bak | 旧文件改名为 interpretation.md.bak，新文件写入 | 旧内容可回滚 |
-| C. 取消 | 放弃本次录入 | 退出，不写文件 |
-| D. 退出 | 放弃整个 interpretation-create 流程 | 退出 |
+**动作：** 把现有 `interpretation.md` 改名为 `interpretation.md.bak`，再 Write 新内容。旧内容可回滚。
 
-**实现：** `scripts/lib/conflict.js` 的 `resolveConflict(choice, filePath, newContent)`。
+注：v1 取消 4 选项 gate（覆盖/备份/取消/退出）—— 统一走"先备份后覆盖"路径，避免交互阻塞批量模式。
 
 ## 落盘顺序
 
 1. 调 self-check 精简版（详见 `quality-gate.md`）→ fatal=0 才继续
 2. 检查 `books/{slug}/articles/{篇名}/interpretation.md` 是否已存在
-3. 存在 → 主 agent 走 4 选项 gate（subagent 派发时由主 agent 替用户决定）
-4. 不存在或已决定 → 写文件
+3. 存在 → 自动备份为 .bak
+4. Write interpretation.md
 5. 不自动跑 `node scripts/generate.js`，由用户决定

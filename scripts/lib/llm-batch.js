@@ -51,7 +51,7 @@ async function callClaudeWithRetry({ client, model, system, user, signal, retryB
   throw lastErr
 }
 
-async function generateOne({ chapter, sourceText, specBundle, config, projectRoot, force, signal, onProgress, client, retryBaseMs }) {
+async function generateOne({ chapter, specBundle, config, projectRoot, force, signal, onProgress, client, retryBaseMs }) {
   const articlesDir = path.join(projectRoot, `books/${config.slug}/articles/${chapter}`)
   const sourcePath = path.join(articlesDir, 'source.md')
   const interpPath = path.join(articlesDir, 'interpretation.md')
@@ -62,6 +62,9 @@ async function generateOne({ chapter, sourceText, specBundle, config, projectRoo
   if (fileExists(interpPath) && !force) {
     return { chapter, status: 'skipped', reason: 'interpretation.md exists' }
   }
+
+  // per-篇 Read source.md（specBundle 不再含 sourceText）
+  const sourceText = fs.readFileSync(sourcePath, 'utf-8')
 
   // 体检
   const condition = checkCondition(sourceText)
@@ -120,7 +123,6 @@ export async function generateInterpretations(opts) {
     try {
       const result = await generateOne({
         chapter,
-        sourceText: specBundle.sourceText,
         specBundle,
         config: { ...config, slug },
         projectRoot,

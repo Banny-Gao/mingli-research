@@ -73,7 +73,7 @@ trigger: 解读|生成解读|写解读|补解读|录解读
 - 详见 `shared/quality-gate.md` + `shared/skeleton.md`
 - 调 `scripts/lib/self-check-lite.js` 的 `runSelfCheckLite(draft)`
 - fatal > 0 → 回 Step 5 重写
-- fatal = 0 → 冲突 4 选项（`scripts/lib/conflict.js` 的 `resolveConflict`）→ Write 文件
+- fatal = 0 → 自动备份现有 interpretation.md（→ .bak）→ Write 文件
 
 ## 批量 7 步状态机
 
@@ -144,7 +144,7 @@ trigger: 解读|生成解读|写解读|补解读|录解读
 | Step 4 体检某项异常 | 报告用户 + 套 §六 对应规则继续 |
 | Step 5 §七 自评 < 4 分 | 现场重写；最多 3 次仍 < 4 → 报告用户决定 |
 | Step 6 self-check fatal > 0 | 报告致命项 + 回 Step 5 重写 |
-| Step 6 文件冲突 | 4 选项（覆盖 / 备份 / 取消 / 退出）|
+| Step 6 文件冲突 | 自动备份为 .bak 后覆盖（无 4 选项 gate）|
 | Step 6 写失败 | 报告 + 退出，清理已写部分 |
 | 批量模式脚本失败（非 0 退出）| 报告 stderr + 列出失败篇章，不重试 |
 | 批量模式 per-篇失败 | 记日志 + 跳过 + 收尾报告汇总 |
