@@ -17,7 +17,7 @@
 
 - **入口**：`/interpretation-create` 起手
 - **2 模式**：单点（聚焦 1 篇）/ 批量（整本或子集）
-- **过程**：6 步引导式状态机（无"源模式"步骤） + 1 次强装载 gate + 1 次原文体检 gate + 落盘前 self-check 合规门
+- **过程**：6 步引导式状态机（批量模式在收源后多 1 步 dry-run gate，共 7 步） + 1 次强装载 gate + 1 次原文体检 gate + 落盘前 self-check 合规门
 - **输出**：`books/{slug}/articles/{篇名}/interpretation.md`
 - **强约束**：每次解读严格遵守 `research-dispute/SPEC-interpretation.md` + `research-dispute/general.md` + 术数专项（如 `bazi.md`）
 - **写入方式**：主 agent 直写（单点） / 调 `scripts/generate-interpretations.js`（批量，新写）
@@ -29,7 +29,7 @@
 
 ```
 .claude/skills/interpretation-create/
-├── SKILL.md                              # 主入口：6 步状态机 + 单/批双模
+├── SKILL.md                              # 主入口：6 步状态机（单点）/ 7 步（批量含 dry-run）+ 单/批双模
 │
 └── shared/
     ├── spec-bundles.md                   # 规范包（SPEC-interpretation + general + 术数专项）+ 指纹
