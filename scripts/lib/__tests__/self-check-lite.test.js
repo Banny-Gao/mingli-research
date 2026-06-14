@@ -149,4 +149,24 @@ describe('runSelfCheckLite', () => {
     expect(result.fatal).toBeGreaterThan(0)
     expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
   })
+
+  it('detects 前承/「」 fullwidth-quoted chapter-name evasion (fatal — rule 9 hardened R3)', () => {
+    const text1 = '## 定位\n\n前承《论X》之基础，后启《论Y》《论Z》。'
+    const text2 = '## 定位\n\n前承「论X」「论Y」之铺垫，后启「论Z」之深入。'
+    const text3 = '## 定位\n\n前承正官、财、印诸格之详论。'
+    const text4 = '## 定位\n\n前承格局通论之大要。'
+    const text5 = '## 定位\n\n前承论正官之法，后启论伤官、阳刃诸格。'
+
+    for (const text of [text1, text2, text3, text4, text5]) {
+      const r = runSelfCheckLite(text)
+      expect(r.fatal, `expected fatal for: ${text.slice(0, 40)}...`).toBeGreaterThan(0)
+      expect(r.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
+    }
+  })
+
+  it('allows clean 笼统 chapter-position phrases (no false positive — rule 9 hardened R3)', () => {
+    const text = '## 定位\n\n本书承用神取用之大端而进论成败救应之机；为后续格局详论之具应用开其端。子平之通论与命理通则之常法，于此可见一斑。'
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(false)
+  })
 })
