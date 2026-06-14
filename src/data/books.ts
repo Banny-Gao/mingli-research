@@ -4070,67 +4070,95 @@ export const books: Book[] = [
         "name": "本原",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷一 本原"
+        "category": ""
       },
       {
         "num": "02",
         "name": "起例",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷二 起例"
+        "category": ""
       },
       {
         "num": "03",
         "name": "强弱",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷三 强弱"
+        "category": ""
       },
       {
         "num": "04",
         "name": "宜忌",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷四 宜忌"
+        "category": ""
       },
       {
         "num": "05",
         "name": "化合刑冲",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷五 化合刑冲"
+        "category": ""
       },
       {
         "num": "06",
         "name": "先贤名论",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷六 先贤名论"
+        "category": ""
       },
       {
         "num": "07",
         "name": "润德堂藏稿",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷七 润德堂藏稿"
+        "category": ""
       },
       {
         "num": "08",
         "name": "星家十要",
         "isDone": false,
         "hasSkill": false,
-        "category": "卷八 星家十要"
+        "category": ""
       },
       {
         "num": "09",
         "name": "跋",
         "isDone": false,
         "hasSkill": false,
-        "category": "跋"
+        "category": ""
       }
     ],
     "skills": [],
-    "sources": []
+    "sources": [
+      {
+        "name": "跋"
+      },
+      {
+        "name": "本原"
+      },
+      {
+        "name": "化合刑冲"
+      },
+      {
+        "name": "起例"
+      },
+      {
+        "name": "强弱"
+      },
+      {
+        "name": "润德堂藏稿"
+      },
+      {
+        "name": "先贤名论"
+      },
+      {
+        "name": "星家十要"
+      },
+      {
+        "name": "宜忌"
+      }
+    ]
   },
   {
     "slug": "子平真诠",
@@ -4645,6 +4673,292 @@ export const books: Book[] = [
       },
       {
         "name": "子平真诠评注序"
+      }
+    ]
+  },
+  {
+    "slug": "李虚中命书",
+    "section": "命",
+    "category": "八字",
+    "title": "李虚中命书",
+    "author": "[唐]李虚中",
+    "version": "文渊阁四库全书本（乾隆四十六年九月恭校上）",
+    "description": "命书三卷，术数类五，命书相书之属。四库馆臣提要，述其授受源流与版本异同；正文为唐李虚中注、鬼谷子遗文九篇。",
+    "total": 27,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "提要",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷首"
+      },
+      {
+        "num": "02",
+        "name": "原序",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷首"
+      },
+      {
+        "num": "03",
+        "name": "甲子纳音六十位",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "04",
+        "name": "六十位轻重总结",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "05",
+        "name": "本家贵人命",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "06",
+        "name": "天乙贵人",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "07",
+        "name": "论贵神优劣",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "08",
+        "name": "此格三等",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "09",
+        "name": "紫虚局",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "10",
+        "name": "贵合贵食",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "11",
+        "name": "天乙贵神合",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷上"
+      },
+      {
+        "num": "12",
+        "name": "清浊阴阳易卦",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "13",
+        "name": "干支纳音数理",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "14",
+        "name": "五行方位与变通",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "15",
+        "name": "三元四柱主本",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "16",
+        "name": "五行性情",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "17",
+        "name": "真假邪正",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "18",
+        "name": "升降清浊",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷中"
+      },
+      {
+        "num": "19",
+        "name": "衰旺取时",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "20",
+        "name": "三元九限",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "21",
+        "name": "天承地禄起论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "22",
+        "name": "六合之德六十表",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "23",
+        "name": "鬼谷自谓",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "24",
+        "name": "六十干支格局表",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "25",
+        "name": "五行体合方位",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "26",
+        "name": "神头禄总论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      },
+      {
+        "num": "27",
+        "name": "水土名用",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷下"
+      }
+    ],
+    "skills": [],
+    "sources": [
+      {
+        "name": "本家贵人命"
+      },
+      {
+        "name": "此格三等"
+      },
+      {
+        "name": "干支纳音数理"
+      },
+      {
+        "name": "鬼谷自谓"
+      },
+      {
+        "name": "贵合贵食"
+      },
+      {
+        "name": "甲子纳音六十位"
+      },
+      {
+        "name": "六合之德六十表"
+      },
+      {
+        "name": "六十干支格局表"
+      },
+      {
+        "name": "六十位轻重总结"
+      },
+      {
+        "name": "论贵神优劣"
+      },
+      {
+        "name": "清浊阴阳易卦"
+      },
+      {
+        "name": "三元九限"
+      },
+      {
+        "name": "三元四柱主本"
+      },
+      {
+        "name": "神头禄总论"
+      },
+      {
+        "name": "升降清浊"
+      },
+      {
+        "name": "衰旺取时"
+      },
+      {
+        "name": "水土名用"
+      },
+      {
+        "name": "提要"
+      },
+      {
+        "name": "天承地禄起论"
+      },
+      {
+        "name": "天乙贵人"
+      },
+      {
+        "name": "天乙贵神合"
+      },
+      {
+        "name": "五行方位与变通"
+      },
+      {
+        "name": "五行体合方位"
+      },
+      {
+        "name": "五行性情"
+      },
+      {
+        "name": "原序"
+      },
+      {
+        "name": "真假邪正"
+      },
+      {
+        "name": "紫虚局"
       }
     ]
   },
@@ -8551,7 +8865,347 @@ export const books: Book[] = [
       }
     ],
     "skills": [],
-    "sources": []
+    "sources": [
+      {
+        "name": "病药说类"
+      },
+      {
+        "name": "病源赋"
+      },
+      {
+        "name": "财官双美格"
+      },
+      {
+        "name": "丑遥巳格"
+      },
+      {
+        "name": "从革格"
+      },
+      {
+        "name": "从化格"
+      },
+      {
+        "name": "带疾歌"
+      },
+      {
+        "name": "地支赋"
+      },
+      {
+        "name": "雕桔旺弱四病说类"
+      },
+      {
+        "name": "定真篇"
+      },
+      {
+        "name": "动静说"
+      },
+      {
+        "name": "飞天禄马格 附倒冲禄马格"
+      },
+      {
+        "name": "福德格"
+      },
+      {
+        "name": "附官杀去留杂格"
+      },
+      {
+        "name": "盖头说"
+      },
+      {
+        "name": "拱禄拱贵二格"
+      },
+      {
+        "name": "勾陈得位格"
+      },
+      {
+        "name": "合禄格"
+      },
+      {
+        "name": "吉神类"
+      },
+      {
+        "name": "继善篇"
+      },
+      {
+        "name": "稼穑格"
+      },
+      {
+        "name": "讲命捷径赋"
+      },
+      {
+        "name": "节气歌断"
+      },
+      {
+        "name": "捷驰千里马赋"
+      },
+      {
+        "name": "金不换骨髓歌断"
+      },
+      {
+        "name": "金神格"
+      },
+      {
+        "name": "金玉赋"
+      },
+      {
+        "name": "井栏叉格"
+      },
+      {
+        "name": "看命捷歌"
+      },
+      {
+        "name": "魁罡格"
+      },
+      {
+        "name": "来兵拱财格"
+      },
+      {
+        "name": "六亲说"
+      },
+      {
+        "name": "六神篇"
+      },
+      {
+        "name": "六乙鼠贵格"
+      },
+      {
+        "name": "六阴朝阳格"
+      },
+      {
+        "name": "论大运"
+      },
+      {
+        "name": "论太岁"
+      },
+      {
+        "name": "论诸格有救"
+      },
+      {
+        "name": "络绎赋"
+      },
+      {
+        "name": "男女合婚说"
+      },
+      {
+        "name": "男女命小运定局"
+      },
+      {
+        "name": "年时上官星格"
+      },
+      {
+        "name": "女命歌"
+      },
+      {
+        "name": "偏官格 附弃命从杀格"
+      },
+      {
+        "name": "飘荡歌"
+      },
+      {
+        "name": "起八字诀"
+      },
+      {
+        "name": "气象篇"
+      },
+      {
+        "name": "曲直仁寿格"
+      },
+      {
+        "name": "取格指诀歌断"
+      },
+      {
+        "name": "人鉴论"
+      },
+      {
+        "name": "人元消息赋"
+      },
+      {
+        "name": "壬骑龙背格"
+      },
+      {
+        "name": "认格局生死之歌"
+      },
+      {
+        "name": "日德格"
+      },
+      {
+        "name": "日贵格"
+      },
+      {
+        "name": "日禄归时格"
+      },
+      {
+        "name": "润下格"
+      },
+      {
+        "name": "三合聚集格"
+      },
+      {
+        "name": "伤官食神格"
+      },
+      {
+        "name": "神趣八法"
+      },
+      {
+        "name": "十段化气"
+      },
+      {
+        "name": "十段锦"
+      },
+      {
+        "name": "十二支咏"
+      },
+      {
+        "name": "十干从化定诀"
+      },
+      {
+        "name": "十天干体象全编论"
+      },
+      {
+        "name": "时上偏财格 附月偏财格"
+      },
+      {
+        "name": "时上一位贵格"
+      },
+      {
+        "name": "寿元歌"
+      },
+      {
+        "name": "四位纯全格"
+      },
+      {
+        "name": "四言独步 身弱论 弃命从杀格"
+      },
+      {
+        "name": "岁德扶杀格"
+      },
+      {
+        "name": "损益生长四药说类"
+      },
+      {
+        "name": "天干阴阳通变、定格局决"
+      },
+      {
+        "name": "天元一气格"
+      },
+      {
+        "name": "天元一字歌"
+      },
+      {
+        "name": "万金赋"
+      },
+      {
+        "name": "万尚书琼玑三盘赋"
+      },
+      {
+        "name": "渭泾论"
+      },
+      {
+        "name": "五步独言"
+      },
+      {
+        "name": "五星论"
+      },
+      {
+        "name": "五星谬说类"
+      },
+      {
+        "name": "五星正说类"
+      },
+      {
+        "name": "五行生克赋"
+      },
+      {
+        "name": "五行元理消息赋"
+      },
+      {
+        "name": "五阴歌"
+      },
+      {
+        "name": "喜忌篇"
+      },
+      {
+        "name": "仙机赋"
+      },
+      {
+        "name": "相心赋"
+      },
+      {
+        "name": "刑合格"
+      },
+      {
+        "name": "刑克歌 刑妻歌 克子歌"
+      },
+      {
+        "name": "凶神类"
+      },
+      {
+        "name": "玄机赋"
+      },
+      {
+        "name": "玄武当权格"
+      },
+      {
+        "name": "崖泉男女命赋"
+      },
+      {
+        "name": "炎上格"
+      },
+      {
+        "name": "阳刃格 附比劫、建禄格"
+      },
+      {
+        "name": "妖祥赋"
+      },
+      {
+        "name": "一行禅师天元赋"
+      },
+      {
+        "name": "印绶格"
+      },
+      {
+        "name": "幽微天干赋"
+      },
+      {
+        "name": "渊源集说"
+      },
+      {
+        "name": "月建生克"
+      },
+      {
+        "name": "月支正财格 附弃从财格"
+      },
+      {
+        "name": "运晦运通歌"
+      },
+      {
+        "name": "杂气财官印绶格 附时墓格"
+      },
+      {
+        "name": "憎爱赋"
+      },
+      {
+        "name": "正官格"
+      },
+      {
+        "name": "专财格"
+      },
+      {
+        "name": "子平泛论"
+      },
+      {
+        "name": "子平举要"
+      },
+      {
+        "name": "子遥巳格"
+      },
+      {
+        "name": "总论子平谬说类"
+      },
+      {
+        "name": "总咏"
+      }
+    ]
   },
   {
     "slug": "穷通宝鉴",

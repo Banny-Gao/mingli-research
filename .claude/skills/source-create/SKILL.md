@@ -24,11 +24,11 @@ trigger: 录入|录入原文|补录|录原文
 ## 5 步引导式流程
 
 ```
-[Step 1] 选模式（单/批）→ AskUserQuestion 2 选 1
-[Step 2] 选源模式（URL/文本/图片/调脚本）→ AskUserQuestion 4 选 1
-[Step 3] 收源 + 抓取（URL 模式下 auto-detect L1/L2/L3）
-[Step 4] 字形策略 gate（仅当 catalog.md 声明"简体规范化"时弹出）
-[Step 5] 落盘（冲突 4 选项：覆盖/备份/取消/退出）
+[Step 1] 选模式 ──→ [Step 2] 选源模式 ──→ [Step 3] 收源+抓取 ──→ [Step 4] 字形 gate ──→ [Step 5] 落盘
+   │ 2 选 1         │ 4 选 1              │ 按 mode 加载契约         │ 仅简体规范化时        │ 冲突 4 选项
+   │ 单/批          │ URL/文本/图/脚本     │ 见 shared/sources/       │ v1 不自动 t2s        │ 覆盖/备份/取消/退
+   └────────────────┴──────────────────────┴──────────────────────────┴───────────────────────┴────────────
+   shortcut: /source-create {single|batch}    /source-create {A|B|C|D}                             
 ```
 
 ### Step 1 — 模式
@@ -59,9 +59,9 @@ trigger: 录入|录入原文|补录|录原文
 ### Step 4 — 字形策略 gate
 
 - 读 `books/{slug}/catalog.md` blockquote 的 `字形策略` 字段
-- 校验 `shared/spec-bundles.md` 指纹（不一致则警告）
+- 校验 `shared/spec-bundles.md` 指纹（动态化：跑 `scripts/self-check-fingerprint.py` 实时取指纹，与上轮对比）
 - `原文照录` → 直接进 Step 5
-- `简体规范化` → 提示用户走 fetch-sources.js 通道或手动 t2s；v1 不自动转换
+- `简体规范化` → 提示用户走 fetch-sources.js 通道或手动 t2s；v1 不自动转换（不阻塞流程，详见 `shared/gate.md` §Gate 1）
 - 声明缺失 → 视为 `原文照录`
 
 ### Step 5 — 落盘

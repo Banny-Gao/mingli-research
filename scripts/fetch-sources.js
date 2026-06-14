@@ -207,8 +207,61 @@ const renderAnnotationBlock = block => {
   return parts.join('\n')
 }
 
+// ===== 注家/编辑标记规范化 =====
+// iwzbz 等站点把"【楠】""《格解》云：""古歌云：""注释：""补曰："等注家/编辑标记
+// 全部 dump 为顶格 plain text。本函数把它们转成 `【…】` 块引用 marker 前缀，
+// 由 formatSourceMarkdown 的 markerMatch 进一步接管并加 `> ` 与空行。
+//
+// 4 类模式 → 4 类标签（避免全固定转"注家名"，因为引书/佚名/续注不是注家人名）：
+//   1. 具名注家   "XX曰/注 ："   → "【XX】"  (XX 是人名，如楠)
+//   2. 引书       "《X》云/注 ：" → "【《X》】" (XX 是书名)
+//   3. 佚名占位   "古歌云/旧注曰/诗释/注释/注解" → "【古歌】/【旧注】/【诗释】/【原注】"
+//   4. 续注/补    "补曰 / 曰（裸用）" → "【补】/【又】"
+//
+// 不可识别的模式不转（原样保留到 main body），由 source 自检 warn 提示。
+
+const ANNOTATION_TRANSFORMS = [
+  // 1. 具名注家（人名 1-4 字 + 曰/注/云/断/解）
+  { re: /^(.{1,4}?)(曰|注|云|断曰|断|解)\s*([：:])\s*(.*)$/, label: m => `【${m[1].trim()}】 ${m[m.length - 1] || ''}` },
+  // 2. 引书名（《X》 + 可选"云/注/引诗" + 标点；含繁体"註"、异体"舊"）
+  { re: /^《([^》]+)》(?:引诗曰|引诗|云|註|注|歌|舊註曰|舊註)?\s*([：:])\s*(.*)$/, label: m => `【《${m[1]}》】 ${m[m.length - 1] || ''}` },
+  // 3. 佚名占位（惯用词）
+  { re: /^古歌云\s*[：:]\s*(.*)$/, label: m => `【古歌】 ${m[1] || ''}` },
+  { re: /^旧注[曰云]\s*[：:]\s*(.*)$/, label: m => `【旧注】 ${m[1] || ''}` },
+  { re: /^诗释\s*[：:]\s*(.*)$/, label: m => `【诗释】 ${m[1] || ''}` },
+  { re: /^注释\s*[：:]\s*(.*)$/, label: m => `【原注】 ${m[1] || ''}` },
+  { re: /^注解\s*[：:]\s*(.*)$/, label: m => `【原注】 ${m[1] || ''}` },
+  { re: /^古赋云\s*[：:]\s*(.*)$/, label: m => `【古赋】 ${m[1] || ''}` },
+  // 4. 续注/补（裸用）
+  { re: /^补曰\s*[：:]\s*(.*)$/, label: m => `【补】 ${m[1] || ''}` },
+  { re: /^补日\s*[：:]\s*(.*)$/, label: m => `【补】 ${m[1] || ''}` }, // 异体
+  { re: /^曰\s*[：:]\s*(.*)$/, label: m => `【又】 ${m[1] || ''}` },
+  { re: /^又曰\s*[：:]\s*(.*)$/, label: m => `【又】 ${m[1] || ''}` },
+  { re: /^眉批\s*[：:]\s*(.*)$/, label: m => `【眉批】 ${m[1] || ''}` },
+  // 5. 八法子节名（神趣八法/类似篇目专用，2 字独立成行）
+  { re: /^(类象|属象|从象|化象|照象|返象|鬼象|伏象)$/, label: m => `【楠·${m[1]}】` },
+  // 6. 裸"格言"开篇
+  { re: /^格言\s*[：:]\s*(.*)$/, label: m => `【格言】 ${m[1] || ''}` },
+]
+
+const transformAnnotations = rawContent => {
+  return rawContent
+    .split('\n')
+    .map(line => {
+      const t = line.trim()
+      if (!t) return line
+      for (const { re, label } of ANNOTATION_TRANSFORMS) {
+        const m = t.match(re)
+        if (m) return label(m).trim()
+      }
+      return line
+    })
+    .join('\n')
+}
+
 const formatSourceMarkdown = (chapterName, rawContent) => {
-  const lines = rawContent.split('\n').map(l => l.trim())
+  const normalized = transformAnnotations(rawContent)
+  const lines = normalized.split('\n').map(l => l.trim())
   const mainLines = []
   const annotationBlocks = []
   let currentBlock = null,

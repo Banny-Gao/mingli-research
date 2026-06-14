@@ -18,5 +18,5 @@ function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: stri
   return result;
 }
 
-export const sourceKeys = [] as const;
+export const sourceKeys = ["本原","起例","强弱","宜忌","化合刑冲","先贤名论","润德堂藏稿","星家十要","跋"] as const;
 export const sourceContent = extractPathKey(sourceModules as any, '/source.md');

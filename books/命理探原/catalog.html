@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>命理探原简介</title>
+    <link rel ="stylesheet" href="../pccontent.css" />
+   <script src="../jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 出现弹框时的阴影背景 -->
+    <div class="shadowMask"></div>
+    <div id="container" class="container">
+        <!-- 古籍内容 -->
+        <div class="book-detail">
+            <div class="book-detail-btn-catalog bookDetailBtn pointer">
+                <img class="bookDetailBtnIcon" src="../images/catalog_icon.png" />
+                <span>目录</span>
+            </div>
+            <div class="book-detail-btn-read bookDetailBtn pointer">
+                <img class="openbookcode bookDetailBtnIcon" src="../images/phone_read_icon.png" />
+                <span class="openbookcode" >手机阅读</span>
+                <div id="bookcode" class="book-popup">
+                    <img  id="closebookcode" class="book-popup-close" src="../images/close_icon.png" alt="">
+                    <img class="book-popup-qrcode" src="https://bzapi2.iwzbz.com/bookcode/qr_code.php?id=3_1_9_0" alt="">
+                    <div class="book-popup-tip">扫码下载/打开问真八字</div>
+                    <div class="book-popup-tip">在手机上继续阅读本书</div>
+                </div>
+            </div>
+            <div class="book-detail-title">命理探原简介</div>
+            <div class="book-detail-tip">书名：<span class="book-detail-tip-value">命理探原</span>作者名：<span
+                    class="book-detail-tip-value">[民国]袁树珊</span>本章字数：<span class="book-detail-tip-value">267字</span>
+            </div>
+            <div class="book-detail-content">
+              <p id="c1"></p>
+<p id="c2">《命理探原》民国袁树珊著。</p>
+<p id="c3"></p>
+<p id="c4">星命之学，通人未必习，习之者未必皆通</p>
+<p id="c5"></p>
+<p id="c6">人以其书或有文无诀，或有诀无文，究其诀与文，又类失之鄙俚，俗积学之士，不得其诀，遂厌其文，游食中流，不讲其文，专秘其诀，故学者难之。</p>
+<p id="c7"></p>
+<p id="c8">袁君是书，举前人之诀，悉发其秘，穷源竟委，了无余蕴，虽无师传，可以执卷而求，不致怅恍迷离，如坠五里雾中，茫然不知崖岸，其嘉惠后学，岂浅鲜哉。</p>
+<p id="c9"></p>
+<p id="c10">至文章渊雅，议论明通，涤尽鄙俚惮俗之迹，稗俗士读之，绝无扦格之弊；通人读之，益相赏干扰牡驱黄之外者，又其余事也。</p>
+<p id="c11"></p>
+<p id="c12"></p>
+<p id="c13"></p>
+<p id="c14"></p>
+</div>
+        </div>
+    </div>
+    <!-- 目录弹框 -->
+    <div class="catalog-box">
+        <div class="catalog-box-header">
+            <img class="catalog-box-header-img" src="../face/bk_3_1_9.png" />
+            <div class="catalog-box-header-right columnFlex">
+                <div class="catalog-box-header-right-title">命理探原</div>
+                <div class="catalog-box-header-right-author">[民国]袁树珊</div>
+            </div>
+        </div>
+        <div id="catalog" class="catalog-box-content  scrollBar"><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_0.html" style="color:#B2955D"><p class="items">命理探原简介</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_1.html" ><p class="items">本原</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_2.html" ><p class="items">起例</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_3.html" ><p class="items">强弱</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_4.html" ><p class="items">宜忌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_5.html" ><p class="items">化合刑冲</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_6.html" ><p class="items">先贤名论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_7.html" ><p class="items">润德堂藏稿</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_8.html" ><p class="items">星家十要</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_9_9.html" ><p class="items2">跋</p></a>
+
+        </div>
+    </div>
+
+    <script>
+
+    var bookid = "bk_3_1_9";
+    var pageid = "3_1_9_0";
+
+        $('.openbookcode').click(function(){
+            $('#bookcode').css('display','block');
+        });
+        $('#closebookcode').click(function(){
+            $('#bookcode').css('display','none');
+        });
+
+        let isClickMask = false // 是否点击阴影背景
+        const catalogBox = document.getElementsByClassName('catalog-box')[0]
+        const shadowMask = document.getElementsByClassName('shadowMask')[0]
+        const bookDetail = document.getElementsByClassName('book-detail')[0]
+        const bookDetailBtnCatalog = document.getElementsByClassName('book-detail-btn-catalog')[0]
+        shadowMask.addEventListener('click', (e) => {
+            isClickMask = true
+        })
+        window.addEventListener('click', (e) => {
+            if (isClickMask) {
+                shadowMask.style.display = 'none'
+                catalogBox.style.display = 'none'
+                isClickMask = false
+            }
+        })
+        bookDetailBtnCatalog.addEventListener('click', (e) => {
+            shadowMask.style.display = 'block'
+            catalogBox.style.display = 'block'
+        })
+$(document).ready(function(){ 
+        window.localStorage.setItem('wzxt_' + bookid,  pageid + '.html');
+	});
+$(".catalogitem").click(function()
+	{
+		$(".childitems").css("display","none");
+		var index = $(this).attr("val");
+var state = $(this).attr("state");
+if(state == '0'){
+		$("#childitem"+index).css("display","");$(this).attr("state",'1');
+
+		$("#itemicon"+index).attr("src","../iconup.png");
+}else
+{
+		$("#childitem"+index).css("display","none");$(this).attr("state",'0');
+
+		$("#itemicon"+index).attr("src","../icondown.png");
+}
+	});
+let h = document.getElementById("container").clientHeight;
+ window.parent.postMessage(
+          {
+            code: "iframeheight",
+            text: h
+          },
+          "*"
+        );
+    </script>
+   <script src="../content.js"></script>
+</body>
+
+</html>

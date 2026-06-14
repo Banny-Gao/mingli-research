@@ -1,8 +1,9 @@
 # 骨架生成规则
 
-book-create 在 Step 6 落盘时创建两类产物：
+book-create 在 Step 6 落盘时创建三类产物：
 1. `books/{slug}/catalog.md`
 2. `books/{slug}/articles/{篇名}/.gitkeep`（N 个）
+3. **`books/{slug}/catalog.html`（条件性，详见 §3）**
 
 ## catalog.md 模板
 
@@ -69,5 +70,37 @@ books/神峰通考/articles/偏官格 附弃命从杀格/  # ✓ 正确
 1. 检查 `books/{slug}/catalog.md` 是否已存在 → 冲突时走 §4 异常处置
 2. `mkdir -p books/{slug}/articles/`
 3. 按 `chapter_list` 逐章 `mkdir -p` + `touch .gitkeep`
-4. `Write` `books/{slug}/catalog.md`
-5. 不自动跑 `node scripts/generate.js`，由用户决定
+4. **raw HTML 落盘**（条件性，详见 §3）
+5. `Write` `books/{slug}/catalog.md`
+6. 不自动跑 `node scripts/generate.js`，由用户决定
+
+## §3 raw HTML 落盘
+
+**触发条件：**
+- `BookDraft.source_input.rawHtmlPath` 存在（模式 A 输入侧）
+- **或** `BookDraft.source_input.rawHtml` 存在（模式 B WebFetch 拿到的 HTML 字符串）
+
+**判定标准：** LLM 解析后能从中生成 catalog.md（章节数 ≥3）。
+
+**落盘动作：**
+```bash
+# 模式 A：cp 用户提供的文件
+cp <rawHtmlPath> books/<slug>/catalog.html
+
+# 模式 B：Write WebFetch 拿到的 raw HTML
+Write books/<slug>/catalog.html
+```
+
+**不触发的场景：**
+- 模式 C（图片/PDF）：无 HTML 输入
+- 模式 D（模糊描述）：无 HTML 输入
+- 模式 A/B 解析后章节数 < 3（极短页/错误页/登录跳转页）—— 主 agent 警告但不阻塞
+
+**冲突处理：**
+- `books/{slug}/catalog.html` 已存在 → 走与 catalog.md 相同的 4 选项（覆盖/备份 .bak/取消/退出）
+- 用户**选**取消或退出 → 整个 book-create 流程退出，已创建的 articles 骨架保留（**不**清理）
+
+**与已建书的一致性：**
+- 6 本已有 catalog.html 的书（千里命稿/子平真诠/穷通宝鉴/三命通会/渊海子平/滴天髓阐微）都是建书时同步落的
+- 3 本新书（命理探原/神峰通考/紫微斗数全书）当前**缺** catalog.html，v1 改进后未来新书不会再缺
+- 旧 3 本书的 catalog.html 补不补 → 走 source-create 模式 D 时按需手工补（**不**是 book-create 责任）

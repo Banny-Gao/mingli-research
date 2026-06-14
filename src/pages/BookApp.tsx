@@ -110,16 +110,6 @@ const BookApp = () => {
                 {book.description}
               </p>
             )}
-            <div className="book-hero-stats">
-              <div className="stat-item">
-                <div className="stat-num">{book.total}</div>
-                <div className="stat-label">全篇章</div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-num-green">{book.done}</div>
-                <div className="stat-label">已解读</div>
-              </div>
-            </div>
           </div>
           <div className="container-wide animate-fade-up readlist-scroll">
             <ReadList

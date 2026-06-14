@@ -2,10 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'path'
+import { remAdapter } from './plugins/rem-adapter'
 
 export default defineConfig({
   base: '/mingli-research/',
-  plugins: [react(), tailwindcss()],
+  plugins: [remAdapter(), react(), tailwindcss()],
   resolve: {
     alias: { '@': resolve(__dirname, 'src') },
   },
