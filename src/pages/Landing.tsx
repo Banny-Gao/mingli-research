@@ -127,10 +127,6 @@ const Landing = () => {
                           style={{ width: `${progressPercent(book.done, book.total)}%` }}
                         />
                       </div>
-                      <div className="progress-meta">
-                        <span>已解读 {book.done} 篇</span>
-                        <span>{progressPercent(book.done, book.total)}% 完成</span>
-                      </div>
                     </Link>
                   ))
                 ) : (

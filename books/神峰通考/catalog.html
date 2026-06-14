@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五星正说类</title>
+    <link rel ="stylesheet" href="../pccontent.css" />
+   <script src="../jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 出现弹框时的阴影背景 -->
+    <div class="shadowMask"></div>
+    <div id="container" class="container">
+        <!-- 古籍内容 -->
+        <div class="book-detail">
+            <div class="book-detail-btn-catalog bookDetailBtn pointer">
+                <img class="bookDetailBtnIcon" src="../images/catalog_icon.png" />
+                <span>目录</span>
+            </div>
+            <div class="book-detail-btn-read bookDetailBtn pointer">
+                <img class="openbookcode bookDetailBtnIcon" src="../images/phone_read_icon.png" />
+                <span class="openbookcode" >手机阅读</span>
+                <div id="bookcode" class="book-popup">
+                    <img  id="closebookcode" class="book-popup-close" src="../images/close_icon.png" alt="">
+                    <img class="book-popup-qrcode" src="https://bzapi2.iwzbz.com/bookcode/qr_code.php?id=3_1_8_1_1" alt="">
+                    <div class="book-popup-tip">扫码下载/打开问真八字</div>
+                    <div class="book-popup-tip">在手机上继续阅读本书</div>
+                </div>
+            </div>
+            <div class="book-detail-title">五星正说类</div>
+            <div class="book-detail-tip">书名：<span class="book-detail-tip-value">神峰通考</span>作者名：<span
+                    class="book-detail-tip-value">[明]张楠</span>本章字数：<span class="book-detail-tip-value">943字</span>
+            </div>
+            <div class="book-detail-content">
+              <p id="c1"></p>
+<p id="c2">安身命宫，原取逢卯安命，逢酉安身，其理何欤？然卯属东方正木，木主仁，仁主寿，故以命宫寓焉。酉属西方之方正金，金主义，义主宜，故以身宫寓焉。然命宫为受胎之初，故以仁木主之。仁有生生之道也。身宫为受胎之后。故以义方之，义有成身之道也，身命之立，其原于此，理出于正也。</p>
+<p id="c3"></p>
+<p id="c4">安星辰法，当以，《五星指南》为之体，《琴堂》、《殿驾》为之用。体可祖之，而为造命之矜式，用可则之，而为祸福之根底。若《乔拗》，若《加盘》，若《步天经》，俱以命宫为祖。如寅亥二宫属木，畏金克这，喜之生之。卯戌二宫属火，辰酉二宫属金，申巳二宫属水，子丑二宫属土，午属太阳，未属太阴，生克之例同前。独午属太阳，被木星遮蔽光，其理颇非近正。然太阳为万物之尊，穹隆于万仞之上，木岂能蔽焉。但喜金水以伴之，其理甚是。未属太阴，未土计以独之，喜火罗金以护之，但诸星生克俱当以命而论，未可以身宫论之，善命在身先也。</p>
+<p id="c5"></p>
+<p id="c6">限行于命宫之后，而不从身为庐舍，盖命属身之先也，胎之后，即以命宫为庐舍。人之祸福，但当究诸命宫。有何恩星？有何难星？如难星守命。</p>
+<p id="c7"></p>
+<p id="c8">【主】一生孤苦，恩星守命，</p>
+<p id="c9"></p>
+<p id="c10">【主】一生富贵。如命宫无星辰之可考，当以三合宫看，如坐寅。则看午戌宫也。如三合无，则看四正宫。但四正宫，颇不近理，如命宫畏金为难，行限亦畏之。凡诸财帛田宅等宫，俱同此也，此系五行生克，正理之说也。</p>
+<p id="c11"></p>
+<p id="c12">度主，即以木度所属。如寅宫立命，缠尾火虎度，即以水克火星度星，为划度星，即以木恩星，但论度为准，则又有一说焉，或命宫所喜，或又度主所忌，一喜一忌，将何为主？然但以命宫为主，其理则近，若又以度论之，由惑人心矣。划度则以张剔谷《划度歌》为则。若日月木火土金水为正七曜星，若罗星则为水之奴，计星则为土之奴，气星则为木之奴，孛星则为水之奴，此为四余星。然七曜星命限逢之，见祸或浅。四余星命限逢之，见祸式烈。何也？七曜主星属君子，四余奴星属小人，狐假虎威，正理然也。</p>
+<p id="c13"></p>
+<p id="c14">五星诸书之立，惟《五星指南》，所立起八字，安身合，安星辰，节气五行生克之理，此系看命之门户，不可无也，其余同则陈诸五行谬说类内。又若《五星》、《琴堂》、《殿驾》、《加盘》、《步天经》俱属正理。但五星之说，近正理者颇少，近谬说都颇多也。</p>
+</div>
+        </div>
+    </div>
+    <!-- 目录弹框 -->
+    <div class="catalog-box">
+        <div class="catalog-box-header">
+            <img class="catalog-box-header-img" src="../face/bk_3_1_8.png" />
+            <div class="catalog-box-header-right columnFlex">
+                <div class="catalog-box-header-right-title">神峰通考</div>
+                <div class="catalog-box-header-right-author">[明]张楠</div>
+            </div>
+        </div>
+        <div id="catalog" class="catalog-box-content  scrollBar"><a href="#" class="catalogitem" val="1" state='0'><p class="items"><img id="itemicon1" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷一</p></a><div class="childitems" id="childitem1" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_1.html" style="color:#B2955D"><p class="citems">五星正说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_2.html" ><p class="citems">五星谬说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_3.html" ><p class="citems">男女合婚说</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_4.html" ><p class="citems">总论子平谬说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_5.html" ><p class="citems">动静说</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_6.html" ><p class="citems">盖头说</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_7.html" ><p class="citems">六亲说</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_8.html" ><p class="citems">病药说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_9.html" ><p class="citems">雕桔旺弱四病说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_10.html" ><p class="citems">损益生长四药说类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_11.html" ><p class="citems">正官格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_12.html" ><p class="citems">偏官格 附弃命从杀格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_13.html" ><p class="citems">时上一位贵格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_1_14.html" ><p class="citems">附官杀去留杂格</p></a>
+</div><a href="#" class="catalogitem" val="2" state='0'><p class="items"><img id="itemicon2" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷二</p></a><div class="childitems" id="childitem2" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_15.html" ><p class="citems">月支正财格 附弃从财格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_16.html" ><p class="citems">时上偏财格 附月偏财格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_17.html" ><p class="citems">伤官食神格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_18.html" ><p class="citems">印绶格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_19.html" ><p class="citems">阳刃格 附比劫、建禄格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_20.html" ><p class="citems">杂气财官印绶格 附时墓格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_2_21.html" ><p class="citems">金神格</p></a>
+</div><a href="#" class="catalogitem" val="3" state='0'><p class="items"><img id="itemicon3" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷三</p></a><div class="childitems" id="childitem3" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_22.html" ><p class="citems">飞天禄马格 附倒冲禄马格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_23.html" ><p class="citems">子遥巳格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_24.html" ><p class="citems">丑遥巳格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_25.html" ><p class="citems">壬骑龙背格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_26.html" ><p class="citems">井栏叉格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_27.html" ><p class="citems">六乙鼠贵格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_28.html" ><p class="citems">六阴朝阳格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_29.html" ><p class="citems">刑合格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_30.html" ><p class="citems">合禄格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_31.html" ><p class="citems">曲直仁寿格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_32.html" ><p class="citems">稼穑格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_33.html" ><p class="citems">炎上格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_34.html" ><p class="citems">润下格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_35.html" ><p class="citems">从革格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_36.html" ><p class="citems">年时上官星格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_37.html" ><p class="citems">从化格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_38.html" ><p class="citems">来兵拱财格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_39.html" ><p class="citems">岁德扶杀格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_40.html" ><p class="citems">专财格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_41.html" ><p class="citems">日德格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_42.html" ><p class="citems">日贵格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_43.html" ><p class="citems">魁罡格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_44.html" ><p class="citems">勾陈得位格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_45.html" ><p class="citems">玄武当权格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_46.html" ><p class="citems">财官双美格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_47.html" ><p class="citems">拱禄拱贵二格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_48.html" ><p class="citems">日禄归时格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_49.html" ><p class="citems">四位纯全格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_50.html" ><p class="citems">天元一气格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_51.html" ><p class="citems">三合聚集格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_52.html" ><p class="citems">福德格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_53.html" ><p class="citems">神趣八法</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_54.html" ><p class="citems">论大运</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_55.html" ><p class="citems">论太岁</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_56.html" ><p class="citems">认格局生死之歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_57.html" ><p class="citems">五星论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_3_58.html" ><p class="citems">金不换骨髓歌断</p></a>
+</div><a href="#" class="catalogitem" val="4" state='0'><p class="items"><img id="itemicon4" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷四</p></a><div class="childitems" id="childitem4" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_59.html" ><p class="citems">十天干体象全编论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_60.html" ><p class="citems">十二支咏</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_61.html" ><p class="citems">总咏</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_62.html" ><p class="citems">吉神类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_63.html" ><p class="citems">凶神类</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_64.html" ><p class="citems">起八字诀</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_65.html" ><p class="citems">子平举要</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_66.html" ><p class="citems">男女命小运定局</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_69.html" ><p class="citems">天干阴阳通变、定格局决</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_70.html" ><p class="citems">子平泛论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_71.html" ><p class="citems">十干从化定诀</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_72.html" ><p class="citems">十段锦</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_73.html" ><p class="citems">十段化气</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_74.html" ><p class="citems">五阴歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_75.html" ><p class="citems">天元一字歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_76.html" ><p class="citems">运晦运通歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_77.html" ><p class="citems">刑克歌 刑妻歌 克子歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_78.html" ><p class="citems">带疾歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_79.html" ><p class="citems">寿元歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_80.html" ><p class="citems">飘荡歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_81.html" ><p class="citems">女命歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_82.html" ><p class="citems">月建生克</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_83.html" ><p class="citems">看命捷歌</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_84.html" ><p class="citems">论诸格有救</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_85.html" ><p class="citems">取格指诀歌断</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_86.html" ><p class="citems">节气歌断</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_87.html" ><p class="citems">万尚书琼玑三盘赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_88.html" ><p class="citems">崖泉男女命赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_89.html" ><p class="citems">讲命捷径赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_90.html" ><p class="citems">四言独步 身弱论 弃命从杀格</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_4_91.html" ><p class="citems">五步独言</p></a>
+</div><a href="#" class="catalogitem" val="5" state='0'><p class="items"><img id="itemicon5" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷五</p></a><div class="childitems" id="childitem5" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_92.html" ><p class="citems">喜忌篇</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_93.html" ><p class="citems">继善篇</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_94.html" ><p class="citems">六神篇</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_95.html" ><p class="citems">气象篇</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_96.html" ><p class="citems">渭泾论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_5_97.html" ><p class="citems">定真篇</p></a>
+</div><a href="#" class="catalogitem" val="6" state='0'><p class="items"><img id="itemicon6" src="../icondown.png" style='width:12px;margin-right:12px'>神峰通考卷六</p></a><div class="childitems" id="childitem6" style='display:none'><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_98.html" ><p class="citems">五行元理消息赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_99.html" ><p class="citems">五行生克赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_100.html" ><p class="citems">一行禅师天元赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_101.html" ><p class="citems">捷驰千里马赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_102.html" ><p class="citems">络绎赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_103.html" ><p class="citems">玄机赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_104.html" ><p class="citems">憎爱赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_105.html" ><p class="citems">万金赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_106.html" ><p class="citems">相心赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_107.html" ><p class="citems">仙机赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_108.html" ><p class="citems">金玉赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_109.html" ><p class="citems">人鉴论</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_110.html" ><p class="citems">渊源集说</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_111.html" ><p class="citems">妖祥赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_112.html" ><p class="citems">幽微天干赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_113.html" ><p class="citems">人元消息赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_114.html" ><p class="citems">地支赋</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_8_6_115.html" ><p class="citems">病源赋</p></a>
+</div>
+        </div>
+    </div>
+
+    <script>
+
+    var bookid = "bk_3_1_8";
+    var pageid = "3_1_8_1_1";
+
+        $('.openbookcode').click(function(){
+            $('#bookcode').css('display','block');
+        });
+        $('#closebookcode').click(function(){
+            $('#bookcode').css('display','none');
+        });
+
+        let isClickMask = false // 是否点击阴影背景
+        const catalogBox = document.getElementsByClassName('catalog-box')[0]
+        const shadowMask = document.getElementsByClassName('shadowMask')[0]
+        const bookDetail = document.getElementsByClassName('book-detail')[0]
+        const bookDetailBtnCatalog = document.getElementsByClassName('book-detail-btn-catalog')[0]
+        shadowMask.addEventListener('click', (e) => {
+            isClickMask = true
+        })
+        window.addEventListener('click', (e) => {
+            if (isClickMask) {
+                shadowMask.style.display = 'none'
+                catalogBox.style.display = 'none'
+                isClickMask = false
+            }
+        })
+        bookDetailBtnCatalog.addEventListener('click', (e) => {
+            shadowMask.style.display = 'block'
+            catalogBox.style.display = 'block'
+        })
+$(document).ready(function(){ 
+        window.localStorage.setItem('wzxt_' + bookid,  pageid + '.html');
+	});
+$(".catalogitem").click(function()
+	{
+		$(".childitems").css("display","none");
+		var index = $(this).attr("val");
+var state = $(this).attr("state");
+if(state == '0'){
+		$("#childitem"+index).css("display","");$(this).attr("state",'1');
+
+		$("#itemicon"+index).attr("src","../iconup.png");
+}else
+{
+		$("#childitem"+index).css("display","none");$(this).attr("state",'0');
+
+		$("#itemicon"+index).attr("src","../icondown.png");
+}
+	});
+let h = document.getElementById("container").clientHeight;
+ window.parent.postMessage(
+          {
+            code: "iframeheight",
+            text: h
+          },
+          "*"
+        );
+    </script>
+   <script src="../content.js"></script>
+</body>
+
+</html>

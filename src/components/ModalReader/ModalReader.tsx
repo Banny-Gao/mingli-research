@@ -488,7 +488,6 @@ const ModalReader = ({
                 {/* 同一篇章内的跨内容导航 */}
                 {contentNavItems.length > 0 && (
                   <div className="related-tags">
-                    <span className="related-label">本篇内容</span>
                     {contentNavItems.map(({ type, label, navKey }) => (
                       <Button
                         key={type}
