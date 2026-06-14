@@ -8,12 +8,12 @@ describe('modeOf', () => {
   })
 
   it('returns 标准 for text between 500 and 2000 chars', () => {
-    const text = '中篇内容。'.repeat(100) // 700 chars
+    const text = '中篇内容。'.repeat(100) // 500 chars
     expect(modeOf(text)).toBe('标准')
   })
 
   it('returns 密集 for text over 2000 chars', () => {
-    const text = '长篇。'.repeat(800) // 3200 chars
+    const text = '长篇。'.repeat(800) // 2400 chars
     expect(modeOf(text)).toBe('密集')
   })
 
@@ -62,8 +62,8 @@ describe('checkCondition', () => {
   })
 
   it('detects 超长 for text over 5000 chars', () => {
-    const text = '长篇内容。'.repeat(700) // 4900 chars, but with extra lines will be > 5000
+    const text = '长篇内容。'.repeat(1100) // 5500 chars, reliably > 5000
     const result = checkCondition(text)
-    expect(result.超长).toMatch(/是|否/) // 实际取决于精确字符数
+    expect(result.超长).toMatch(/是/)
   })
 })
