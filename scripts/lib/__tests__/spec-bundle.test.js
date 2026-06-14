@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { loadSpecBundle } from '../spec-bundle.js'
 
 describe('loadSpecBundle', () => {
-  it('returns object with 5 spec fields', () => {
+  it('returns object with 4 spec fields', () => {
     // 实际执行会读真实文件——此测试仅验证返回结构
     // 在 fixture 环境下跑
     const result = loadSpecBundle('子平真诠', '论用神', {
@@ -12,7 +12,8 @@ describe('loadSpecBundle', () => {
     expect(result).toHaveProperty('general')
     expect(result).toHaveProperty('shuSpecial')
     expect(result).toHaveProperty('catalog')
-    expect(result).toHaveProperty('sourceText')
+    // sourceText 已从 bundle 移除（per-篇 装订在 llm-batch.js）
+    expect(result).not.toHaveProperty('sourceText')
   })
 
   it('throws when SPEC-interpretation.md missing', () => {

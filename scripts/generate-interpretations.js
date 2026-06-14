@@ -63,6 +63,16 @@ async function main() {
     process.exit(args.help ? 0 : 1)
   }
 
+  // 1. 解析篇章（不需 API key）
+  const chapters = resolveChapters(args.slug, args.chapters)
+
+  // 2. dry-run 直接退出（不需 API key）
+  if (args.dryRun) {
+    printDryRun(args.slug, chapters)
+    process.exit(0)
+  }
+
+  // 3. 实跑才需要 API key
   let config
   try {
     config = resolveConfig({ apiKey: args.apiKey, baseUrl: args.baseUrl, model: args.model })
@@ -74,25 +84,16 @@ async function main() {
     throw err
   }
 
-  const chapters = resolveChapters(args.slug, args.chapters)
-
-  if (args.dryRun) {
-    printDryRun(args.slug, chapters)
-    process.exit(0)
-  }
-
   console.log(`\n# 批量生成 interpretation.md`)
   console.log(`书: ${args.slug} | 篇章: ${chapters.length} 篇 | 模型: ${config.model}\n`)
 
   const start = Date.now()
   const specBundle = loadSpecBundle(args.slug, chapters[0], { projectRoot: ROOT })
-  // 注：实际批量时 specBundle.sourceText 只在单篇时准确；批量时应 per-篇 重新装订
-  // 简化：v1 假设所有篇章共享同一 catalog 与术数专项，per-篇 重新 Read sourceText
 
   const results = await generateInterpretations({
     slug: args.slug,
     chapters,
-    specBundle: { ...specBundle, sourceText: '' }, // per-篇 重新装订
+    specBundle,
     config,
     projectRoot: ROOT,
     force: args.force,

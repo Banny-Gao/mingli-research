@@ -2,7 +2,10 @@
  * scripts/lib/spec-bundle.js — 5 份规范装订
  *
  * 输入：书 slug + 篇章名 + 项目根路径
- * 输出：{ specInterpretation, general, shuSpecial, catalog, sourceText }
+ * 输出：{ specInterpretation, general, shuSpecial, catalog }
+ *
+ * 注意：source.md 不在此处装订——批量时各篇 source.md 需 per-篇 重读
+ * （见 scripts/lib/llm-batch.js 的 generateOne）。
  */
 
 import fs from 'node:fs'
@@ -24,7 +27,7 @@ function readOrThrow(filePath, label) {
  * @param {string} slug
  * @param {string} chapter
  * @param {{projectRoot: string}} opts
- * @returns {{specInterpretation: string, general: string, shuSpecial: string, catalog: string, sourceText: string}}
+ * @returns {{specInterpretation: string, general: string, shuSpecial: string, catalog: string}}
  */
 export function loadSpecBundle(slug, chapter, { projectRoot }) {
   const specInterpretation = readOrThrow(
@@ -52,10 +55,5 @@ export function loadSpecBundle(slug, chapter, { projectRoot }) {
     `research-dispute/${specialFile}`
   )
 
-  const sourceText = readOrThrow(
-    path.join(projectRoot, `books/${slug}/articles/${chapter}/source.md`),
-    `books/${slug}/articles/${chapter}/source.md`
-  )
-
-  return { specInterpretation, general, shuSpecial, catalog, sourceText }
+  return { specInterpretation, general, shuSpecial, catalog }
 }

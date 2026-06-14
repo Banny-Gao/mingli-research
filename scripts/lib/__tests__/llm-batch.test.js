@@ -20,7 +20,6 @@ const FAKE_BUNDLE = {
   general: '# general',
   shuSpecial: '# bazi',
   catalog: '# catalog',
-  sourceText: '# 论用神\n\n正文内容。',
 }
 
 const FAKE_CONFIG = {
@@ -139,5 +138,58 @@ describe('generateInterpretations', () => {
     })
     expect(callCount).toBe(3)
     expect(results[0].status).toBe('success')
+  })
+
+  // 回归测试：批量多篇时，per-篇 装订各自 source.md 内容到 prompt
+  // （修复前：specBundle.sourceText 是首篇内容，per-篇 LLM 都收到首篇 source）
+  it('reads per-chapter source.md content into each LLM call', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const capturedCalls = []
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        create: vi.fn().mockImplementation(({ messages }) => {
+          capturedCalls.push(messages[0].content)
+          return Promise.resolve({
+            content: [{ type: 'text', text: '## 标题\n\n> 【原文】原文。\n\n解读。' }],
+          })
+        }),
+      },
+    }))
+
+    const CHAP_A = 'chapter-A'
+    const CHAP_B = 'chapter-B'
+    const dirA = path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/${CHAP_A}`)
+    const dirB = path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/${CHAP_B}`)
+    fs.mkdirSync(dirA, { recursive: true })
+    fs.mkdirSync(dirB, { recursive: true })
+    // 两篇 source.md 内容不同
+    fs.writeFileSync(path.join(dirA, 'source.md'), '# A 篇原文\n\nA 篇独有内容 AAA。', 'utf-8')
+    fs.writeFileSync(path.join(dirB, 'source.md'), '# B 篇原文\n\nB 篇独有内容 BBB。', 'utf-8')
+
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: [CHAP_A, CHAP_B],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results).toHaveLength(2)
+    expect(results[0].status).toBe('success')
+    expect(results[1].status).toBe('success')
+
+    // 抓到 2 次 LLM 调用
+    expect(capturedCalls).toHaveLength(2)
+
+    // 第 1 次（chapter-A）必须含 A 篇独有标记 "AAA"，不应含 B 篇标记 "BBB"
+    expect(capturedCalls[0]).toContain('AAA')
+    expect(capturedCalls[0]).not.toContain('BBB')
+    expect(capturedCalls[0]).toContain('A 篇原文')
+
+    // 第 2 次（chapter-B）必须含 B 篇独有标记 "BBB"，不应含 A 篇标记 "AAA"
+    expect(capturedCalls[1]).toContain('BBB')
+    expect(capturedCalls[1]).not.toContain('AAA')
+    expect(capturedCalls[1]).toContain('B 篇原文')
   })
 })
