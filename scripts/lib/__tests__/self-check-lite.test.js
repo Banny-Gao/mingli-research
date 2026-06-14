@@ -66,4 +66,20 @@ describe('runSelfCheckLite', () => {
     expect(result.score).toBeGreaterThanOrEqual(0)
     expect(result.score).toBeLessThanOrEqual(5)
   })
+
+  it('detects Chinese ellipsis truncation (fatal)', () => {
+    // 中文省略号 …… 是 2 字符，ASCII … 是单字符 → 不能用字符类量化器
+    const text = '> 【原注】此段……'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('截取半句'))).toBe(true)
+  })
+
+  it('detects ASCII ellipsis truncation (fatal)', () => {
+    // ASCII 三点省略号 ... 回归测试（rule 7 主用例）
+    const text = '> 【原文】此句...'
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('截取半句'))).toBe(true)
+  })
 })
