@@ -25,11 +25,10 @@ function readOrThrow(filePath, label) {
 
 /**
  * @param {string} slug
- * @param {string} chapter
  * @param {{projectRoot: string}} opts
  * @returns {{specInterpretation: string, general: string, shuSpecial: string, catalog: string}}
  */
-export function loadSpecBundle(slug, chapter, { projectRoot }) {
+export function loadSpecBundle(slug, { projectRoot }) {
   const specInterpretation = readOrThrow(
     path.join(projectRoot, 'research-dispute/SPEC-interpretation.md'),
     'SPEC-interpretation.md'

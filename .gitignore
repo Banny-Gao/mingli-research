@@ -49,3 +49,8 @@ test-results
 
 .claude/worktrees/
 .ace-tool/
+
+# Env / API keys
+.env
+.env.*
+!.env.example
