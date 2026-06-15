@@ -91,7 +91,7 @@ const BookApp = () => {
       <div className="page-wrapper">
         <div className="top-actions">
           <Link to="/" className="back-link flex items-center gap-1">
-            <ChevronLeft size={14} />
+            <ChevronLeft size={16} />
           </Link>
           <SearchBar scopeSlug={bookSlug} />
         </div>

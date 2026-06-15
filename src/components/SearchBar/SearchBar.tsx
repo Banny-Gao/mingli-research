@@ -83,7 +83,15 @@ const MAX_RESULTS = 10
 const SCROLL_TEXT_PREVIEW = 50
 
 const SearchIcon = ({ className, size = 14 }: { className?: string; size?: number }) => (
-  <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <circle cx="11" cy="11" r="8" />
     <path d="m21 21-4.35-4.35" />
   </svg>
@@ -128,17 +136,35 @@ function saveHistory(entries: HistoryEntry[]) {
 }
 
 const AllFilterPill = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
-  <Button variant="ghost" size="sm" className={`search-filter-pill section${active ? ' active' : ''}`} onClick={onClick}>
+  <Button
+    variant="ghost"
+    size="sm"
+    className={`search-filter-pill section${active ? ' active' : ''}`}
+    onClick={onClick}
+  >
     全部
   </Button>
 )
 
-const CategoryPill = ({ label, active, count, onClick }: { label: string; active: boolean; count?: number; onClick: () => void }) => (
-  <Button variant="ghost" size="sm" className={`search-filter-pill category${active ? ' active' : ''}`} onClick={onClick}>
+const CategoryPill = ({
+  label,
+  active,
+  count,
+  onClick,
+}: {
+  label: string
+  active: boolean
+  count?: number
+  onClick: () => void
+}) => (
+  <Button
+    variant="ghost"
+    size="sm"
+    className={`search-filter-pill category${active ? ' active' : ''}`}
+    onClick={onClick}
+  >
     {label}
-    {count != null && count > 0 && (
-      <span className="search-filter-count">{count}</span>
-    )}
+    {count != null && count > 0 && <span className="search-filter-count">{count}</span>}
   </Button>
 )
 
@@ -156,7 +182,12 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
   const [availableCategories, setAvailableCategories] = useState<Set<string>>(new Set())
   const [fetchError, setFetchError] = useState(false)
-  const [typeCounts, setTypeCounts] = useState<Record<TypeFilter, number>>({ all: 0, source: 0, chapter: 0, skill: 0 })
+  const [typeCounts, setTypeCounts] = useState<Record<TypeFilter, number>>({
+    all: 0,
+    source: 0,
+    chapter: 0,
+    skill: 0,
+  })
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const inputRef = useRef<HTMLInputElement>(null)
   const queryRef = useRef(query)
@@ -188,41 +219,48 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
         if (book.section) sections.add(book.section)
         if (book.category) categories.add(book.category)
         return [
-        ...book.interp.filter(ch => ch.text).map(ch => ({
-          slug: book.slug,
-          title: book.title,
-          section: book.section,
-          category: book.category,
-          author: book.author,
-          chapterCategory: ch.chapterCategory,
-          type: 'chapter' as const,
-          key: ch.key,
-          text: ch.text,
-        })),
-        ...book.skill.filter(sk => sk.text).map(sk => ({
-          slug: book.slug,
-          title: book.title,
-          section: book.section,
-          category: book.category,
-          author: book.author,
-          chapterCategory: sk.chapterCategory,
-          type: 'skill' as const,
-          key: sk.key,
-          displayName: sk.displayName,
-          text: sk.text,
-        })),
-        ...(book.source || []).filter(src => src.text).map(src => ({
-          slug: book.slug,
-          title: book.title,
-          section: book.section,
-          category: book.category,
-          author: book.author,
-          chapterCategory: src.chapterCategory,
-          type: 'source' as const,
-          key: src.key,
-          text: src.text,
-        })),
-      ]})
+          ...book.interp
+            .filter(ch => ch.text)
+            .map(ch => ({
+              slug: book.slug,
+              title: book.title,
+              section: book.section,
+              category: book.category,
+              author: book.author,
+              chapterCategory: ch.chapterCategory,
+              type: 'chapter' as const,
+              key: ch.key,
+              text: ch.text,
+            })),
+          ...book.skill
+            .filter(sk => sk.text)
+            .map(sk => ({
+              slug: book.slug,
+              title: book.title,
+              section: book.section,
+              category: book.category,
+              author: book.author,
+              chapterCategory: sk.chapterCategory,
+              type: 'skill' as const,
+              key: sk.key,
+              displayName: sk.displayName,
+              text: sk.text,
+            })),
+          ...(book.source || [])
+            .filter(src => src.text)
+            .map(src => ({
+              slug: book.slug,
+              title: book.title,
+              section: book.section,
+              category: book.category,
+              author: book.author,
+              chapterCategory: src.chapterCategory,
+              type: 'source' as const,
+              key: src.key,
+              text: src.text,
+            })),
+        ]
+      })
       fuseRef.current = new Fuse(entries, {
         keys: ['text', 'key', 'displayName', 'title'],
         threshold: 0.0,
@@ -298,7 +336,12 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
       }
       results = filterByScope(results, scopeSlug)
       // Compute counts from the full (query+scope filtered) result set before further filtering
-      const counts: Record<TypeFilter, number> = { all: results.length, source: 0, chapter: 0, skill: 0 }
+      const counts: Record<TypeFilter, number> = {
+        all: results.length,
+        source: 0,
+        chapter: 0,
+        skill: 0,
+      }
       const catCounts: Record<string, number> = {}
       for (const r of results) {
         counts[TYPE_TO_FILTER[r.type]]++
@@ -431,7 +474,13 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
       const r = results[i]
       if (!seen.has(r.slug)) {
         seen.add(r.slug)
-        groups.push({ slug: r.slug, title: r.title, author: r.author, category: r.category, items: [] })
+        groups.push({
+          slug: r.slug,
+          title: r.title,
+          author: r.author,
+          category: r.category,
+          items: [],
+        })
       }
       groups[groups.length - 1].items.push({ entry: r, idx: i })
     }
@@ -441,7 +490,12 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   return (
     <div className="search-bar-container" ref={containerRef}>
       {/* Search trigger button */}
-      <Button variant="ghost" size="sm" onClick={() => setOpen(!open)} className="search-trigger-btn" aria-label="打开搜索">
+      <Button
+        variant="ghost"
+        onClick={() => setOpen(!open)}
+        className="search-trigger-btn"
+        aria-label="打开搜索"
+      >
         <SearchIcon />
         <span>搜索</span>
       </Button>
@@ -510,7 +564,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
             {availableSections.size >= 2 && (
               <>
                 <span className="search-filter-sep" />
-                <AllFilterPill active={sectionFilter === 'all'} onClick={() => setSectionFilter('all')} />
+                <AllFilterPill
+                  active={sectionFilter === 'all'}
+                  onClick={() => setSectionFilter('all')}
+                />
                 {ART_SECTIONS.filter(s => availableSections.has(s)).map(s => (
                   <Button
                     key={s}
@@ -527,7 +584,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
             {availableCategories.size >= 2 && (
               <>
                 <span className="search-filter-sep" />
-                <AllFilterPill active={categoryFilter === 'all'} onClick={() => setCategoryFilter('all')} />
+                <AllFilterPill
+                  active={categoryFilter === 'all'}
+                  onClick={() => setCategoryFilter('all')}
+                />
                 {[...availableCategories].sort().map(c => (
                   <CategoryPill
                     key={c}
@@ -542,9 +602,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
           </div>
 
           <div className="search-results">
-            {fetchError && (
-              <div className="search-empty">搜索索引加载失败，请刷新页面重试</div>
-            )}
+            {fetchError && <div className="search-empty">搜索索引加载失败，请刷新页面重试</div>}
             {!fetchError && !query && history.length === 0 && (
               <div className="search-empty">输入关键词全文搜索篇目和技能</div>
             )}
@@ -552,7 +610,12 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
               <div className="search-history">
                 <div className="search-history-header">
                   <span className="search-history-title">搜索历史</span>
-                  <Button variant="ghost" size="sm" className="search-history-clear" onClick={clearHistory}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="search-history-clear"
+                    onClick={clearHistory}
+                  >
                     清除全部
                   </Button>
                 </div>
@@ -581,7 +644,14 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                       tabIndex={-1}
                       aria-label="删除该条历史"
                     >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
                         <path d="M18 6 6 18M6 6l12 12" />
                       </svg>
                     </Button>
@@ -594,7 +664,8 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
             )}
             {!fetchError && query && results.length > 0 && (
               <div className="search-result-count">
-                找到 {typeCounts.all} 条结果{results.length < typeCounts.all ? `，显示前 ${results.length} 条` : ''}
+                找到 {typeCounts.all} 条结果
+                {results.length < typeCounts.all ? `，显示前 ${results.length} 条` : ''}
               </div>
             )}
             {!fetchError &&
@@ -603,7 +674,9 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                   <div className="search-book-header">
                     《{group.title}》
                     {group.author && <span className="search-book-author"> — {group.author}</span>}
-                    {group.category && <span className="search-book-category"> · {group.category}</span>}
+                    {group.category && (
+                      <span className="search-book-category"> · {group.category}</span>
+                    )}
                   </div>
                   {group.items.map(({ entry: r, idx: i }) => (
                     <Button
@@ -619,7 +692,10 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                       onMouseEnter={() => setSelectedIdx(i)}
                       tabIndex={-1}
                     >
-                      <Badge variant="secondary" className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}>
+                      <Badge
+                        variant="secondary"
+                        className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}
+                      >
                         {BADGE_CONFIG[r.type]?.label ?? BADGE_CONFIG.skill.label}
                       </Badge>
                       <div className="search-result-text">

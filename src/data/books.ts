@@ -3819,6 +3819,102 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "五行大义",
+    "section": "命",
+    "category": "八字",
+    "title": "五行大义",
+    "author": "[隋] 萧吉",
+    "version": "据《四库全书》本",
+    "description": "隋萧吉撰。五卷。书中所论皆阴阳五行之事，\"文章醇古，非唐以下所能为\"；萧吉以阴阳算术著称，书中多援引今已佚亡之古书。本书为现存最早系统讨论五行理论的专著之一。",
+    "total": 8,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "五行大义简介",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "02",
+        "name": "五行大义序",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "03",
+        "name": "卷第一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "04",
+        "name": "卷第二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "05",
+        "name": "卷第三",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "06",
+        "name": "卷第四",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "07",
+        "name": "卷第五",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      },
+      {
+        "num": "08",
+        "name": "题五行大义后",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "五行大义"
+      }
+    ],
+    "skills": [],
+    "sources": [
+      {
+        "name": "卷第二"
+      },
+      {
+        "name": "卷第三"
+      },
+      {
+        "name": "卷第四"
+      },
+      {
+        "name": "卷第五"
+      },
+      {
+        "name": "卷第一"
+      },
+      {
+        "name": "题五行大义后"
+      },
+      {
+        "name": "五行大义简介"
+      },
+      {
+        "name": "五行大义序"
+      }
+    ]
+  },
+  {
     "slug": "千里命稿",
     "section": "命",
     "category": "八字",
@@ -4169,355 +4265,355 @@ export const books: Book[] = [
     "version": "据民国徐乐吾评注本",
     "description": "子平命理学\"前三本\"之一，体系严密地论述用神、相神、格局、宫分六亲等核心理论；徐乐吾以《滴天髓》《穷通宝鉴》为之作注，与任铁樵《滴天髓》注称姊妹篇",
     "total": 50,
-    "done": 0,
+    "done": 50,
     "chapters": [
       {
         "num": "01",
         "name": "子平真诠评注序",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "序言"
       },
       {
         "num": "02",
         "name": "子平真诠评注凡例",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "序言"
       },
       {
         "num": "03",
         "name": "论十干十二支",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "04",
         "name": "论阴阳生克",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "05",
         "name": "论阴阳生死",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "06",
         "name": "论十干配合性情",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "07",
         "name": "论十干合而不合",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "08",
         "name": "论十干得时不旺失时不弱",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "09",
         "name": "论刑冲会合解法",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "10",
         "name": "论用神",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "11",
         "name": "论用神成败救应",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "12",
         "name": "论用神变化",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "13",
         "name": "论用神纯杂",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "14",
         "name": "论用神格局高低",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "15",
         "name": "论用神因成得败因败得成",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "16",
         "name": "论用神配气候得失",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "17",
         "name": "论相神紧要",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "18",
         "name": "论杂气如何取用",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "19",
         "name": "论墓库刑冲之说",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "20",
         "name": "论四吉神能破格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "21",
         "name": "论四凶神能成格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "22",
         "name": "论生克先后分吉凶",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "23",
         "name": "论星辰无关格局",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "24",
         "name": "论外格用舍",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "25",
         "name": "论宫分用神配六亲",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "26",
         "name": "论妻子",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "27",
         "name": "论行运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "28",
         "name": "论行运成格变格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "29",
         "name": "论喜忌干支有别",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "30",
         "name": "论支中喜忌逢运透清",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "31",
         "name": "论时说拘泥格局",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "32",
         "name": "论时说以讹传讹",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "33",
         "name": "论正官",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "34",
         "name": "论正官取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "35",
         "name": "论财",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "36",
         "name": "论财取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "37",
         "name": "论印绶",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "38",
         "name": "论印绶取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "39",
         "name": "论食神",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "40",
         "name": "论食神取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "41",
         "name": "论偏官",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "42",
         "name": "论偏官取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "43",
         "name": "论伤官",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "44",
         "name": "论伤官取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "45",
         "name": "论阳刃",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "46",
         "name": "论阳刃取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "47",
         "name": "论建禄月劫",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "48",
         "name": "论建禄月劫取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "49",
         "name": "论杂格",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "杂格"
       },
       {
         "num": "50",
         "name": "附论杂格取运",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "杂格"
       }
