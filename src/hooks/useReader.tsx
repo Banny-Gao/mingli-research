@@ -11,7 +11,6 @@ export interface ReaderParams {
   modalType: 'interp' | 'skill' | 'source'
   modalKey: string
   scrollToText?: string
-  initialPage?: number
 }
 
 interface ReaderContextType {
@@ -23,7 +22,6 @@ interface ReaderContextType {
     modalType: 'interp' | 'skill' | 'source' | null
     modalKey: string
     scrollToText: string | null
-    initialPage: number | null
   }
   chapters: Array<{ name: string }>
   closeVersion: number
@@ -36,7 +34,6 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
   const [modalType, setModalType] = useState<'interp' | 'skill' | 'source' | null>(null)
   const [modalKey, setModalKey] = useState('')
   const [scrollToText, setScrollToText] = useState<string | null>(null)
-  const [initialPage, setInitialPage] = useState<number | null>(null)
   const [closeVersion, setCloseVersion] = useState(0)
   const { touchChapter } = useGlobalProgress()
   const { markRead } = useReadProgress(bookSlug)
@@ -52,7 +49,6 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
     setModalKey('')
     setBookSlug('')
     setScrollToText(null)
-    setInitialPage(null)
     setCloseVersion(v => v + 1)
   }, [])
 
@@ -71,7 +67,6 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       setModalType(p.modalType)
       setModalKey(p.modalKey)
       setScrollToText(p.scrollToText || null)
-      setInitialPage(p.initialPage ?? null)
       touchChapter(p.bookSlug, p.modalKey)
 
       if (!isMobile) return
@@ -98,7 +93,7 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       openReader,
       closeReader,
       consumeScrollToText,
-      state: { bookSlug, modalType, modalKey, scrollToText, initialPage },
+      state: { bookSlug, modalType, modalKey, scrollToText },
       chapters,
       closeVersion,
     }),
@@ -110,7 +105,6 @@ export function ReaderProvider({ children }: { children: ReactNode }) {
       modalType,
       modalKey,
       scrollToText,
-      initialPage,
       chapters,
       closeVersion,
     ]
