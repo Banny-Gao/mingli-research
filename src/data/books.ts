@@ -3915,6 +3915,342 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "五行精纪",
+    "section": "命",
+    "category": "八字",
+    "title": "五行精纪",
+    "author": "[明]廖中",
+    "version": "明刊本（南宋绍定元年戊子[1228]岳珂序）",
+    "description": "南宋廖中编撰的命理汇编，分卷论述六十甲子、干神、支神、五行、年月日时胎、禄马印绶等专题",
+    "total": 32,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "序",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "卷首"
+      },
+      {
+        "num": "02",
+        "name": "六十甲子上",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论六十甲子"
+      },
+      {
+        "num": "03",
+        "name": "六甲纳音法",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论六十甲子"
+      },
+      {
+        "num": "04",
+        "name": "六十甲子下",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论六十甲子"
+      },
+      {
+        "num": "05",
+        "name": "干神一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "06",
+        "name": "干神二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "07",
+        "name": "干神三",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "08",
+        "name": "甲乙",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "09",
+        "name": "戊己",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "10",
+        "name": "庚辛",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "11",
+        "name": "壬癸",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论干神"
+      },
+      {
+        "num": "12",
+        "name": "支神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论支神"
+      },
+      {
+        "num": "13",
+        "name": "十神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论支神"
+      },
+      {
+        "num": "14",
+        "name": "五行一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论五行"
+      },
+      {
+        "num": "15",
+        "name": "五行二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论五行"
+      },
+      {
+        "num": "16",
+        "name": "五行三",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论五行"
+      },
+      {
+        "num": "17",
+        "name": "年月日时胎",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论时与节气"
+      },
+      {
+        "num": "18",
+        "name": "释日时凶中凶格",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论时与节气"
+      },
+      {
+        "num": "19",
+        "name": "十二月节气",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论时与节气"
+      },
+      {
+        "num": "20",
+        "name": "释吉贵神例",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论贵神禄马"
+      },
+      {
+        "num": "21",
+        "name": "天乙贵神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论贵神禄马"
+      },
+      {
+        "num": "22",
+        "name": "禄",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论贵神禄马"
+      },
+      {
+        "num": "23",
+        "name": "马",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论贵神禄马"
+      },
+      {
+        "num": "24",
+        "name": "并论禄马",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论贵神禄马"
+      },
+      {
+        "num": "25",
+        "name": "官神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "26",
+        "name": "印绶",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "27",
+        "name": "食神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "28",
+        "name": "三奇四奇附",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "29",
+        "name": "进神",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "30",
+        "name": "正印",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "31",
+        "name": "库墓",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      },
+      {
+        "num": "32",
+        "name": "财",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "论官印食财"
+      }
+    ],
+    "skills": [],
+    "sources": [
+      {
+        "name": "并论禄马"
+      },
+      {
+        "name": "财"
+      },
+      {
+        "name": "干神二"
+      },
+      {
+        "name": "干神三"
+      },
+      {
+        "name": "干神一"
+      },
+      {
+        "name": "庚辛"
+      },
+      {
+        "name": "官神"
+      },
+      {
+        "name": "甲乙"
+      },
+      {
+        "name": "进神"
+      },
+      {
+        "name": "库墓"
+      },
+      {
+        "name": "六甲纳音法"
+      },
+      {
+        "name": "六十甲子上"
+      },
+      {
+        "name": "六十甲子下"
+      },
+      {
+        "name": "禄"
+      },
+      {
+        "name": "马"
+      },
+      {
+        "name": "年月日时胎"
+      },
+      {
+        "name": "壬癸"
+      },
+      {
+        "name": "三奇四奇附"
+      },
+      {
+        "name": "十二月节气"
+      },
+      {
+        "name": "十神"
+      },
+      {
+        "name": "食神"
+      },
+      {
+        "name": "释吉贵神例"
+      },
+      {
+        "name": "释日时凶中凶格"
+      },
+      {
+        "name": "天乙贵神"
+      },
+      {
+        "name": "五行二"
+      },
+      {
+        "name": "五行三"
+      },
+      {
+        "name": "五行一"
+      },
+      {
+        "name": "戊己"
+      },
+      {
+        "name": "序"
+      },
+      {
+        "name": "印绶"
+      },
+      {
+        "name": "正印"
+      },
+      {
+        "name": "支神"
+      }
+    ]
+  },
+  {
     "slug": "千里命稿",
     "section": "命",
     "category": "八字",
@@ -3923,159 +4259,159 @@ export const books: Book[] = [
     "version": "据民国韦千里初版本（1935年）",
     "description": "民国命理学家韦千里所撰命学培训班讲义，语言简练，述理清晰，奠定现代命书基本格式：看强弱→定格局→取用神→论喜忌→查岁运→推六亲→评性情→断事业",
     "total": 22,
-    "done": 0,
+    "done": 22,
     "chapters": [
       {
         "num": "01",
         "name": "序",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "序言起例"
       },
       {
         "num": "02",
         "name": "起例问答",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "序言起例"
       },
       {
         "num": "03",
         "name": "天干篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "04",
         "name": "地支篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "05",
         "name": "人元篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "06",
         "name": "五行篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "07",
         "name": "强弱篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "08",
         "name": "六神篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "09",
         "name": "比劫禄刃篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "10",
         "name": "格局篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局"
       },
       {
         "num": "11",
         "name": "外格篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "格局"
       },
       {
         "num": "12",
         "name": "运限篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "13",
         "name": "流年篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "14",
         "name": "月建篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "15",
         "name": "六亲篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "六亲女命"
       },
       {
         "num": "16",
         "name": "女命篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "六亲女命"
       },
       {
         "num": "17",
         "name": "富贵吉寿篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "评断"
       },
       {
         "num": "18",
         "name": "贫贱凶夭篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "评断"
       },
       {
         "num": "19",
         "name": "补充篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "20",
         "name": "评断篇",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "21",
         "name": "应运篇上",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "22",
         "name": "应运篇下",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "补遗"
       }
