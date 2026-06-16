@@ -8158,6 +8158,202 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "玉照定真经",
+    "section": "命",
+    "category": "八字",
+    "title": "玉照定真经",
+    "author": "[西晋末年] 郭璞",
+    "version": "据明代《永乐大典》收录本",
+    "description": "现存最早的四柱命理著作，堪称四柱八字命理学的开山之作，被明代的《永乐大典》和清代的《四库全书》列入术数类，有极高的学术价值和历史地位。《四库全书》认为此书\"所言吉凶应验，切近中理，亦有多可采\"。相对于后来的四柱命理著作，《玉照定真经》所述的论命方法更为朴素简洁，书中主要以五行生克制化来作论断，是清晰、朴素、易懂的四柱命理学著作。",
+    "total": 18,
+    "done": 0,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "综论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "综论"
+      },
+      {
+        "num": "02",
+        "name": "杂论一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "03",
+        "name": "杂论二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "04",
+        "name": "杂论三",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "05",
+        "name": "杂论四",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "06",
+        "name": "杂论五",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "07",
+        "name": "杂论六",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "08",
+        "name": "杂论七",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "杂论"
+      },
+      {
+        "num": "09",
+        "name": "疾病论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "10",
+        "name": "天干论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "11",
+        "name": "六神论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "12",
+        "name": "家人论一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "13",
+        "name": "家人论二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "14",
+        "name": "论专旺",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "15",
+        "name": "干合论一",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "16",
+        "name": "干合论二",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "17",
+        "name": "地支论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "专题论"
+      },
+      {
+        "num": "18",
+        "name": "上下论",
+        "isDone": false,
+        "hasSkill": false,
+        "category": "余论"
+      }
+    ],
+    "skills": [],
+    "sources": [
+      {
+        "name": "地支论"
+      },
+      {
+        "name": "干合论二"
+      },
+      {
+        "name": "干合论一"
+      },
+      {
+        "name": "疾病论"
+      },
+      {
+        "name": "家人论二"
+      },
+      {
+        "name": "家人论一"
+      },
+      {
+        "name": "六神论"
+      },
+      {
+        "name": "论专旺"
+      },
+      {
+        "name": "上下论"
+      },
+      {
+        "name": "天干论"
+      },
+      {
+        "name": "杂论二"
+      },
+      {
+        "name": "杂论六"
+      },
+      {
+        "name": "杂论七"
+      },
+      {
+        "name": "杂论三"
+      },
+      {
+        "name": "杂论四"
+      },
+      {
+        "name": "杂论五"
+      },
+      {
+        "name": "杂论一"
+      },
+      {
+        "name": "综论"
+      }
+    ]
+  },
+  {
     "slug": "神峰通考",
     "section": "命",
     "category": "八字",

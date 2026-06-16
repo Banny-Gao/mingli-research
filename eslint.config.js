@@ -4,7 +4,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tsEslint from 'typescript-eslint'
 
 export default tsEslint.config(
-  { ignores: ['dist', 'src/data/**/*', 'scripts/*', '**/*.raw.ts'] },
+  { ignores: ['dist', 'src/data/**/*', 'scripts/*', '**/*.raw.ts', 'tests/reader-mode/**'] },
   js.configs.recommended,
   ...tsEslint.configs.recommended,
   {

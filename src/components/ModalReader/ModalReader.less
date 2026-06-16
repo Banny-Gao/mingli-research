@@ -5,3 +5,42 @@
     display: none !important;
   }
 }
+
+/* 移动端平滑翻页(<= 640px) */
+@media (max-width: 640px) {
+  .smooth-viewport {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .smooth-track {
+    display: flex;
+    height: 100%;
+    will-change: transform;
+  }
+  .smooth-page {
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+}
+
+/* 移动端仿真翻页(<= 640px) */
+@media (max-width: 640px) {
+  .flip-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .flip-page {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 1rem;
+    box-sizing: border-box;
+    background: var(--color-bg, #fff);
+  }
+}

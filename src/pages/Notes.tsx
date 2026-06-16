@@ -25,7 +25,7 @@ const Notes = () => {
   // Refresh data when modal closes (bookmark/annotation may have changed)
   useEffect(() => {
     setRefresh(v => v + 1)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [closeVersion])
   const [tab, setTab] = useState<'bookmark' | 'annotation'>('annotation')
   const [typeFilter, setTypeFilter] = useState<AnnotationType | 'all'>('all')
