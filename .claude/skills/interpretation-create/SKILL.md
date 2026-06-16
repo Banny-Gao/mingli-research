@@ -14,9 +14,9 @@ trigger: 解读|生成解读|写解读|补解读|录解读
 
 ## 2 模式
 
-| 模式 | 适用 | 路径 |
-|------|------|------|
-| 单点 | 1 篇 source.md → 1 篇 interpretation.md | 主 agent 强装载 + 体检 + 9 步 + self-check + 直写 |
+| 模式 | 适用                                    | 路径                                                                        |
+| ---- | --------------------------------------- | --------------------------------------------------------------------------- |
+| 单点 | 1 篇 source.md → 1 篇 interpretation.md | 主 agent 强装载 + 体检 + 9 步 + self-check + 直写                           |
 | 批量 | N 篇 source.md → N 篇 interpretation.md | 双轨：subagent 派发（入口 A） / CLI 脚本（入口 B），共调 `lib/llm-batch.js` |
 
 ## 单点 6 步状态机
@@ -29,8 +29,8 @@ trigger: 解读|生成解读|写解读|补解读|录解读
    ▼
 [Step 4] 体检 gate   ──→ [Step 5] 9 步主体    ──→ [Step 6] 落盘
    │ 6 项检查              │ 套 §五 Step 3-9      │ self-check 精简版
-   │ 输出体检报告          │ §七 自评 < 4 → 重写  │ 冲突 4 选项
-   │ 输入 Step 5          │                        │ Write interpretation.md
+   │ 输出体检报告          │ §七 自评 < 4 → 重写  │ fatal=0 后自动备份
+   │ 输入 Step 5          │                        │ .bak 后覆盖
    └────────────────────┴────────────────────────┴──────────────
    shortcut: /interpretation-create single
 ```
@@ -65,7 +65,7 @@ trigger: 解读|生成解读|写解读|补解读|录解读
 - 详见 `shared/pipeline.md`
 - 调 `scripts/lib/pipeline.js` 的 `buildPipelinePrompt({...})` 装订 prompt
 - 调 Claude API（自身即主 agent，无须核心库）
-- 调 `evalComplianceScore({fatal, format, content})` 自评
+- 调 `scripts/lib/self-check-lite.js` 的 `runSelfCheckLite(draft)` 自评（返回 `score` 字段 0-5）
 - < 4 分 → 现场重写（最多 3 次）
 
 ### Step 6 — 落盘
@@ -114,39 +114,52 @@ trigger: 解读|生成解读|写解读|补解读|录解读
 
 ## 共享契约索引
 
-| 契约 | 路径 |
-|------|------|
-| 规范包 + 指纹 | `shared/spec-bundles.md` |
-| 单/批 + dry-run | `shared/strategy.md` |
-| 强装载 5 份 | `shared/load-gate.md` |
-| 6 项体检 | `shared/condition-check.md` |
-| 9 步主体 | `shared/pipeline.md` |
-| 落盘规则 + 4 选项 | `shared/skeleton.md` |
-| self-check 合规门 | `shared/quality-gate.md` |
-| subagent 派发 | `shared/subagent-batch.md` |
-| CLI 脚本 | `shared/script-batch.md` |
+| 契约              | 路径                        |
+| ----------------- | --------------------------- |
+| 规范包 + 指纹     | `shared/spec-bundles.md`    |
+| 单/批 + dry-run   | `shared/strategy.md`        |
+| 强装载 5 份       | `shared/load-gate.md`       |
+| 6 项体检          | `shared/condition-check.md` |
+| 9 步主体          | `shared/pipeline.md`        |
+| 落盘规则          | `shared/skeleton.md`        |
+| self-check 合规门 | `shared/quality-gate.md`    |
+| subagent 派发     | `shared/subagent-batch.md`  |
+| CLI 脚本          | `shared/script-batch.md`    |
 
 ## 与其他 skill 的关系
 
-| 关系对象 | 关系性质 | 接口 |
-|----------|----------|------|
-| **book-create**（前置）| 依赖 catalog.md | Step 3 强装载读 catalog.md |
-| **source-create**（前置）| 依赖 source.md | Step 2 收源读 source.md；不共享 URL/文本/PDF 三种"补录"源 |
-| **self-check-interpretation**（合规端）| v2 评估合并 | v1 用 Node 端精简版（`self-check-lite.js`）|
-| **writing-plans**（设计完成后）| brainstorming 收尾转交 | 由 writing-plans 写实施计划 |
+| 关系对象                                | 关系性质               | 接口                                                      |
+| --------------------------------------- | ---------------------- | --------------------------------------------------------- |
+| **book-create**（前置）                 | 依赖 catalog.md        | Step 3 强装载读 catalog.md                                |
+| **source-create**（前置）               | 依赖 source.md         | Step 2 收源读 source.md；不共享 URL/文本/PDF 三种"补录"源 |
+| **self-check-interpretation**（合规端） | v2 评估合并            | v1 用 Node 端精简版（`self-check-lite.js`）               |
+| **writing-plans**（设计完成后）         | brainstorming 收尾转交 | 由 writing-plans 写实施计划                               |
+
+## 两层编号映射表（SKILL vs SPEC）
+
+| SKILL.md Step | 名称        | 映射 SPEC-interpretation.md §五                                                                 |
+| ------------- | ----------- | ----------------------------------------------------------------------------------------------- |
+| Step 1        | 模式选择    | 无对应（技能级入口）                                                                            |
+| Step 2        | 收源        | 无对应（前置阅读 source.md）                                                                    |
+| Step 3        | 强装载 gate | **SPEC Step 1.1**（文件存在性自检）+ **SPEC Step 1.2–1.3**（正本通读）                          |
+| Step 4        | 体检 gate   | **SPEC Step 2**（红线确认）— SPEC Step 2 的原意是"红线确认"，技能中体检 gate 也含红线层面的判据 |
+| Step 5        | 9 步主体    | **SPEC Step 3–8**（内容结构梳理 → 自评合规分）                                                  |
+| Step 6        | 落盘        | **SPEC Step 9**（输出最终文件）+ self-check 精简版 gate                                         |
+
+> SPEC §五 要求 Steps 1-2 在内容生成前完成。SKILL.md Step 3（强装载）和 Step 4（体检 gate）共同覆盖这一前置义务。SKILL.md Step 1（模式）和 Step 2（收源）是技能实现细节，不在 SPEC 流水线内。
 
 ## 错误处理总览
 
-| 失败点 | 处置 |
-|--------|------|
-| Step 3 任一规范文件缺失 | 立即终止 + 缺失清单（**SPEC §五 Step 1.1 刚性条款**）|
-| Step 3 通读未达 5 份 | 不解锁 Step 4 |
-| Step 4 体检某项异常 | 报告用户 + 套 §六 对应规则继续 |
-| Step 5 §七 自评 < 4 分 | 现场重写；最多 3 次仍 < 4 → 报告用户决定 |
-| Step 6 self-check fatal > 0 | 报告致命项 + 回 Step 5 重写 |
-| Step 6 文件冲突 | 自动备份为 .bak 后覆盖（无 4 选项 gate）|
-| Step 6 写失败 | 报告 + 退出，清理已写部分 |
-| 批量模式脚本失败（非 0 退出）| 报告 stderr + 列出失败篇章，不重试 |
-| 批量模式 per-篇失败 | 记日志 + 跳过 + 收尾报告汇总 |
-| 批量模式规范指纹漂移 | 警告用户（与 source-create 复用策略）|
-| 缺 `ANTHROPIC_API_KEY` | 启动报错并打印配置指引（env.js 的 `ConfigError`）|
+| 失败点                        | 处置                                                                                                              |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Step 3 任一规范文件缺失       | 立即终止 + 缺失清单（**SPEC §五 Step 1.1 刚性条款**）                                                             |
+| Step 3 通读未达 5 份          | 不解锁 Step 4                                                                                                     |
+| Step 4 体检某项异常           | 报告用户 + 套 §六 对应规则继续                                                                                    |
+| Step 5 §七 自评 < 4 分        | 现场重写；最多 3 次仍 < 4 → 报告用户决定                                                                          |
+| Step 6 self-check fatal > 0   | 报告致命项 + 回 Step 5 重写                                                                                       |
+| Step 6 文件冲突               | 自动备份为 .bak 后覆盖（无 4 选项 gate）                                                                          |
+| Step 6 写失败                 | 报告 + 退出（Node `fs.writeFileSync` 是原子写，不会留部分文件；旧 interpretation.md 已被备份为 .bak，可人工回滚） |
+| 批量模式脚本失败（非 0 退出） | 报告 stderr + 列出失败篇章，不重试                                                                                |
+| 批量模式 per-篇失败           | 记日志 + 跳过 + 收尾报告汇总                                                                                      |
+| 批量模式规范指纹漂移          | 警告用户（与 source-create 复用策略）                                                                             |
+| 缺 `ANTHROPIC_API_KEY`        | 启动报错并打印配置指引（env.js 的 `ConfigError`）                                                                 |

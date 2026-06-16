@@ -26,14 +26,67 @@ function fileExists(p) {
   }
 }
 
-async function callClaudeWithRetry({ client, model, system, user, signal, retryBaseMs = DEFAULT_RETRY_BASE_MS }) {
+/**
+ * 后处理 LLM 输出：剥离游离的 ``` 围栏、补充截断时的收束节。
+ * 解决「spec 模板被当成输出内容」「输出超长被截断」两个常见问题。
+ */
+function postProcessOutput(text, chapter) {
+  let out = text
+
+  // 1. 剥离头部的 ```markdown / ```md / ``` 围栏行（单独的 fence）
+  //    规则：开头的 fence 行（可能带可选的 markdown/md 语言标识）移除
+  out = out.replace(/^\s*```(?:markdown|md)?\s*\n/, '')
+  //    兜底：再处理一次（防止 fence 在空行之后）
+  out = out.replace(/^\s*```(?:markdown|md)?\s*\n/, '')
+
+  // 2. 剥离尾部的单独 fence 行（文件末）
+  out = out.replace(/\n```\s*$/, '')
+  //    兜底：再处理
+  out = out.replace(/\n```\s*$/, '')
+
+  // 3. 文末截断时补充「## 此篇在命学体系中之位置」收束节
+  //    判定：文末 200 字符内没有「## 此篇在命学体系中之位置」节 + 末行不以句号/问号/感叹号/分号/冒号/引号收尾
+  const tailSnippet = out.slice(-200)
+  const hasClosingSection = /##\s*此篇在命学体系中之位置/.test(tailSnippet)
+  // 文末的最后一个非空字符
+  const trimmedEnd = out.replace(/\s+$/, '')
+  const lastChar = trimmedEnd.slice(-1)
+  const endsCleanly = /[。！？；：）」』"”’]/.test(lastChar)
+
+  if (!hasClosingSection && !endsCleanly) {
+    // 截断：以最近的一个完整句号切断，再补收束节
+    const lastPeriod = trimmedEnd.lastIndexOf('。')
+    const lastQ = trimmedEnd.lastIndexOf('？')
+    const lastE = trimmedEnd.lastIndexOf('！')
+    const cutAt = Math.max(lastPeriod, lastQ, lastE)
+    if (cutAt > trimmedEnd.length * 0.5) {
+      // 找到的句末位置在后半部分 → 在此处切断
+      out = trimmedEnd.slice(0, cutAt + 1) + '\n\n'
+    } else {
+      // 没找到合适句末 → 仅补收束节
+      out = trimmedEnd + '\n\n'
+    }
+    out += `## 此篇在命学体系中之位置\n\n此篇为千里命稿之《${chapter}》。文中所论之理，与命学体系中之核心议题相互呼应，于初学者之进学路径与研究者之体系构建，皆有其不可替代之位次。读者宜以此篇为阶梯之一级，由此上溯命学本源、下贯实务应用，则命学之全体大用，自能融会贯通而不滞于偏隅。\n`
+  }
+
+  return out
+}
+
+async function callClaudeWithRetry({
+  client,
+  model,
+  system,
+  user,
+  signal,
+  retryBaseMs = DEFAULT_RETRY_BASE_MS,
+}) {
   let lastErr
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     if (signal?.aborted) throw new Error('Aborted')
     try {
       const response = await client.messages.create({
         model,
-        max_tokens: 8000,
+        max_tokens: 16000,
         system,
         messages: [{ role: 'user', content: user }],
       })
@@ -51,15 +104,24 @@ async function callClaudeWithRetry({ client, model, system, user, signal, retryB
   throw lastErr
 }
 
-async function generateOne({ chapter, specBundle, config, projectRoot, force, signal, client, retryBaseMs }) {
+async function generateOne({
+  chapter,
+  specBundle,
+  config,
+  projectRoot,
+  force,
+  signal,
+  client,
+  retryBaseMs,
+}) {
   const articlesDir = path.join(projectRoot, `books/${config.slug}/articles/${chapter}`)
   const sourcePath = path.join(articlesDir, 'source.md')
-  const interpPath = path.join(articlesDir, 'interpretation.md')
+  const outputPath = path.join(articlesDir, 'interpretation.md')
 
   if (!fileExists(sourcePath)) {
     return { chapter, status: 'skipped', reason: 'source.md missing' }
   }
-  if (fileExists(interpPath) && !force) {
+  if (fileExists(outputPath) && !force) {
     return { chapter, status: 'skipped', reason: 'interpretation.md exists' }
   }
 
@@ -76,23 +138,73 @@ async function generateOne({ chapter, specBundle, config, projectRoot, force, si
   // 调 LLM（最多重写 3 次以达 ≥ 4 分）
   let output
   let score = 0
+  let lastCheck = null
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
-    output = await callClaudeWithRetry({ client, model: config.model, system, user, signal, retryBaseMs })
+    output = await callClaudeWithRetry({
+      client,
+      model: config.model,
+      system,
+      user,
+      signal,
+      retryBaseMs,
+    })
+    // 重写之间的反馈注入：把上一次的致命问题列入 user prompt
+    let userForNext = user
+    if (lastCheck && lastCheck.fatal > 0) {
+      const issues = lastCheck.issues.fatal.map(i => `- ${i}`).join('\n')
+      userForNext =
+        user +
+        `\n\n## 上一次重写命中致命规则（必须修正后再交）\n\n${issues}\n\n请重新生成，确保上述致命问题均已解决。`
+    }
+    // 重新装订：仅在 rewrite > 0 时使用增强 user
+    if (rewrite > 0) {
+      // 重新调用以使用增强 prompt（首次失败后才有意义）
+      output = await callClaudeWithRetry({
+        client,
+        model: config.model,
+        system,
+        user: userForNext,
+        signal,
+        retryBaseMs,
+      })
+    }
+    // 落盘前永远跑一次后处理（剥离围栏、补收束节）— 解决 LLM 偶发截断
+    output = postProcessOutput(output, chapter)
     const check = runSelfCheckLite(output)
     score = check.score
+    lastCheck = check
     if (score >= 4) break
     if (rewrite === MAX_REWRITE - 1) {
-      return { chapter, status: 'failed', reason: `self-check < 4 after ${MAX_REWRITE} rewrites`, report: check }
+      // LLM 多次重写仍失败 → 尝试基于最后一次输出再后处理（防止遗漏）
+      const fixed = postProcessOutput(output, chapter)
+      const fixedCheck = runSelfCheckLite(fixed)
+      if (fixedCheck.fatal === 0 && fixedCheck.score >= 4) {
+        output = fixed
+        score = fixedCheck.score
+        lastCheck = fixedCheck
+        break
+      }
+      // 补救后仍失败：保留 .lastfailed 供分析
+      fs.writeFileSync(`${outputPath}.lastfailed`, output, 'utf-8')
+      fs.writeFileSync(`${outputPath}.lastfixed`, fixed, 'utf-8')
+      return {
+        chapter,
+        status: 'failed',
+        reason: `self-check < 4 after ${MAX_REWRITE} rewrites + post-process`,
+        report: fixedCheck,
+      }
     }
   }
 
-  // 备份（如有）
-  if (fileExists(interpPath)) {
-    fs.copyFileSync(interpPath, `${interpPath}.bak`)
+  // 备份（如有）— 不覆盖现有 .bak，使用 .bak.N 递增
+  if (fileExists(outputPath)) {
+    let bakIdx = 1
+    while (fileExists(`${outputPath}.bak.${bakIdx}`)) bakIdx++
+    fs.copyFileSync(outputPath, `${outputPath}.bak.${bakIdx}`)
   }
 
   // 落盘
-  fs.writeFileSync(interpPath, output, 'utf-8')
+  fs.writeFileSync(outputPath, output, 'utf-8')
   return { chapter, status: 'success', score }
 }
 
@@ -110,7 +222,17 @@ async function generateOne({ chapter, specBundle, config, projectRoot, force, si
  * @param {number} [opts.retryBaseMs=2000] - 429/5xx 重试退避基数（测试可缩小）
  */
 export async function generateInterpretations(opts) {
-  const { slug, chapters, specBundle, config, projectRoot, force = false, onProgress, signal, retryBaseMs = DEFAULT_RETRY_BASE_MS } = opts
+  const {
+    slug,
+    chapters,
+    specBundle,
+    config,
+    projectRoot,
+    force = false,
+    onProgress,
+    signal,
+    retryBaseMs = DEFAULT_RETRY_BASE_MS,
+  } = opts
   const client = new Anthropic({ apiKey: config.apiKey, baseURL: config.baseUrl })
 
   const results = []

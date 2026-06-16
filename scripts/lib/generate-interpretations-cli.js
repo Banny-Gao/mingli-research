@@ -3,7 +3,15 @@
  */
 
 export function parseCliArgs(argv) {
-  const args = { slug: null, chapters: null, force: false, dryRun: false, apiKey: null, baseUrl: null, model: null }
+  const args = {
+    slug: null,
+    chapters: null,
+    force: false,
+    dryRun: false,
+    apiKey: null,
+    baseUrl: null,
+    model: null,
+  }
 
   let i = 0
   // 位置参数 1: slug
@@ -13,7 +21,10 @@ export function parseCliArgs(argv) {
   }
   // 位置参数 2: chapters (逗号分隔)
   if (argv[i] && !argv[i].startsWith('--')) {
-    args.chapters = argv[i].split(',').map(s => s.trim()).filter(Boolean)
+    args.chapters = argv[i]
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
     i++
   }
 
@@ -22,10 +33,16 @@ export function parseCliArgs(argv) {
     const flag = argv[i]
     if (flag === '--force') args.force = true
     else if (flag === '--dry-run') args.dryRun = true
-    else if (flag === '--api-key') { args.apiKey = argv[++i] }
-    else if (flag === '--base-url') { args.baseUrl = argv[++i] }
-    else if (flag === '--model') { args.model = argv[++i] }
-    else if (flag === '--help' || flag === '-h') args.help = true
+    else if (flag === '--api-key') {
+      if (argv[i + 1] && !argv[i + 1].startsWith('--')) args.apiKey = argv[++i]
+      else throw new Error('--api-key 需要参数值')
+    } else if (flag === '--base-url') {
+      if (argv[i + 1] && !argv[i + 1].startsWith('--')) args.baseUrl = argv[++i]
+      else throw new Error('--base-url 需要参数值')
+    } else if (flag === '--model') {
+      if (argv[i + 1] && !argv[i + 1].startsWith('--')) args.model = argv[++i]
+      else throw new Error('--model 需要参数值')
+    } else if (flag === '--help' || flag === '-h') args.help = true
     i++
   }
 

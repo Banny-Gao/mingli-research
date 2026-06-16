@@ -31,11 +31,12 @@ export function checkCondition(text) {
   const 有效字符 = text.replace(/\s+/g, '').length
 
   // 案例：扫 命造/占例/例如/如 + 八字
-  const 案例命中 = (text.match(/命造|占例|例如|如[\s\S]{0,30}八字/g) || []).length
+  // "例如"、"命造"、"占例" 直接匹配；"如"单独出现易误判，仅匹配后面 ≤15 字符内出现"八字"的组合
+  const 案例命中 = (text.match(/命造|占例|例如|如[\s\S]{0,15}(?:八字|命造)/g) || []).length
   const 案例 = 案例命中 > 0 ? `是（${案例命中} 个）` : '否'
 
   // 注家：扫 > 【 块引用 或 【XX】 注家标记
-  const 注家命中 = (text.match(/^>\s*【|^> 【|【[一-龥]+】/gm) || [])
+  const 注家命中 = text.match(/^>\s*【|^> 【|【[一-龥]+】/gm) || []
   const 注家 = 注家命中.length > 0 ? `是（${注家命中.length} 处）` : '否'
 
   // 异文：一作 X / 异文 / 另一版本
