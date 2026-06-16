@@ -33,10 +33,7 @@ export function loadSpecBundle(slug, { projectRoot }) {
     path.join(projectRoot, 'research-dispute/SPEC-interpretation.md'),
     'SPEC-interpretation.md'
   )
-  const general = readOrThrow(
-    path.join(projectRoot, 'research-dispute/general.md'),
-    'general.md'
-  )
+  const general = readOrThrow(path.join(projectRoot, 'research-dispute/general.md'), 'general.md')
   const catalog = readOrThrow(
     path.join(projectRoot, `books/${slug}/catalog.md`),
     `books/${slug}/catalog.md`
@@ -45,7 +42,10 @@ export function loadSpecBundle(slug, { projectRoot }) {
   // 解析 catalog.md blockquote 的"术数"字段
   const shuMatch = catalog.match(/^>\s*术数[：:]\s*(\S+)/m)
   const shu = shuMatch ? shuMatch[1] : null
-  const specialFile = shu ? SHU_TO_SPECIAL[shu] : null
+  if (shu === null) {
+    throw new Error(`catalog.md 缺少"术数"字段声明（需在 blockquote 中写 > 术数：命 等）`)
+  }
+  const specialFile = SHU_TO_SPECIAL[shu] ?? null
   if (!specialFile) {
     throw new Error(`catalog.md 术数字段 "${shu}" 无对应专项文件（v1 仅支持 命→bazi.md）`)
   }

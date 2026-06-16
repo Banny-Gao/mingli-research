@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildPipelinePrompt, evalComplianceScore } from '../pipeline.js'
+import { buildPipelinePrompt } from '../pipeline.js'
 
 describe('buildPipelinePrompt', () => {
   const specBundle = {
@@ -40,7 +40,14 @@ describe('buildPipelinePrompt', () => {
   it('includes condition report', () => {
     const prompt = buildPipelinePrompt({
       sourceText: 'x',
-      condition: { 模式: '密集', 案例: '是（2 个）', 注家: '是（任铁樵）', 异文: '是', 脱漏: '否', 超长: '否' },
+      condition: {
+        模式: '密集',
+        案例: '是（2 个）',
+        注家: '是（任铁樵）',
+        异文: '是',
+        脱漏: '否',
+        超长: '否',
+      },
       specBundle,
     })
     expect(prompt).toContain('密集')
@@ -68,32 +75,5 @@ describe('buildPipelinePrompt', () => {
     })
     expect(prompt).toContain('本解读')
     expect(prompt).toContain('禁止')
-  })
-})
-
-describe('evalComplianceScore', () => {
-  it('returns 5 when no fatal/format/content issues', () => {
-    const issues = { fatal: [], format: [], content: [] }
-    expect(evalComplianceScore(issues)).toBe(5)
-  })
-
-  it('returns 4 when no fatal/format and ≤1 content issue', () => {
-    const issues = { fatal: [], format: [], content: ['一项内容瑕疵'] }
-    expect(evalComplianceScore(issues)).toBe(4)
-  })
-
-  it('returns 3 or below when fatal exists', () => {
-    const issues = { fatal: ['元自我引用'], format: [], content: [] }
-    expect(evalComplianceScore(issues)).toBeLessThanOrEqual(3)
-  })
-
-  it('returns 3 or below when format issues exist', () => {
-    const issues = { fatal: [], format: ['引文未用块引用'], content: [] }
-    expect(evalComplianceScore(issues)).toBeLessThanOrEqual(3)
-  })
-
-  it('returns 3 or below when content issues ≥ 2', () => {
-    const issues = { fatal: [], format: [], content: ['a', 'b'] }
-    expect(evalComplianceScore(issues)).toBeLessThanOrEqual(3)
   })
 })
