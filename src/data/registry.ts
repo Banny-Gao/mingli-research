@@ -8,9 +8,10 @@ import * as _book4 from './子平真诠';
 import * as _book5 from './李虚中命书';
 import * as _book6 from './渊海子平';
 import * as _book7 from './滴天髓阐微';
-import * as _book8 from './神峰通考';
-import * as _book9 from './穷通宝鉴';
-import * as _book10 from './紫微斗数全书';
+import * as _book8 from './玉照定真经';
+import * as _book9 from './神峰通考';
+import * as _book10 from './穷通宝鉴';
+import * as _book11 from './紫微斗数全书';
 
 const registry: Record<string, any> = {
   '三命通会': _book0,
@@ -21,9 +22,10 @@ const registry: Record<string, any> = {
   '李虚中命书': _book5,
   '渊海子平': _book6,
   '滴天髓阐微': _book7,
-  '神峰通考': _book8,
-  '穷通宝鉴': _book9,
-  '紫微斗数全书': _book10,
+  '玉照定真经': _book8,
+  '神峰通考': _book9,
+  '穷通宝鉴': _book10,
+  '紫微斗数全书': _book11,
 };
 
 export function getBook(slug: string) {
