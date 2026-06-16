@@ -82,7 +82,6 @@ const Reader = () => {
         modalType={state.modalType}
         modalKey={state.modalKey}
         scrollToText={state.scrollToText}
-        initialPage={state.initialPage}
         onClose={closeReader}
         onNavigate={(t, k) => {
           // 移动端 reader 路由内切章节：hook 内部会以 replace:true navigate，

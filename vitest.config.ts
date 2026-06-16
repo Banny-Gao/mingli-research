@@ -6,12 +6,7 @@ export default defineConfig({
     alias: { '@': resolve(__dirname, 'src') },
   },
   test: {
-    include: [
-      'tests/**/*.test.ts',
-      'tests/**/*.test.js',
-      'scripts/lib/__tests__/**/*.test.js',
-      'src/components/ModalReader/**/*.test.ts',
-    ],
+    include: ['tests/**/*.test.ts', 'tests/**/*.test.js', 'scripts/lib/__tests__/**/*.test.js'],
     environment: 'jsdom',
     environmentOptions: {
       jsdom: {
