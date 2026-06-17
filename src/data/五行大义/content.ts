@@ -24,5 +24,5 @@ function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: stri
 
 export const sourceKeys = ["五行大义简介","五行大义序","卷第一","卷第二","卷第三","卷第四","卷第五","题五行大义后"] as const;
 export const sourceContent = extractPathKey(sourceModules as any, '/source.md');
-export const interpKeys = [] as const;
+export const interpKeys = ["五行大义简介","五行大义序","卷第一","卷第二","卷第三"] as const;
 export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');
