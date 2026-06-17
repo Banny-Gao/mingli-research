@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { X, Copy, Highlighter, FileQuestion, Quote } from 'lucide-react'
 import type { AnnotationType } from '../../hooks/useAnnotations'
 import { Button } from '@/components/ui/button'
+import gsap from 'gsap'
 import './AnnotationToolbar.less'
 
 interface Props {
@@ -29,6 +30,17 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  // GSAP 入场动画
+  useEffect(() => {
+    if (ref.current) {
+      gsap.fromTo(
+        ref.current,
+        { y: 8, opacity: 0, scale: 0.95 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.2, ease: 'power2.out' }
+      )
+    }
+  }, [position.x, position.y])
 
   // Desktop: clamp floating toolbar to viewport
   useEffect(() => {
@@ -73,17 +85,34 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
       <div className="ann-toolbar-mobile" onTouchStart={e => e.preventDefault()}>
         <span className="ann-toolbar-mobile-label">标记为</span>
         {ANN_TYPE_CONFIG.map(({ type, Icon, label, className }) => (
-          <Button key={type} variant="ghost" size="sm" className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+          <Button
+            key={type}
+            variant="ghost"
+            size="sm"
+            className={`ann-toolbar-btn ${className}`}
+            onClick={() => onSelect(type)}
+          >
             <Icon size={14} />
             <span>{label}</span>
           </Button>
         ))}
         {selectedText && (
-          <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="ann-toolbar-btn ann-toolbar-copy"
+            onClick={handleCopy}
+            title="复制"
+          >
             <Copy size={14} />
           </Button>
         )}
-        <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="ann-toolbar-btn ann-toolbar-close"
+          onClick={onClose}
+        >
           <X size={14} />
         </Button>
       </div>
@@ -93,16 +122,33 @@ const Toolbar = ({ position, selectedText, onSelect, onClose }: Props) => {
   return (
     <div ref={ref} className="ann-toolbar">
       {ANN_TYPE_CONFIG.map(({ type, label, className }) => (
-        <Button key={type} variant="ghost" size="sm" className={`ann-toolbar-btn ${className}`} onClick={() => onSelect(type)}>
+        <Button
+          key={type}
+          variant="ghost"
+          size="sm"
+          className={`ann-toolbar-btn ${className}`}
+          onClick={() => onSelect(type)}
+        >
           {label}
         </Button>
       ))}
       {selectedText && (
-        <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-copy" onClick={handleCopy} title="复制">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="ann-toolbar-btn ann-toolbar-copy"
+          onClick={handleCopy}
+          title="复制"
+        >
           <Copy size={14} />
         </Button>
       )}
-      <Button variant="ghost" size="sm" className="ann-toolbar-btn ann-toolbar-close" onClick={onClose}>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="ann-toolbar-btn ann-toolbar-close"
+        onClick={onClose}
+      >
         <X size={14} />
       </Button>
     </div>
