@@ -51,3 +51,4 @@
 | 规范升级（字形策略纳入 §2.1）  | 改 SPEC-catalog.md + 改 4 本书 catalog.md 字形策略声明                 | 5 项（catalog 自检 4 + SPEC 1）                              |
 
 | 2026-06-15 | interpretation | 千里命稿 | [./千里命稿-interpretation-2026-06-15.md] | 19/16/32 |
+| 2026-06-16 | interpretation | 三命通会 | [./三命通会-interpretation-2026-06-16.md] | 5/27/138 |
