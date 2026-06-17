@@ -8,7 +8,13 @@ export default defineConfig({
   base: '/mingli-research/',
   plugins: [remAdapter(), react(), tailwindcss()],
   resolve: {
-    alias: { '@': resolve(__dirname, 'src') },
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      'page-flip': resolve(
+        __dirname,
+        'node_modules/.pnpm/page-flip@2.0.7/node_modules/page-flip/dist/js/page-flip.module.js'
+      ),
+    },
   },
   server: {
     fs: {

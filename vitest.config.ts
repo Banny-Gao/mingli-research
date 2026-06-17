@@ -7,10 +7,11 @@ export default defineConfig({
   },
   test: {
     include: [
+      'src/**/*.test.ts',
+      'src/**/*.test.tsx',
       'tests/**/*.test.ts',
       'tests/**/*.test.js',
       'scripts/lib/__tests__/**/*.test.js',
-      'src/components/ModalReader/**/*.test.ts',
     ],
     environment: 'jsdom',
     environmentOptions: {

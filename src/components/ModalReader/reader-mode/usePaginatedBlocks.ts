@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useState, useCallback, useRef } from 'react'
+// src/components/ModalReader/reader-mode/usePaginatedBlocks.ts
+import { useLayoutEffect, useEffect, useState, useCallback, useRef } from 'react'
 import type { RefObject } from 'react'
 import type { PaginatedPage, PageSize, UsePaginatedBlocksResult } from './types'
 import { RESIZE_DEBOUNCE_MS } from './constants'
@@ -6,15 +7,20 @@ import { RESIZE_DEBOUNCE_MS } from './constants'
 const isClient = typeof window !== 'undefined'
 const useIsoLayoutEffect = isClient ? useLayoutEffect : useEffect
 
+/**
+ * 从 measure DOM 的 children 测量高度，贪心装页。
+ *
+ * 与原始计划差异：
+ * - 移除了 IntersectionObserver（不应挂在 hidden DOM 上）
+ * - 不再维护 currentPage（上移到 usePageNavigation）
+ * - 保留 goToPage（scroll 模式用）和 getPageOf（TocSidebar/搜索用）
+ */
 export function usePaginatedBlocks(
   measureRef: RefObject<HTMLElement | null>,
   pageSize: PageSize
 ): UsePaginatedBlocksResult {
   const [pages, setPages] = useState<PaginatedPage[]>([])
-  const [currentPage, setCurrentPage] = useState(0)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const observerRef = useRef<ResizeObserver | null>(null)
-  const intersectionRef = useRef<IntersectionObserver | null>(null)
 
   const recompute = useCallback(() => {
     const root = measureRef.current
@@ -22,10 +28,11 @@ export function usePaginatedBlocks(
     const children = Array.from(root.children) as HTMLElement[]
     if (children.length === 0) {
       setPages([])
-      setCurrentPage(0)
       return
     }
     const { height: pageHeight } = pageSize
+    if (pageHeight <= 0) return
+
     const result: PaginatedPage[] = []
     let pageStart = 0
     let pageFirstTop = children[0].offsetTop
@@ -33,8 +40,9 @@ export function usePaginatedBlocks(
     for (let i = 0; i < children.length; i++) {
       const el = children[i]
       const top = el.offsetTop
-      const bottom = top + el.offsetHeight
-      if (top - pageFirstTop + el.offsetHeight > pageHeight && i > pageStart) {
+      const elHeight = el.offsetHeight
+
+      if (top - pageFirstTop + elHeight > pageHeight && i > pageStart) {
         result.push({
           index: result.length,
           startBlockIdx: pageStart,
@@ -44,6 +52,7 @@ export function usePaginatedBlocks(
         pageStart = i
         pageFirstTop = top
       }
+
       if (i === children.length - 1) {
         result.push({
           index: result.length,
@@ -52,54 +61,35 @@ export function usePaginatedBlocks(
           blockCount: i - pageStart + 1,
         })
       }
-      // 防止 bottom 引用未用警告
-      void bottom
     }
     setPages(result)
-    setCurrentPage(prev => Math.min(prev, Math.max(0, result.length - 1)))
   }, [measureRef, pageSize.height, pageSize.width])
 
-  // 初次 + ResizeObserver
+  // 保持最新 recompute 引用，避免 RO 重建
+  const recomputeRef = useRef(recompute)
+  useEffect(() => {
+    recomputeRef.current = recompute
+  }, [recompute])
+
+  // 初次装页 + ResizeObserver（仅监听子元素变化如 mermaid 异步渲染完成）
   useIsoLayoutEffect(() => {
-    recompute()
+    // 延迟执行确保 measure DOM 已渲染
+    const timer = setTimeout(() => recomputeRef.current(), 0)
+
     const root = measureRef.current
-    if (!root || typeof ResizeObserver === 'undefined') return
+    if (!root || typeof ResizeObserver === 'undefined') return () => clearTimeout(timer)
+
     const obs = new ResizeObserver(() => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
-      debounceRef.current = setTimeout(recompute, RESIZE_DEBOUNCE_MS)
+      debounceRef.current = setTimeout(() => recomputeRef.current(), RESIZE_DEBOUNCE_MS)
     })
     obs.observe(root)
-    observerRef.current = obs
     return () => {
+      clearTimeout(timer)
       obs.disconnect()
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [recompute, measureRef])
-
-  // IntersectionObserver 维护 currentPage
-  useEffect(() => {
-    const root = measureRef.current
-    if (!root || pages.length === 0 || typeof IntersectionObserver === 'undefined') return
-    // 监听每个 page 的"首页 block"
-    const targets = pages
-      .map(p => root.children[p.startBlockIdx] as HTMLElement | undefined)
-      .filter((el): el is HTMLElement => !!el)
-    if (targets.length === 0) return
-    const io = new IntersectionObserver(
-      entries => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            const idx = targets.indexOf(e.target as HTMLElement)
-            if (idx >= 0) setCurrentPage(idx)
-          }
-        }
-      },
-      { root, threshold: 0.5 }
-    )
-    targets.forEach(t => io.observe(t))
-    intersectionRef.current = io
-    return () => io.disconnect()
-  }, [pages, measureRef])
+  }, [measureRef]) // 不依赖 recompute，避免 RO 反复重建
 
   const goToPage = useCallback(
     (idx: number, opts?: { behavior?: 'auto' | 'smooth' }) => {
@@ -109,7 +99,6 @@ export function usePaginatedBlocks(
       const target = root.children[pages[clamped].startBlockIdx] as HTMLElement | undefined
       if (target) {
         root.scrollTo({ top: target.offsetTop, behavior: opts?.behavior ?? 'smooth' })
-        setCurrentPage(clamped)
       }
     },
     [measureRef, pages]
@@ -118,7 +107,6 @@ export function usePaginatedBlocks(
   const getPageOf = useCallback(
     (el: HTMLElement): number => {
       const top = el.offsetTop
-      // 二分查 pages
       let lo = 0
       let hi = pages.length - 1
       while (lo < hi) {
@@ -138,7 +126,6 @@ export function usePaginatedBlocks(
   return {
     pages,
     totalPages: pages.length,
-    currentPage,
     goToPage,
     getPageOf,
   }
