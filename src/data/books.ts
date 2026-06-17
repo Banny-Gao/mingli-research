@@ -3827,40 +3827,40 @@ export const books: Book[] = [
     "version": "据《四库全书》本",
     "description": "隋萧吉撰。五卷。书中所论皆阴阳五行之事，\"文章醇古，非唐以下所能为\"；萧吉以阴阳算术著称，书中多援引今已佚亡之古书。本书为现存最早系统讨论五行理论的专著之一。本书早于子平体系（子平法成熟于两宋），可作八字五行基础参考。",
     "total": 8,
-    "done": 0,
+    "done": 5,
     "chapters": [
       {
         "num": "01",
         "name": "五行大义简介",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "02",
         "name": "五行大义序",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "03",
         "name": "卷第一",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "04",
         "name": "卷第二",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "05",
         "name": "卷第三",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
@@ -7939,7 +7939,7 @@ export const books: Book[] = [
         "num": "12",
         "name": "八格",
         "isDone": true,
-        "hasSkill": false,
+        "hasSkill": true,
         "category": "上篇 · 通神论"
       },
       {
@@ -8300,7 +8300,11 @@ export const books: Book[] = [
         "category": "下篇 · 六亲论"
       }
     ],
-    "skills": [],
+    "skills": [
+      {
+        "name": "八格"
+      }
+    ],
     "sources": [
       {
         "name": "八格"
