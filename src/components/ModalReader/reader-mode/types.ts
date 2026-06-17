@@ -1,3 +1,4 @@
+// src/components/ModalReader/reader-mode/types.ts
 import type { ReaderMode } from '@/hooks/useReaderMode'
 
 export type { ReaderMode }
@@ -14,10 +15,10 @@ export interface PageSize {
   height: number
 }
 
+/** usePaginatedBlocks 返回值 — 不含 currentPage（上移到 usePageNavigation） */
 export interface UsePaginatedBlocksResult {
   pages: PaginatedPage[]
   totalPages: number
-  currentPage: number
   goToPage: (idx: number, opts?: { behavior?: 'auto' | 'smooth' }) => void
   getPageOf: (el: HTMLElement) => number
 }
@@ -35,19 +36,11 @@ export interface TextLocation {
   nodeOffset: number
 }
 
-export interface CrossChapterInput {
-  currentPage: number
-  totalPages: number
-  direction: 'prev' | 'next'
-  hasNext: boolean
-  hasPrev: boolean
-  isPrevRead: boolean
-  prevLastPage?: number
-}
-
 export interface CrossChapterDecision {
-  action: 'navigate' | 'stay'
-  targetPage?: number
+  hasPrev: boolean
+  hasNext: boolean
+  prevTargetPage: number
+  isPrevRead: boolean
 }
 
 export type NavigateWithPage = (
@@ -55,3 +48,12 @@ export type NavigateWithPage = (
   key: string,
   initialPage?: number
 ) => void
+
+/** PaginatedReader → renderPages 插槽的 props */
+export interface PageRenderProps {
+  pageMds: string[]
+  currentPage: number
+  goToPage: (idx: number) => void
+  containerRef: React.RefObject<HTMLDivElement | null>
+  pageSize: PageSize
+}

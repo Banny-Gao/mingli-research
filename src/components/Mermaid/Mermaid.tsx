@@ -11,6 +11,7 @@ interface Props {
 
 const Mermaid = ({ children }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
+  const prevCodeRef = useRef('')
   const [error, setError] = useState(false)
 
   // Re-init mermaid when theme changes so themeVariables track data-theme
@@ -31,12 +32,17 @@ const Mermaid = ({ children }: Props) => {
     }
     init()
     const observer = new MutationObserver(init)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
     return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
-    if (!ref.current || !children) return
+    // 内容未变化则跳过，避免无限刷新
+    if (!ref.current || !children || children === prevCodeRef.current) return
+    prevCodeRef.current = children
     ;(mermaid.run as (opts: unknown) => Promise<void>)({
       nodes: [ref.current],
       suppressErrors: true,

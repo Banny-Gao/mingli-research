@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { X, PanelLeftClose, PanelLeft, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup, ButtonGroupText } from '@/components/ui/button-group'
+import gsap from 'gsap'
 import './ModalReader.less'
 import { getBook } from '../../data/registry'
 import { ReadingProgress, BackToTop, TocSidebar } from '../ReadingTools'
@@ -13,8 +14,8 @@ import { useAnnotations } from '../../hooks/useAnnotations'
 import type { AnnotationType, Annotation } from '../../hooks/useAnnotations'
 import { injectAnnotations } from '../../utils/injectAnnotations'
 import { useReaderMode } from '../../hooks/useReaderMode'
-import { ReaderBody, ReaderToolbar } from './reader-mode'
-import { findTextInContainer } from './reader-mode/findTextInContainer'
+import { ReaderBody } from './reader-mode/ReaderBody'
+import { ReaderSettingsDrawer } from './reader-mode/ReaderSettingsDrawer'
 
 interface ModalReaderProps {
   chapters: Array<{ name: string }>
@@ -22,7 +23,6 @@ interface ModalReaderProps {
   modalType: 'interp' | 'skill' | 'source'
   modalKey: string
   scrollToText: string | null
-  initialPage?: number | null
   onClose: () => void
   onNavigate: (type: 'interp' | 'skill' | 'source', key: string) => void
   onScrollToTextConsumed: () => void
@@ -37,6 +37,7 @@ interface BookData {
   skillToChapters?: Record<string, string[]>
 }
 
+const SCROLL_OFFSET = 100
 const ANNOTATION_SCROLL_OFFSET = 80
 const AUTO_FADE_MS = 4000
 const MOBILE_BREAKPOINT = 640
@@ -47,7 +48,6 @@ const ModalReader = ({
   modalType,
   modalKey,
   scrollToText,
-  initialPage,
   onClose,
   onNavigate,
   onScrollToTextConsumed,
@@ -66,8 +66,29 @@ const ModalReader = ({
   const [skillRawText, setSkillRawText] = useState('')
   const [loadedContent, setLoadedContent] = useState('')
   const [contentLoading, setContentLoading] = useState(false)
-  const [readerMode] = useReaderMode()
-  const [toolbarVisible] = useState(true)
+
+  // 阅读模式
+  const [readerMode, setReaderMode] = useReaderMode()
+  const [readerSettingsOpen, setReaderSettingsOpen] = useState(false)
+  const [headerVisible, setHeaderVisible] = useState(true)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const relatedRef = useRef<HTMLDivElement>(null)
+
+  // GSAP 动画：header / related-section 缓动显隐
+  useEffect(() => {
+    const targets = [headerRef.current, relatedRef.current].filter(Boolean) as HTMLElement[]
+    if (targets.length === 0) return
+    gsap.killTweensOf(targets)
+    if (headerVisible) {
+      gsap.fromTo(
+        targets,
+        { height: 0, opacity: 0 },
+        { height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out', clearProps: 'height' }
+      )
+    } else {
+      gsap.to(targets, { height: 0, opacity: 0, duration: 0.25, ease: 'power2.in' })
+    }
+  }, [headerVisible])
 
   const bookData = getBook(bookSlug) as BookData
 
@@ -136,50 +157,85 @@ const ModalReader = ({
   useEffect(() => {
     if (modalKey && scrollToText && modalBodyRef.current && !contentLoading) {
       const container = modalBodyRef.current
+
+      // 翻页模式：暂用简化定位（后续实现 measure DOM → getPageOf → goToPage → 闪黄）
+      if (readerMode === 'smooth' || readerMode === 'flip') {
+        container.scrollTo({ top: 0, behavior: 'smooth' })
+        onScrollToTextConsumed()
+        return
+      }
+      const plainText = container.textContent || ''
+      if (!plainText) return
       const searchText = scrollToText.trim()
-      const loc = findTextInContainer(container, searchText)
-      if (loc) {
-        // scroll to the block
-        container.scrollTo({
-          top: loc.node.parentElement?.offsetTop ?? 0,
-          behavior: 'smooth',
-        })
-        // inject the mark
-        const nodeText = loc.node.textContent || ''
-        const validOffset = Math.max(0, Math.min(loc.nodeOffset, nodeText.length - 1))
-        const validEndOffset = Math.min(validOffset + searchText.length, nodeText.length)
-        const range = document.createRange()
-        try {
-          range.setStart(loc.node, validOffset)
-          range.setEnd(loc.node, validEndOffset)
-        } catch {
-          return
+      const idx = plainText.indexOf(searchText)
+      if (idx >= 0) {
+        let charCount = 0
+        let targetNode: Node | null = null
+        let targetOffset = 0
+        const walk = (node: Node) => {
+          if (targetNode) return
+          if (node.nodeType === Node.TEXT_NODE) {
+            const text = (node as Text).textContent || ''
+            const nextCount = charCount + text.length
+            if (idx < nextCount) {
+              targetNode = node
+              targetOffset = Math.min(idx - charCount, text.length)
+              return
+            }
+            charCount = nextCount
+          } else {
+            for (const child of Array.from(node.childNodes)) {
+              walk(child)
+              if (targetNode) return
+            }
+          }
         }
-        const mark = document.createElement('mark')
-        mark.className = 'search-flash'
-        mark.textContent = nodeText.slice(validOffset, validEndOffset)
-        const before = document.createTextNode(nodeText.slice(0, validOffset))
-        const after = document.createTextNode(nodeText.slice(validEndOffset))
-        const frag = document.createDocumentFragment()
-        frag.appendChild(before)
-        frag.appendChild(mark)
-        frag.appendChild(after)
-        const parent = loc.node.parentNode
-        if (parent) {
-          const idx = Array.from(parent.childNodes).indexOf(loc.node)
-          parent.replaceChild(frag, loc.node)
-          timerRef.current = setTimeout(() => {
-            const combined = document.createTextNode(
-              (parent.childNodes[idx] as Text).textContent! +
-                (parent.childNodes[idx + 1] as HTMLElement).textContent! +
-                (parent.childNodes[idx + 2] as Text).textContent!
-            )
-            parent.replaceChild(combined, parent.childNodes[idx])
-            parent.removeChild(parent.childNodes[idx + 1])
-            parent.removeChild(parent.childNodes[idx + 2])
-            onScrollToTextConsumed()
-            timerRef.current = null
-          }, AUTO_FADE_MS)
+        walk(container)
+        if (targetNode) {
+          const nodeText = (targetNode as Text).textContent || ''
+          const nodeLen = nodeText.length
+          const validOffset = Math.min(targetOffset, nodeLen - 1)
+          const validEndOffset = Math.min(validOffset + searchText.length, nodeLen)
+          try {
+            const range = document.createRange()
+            range.setStart(targetNode, validOffset)
+            range.setEnd(targetNode, validEndOffset)
+            const rect = range.getBoundingClientRect()
+            container.scrollTo({
+              top: container.scrollTop + rect.top - SCROLL_OFFSET,
+              behavior: 'smooth',
+            })
+
+            // Temporary highlight that auto-fades
+            const mark = document.createElement('mark')
+            mark.className = 'search-flash'
+            mark.textContent = nodeText.slice(validOffset, validEndOffset)
+            const before = document.createTextNode(nodeText.slice(0, validOffset))
+            const after = document.createTextNode(nodeText.slice(validEndOffset))
+            const frag = document.createDocumentFragment()
+            frag.appendChild(before)
+            frag.appendChild(mark)
+            frag.appendChild(after)
+            const parent = (targetNode as Text).parentNode
+            if (parent) {
+              const idx = Array.from(parent.childNodes).indexOf(targetNode)
+              parent.replaceChild(frag, targetNode)
+              timerRef.current = setTimeout(() => {
+                const combined = document.createTextNode(
+                  (parent.childNodes[idx] as Text).textContent! +
+                    (parent.childNodes[idx + 1] as HTMLElement).textContent! +
+                    (parent.childNodes[idx + 2] as Text).textContent!
+                )
+                parent.replaceChild(combined, parent.childNodes[idx])
+                parent.removeChild(parent.childNodes[idx + 1])
+                parent.removeChild(parent.childNodes[idx + 1])
+                onScrollToTextConsumed()
+                timerRef.current = null
+              }, AUTO_FADE_MS)
+            }
+          } catch {
+            container.scrollTo({ top: 0, behavior: 'smooth' })
+          }
         }
       }
     }
@@ -188,7 +244,15 @@ const ModalReader = ({
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = null
     }
-  }, [modalKey, scrollToText, onScrollToTextConsumed, loadedContent, contentLoading, skillRawText])
+  }, [
+    modalKey,
+    scrollToText,
+    onScrollToTextConsumed,
+    loadedContent,
+    contentLoading,
+    skillRawText,
+    readerMode,
+  ])
 
   // J/K keyboard shortcuts
   useEffect(() => {
@@ -356,7 +420,7 @@ const ModalReader = ({
     <>
       <div className="modal-backdrop">
         <div className="modal-card">
-          <div className="modal-header">
+          <div className="modal-header" ref={headerRef}>
             {modalType === 'interp' && (
               <Button
                 variant="ghost"
@@ -370,6 +434,15 @@ const ModalReader = ({
               </Button>
             )}
             <div className="flex-1" />
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setReaderSettingsOpen(true)}
+              title="阅读设置"
+              aria-label="阅读设置"
+            >
+              <Settings size={16} />
+            </Button>
             <ActionBar
               key={modalKey}
               bookSlug={bookSlug}
@@ -381,14 +454,10 @@ const ModalReader = ({
               onTogglePanel={() => setShowPanel(v => !v)}
               skillRawContent={skillRawContent}
             />
-            <ReaderToolbar
-              progress={{ current: 0, total: 0 }}
-              visible={toolbarVisible}
-            />
             <Button variant="ghost" size="sm" onClick={onClose} className="modal-close-btn">
               <X size={18} />
             </Button>
-            {readerMode === 'scroll' && <ReadingProgress scrollRef={modalBodyRef} />}
+            <ReadingProgress scrollRef={modalBodyRef} readerMode={readerMode} />
           </div>
           <div
             className="modal-content-wrapper"
@@ -403,56 +472,56 @@ const ModalReader = ({
                 html={rawBody}
                 scrollRef={modalBodyRef}
                 open={tocOpen}
+                readerMode={readerMode}
                 onItemClick={() => {
-                  // Note: flip/smooth mode 跳转到 anchor 留给后续 task (需要 ReaderBody 暴露 goToAnchor)
                   if (window.innerWidth <= MOBILE_BREAKPOINT) setTocOpen(false)
                 }}
               />
             )}
-            {modalType === 'skill' ? (
-              <div
-                className="modal-body"
-                ref={modalBodyRef}
-              >
+            <div
+              className="modal-body"
+              ref={modalBodyRef}
+              onMouseUp={
+                modalType !== 'skill' && readerMode === 'scroll' ? handleMouseUp : undefined
+              }
+              onTouchEnd={
+                modalType !== 'skill' && readerMode === 'scroll'
+                  ? e => {
+                      const sel = window.getSelection()
+                      if (sel && !sel.isCollapsed) e.preventDefault()
+                      handleMouseUp(e)
+                    }
+                  : undefined
+              }
+            >
+              {modalType === 'skill' ? (
                 <pre className="skill-raw-body">
                   <code>{skillRawText || '加载中...'}</code>
                 </pre>
-              </div>
-            ) : (
-              <div
-                className="modal-body"
-                ref={modalBodyRef}
-                onMouseUp={handleMouseUp}
-                onTouchEnd={e => {
-                  const sel = window.getSelection()
-                  if (sel && !sel.isCollapsed) e.preventDefault()
-                  handleMouseUp(e)
-                }}
-              >
+              ) : contentLoading ? (
+                <div className={`${proseClass} loading-center`}>加载中...</div>
+              ) : (
                 <ReaderBody
-                  mode={readerMode}
                   bookSlug={bookSlug}
                   modalType={modalType}
                   modalKey={modalKey}
-                  chapters={chapters}
                   annotatedBody={annotatedBody}
                   proseClass={proseClass}
-                  skillRawText={skillRawText}
-                  initialPage={initialPage ?? undefined}
-                  onClose={onClose}
-                  onNavigate={onNavigate}
-                  gestureEnabled={!tocOpen && !showPanel}
-                  onCrossChapter={dir => {
-                    const target = dir === 'prev' ? prevChapter : nextChapter
-                    if (target) onNavigate(modalType, target)
+                  scrollRef={modalBodyRef}
+                  initialPage={0}
+                  onCenterTap={() => setHeaderVisible(v => !v)}
+                  onCrossChapterNavigate={dir => {
+                    const targetChapter = dir === 'next' ? nextChapter : prevChapter
+                    if (targetChapter) {
+                      onNavigate(modalType, targetChapter)
+                    }
                   }}
-                  measureContainerRef={modalBodyRef}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </div>
           {modalKey && (
-            <div className="related-section">
+            <div className="related-section" ref={relatedRef}>
               <div className="related-left">
                 {/* 同一篇章内的跨内容导航 */}
                 {contentNavItems.length > 0 && (
@@ -538,7 +607,7 @@ const ModalReader = ({
               )}
 
               <div className="related-right">
-                <BackToTop scrollRef={modalBodyRef} />
+                <BackToTop scrollRef={modalBodyRef} readerMode={readerMode} />
               </div>
             </div>
           )}
@@ -565,6 +634,14 @@ const ModalReader = ({
           }}
         />
       )}
+
+      {/* 阅读设置底部抽屉 */}
+      <ReaderSettingsDrawer
+        open={readerSettingsOpen}
+        onOpenChange={setReaderSettingsOpen}
+        readerMode={readerMode}
+        onModeChange={setReaderMode}
+      />
     </>
   )
 }

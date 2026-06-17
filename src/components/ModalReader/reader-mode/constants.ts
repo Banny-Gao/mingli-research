@@ -1,8 +1,10 @@
+// src/components/ModalReader/reader-mode/constants.ts
+
 export const READER_MODE_KEY = 'reader:mode'
 
 // 翻页手势
 export const FLIP_THRESHOLD_PX = 24
-export const FLIP_RATIO = 2 // |Δx| > |Δy| × RATIO 才认翻页
+export const FLIP_RATIO = 2
 export const FLIP_MAX_DURATION_MS = 500
 export const LONG_PRESS_MS = 300
 export const EDGE_TAP_ZONE_PX = 80
@@ -18,6 +20,3 @@ export const PAGE_KEY_PREFIX = 'page:'
 
 // 闪黄
 export const SEARCH_FLASH_MS = 4000
-
-// scroll debounce (Task 11 needs this)
-export const SCROLL_DEBOUNCE_MS = 300
