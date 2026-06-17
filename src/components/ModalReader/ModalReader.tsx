@@ -1,14 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { X, PanelLeftClose, PanelLeft } from 'lucide-react'
+import { X, PanelLeftClose, PanelLeft, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup, ButtonGroupText } from '@/components/ui/button-group'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import Mermaid from '../Mermaid'
+import gsap from 'gsap'
 import './ModalReader.less'
 import { getBook } from '../../data/registry'
 import { ReadingProgress, BackToTop, TocSidebar } from '../ReadingTools'
@@ -19,6 +13,9 @@ import { useBookmarks } from '../../hooks/useProgress'
 import { useAnnotations } from '../../hooks/useAnnotations'
 import type { AnnotationType, Annotation } from '../../hooks/useAnnotations'
 import { injectAnnotations } from '../../utils/injectAnnotations'
+import { useReaderMode } from '../../hooks/useReaderMode'
+import { ReaderBody } from './reader-mode/ReaderBody'
+import { ReaderSettingsDrawer } from './reader-mode/ReaderSettingsDrawer'
 
 interface ModalReaderProps {
   chapters: Array<{ name: string }>
@@ -69,6 +66,29 @@ const ModalReader = ({
   const [skillRawText, setSkillRawText] = useState('')
   const [loadedContent, setLoadedContent] = useState('')
   const [contentLoading, setContentLoading] = useState(false)
+
+  // 阅读模式
+  const [readerMode, setReaderMode] = useReaderMode()
+  const [readerSettingsOpen, setReaderSettingsOpen] = useState(false)
+  const [headerVisible, setHeaderVisible] = useState(true)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const relatedRef = useRef<HTMLDivElement>(null)
+
+  // GSAP 动画：header / related-section 缓动显隐
+  useEffect(() => {
+    const targets = [headerRef.current, relatedRef.current].filter(Boolean) as HTMLElement[]
+    if (targets.length === 0) return
+    gsap.killTweensOf(targets)
+    if (headerVisible) {
+      gsap.fromTo(
+        targets,
+        { height: 0, opacity: 0 },
+        { height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out', clearProps: 'height' }
+      )
+    } else {
+      gsap.to(targets, { height: 0, opacity: 0, duration: 0.25, ease: 'power2.in' })
+    }
+  }, [headerVisible])
 
   const bookData = getBook(bookSlug) as BookData
 
@@ -137,6 +157,13 @@ const ModalReader = ({
   useEffect(() => {
     if (modalKey && scrollToText && modalBodyRef.current && !contentLoading) {
       const container = modalBodyRef.current
+
+      // 翻页模式：暂用简化定位（后续实现 measure DOM → getPageOf → goToPage → 闪黄）
+      if (readerMode === 'smooth' || readerMode === 'flip') {
+        container.scrollTo({ top: 0, behavior: 'smooth' })
+        onScrollToTextConsumed()
+        return
+      }
       const plainText = container.textContent || ''
       if (!plainText) return
       const searchText = scrollToText.trim()
@@ -217,7 +244,15 @@ const ModalReader = ({
       if (timerRef.current) clearTimeout(timerRef.current)
       timerRef.current = null
     }
-  }, [modalKey, scrollToText, onScrollToTextConsumed, loadedContent, contentLoading, skillRawText])
+  }, [
+    modalKey,
+    scrollToText,
+    onScrollToTextConsumed,
+    loadedContent,
+    contentLoading,
+    skillRawText,
+    readerMode,
+  ])
 
   // J/K keyboard shortcuts
   useEffect(() => {
@@ -385,7 +420,7 @@ const ModalReader = ({
     <>
       <div className="modal-backdrop">
         <div className="modal-card">
-          <div className="modal-header">
+          <div className="modal-header" ref={headerRef}>
             {modalType === 'interp' && (
               <Button
                 variant="ghost"
@@ -399,6 +434,15 @@ const ModalReader = ({
               </Button>
             )}
             <div className="flex-1" />
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setReaderSettingsOpen(true)}
+              title="阅读设置"
+              aria-label="阅读设置"
+            >
+              <Settings size={16} />
+            </Button>
             <ActionBar
               key={modalKey}
               bookSlug={bookSlug}
@@ -413,7 +457,7 @@ const ModalReader = ({
             <Button variant="ghost" size="sm" onClick={onClose} className="modal-close-btn">
               <X size={18} />
             </Button>
-            <ReadingProgress scrollRef={modalBodyRef} />
+            <ReadingProgress scrollRef={modalBodyRef} readerMode={readerMode} />
           </div>
           <div
             className="modal-content-wrapper"
@@ -428,6 +472,7 @@ const ModalReader = ({
                 html={rawBody}
                 scrollRef={modalBodyRef}
                 open={tocOpen}
+                readerMode={readerMode}
                 onItemClick={() => {
                   if (window.innerWidth <= MOBILE_BREAKPOINT) setTocOpen(false)
                 }}
@@ -436,9 +481,11 @@ const ModalReader = ({
             <div
               className="modal-body"
               ref={modalBodyRef}
-              onMouseUp={modalType !== 'skill' ? handleMouseUp : undefined}
+              onMouseUp={
+                modalType !== 'skill' && readerMode === 'scroll' ? handleMouseUp : undefined
+              }
               onTouchEnd={
-                modalType !== 'skill'
+                modalType !== 'skill' && readerMode === 'scroll'
                   ? e => {
                       const sel = window.getSelection()
                       if (sel && !sel.isCollapsed) e.preventDefault()
@@ -454,36 +501,27 @@ const ModalReader = ({
               ) : contentLoading ? (
                 <div className={`${proseClass} loading-center`}>加载中...</div>
               ) : (
-                <div className={proseClass}>
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[
-                      rehypeRaw,
-                      rehypeSlug,
-                      [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
-                      rehypeAutolinkHeadings,
-                    ]}
-                    components={{
-                      code({ className, children, ...props }) {
-                        const isMermaid = /\blanguage-mermaid\b/.test(className || '')
-                        const codeText = String(children).replace(/\n$/, '')
-                        if (isMermaid) return <Mermaid>{codeText}</Mermaid>
-                        return (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        )
-                      },
-                    }}
-                  >
-                    {annotatedBody}
-                  </ReactMarkdown>
-                </div>
+                <ReaderBody
+                  bookSlug={bookSlug}
+                  modalType={modalType}
+                  modalKey={modalKey}
+                  annotatedBody={annotatedBody}
+                  proseClass={proseClass}
+                  scrollRef={modalBodyRef}
+                  initialPage={0}
+                  onCenterTap={() => setHeaderVisible(v => !v)}
+                  onCrossChapterNavigate={dir => {
+                    const targetChapter = dir === 'next' ? nextChapter : prevChapter
+                    if (targetChapter) {
+                      onNavigate(modalType, targetChapter)
+                    }
+                  }}
+                />
               )}
             </div>
           </div>
           {modalKey && (
-            <div className="related-section">
+            <div className="related-section" ref={relatedRef}>
               <div className="related-left">
                 {/* 同一篇章内的跨内容导航 */}
                 {contentNavItems.length > 0 && (
@@ -569,7 +607,7 @@ const ModalReader = ({
               )}
 
               <div className="related-right">
-                <BackToTop scrollRef={modalBodyRef} />
+                <BackToTop scrollRef={modalBodyRef} readerMode={readerMode} />
               </div>
             </div>
           )}
@@ -596,6 +634,14 @@ const ModalReader = ({
           }}
         />
       )}
+
+      {/* 阅读设置底部抽屉 */}
+      <ReaderSettingsDrawer
+        open={readerSettingsOpen}
+        onOpenChange={setReaderSettingsOpen}
+        readerMode={readerMode}
+        onModeChange={setReaderMode}
+      />
     </>
   )
 }
