@@ -61,11 +61,11 @@
 | 5 | 包含"操作流程" | grep `## 二、操作流程` |
 | 6 | 包含"判定准则" | grep `## 三、判定准则` |
 | 7 | 包含"边界与例外" | grep `## 四、边界与例外` |
-| 8 | blockquote 元信息恰为 4 条（不多不少） | grep -c `^> ` 计数 = 4 |
+| 8 | 4 blockquote 元信息必为 `【技能】/【适用】/【依赖】/【生成时间】` | grep -E `^> 【技能】` / `^> 【适用】` / `^> 【依赖】` / `^> 【生成时间】` 各 1 |
 | 9 | 引用 source.md 不用 `> 【原文】` | grep `> 【原文】` 计数 = 0 |
 | 10 | 引用 interpretation.md 不用 `> 【解读】` | grep `> 【解读】` 计数 = 0 |
-| 11 | 表格行无空列 | 见 self-check 脚本 |
-| 12 | Mermaid 块有 ` ```mermaid ` 头尾 | grep -c '```mermaid' |
+| 11 | 表格行无空列 | awk -F'|' 'NR>1 && NF<4 {print}' 计数 = 0 |
+| 12 | Mermaid 块有 ` ```mermaid ` 头尾 | grep -c '```mermaid' 为偶数 |
 | 13 | 操作流程 ≥ 2 步 | grep `^### Step` 计数 ≥ 2 |
 | 14 | 学术语体（无 AI 自指） | grep -i "作为 AI\|我作为\|i am an ai" 计数 = 0 |
 
