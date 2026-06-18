@@ -92,7 +92,10 @@ export function FlipPages(
       goToPage(e.data)
     })
 
-    requestAnimationFrame(() => {
+    const rafId = requestAnimationFrame(() => {
+      // 取消前确认当前实例仍是 effect 创建的实例（防止 effect 已被 cleanup / 重建后
+      // 旧 rAF 误操作新实例）
+      if (flipRef.current !== flip) return
       const items = container.querySelectorAll('.flip-book-page')
       if (items.length > 0) {
         flip.loadFromHTML(items)
@@ -101,12 +104,26 @@ export function FlipPages(
     })
 
     return () => {
-      flip.destroy()
-      flipRef.current = null
+      // 取消尚未执行的 rAF（避免 cleanup 后旧 rAF 触发）
+      cancelAnimationFrame(rafId)
+      // 通过 ref 读取本次 effect 创建的实例，避免与下一次 effect 错位
+      // （pageSize 变化会触发重跑，line 73 的新 flip 会覆盖 flipRef.current，
+      //  旧实例的 destroy 仍要执行——闭包变量会指向新实例导致误操作）
+      const prev = flipRef.current
+      if (prev) {
+        try {
+          prev.destroy()
+        } catch {
+          // page-flip 内部在已经销毁或未就绪的实例上抛 TypeError，忽略
+        }
+      }
+      if (flipRef.current === prev) {
+        flipRef.current = null
+      }
       setReady(false)
     }
     // 故意省略 ready：ready 变化触发 setReady 会循环重建 PageFlip
-    // setReady 来自 useState（应豁免但 line 64 的 if 分支被 ESLint 当作引用）
+    // setReady 来自 useState（应豁免但 line 58 的 if 分支被 ESLint 当作引用）
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasPages, chapterKey, pageSize.width, pageSize.height, goToPage])
 
