@@ -1,7 +1,8 @@
 // src/components/ModalReader/reader-mode/types.ts
 import type { ReaderMode } from '@/hooks/useReaderMode'
+import type { MarkdownBlock } from './splitMarkdownByBlocks'
 
-export type { ReaderMode }
+export type { ReaderMode, MarkdownBlock }
 
 export interface PaginatedPage {
   index: number
@@ -21,33 +22,13 @@ export interface UsePaginatedBlocksResult {
   totalPages: number
   goToPage: (idx: number, opts?: { behavior?: 'auto' | 'smooth' }) => void
   getPageOf: (el: HTMLElement) => number
+  /** 通过 heading id 找 page（用于目录跳转）。找不到返回 -1 */
+  getPageOfHeadingId: (id: string) => number
+  /** 通过文本前缀在 measure DOM 中找 page + 文本节点 + 偏移（用于搜索闪黄）。找不到返回 null */
+  findText: (
+    text: string
+  ) => { pageIdx: number; searchText: string } | null
 }
-
-export interface MarkdownBlockBoundary {
-  blockIdx: number
-  charStart: number
-  charEnd: number
-}
-
-export interface TextLocation {
-  blockIdx: number
-  offsetInBlock: number
-  node: Text
-  nodeOffset: number
-}
-
-export interface CrossChapterDecision {
-  hasPrev: boolean
-  hasNext: boolean
-  prevTargetPage: number
-  isPrevRead: boolean
-}
-
-export type NavigateWithPage = (
-  type: 'interp' | 'skill' | 'source',
-  key: string,
-  initialPage?: number
-) => void
 
 /** PaginatedReader → renderPages 插槽的 props */
 export interface PageRenderProps {

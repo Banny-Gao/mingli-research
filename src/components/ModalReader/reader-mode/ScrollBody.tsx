@@ -7,7 +7,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import gsap from 'gsap'
-import Mermaid from '../../Mermaid'
+import { markdownComponents } from './markdownComponents'
 import { saveScroll, loadScroll } from './persistence'
 
 interface ScrollBodyProps {
@@ -41,15 +41,21 @@ export function ScrollBody({
 }: ScrollBodyProps) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // 恢复滚动位置
+  // 恢复滚动位置：仅在章节身份变化时跑（不依赖 annotatedBody 引用，避免父级重渲时强制跳回）
+  const chapterKey = `${bookSlug}:${modalType}:${modalKey}`
+  const restoredKeyRef = useRef('')
   useEffect(() => {
     const el = scrollRef.current
     if (!el || !annotatedBody) return
+    if (restoredKeyRef.current === chapterKey) return
+    restoredKeyRef.current = chapterKey
     const saved = loadScroll(bookSlug, modalType, modalKey)
     if (saved > 0) {
       gsap.to(el, { scrollTop: saved, duration: 0.4, ease: 'power2.out', overwrite: 'auto' })
     }
-  }, [bookSlug, modalType, modalKey, annotatedBody])
+    // 故意省略 scrollRef：ref 对象稳定
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chapterKey, bookSlug, modalType, modalKey, annotatedBody])
 
   // 持久化滚动位置
   useEffect(() => {
@@ -67,6 +73,8 @@ export function ScrollBody({
       el.removeEventListener('scroll', handler)
       if (timerRef.current) clearTimeout(timerRef.current)
     }
+    // 故意省略 scrollRef：ref 对象稳定
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookSlug, modalType, modalKey, onScroll])
 
   return (
@@ -81,18 +89,7 @@ export function ScrollBody({
               [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
               rehypeAutolinkHeadings,
             ]}
-            components={{
-              code({ className: codeClass, children: codeChildren, ...props }) {
-                const isMermaid = /\blanguage-mermaid\b/.test(codeClass || '')
-                const codeText = String(codeChildren).replace(/\n$/, '')
-                if (isMermaid) return <Mermaid>{codeText}</Mermaid>
-                return (
-                  <code className={codeClass} {...props}>
-                    {codeChildren}
-                  </code>
-                )
-              },
-            }}
+            components={markdownComponents}
           >
             {annotatedBody}
           </ReactMarkdown>

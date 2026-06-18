@@ -16,6 +16,12 @@ declare module 'page-flip' {
     disableFlipByClick?: boolean
   }
 
+  /** page-flip flip 事件 payload */
+  export interface FlipEventData {
+    /** 翻页后的目标 page 索引 */
+    data: number
+  }
+
   export class PageFlip {
     constructor(parent: HTMLElement, settings: PageFlipSettings)
     loadFromHTML(items: NodeListOf<Element> | HTMLElement[]): void
@@ -24,7 +30,8 @@ declare module 'page-flip' {
     flipPrev(): void
     turnToPage(pageNum: number): void
     getCurrentPageIndex(): number
-    on(event: string, callback: (e: any) => void): void
+    on(event: 'flip', callback: (e: FlipEventData) => void): void
+    on(event: string, callback: (e: unknown) => void): void
     destroy(): void
   }
 }

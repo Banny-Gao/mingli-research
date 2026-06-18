@@ -1,5 +1,5 @@
 // src/components/ModalReader/reader-mode/groupBlocksIntoPages.ts
-import type { PaginatedPage } from './types'
+import type { PaginatedPage, MarkdownBlock } from './types'
 
 /**
  * 将 splitMarkdownByBlocks 输出的 block 数组，
@@ -9,11 +9,11 @@ import type { PaginatedPage } from './types'
  * pages[j] 的 startBlockIdx/endBlockIdx 描述第 j 页包含哪些 block。
  */
 export function groupBlocksIntoPages(
-  blocks: string[],
+  blocks: MarkdownBlock[],
   pages: PaginatedPage[]
 ): string[] {
   return pages.map(page => {
     const pageBlocks = blocks.slice(page.startBlockIdx, page.endBlockIdx + 1)
-    return pageBlocks.join('\n\n')
+    return pageBlocks.map(b => b.md).join('\n\n')
   })
 }

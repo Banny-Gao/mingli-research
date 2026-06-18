@@ -1,5 +1,5 @@
 // src/components/ModalReader/reader-mode/usePageNavigation.ts
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { savePage, loadPage } from './persistence'
 
 interface UsePageNavigationOptions {
@@ -19,6 +19,18 @@ export function usePageNavigation(opts: UsePageNavigationOptions) {
     return loadPage(bookSlug, modalType, modalKey)
   })
 
+  // 切换章节（bookSlug/modalType/modalKey 任一变化）时重置 currentPage
+  const identityKey = `${bookSlug}:${modalType}:${modalKey}`
+  const prevIdentityRef = useRef(identityKey)
+  useEffect(() => {
+    if (prevIdentityRef.current === identityKey) return
+    prevIdentityRef.current = identityKey
+    const next = initialPage !== undefined && initialPage >= 0
+      ? initialPage
+      : loadPage(bookSlug, modalType, modalKey)
+    setCurrentPage(Math.max(0, next))
+  }, [identityKey, bookSlug, modalType, modalKey, initialPage])
+
   // 持久化 currentPage 变化
   useEffect(() => {
     if (totalPages > 0) {
@@ -26,12 +38,13 @@ export function usePageNavigation(opts: UsePageNavigationOptions) {
     }
   }, [currentPage, bookSlug, modalType, modalKey, totalPages])
 
-  // clamp currentPage 当 totalPages 变化时
+  // clamp currentPage 当 totalPages 变化时（derived from props，必须用 effect 同步到 state）
   useEffect(() => {
     if (totalPages > 0 && currentPage >= totalPages) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentPage(Math.max(0, totalPages - 1))
     }
-  }, [totalPages])
+  }, [totalPages, currentPage])
 
   const goToPage = useCallback(
     (idx: number) => {
