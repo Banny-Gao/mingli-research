@@ -87,15 +87,15 @@ git log --oneline -5
 type(scope): description
 ```
 
-| type     | 适用场景           |
-| -------- | ------------------ |
-| feat     | 新功能             |
-| fix      | 修复 bug           |
+| type | 适用场景 |
+|------|---------|
+| feat | 新功能 |
+| fix | 修复 bug |
 | refactor | 重构（不改变行为） |
-| style    | 格式调整           |
-| docs     | 文档               |
-| test     | 测试               |
-| chore    | 构建/工具          |
+| style | 格式调整 |
+| docs | 文档 |
+| test | 测试 |
+| chore | 构建/工具 |
 
 ---
 
@@ -118,7 +118,7 @@ type(scope): description
 │  [D] build         构建验证                              │
 │  [E] code-review   superpowers 审查变更                  │
 │                                                          │
-│  命令: All / None / Default                    │
+│  命令: All / None / Default / Confirm                    │
 │  或输入字母组合（如 "A B C" 或 "ABC"）                    │
 │─────────────────────────────────────────────────────────│
 │  [修改信息] [取消]                                        │
@@ -128,9 +128,8 @@ type(scope): description
 ### 交互说明
 
 - 输入字母组合（如 `A B C` 或 `ABC`）选择要执行的操作
-- `All` — 全选，
-- `None` — 全不选，
-- `Default` — 默认 A+B+C
+- `All` — 全选，`None` — 全不选，`Default` — 默认 A+B+C
+- `Confirm` — 确认执行当前选择
 - `修改信息` — 重写 commit message
 - `取消` — 终止流程
 
@@ -140,12 +139,12 @@ type(scope): description
 
 按顺序执行用户选中的操作，每次只对变更文件生效：
 
-| 操作        | 命令                                    |
-| ----------- | --------------------------------------- |
-| format      | `prettier --write {变更文件列表}`       |
-| lint        | `eslint --fix {变更文件列表}`           |
-| ts-check    | `tsc --noEmit`                          |
-| build       | `npm run build`                         |
+| 操作 | 命令 |
+|------|------|
+| format | `prettier --write {变更文件列表}` |
+| lint | `eslint --fix {变更文件列表}` |
+| ts-check | `tsc --noEmit` |
+| build | `npm run build` |
 | code-review | 调用 superpowers:requesting-code-review |
 
 注：commit 为流程默认操作（用户确认后自动执行），不在可选操作中列出。
@@ -159,7 +158,6 @@ type(scope): description
 ### 成功收尾
 
 提交成功后：
-
 - 展示 commit hash
 - 提醒可推送到远程：`git push origin {branch}`
 
