@@ -9,16 +9,12 @@ import {
   type ReactNode,
 } from 'react'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { usePaginatedBlocks } from './usePaginatedBlocks'
 import { splitMarkdownByBlocks } from './splitMarkdownByBlocks'
 import { groupBlocksIntoPages } from './groupBlocksIntoPages'
 import { usePageNavigation } from './usePageNavigation'
 import { markdownComponents } from './markdownComponents'
+import { remarkPlugins, rehypePlugins } from './markdownPlugins'
 import type { PageSize, PageRenderProps } from './types'
 
 export interface PaginatedReaderHandle {
@@ -99,20 +95,7 @@ export const PaginatedReader = forwardRef<PaginatedReaderHandle, PaginatedReader
     )
 
     // 稳定引用，避免 ReactMarkdown 因 props 变化而重建
-    const remarkPlugins = useMemo(() => [remarkGfm], [])
-    // rehypePlugins 用 as const 推断元组类型，react-markdown 的 PluggableList
-    // 对带 options 的元组推断不兼容（[Plugin, Options]）— 接受局部的 as any 收敛到单行
-    const rehypePlugins = useMemo(
-      () =>
-        [
-          rehypeRaw,
-          rehypeSlug,
-          [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
-          rehypeAutolinkHeadings,
-        ] as unknown as Parameters<typeof ReactMarkdown>[0]['rehypePlugins'],
-      []
-    )
-
+    // 直接使用 markdownPlugins 模块顶层常量（已稳定），不再多余 useMemo 包一层
     const measureDom = useMemo(
       () => (
         <div

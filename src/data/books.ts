@@ -3827,7 +3827,7 @@ export const books: Book[] = [
     "version": "据《四库全书》本",
     "description": "隋萧吉撰。五卷。书中所论皆阴阳五行之事，\"文章醇古，非唐以下所能为\"；萧吉以阴阳算术著称，书中多援引今已佚亡之古书。本书为现存最早系统讨论五行理论的专著之一。本书早于子平体系（子平法成熟于两宋），可作八字五行基础参考。",
     "total": 8,
-    "done": 5,
+    "done": 8,
     "chapters": [
       {
         "num": "01",
@@ -3867,21 +3867,21 @@ export const books: Book[] = [
       {
         "num": "06",
         "name": "卷第四",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "07",
         "name": "卷第五",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       },
       {
         "num": "08",
         "name": "题五行大义后",
-        "isDone": false,
+        "isDone": true,
         "hasSkill": false,
         "category": "篇章目录"
       }

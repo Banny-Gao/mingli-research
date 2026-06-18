@@ -1,11 +1,11 @@
 // src/components/ModalReader/reader-mode/ReaderBody.tsx
 import { forwardRef } from 'react'
-import { useReaderMode } from '@/hooks/useReaderMode'
 import { ScrollBody } from './ScrollBody'
 import { SmoothBody } from './SmoothBody'
 import { FlipBody } from './FlipBody'
 import type { PaginatedReaderHandle } from './PaginatedReader'
 import type { ReaderMode } from './types'
+import { MOBILE_BREAKPOINT } from './constants'
 
 interface ReaderBodyProps {
   bookSlug: string
@@ -18,6 +18,11 @@ interface ReaderBodyProps {
   onScrollProgress?: (scrollTop: number) => void
   onCrossChapterNavigate?: (dir: 'prev' | 'next') => void
   onCenterTap?: () => void
+  /**
+   * 翻页模式（由 ModalReader 持有的 useReaderMode 状态传入）。
+   * 不在内部再调 useReaderMode，避免两个 hook 实例不同步导致切模式不生效。
+   */
+  mode: ReaderMode
 }
 
 /**
@@ -45,9 +50,9 @@ export const ReaderBody = forwardRef<PaginatedReaderHandle | null, ReaderBodyPro
       onScrollProgress,
       onCrossChapterNavigate,
       onCenterTap,
+      mode,
     } = props
-    const [mode] = useReaderMode()
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= MOBILE_BREAKPOINT
 
     // 桌面端强制滚动模式
     const effectiveMode: ReaderMode = !isMobile ? 'scroll' : mode
@@ -111,6 +116,7 @@ export const ReaderBody = forwardRef<PaginatedReaderHandle | null, ReaderBodyPro
             scrollRef={scrollRef}
             onScroll={onScrollProgress}
             className="modal-body"
+            onCenterTap={onCenterTap}
           />
         )
     }

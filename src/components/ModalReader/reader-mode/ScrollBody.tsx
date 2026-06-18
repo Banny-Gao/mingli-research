@@ -1,13 +1,9 @@
 // src/components/ModalReader/reader-mode/ScrollBody.tsx
 import { useRef, useEffect, type ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import gsap from 'gsap'
 import { markdownComponents } from './markdownComponents'
+import { remarkPlugins, rehypePlugins } from './markdownPlugins'
 import { saveScroll, loadScroll } from './persistence'
 
 interface ScrollBodyProps {
@@ -20,6 +16,7 @@ interface ScrollBodyProps {
   onScroll?: (scrollTop: number) => void
   className?: string
   children?: ReactNode
+  onCenterTap?: () => void
 }
 
 const SCROLL_DEBOUNCE_MS = 300
@@ -38,6 +35,7 @@ export function ScrollBody({
   onScroll,
   className,
   children,
+  onCenterTap,
 }: ScrollBodyProps) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -80,15 +78,10 @@ export function ScrollBody({
   return (
     <div className={className} ref={scrollRef}>
       {children ?? (
-        <div className={proseClass}>
+        <div className={proseClass} onClick={() => onCenterTap?.()}>
           <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[
-              rehypeRaw,
-              rehypeSlug,
-              [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
-              rehypeAutolinkHeadings,
-            ]}
+            remarkPlugins={remarkPlugins}
+            rehypePlugins={rehypePlugins}
             components={markdownComponents}
           >
             {annotatedBody}

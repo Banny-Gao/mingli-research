@@ -121,6 +121,36 @@ describe('usePageNavigation', () => {
     expect(result.current.currentPage).toBe(2)
   })
 
+  it('totalPages=0 时 goToPage 不变更 currentPage', () => {
+    const { result } = renderHook(() =>
+      usePageNavigation({
+        bookSlug: 'b1',
+        modalType: 'interp',
+        modalKey: 'k1',
+        totalPages: 0,
+      })
+    )
+    expect(result.current.currentPage).toBe(0)
+    act(() => result.current.goToPage(5))
+    expect(result.current.currentPage).toBe(0)
+  })
+
+  it('totalPages=0 → 正数时不修改 currentPage（仅 totalPages>0 时 clamp）', () => {
+    const { result, rerender } = renderHook(
+      ({ total }: { total: number }) =>
+        usePageNavigation({
+          bookSlug: 'b1',
+          modalType: 'interp',
+          modalKey: 'k1',
+          totalPages: total,
+        }),
+      { initialProps: { total: 0 } }
+    )
+    rerender({ total: 5 })
+    // currentPage 起始为 0，5 个 pages 时无需 clamp，保持 0
+    expect(result.current.currentPage).toBe(0)
+  })
+
   it('checkBoundary 触发 onCrossChapter 并返回 true', () => {
     const onCross = vi.fn()
     const { result } = renderHook(() =>
