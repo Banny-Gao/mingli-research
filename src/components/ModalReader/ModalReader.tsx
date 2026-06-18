@@ -17,6 +17,7 @@ import { useReaderMode } from '../../hooks/useReaderMode'
 import { ReaderBody } from './reader-mode/ReaderBody'
 import type { PaginatedReaderHandle } from './reader-mode/PaginatedReader'
 import { ReaderSettingsDrawer } from './reader-mode/ReaderSettingsDrawer'
+import { MOBILE_BREAKPOINT } from './reader-mode/constants'
 
 interface ModalReaderProps {
   chapters: Array<{ name: string }>
@@ -41,7 +42,6 @@ interface BookData {
 const SCROLL_OFFSET = 100
 const ANNOTATION_SCROLL_OFFSET = 80
 const AUTO_FADE_MS = 4000
-const MOBILE_BREAKPOINT = 640
 
 const ModalReader = ({
   chapters,
@@ -256,7 +256,9 @@ const ModalReader = ({
             const a = parent.childNodes[idx] as Text
             const b = parent.childNodes[idx + 1] as HTMLElement
             const c = parent.childNodes[idx + 2] as Text
-            const combined = document.createTextNode(a.textContent! + b.textContent! + c.textContent!)
+            const combined = document.createTextNode(
+              a.textContent! + b.textContent! + c.textContent!
+            )
             parent.replaceChild(combined, parent.childNodes[idx])
             parent.removeChild(parent.childNodes[idx + 1])
             parent.removeChild(parent.childNodes[idx + 1])
@@ -298,7 +300,9 @@ const ModalReader = ({
         handle.goToPage(found.pageIdx)
         requestAnimationFrame(() => {
           // 在可见 page 容器内扫描文本并闪黄
-          const container = modalBodyRef.current?.querySelector('.paginated-reader-container') as HTMLElement | null
+          const container = modalBodyRef.current?.querySelector(
+            '.paginated-reader-container'
+          ) as HTMLElement | null
           if (container) {
             flashMarkHighlight(found.searchText, container)
             // 滚动目标 heading 到 viewport（若文本所在的 block 是 heading）
@@ -350,7 +354,10 @@ const ModalReader = ({
           try {
             const range = document.createRange()
             range.setStart(targetNodeNonNull, targetOffset)
-            range.setEnd(targetNodeNonNull, Math.min(targetOffset + searchText.length, nodeText.length))
+            range.setEnd(
+              targetNodeNonNull,
+              Math.min(targetOffset + searchText.length, nodeText.length)
+            )
             const rect = range.getBoundingClientRect()
             container.scrollTo({
               top: container.scrollTop + rect.top - SCROLL_OFFSET,
@@ -359,7 +366,7 @@ const ModalReader = ({
           } catch {
             container.scrollTo({ top: 0, behavior: 'smooth' })
           }
-           flashMarkHighlight(searchText, container)
+          flashMarkHighlight(searchText, container)
         }
       }
     }
@@ -649,6 +656,7 @@ const ModalReader = ({
                   proseClass={proseClass}
                   scrollRef={modalBodyRef}
                   initialPage={0}
+                  mode={readerMode}
                   onCenterTap={() => setHeaderVisible(v => !v)}
                   onCrossChapterNavigate={dir => {
                     const targetChapter = dir === 'next' ? nextChapter : prevChapter
