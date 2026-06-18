@@ -2,11 +2,11 @@
 
 ## 规范
 
-| 字段        | 规则                                         |
-| ----------- | -------------------------------------------- |
-| type        | feat/fix/refactor/docs/style/test/chore/perf |
-| scope       | 模块名（小驼峰）或 root                      |
-| description | 中文，≤50字                                  |
+| 字段 | 规则 |
+|------|------|
+| type | feat/fix/refactor/docs/style/test/chore/perf |
+| scope | 模块名（小驼峰）或 root |
+| description | 中文，≤50字 |
 
 ## type 匹配规则
 
