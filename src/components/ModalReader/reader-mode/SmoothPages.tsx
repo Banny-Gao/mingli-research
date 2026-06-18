@@ -8,7 +8,7 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import gsap from 'gsap'
 import Hammer from 'hammerjs'
-import Mermaid from '../../Mermaid'
+import { markdownComponents } from './markdownComponents'
 import type { PageRenderProps } from './types'
 
 export function SmoothPages(
@@ -17,6 +17,15 @@ export function SmoothPages(
   const { pageMds, currentPage, goToPage, proseClass, onCenterTap } = props
   const viewportRef = useRef<HTMLDivElement>(null)
   const pendingScrollRef = useRef(false)
+  // 持有最新 currentPage / goToPage 引用，避免 hammerjs effect 因 currentPage 变化而 destroy+重建
+  const currentPageRef = useRef(currentPage)
+  const goToPageRef = useRef(goToPage)
+  useEffect(() => {
+    currentPageRef.current = currentPage
+  }, [currentPage])
+  useEffect(() => {
+    goToPageRef.current = goToPage
+  }, [goToPage])
 
   // goToPage 被调用时（点击/手势），GSAP 滚到目标页
   useEffect(() => {
@@ -42,9 +51,12 @@ export function SmoothPages(
       const vp = viewportRef.current
       if (vp) vp.scrollLeft = currentPage * vp.clientWidth
     }
+    // 故意只跑一次（挂载时恢复位置），不依赖 currentPage / pageMds.length
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // hammerjs 手势：一次滑动严格一页
+  // hammerjs 手势：一次滑动严格一页。effect 不依赖 currentPage，
+  // 避免每次翻页都 destroy+重建 hammer 实例导致快速连续滑动丢失事件。
   useEffect(() => {
     const vp = viewportRef.current
     if (!vp) return
@@ -60,7 +72,7 @@ export function SmoothPages(
 
     hammer.on('panstart', () => {
       gsap.killTweensOf(vp, 'scrollLeft')
-      initialScroll = currentPage * vp.clientWidth
+      initialScroll = currentPageRef.current * vp.clientWidth
       vp.scrollLeft = initialScroll
     })
 
@@ -75,23 +87,25 @@ export function SmoothPages(
       // 速度够快：按方向翻一页
       if (Math.abs(e.velocityX) > 0.3) {
         const dir = e.velocityX < 0 ? 1 : -1
-        const target = currentPage + dir
-        if (target >= 0 && target < pageMds.length) goToPage(target)
+        const target = currentPageRef.current + dir
+        if (target >= 0 && target < pageMds.length) goToPageRef.current(target)
         return
       }
 
       // 速度慢：吸附到最近页
       const nearestPage = Math.round(vp.scrollLeft / pageWidth)
       const clamped = Math.max(0, Math.min(nearestPage, pageMds.length - 1))
-      if (clamped !== currentPage) {
-        goToPage(clamped)
+      if (clamped !== currentPageRef.current) {
+        goToPageRef.current(clamped)
       } else {
-        gsap.to(vp, { scrollLeft: currentPage * pageWidth, duration: 0.2, ease: 'power2.out' })
+        gsap.to(vp, { scrollLeft: currentPageRef.current * pageWidth, duration: 0.2, ease: 'power2.out' })
       }
     })
 
     return () => hammer.destroy()
-  }, [currentPage, goToPage, pageMds.length])
+    // 故意省略 currentPage / goToPage：通过 currentPageRef / goToPageRef 读最新值，
+    // 避免每次翻页 destroy+重建 hammer 导致快速连续滑动丢失事件
+  }, [pageMds.length])
 
   if (pageMds.length === 0) return null
 
@@ -121,18 +135,7 @@ export function SmoothPages(
                 [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
                 rehypeAutolinkHeadings,
               ]}
-              components={{
-                code({ className, children: codeChildren, ...codeProps }) {
-                  const isMermaid = /\blanguage-mermaid\b/.test(className || '')
-                  const codeText = String(codeChildren).replace(/\n$/, '')
-                  if (isMermaid) return <Mermaid>{codeText}</Mermaid>
-                  return (
-                    <code className={className} {...codeProps}>
-                      {codeChildren}
-                    </code>
-                  )
-                },
-              }}
+              components={markdownComponents}
             >
               {md}
             </ReactMarkdown>

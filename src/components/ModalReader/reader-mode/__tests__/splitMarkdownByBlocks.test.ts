@@ -12,7 +12,7 @@ describe('splitMarkdownByBlocks', () => {
     const md = 'hello world'
     const result = splitMarkdownByBlocks(md)
     expect(result.length).toBeGreaterThanOrEqual(1)
-    expect(result[0]).toContain('hello world')
+    expect(result[0].md).toContain('hello world')
   })
 
   it('多顶级 block 返回对应数量', () => {
@@ -24,7 +24,7 @@ describe('splitMarkdownByBlocks', () => {
   it('含 code block 不被切碎', () => {
     const md = 'p1\n\n```\nline1\nline2\nline3\n```\n\np2'
     const result = splitMarkdownByBlocks(md)
-    const all = result.join('')
+    const all = result.map(b => b.md).join('')
     expect(all).toContain('line1')
     expect(all).toContain('line3')
   })
@@ -32,7 +32,7 @@ describe('splitMarkdownByBlocks', () => {
   it('mermaid code block 整块不切', () => {
     const md = 'p1\n\n```mermaid\ngraph TD;\nA-->B\n```\n\np2'
     const result = splitMarkdownByBlocks(md)
-    const all = result.join('')
+    const all = result.map(b => b.md).join('')
     expect(all).toContain('graph TD;')
     expect(all).toContain('A-->B')
   })
@@ -40,7 +40,7 @@ describe('splitMarkdownByBlocks', () => {
   it('含 <mark> 标签的段落不丢失标签', () => {
     const md = '# 标题\n\n<mark class="ann-emphasis" data-ann-id="a1">标注文本</mark>，后续内容。'
     const result = splitMarkdownByBlocks(md)
-    const all = result.join('')
+    const all = result.map(b => b.md).join('')
     expect(all).toContain('<mark class="ann-emphasis"')
     expect(all).toContain('</mark>')
     expect(all).toContain('标注文本')
@@ -49,19 +49,36 @@ describe('splitMarkdownByBlocks', () => {
   it('table 块不切', () => {
     const md = 'p1\n\n| a | b |\n|---|---|\n| 1 | 2 |\n\np2'
     const result = splitMarkdownByBlocks(md)
-    const all = result.join('')
+    const all = result.map(b => b.md).join('')
     expect(all).toContain('| a | b |')
   })
 
   it('拼回后文本内容一致（忽略 remark 列表标记符差异）', () => {
     const md = '# h1\n\np1\n\n- item 1\n- item 2\n\np2'
     const result = splitMarkdownByBlocks(md)
-    const rejoined = result.join('\n\n')
-    // 验证关键文本都在
+    const rejoined = result.map(b => b.md).join('\n\n')
     expect(rejoined).toContain('# h1')
     expect(rejoined).toContain('p1')
     expect(rejoined).toContain('item 1')
     expect(rejoined).toContain('item 2')
     expect(rejoined).toContain('p2')
+  })
+
+  it('heading 块带 headingId 与 headingLevel', () => {
+    const md = '## 论五行生成\n\nparagraph'
+    const result = splitMarkdownByBlocks(md)
+    const headingBlock = result.find(b => b.headingId)
+    expect(headingBlock).toBeDefined()
+    expect(headingBlock?.headingId).toBe('论五行生成')
+    expect(headingBlock?.headingLevel).toBe(2)
+  })
+
+  it('非 heading 块不带 headingId', () => {
+    const md = '普通段落\n\n```\ncode\n```'
+    const result = splitMarkdownByBlocks(md)
+    for (const b of result) {
+      expect(b.headingId).toBeUndefined()
+      expect(b.headingLevel).toBeUndefined()
+    }
   })
 })

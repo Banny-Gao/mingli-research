@@ -1,19 +1,18 @@
 // src/components/ModalReader/reader-mode/FlipPages.tsx
-import { useRef, useEffect, forwardRef, useState } from 'react'
-import { PageFlip } from 'page-flip'
+import { useRef, useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import Mermaid from '../../Mermaid'
+import { PageFlip, type FlipEventData } from 'page-flip'
+import { markdownComponents } from './markdownComponents'
 import type { PageRenderProps } from './types'
 
-const PageContent = forwardRef<HTMLDivElement, { md: string; proseClass: string }>((props, ref) => {
-  const { md, proseClass } = props
+function PageContent({ md, proseClass }: { md: string; proseClass: string }) {
   return (
-    <div ref={ref} className={`flip-book-page ${proseClass}`} data-density="soft">
+    <div className={`flip-book-page ${proseClass}`} data-density="soft">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[
@@ -22,25 +21,13 @@ const PageContent = forwardRef<HTMLDivElement, { md: string; proseClass: string 
           [rehypeHighlight, { ignoreMissing: true, plainText: ['mermaid'] }],
           rehypeAutolinkHeadings,
         ]}
-        components={{
-          code({ className, children: codeChildren, ...codeProps }) {
-            const isMermaid = /\blanguage-mermaid\b/.test(className || '')
-            const codeText = String(codeChildren).replace(/\n$/, '')
-            if (isMermaid) return <Mermaid>{codeText}</Mermaid>
-            return (
-              <code className={className} {...codeProps}>
-                {codeChildren}
-              </code>
-            )
-          },
-        }}
+        components={markdownComponents}
       >
         {md}
       </ReactMarkdown>
     </div>
   )
-})
-PageContent.displayName = 'PageContent'
+}
 
 /**
  * FlipPages: 直接使用 StPageFlip 原生库。
@@ -52,7 +39,7 @@ PageContent.displayName = 'PageContent'
 export function FlipPages(
   props: PageRenderProps & { proseClass?: string; chapterKey?: string; onCenterTap?: () => void }
 ) {
-  const { pageMds, currentPage, goToPage, proseClass = '', chapterKey = '', onCenterTap } = props
+  const { pageMds, currentPage, goToPage, proseClass = '', chapterKey = '', onCenterTap, pageSize } = props
   const containerRef = useRef<HTMLDivElement>(null)
   const flipRef = useRef<PageFlip | null>(null)
   const currentPageRef = useRef(currentPage)
@@ -70,16 +57,22 @@ export function FlipPages(
     // 如果已有实例且章节没变，仅 update 内容
     if (flipRef.current && ready) {
       requestAnimationFrame(() => {
+        const flip = flipRef.current
+        if (!flip) return
         const items = container.querySelectorAll('.flip-book-page')
-        if (items.length > 0) flipRef.current!.updateFromHTML(items)
+        if (items.length > 0) flip.updateFromHTML(items)
       })
       return
     }
 
+    // 用 measure 阶段 ResizeObserver 测量过的 pageSize（避免初次挂载时容器为 0 退化到 window 宽度）
+    const width = pageSize.width || container.clientWidth || 1
+    const height = pageSize.height || container.clientHeight || 1
+
     // 新建实例
     const flip = new PageFlip(container, {
-      width: container.clientWidth || window.innerWidth,
-      height: container.clientHeight || window.innerHeight - 120,
+      width,
+      height,
       size: 'fixed',
       showCover: false,
       mobileScrollSupport: false,
@@ -95,7 +88,7 @@ export function FlipPages(
 
     flipRef.current = flip
 
-    flip.on('flip', (e: any) => {
+    flip.on('flip', (e: FlipEventData) => {
       goToPage(e.data)
     })
 
@@ -112,7 +105,10 @@ export function FlipPages(
       flipRef.current = null
       setReady(false)
     }
-  }, [hasPages, chapterKey])
+    // 故意省略 ready：ready 变化触发 setReady 会循环重建 PageFlip
+    // setReady 来自 useState（应豁免但 line 64 的 if 分支被 ESLint 当作引用）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasPages, chapterKey, pageSize.width, pageSize.height, goToPage])
 
   if (pageMds.length === 0) return null
 

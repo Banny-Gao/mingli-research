@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, type CSSProperties, type RefObject } from 
 import { ChevronUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import gsap from 'gsap'
+import { extractTOC } from './extractTOC'
 import './ReadingTools.less'
 
 const BACK_TO_TOP_THRESHOLD = 300
@@ -69,6 +70,7 @@ export const BackToTop = ({
 
   useEffect(() => {
     if (readerMode && readerMode !== 'scroll') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisible(false)
       return
     }
@@ -111,34 +113,7 @@ export const BackToTop = ({
   )
 }
 
-// ─── extractTOC ───
-
-function mdId(text: string): string {
-  return text
-    .replace(/[^\w一-鿿\s-]/g, '')
-    .trim()
-    .replace(/\s+/g, '-')
-    .toLowerCase()
-}
-
-export function extractTOC(text: string): { id: string; text: string; level: number }[] {
-  const toc: { id: string; text: string; level: number }[] = []
-  const htmlRegex = /<h([23])[^>]+id="([^"]+)"[^>]*>([^<]+)<\/h[23]>/gi
-  let match
-  while ((match = htmlRegex.exec(text)) !== null) {
-    toc.push({ id: match[2], text: match[3].trim(), level: parseInt(match[1]) })
-  }
-  if (toc.length > 0) return toc
-  for (const line of text.split('\n')) {
-    const m = line.match(/^(#{2,3})\s+(.+)$/)
-    if (m) {
-      const level = m[1].length
-      const headingText = m[2].trim()
-      toc.push({ id: mdId(headingText), text: headingText, level })
-    }
-  }
-  return toc
-}
+// ─── extractTOC ───（已抽到 ./extractTOC）
 
 // ─── TocSidebar ───
 
@@ -148,9 +123,13 @@ interface TocSidebarProps {
   open: boolean
   onItemClick?: () => void
   readerMode?: string
+  /** paginated 模式下提供：把 heading id 翻成 page 索引（找不到返回 -1） */
+  getPageOfHeadingId?: (id: string) => number
+  /** paginated 模式下提供：跳转到指定 page */
+  goToPage?: (idx: number) => void
 }
 
-export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode }: TocSidebarProps) => {
+export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode, getPageOfHeadingId, goToPage }: TocSidebarProps) => {
   const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([])
   const [activeId, setActiveId] = useState('')
 
@@ -159,6 +138,7 @@ export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode }: T
   // Extract headings
   useEffect(() => {
     if (isPaginated && html) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setToc(extractTOC(html))
       return
     }
@@ -198,10 +178,26 @@ export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode }: T
     el.addEventListener('scroll', handler, { passive: true })
     handler()
     return () => el.removeEventListener('scroll', handler)
-  }, [scrollRef, toc])
+  }, [scrollRef, toc, isPaginated])
 
   const scrollTo = (id: string) => {
     if (isPaginated) {
+      // paginated 模式：先翻到目标 page，再滚动到 heading 位置
+      if (getPageOfHeadingId && goToPage) {
+        const pageIdx = getPageOfHeadingId(id)
+        if (pageIdx >= 0) {
+          goToPage(pageIdx)
+          // 翻页动画完成后滚动到 heading（smooth: 滚 smooth-page 内部；flip: 等翻完）
+          // 这里用一帧延迟 + measure DOM 中目标 heading 节点
+          requestAnimationFrame(() => {
+            const measureRoot = scrollRef.current?.querySelector('.measure-dom') as HTMLElement | null
+            const target = measureRoot?.querySelector(`[id="${CSS.escape(id)}"]`) as HTMLElement | null
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          })
+        }
+      }
       onItemClick?.()
       return
     }

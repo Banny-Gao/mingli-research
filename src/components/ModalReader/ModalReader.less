@@ -13,7 +13,6 @@
   .modal-header,
   .related-section {
     overflow: hidden;
-    will-change: height, opacity;
   }
 }
 
@@ -101,8 +100,10 @@
   }
 }
 
-/* 阅读设置抽屉层级：需要高于 modal-backdrop (z-index: 9999) */
-[data-slot="drawer-overlay"],
-[data-slot="drawer-content"] {
+/* 阅读设置抽屉层级：vaul DrawerContent 默认 z-50，需提升到 modal-backdrop (9999) 之上。
+   因为 vaul 用 Portal 渲染 overlay/content 到 body，无法用局部选择器限定，
+   改用明确命名空间避免与未来其他 drawer 冲突 */
+.mingli-drawer-overlay,
+.mingli-drawer-content {
   z-index: 10000 !important;
 }

@@ -28,5 +28,3 @@ export function useReaderMode(): [ReaderMode, (m: ReaderMode) => void] {
 
   return [mode, updateMode]
 }
-
-export { READER_MODE_KEY }

@@ -15,6 +15,7 @@ import type { AnnotationType, Annotation } from '../../hooks/useAnnotations'
 import { injectAnnotations } from '../../utils/injectAnnotations'
 import { useReaderMode } from '../../hooks/useReaderMode'
 import { ReaderBody } from './reader-mode/ReaderBody'
+import type { PaginatedReaderHandle } from './reader-mode/PaginatedReader'
 import { ReaderSettingsDrawer } from './reader-mode/ReaderSettingsDrawer'
 
 interface ModalReaderProps {
@@ -73,20 +74,43 @@ const ModalReader = ({
   const [headerVisible, setHeaderVisible] = useState(true)
   const headerRef = useRef<HTMLDivElement>(null)
   const relatedRef = useRef<HTMLDivElement>(null)
+  const paginatedReaderRef = useRef<PaginatedReaderHandle | null>(null)
 
-  // GSAP 动画：header / related-section 缓动显隐
+  // GSAP 动画：header / related-section 缓动显隐。首次挂载不动画（默认已可见）
+  const firstMountRef = useRef(true)
   useEffect(() => {
+    if (firstMountRef.current) {
+      firstMountRef.current = false
+      return
+    }
     const targets = [headerRef.current, relatedRef.current].filter(Boolean) as HTMLElement[]
     if (targets.length === 0) return
+    // 仅在动画期间设置 will-change，结束后清除（避免常驻 GPU 合成层）
+    targets.forEach(t => {
+      t.style.willChange = 'height, opacity'
+    })
     gsap.killTweensOf(targets)
     if (headerVisible) {
       gsap.fromTo(
         targets,
         { height: 0, opacity: 0 },
-        { height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out', clearProps: 'height' }
+        {
+          height: 'auto',
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.out',
+          clearProps: 'height',
+          onComplete: () => targets.forEach(t => (t.style.willChange = '')),
+        }
       )
     } else {
-      gsap.to(targets, { height: 0, opacity: 0, duration: 0.25, ease: 'power2.in' })
+      gsap.to(targets, {
+        height: 0,
+        opacity: 0,
+        duration: 0.25,
+        ease: 'power2.in',
+        onComplete: () => targets.forEach(t => (t.style.willChange = '')),
+      })
     }
   }, [headerVisible])
 
@@ -110,6 +134,8 @@ const ModalReader = ({
   useEffect(() => {
     if (!modalKey || !modalType || modalType === 'skill') return
     let cancelled = false
+    // 加载时序控制：进入加载态、清空旧内容、获取 loader——必须在 effect 内（异步）
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setContentLoading(true)
     setLoadedContent('')
 
@@ -138,6 +164,9 @@ const ModalReader = ({
     return () => {
       cancelled = true
     }
+    // interpContent / sourceContent 来自 getBook(bookSlug)，bookSlug 变化触发 getBook 重渲；
+    // 此处省略依赖避免重复触发加载
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalKey, modalType])
 
   // Reset internal UI state when navigating between chapters
@@ -149,19 +178,141 @@ const ModalReader = ({
       setPendingSelection(null)
       setTocOpen(false)
       setSkillRawText('')
+      setHeaderVisible(true)
       prevKeyRef.current = modalKey
     }
   }, [modalKey])
+
+  /**
+   * 在可见 DOM 中扫描首次出现 searchText 的 text node，插入 <mark class="search-flash">
+   * AUTO_FADE_MS 后还原。跨节点情况扁平化处理。
+   */
+  const flashMarkHighlight = useCallback(
+    (searchText: string, root: HTMLElement) => {
+      const container = root
+      const plainText = container.textContent || ''
+      let charCount = 0
+      let targetNode: Text | null = null
+      let targetOffset = 0
+      const walk = (node: Node) => {
+        if (targetNode) return
+        if (node.nodeType === Node.TEXT_NODE) {
+          const t = (node as Text).textContent || ''
+          const nextCount = charCount + t.length
+          if (searchTextId < nextCount) {
+            targetNode = node as Text
+            targetOffset = searchTextId - charCount
+            return
+          }
+          charCount = nextCount
+        } else {
+          for (const child of Array.from(node.childNodes)) {
+            walk(child)
+            if (targetNode) return
+          }
+        }
+      }
+      const searchTextId = plainText.indexOf(searchText)
+      if (searchTextId < 0) return
+      walk(container)
+      if (!targetNode) return
+
+      let current: Text | null = targetNode
+      let offset = targetOffset
+      let remaining = searchText.length
+
+      while (current && remaining > 0) {
+        const nodeText = current.textContent || ''
+        const available = nodeText.length - offset
+        const take = Math.min(remaining, Math.max(0, available))
+        if (take <= 0) {
+          let next: Node | null = current.nextSibling
+          while (next && next.nodeType !== Node.TEXT_NODE) next = next.nextSibling
+          current = next as Text | null
+          offset = 0
+          continue
+        }
+
+        const validOffset = Math.max(0, Math.min(offset, nodeText.length))
+        const validEnd = validOffset + take
+        const parent = current.parentNode
+        if (!parent) return
+
+        const mark = document.createElement('mark')
+        mark.className = 'search-flash'
+        mark.textContent = nodeText.slice(validOffset, validEnd)
+        const before = document.createTextNode(nodeText.slice(0, validOffset))
+        const after = document.createTextNode(nodeText.slice(validEnd))
+        const frag = document.createDocumentFragment()
+        frag.appendChild(before)
+        frag.appendChild(mark)
+        frag.appendChild(after)
+        const idx = Array.from(parent.childNodes).indexOf(current)
+        parent.replaceChild(frag, current)
+
+        remaining -= take
+        if (remaining <= 0) {
+          timerRef.current = setTimeout(() => {
+            const a = parent.childNodes[idx] as Text
+            const b = parent.childNodes[idx + 1] as HTMLElement
+            const c = parent.childNodes[idx + 2] as Text
+            const combined = document.createTextNode(a.textContent! + b.textContent! + c.textContent!)
+            parent.replaceChild(combined, parent.childNodes[idx])
+            parent.removeChild(parent.childNodes[idx + 1])
+            parent.removeChild(parent.childNodes[idx + 1])
+            onScrollToTextConsumed()
+            timerRef.current = null
+          }, AUTO_FADE_MS)
+          return
+        }
+
+        let next: Node | null = current.nextSibling
+        while (next && next.nodeType !== Node.TEXT_NODE) next = next.nextSibling
+        current = next as Text | null
+        offset = 0
+      }
+
+      onScrollToTextConsumed()
+    },
+    [onScrollToTextConsumed]
+  )
 
   // Scroll to matching text when opened from search
   useEffect(() => {
     if (modalKey && scrollToText && modalBodyRef.current && !contentLoading) {
       const container = modalBodyRef.current
 
-      // 翻页模式：暂用简化定位（后续实现 measure DOM → getPageOf → goToPage → 闪黄）
+      // 翻页模式：用 PaginatedReader 暴露的 findText 找 page + 文本节点，goToPage 后滚动并闪黄
       if (readerMode === 'smooth' || readerMode === 'flip') {
-        container.scrollTo({ top: 0, behavior: 'smooth' })
-        onScrollToTextConsumed()
+        const handle = paginatedReaderRef.current
+        if (!handle) {
+          onScrollToTextConsumed()
+          return
+        }
+        const found = handle.findText(scrollToText)
+        if (!found) {
+          onScrollToTextConsumed()
+          return
+        }
+        // 翻页完成后再在可见 DOM 中闪黄（翻页动画异步完成，等一帧）
+        handle.goToPage(found.pageIdx)
+        requestAnimationFrame(() => {
+          // 在可见 page 容器内扫描文本并闪黄
+          const container = modalBodyRef.current?.querySelector('.paginated-reader-container') as HTMLElement | null
+          if (container) {
+            flashMarkHighlight(found.searchText, container)
+            // 滚动目标 heading 到 viewport（若文本所在的 block 是 heading）
+            const walkScroll = () => {
+              const marks = container.querySelectorAll('mark.search-flash')
+              if (marks.length > 0) {
+                marks[0].scrollIntoView({ behavior: 'smooth', block: 'center' })
+              }
+            }
+            setTimeout(walkScroll, 50)
+          } else {
+            onScrollToTextConsumed()
+          }
+        })
         return
       }
       const plainText = container.textContent || ''
@@ -169,8 +320,9 @@ const ModalReader = ({
       const searchText = scrollToText.trim()
       const idx = plainText.indexOf(searchText)
       if (idx >= 0) {
+        // walk DOM 找 idx 落在哪个 text node
         let charCount = 0
-        let targetNode: Node | null = null
+        let targetNode: Text | null = null
         let targetOffset = 0
         const walk = (node: Node) => {
           if (targetNode) return
@@ -178,8 +330,8 @@ const ModalReader = ({
             const text = (node as Text).textContent || ''
             const nextCount = charCount + text.length
             if (idx < nextCount) {
-              targetNode = node
-              targetOffset = Math.min(idx - charCount, text.length)
+              targetNode = node as Text
+              targetOffset = idx - charCount
               return
             }
             charCount = nextCount
@@ -191,51 +343,23 @@ const ModalReader = ({
           }
         }
         walk(container)
-        if (targetNode) {
-          const nodeText = (targetNode as Text).textContent || ''
-          const nodeLen = nodeText.length
-          const validOffset = Math.min(targetOffset, nodeLen - 1)
-          const validEndOffset = Math.min(validOffset + searchText.length, nodeLen)
+        if (targetNode !== null) {
+          const targetNodeNonNull: Text = targetNode
+          const nodeText = targetNodeNonNull.textContent || ''
+          // 滚到节点位置（可能跨 text node：分页时翻页模式会跨页；scroll 模式通常在同一页内）
           try {
             const range = document.createRange()
-            range.setStart(targetNode, validOffset)
-            range.setEnd(targetNode, validEndOffset)
+            range.setStart(targetNodeNonNull, targetOffset)
+            range.setEnd(targetNodeNonNull, Math.min(targetOffset + searchText.length, nodeText.length))
             const rect = range.getBoundingClientRect()
             container.scrollTo({
               top: container.scrollTop + rect.top - SCROLL_OFFSET,
               behavior: 'smooth',
             })
-
-            // Temporary highlight that auto-fades
-            const mark = document.createElement('mark')
-            mark.className = 'search-flash'
-            mark.textContent = nodeText.slice(validOffset, validEndOffset)
-            const before = document.createTextNode(nodeText.slice(0, validOffset))
-            const after = document.createTextNode(nodeText.slice(validEndOffset))
-            const frag = document.createDocumentFragment()
-            frag.appendChild(before)
-            frag.appendChild(mark)
-            frag.appendChild(after)
-            const parent = (targetNode as Text).parentNode
-            if (parent) {
-              const idx = Array.from(parent.childNodes).indexOf(targetNode)
-              parent.replaceChild(frag, targetNode)
-              timerRef.current = setTimeout(() => {
-                const combined = document.createTextNode(
-                  (parent.childNodes[idx] as Text).textContent! +
-                    (parent.childNodes[idx + 1] as HTMLElement).textContent! +
-                    (parent.childNodes[idx + 2] as Text).textContent!
-                )
-                parent.replaceChild(combined, parent.childNodes[idx])
-                parent.removeChild(parent.childNodes[idx + 1])
-                parent.removeChild(parent.childNodes[idx + 1])
-                onScrollToTextConsumed()
-                timerRef.current = null
-              }, AUTO_FADE_MS)
-            }
           } catch {
             container.scrollTo({ top: 0, behavior: 'smooth' })
           }
+           flashMarkHighlight(searchText, container)
         }
       }
     }
@@ -252,6 +376,7 @@ const ModalReader = ({
     contentLoading,
     skillRawText,
     readerMode,
+    flashMarkHighlight,
   ])
 
   // J/K keyboard shortcuts
@@ -280,6 +405,7 @@ const ModalReader = ({
   // Load raw skill content
   useEffect(() => {
     if (modalType !== 'skill' || !modalKey) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSkillRawText('')
       return
     }
@@ -288,6 +414,9 @@ const ModalReader = ({
     const loader = skillRawContent[contentKey]
     if (!loader) return
     loader().then(text => setSkillRawText(text))
+    // skillRawContent / skillToChapters 来自 getBook(bookSlug)，bookSlug 变化已触发重渲，
+    // 此处省略依赖避免 effect 重复触发
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalType, modalKey])
 
   const handleMouseUp = useCallback((e: React.MouseEvent | React.TouchEvent) => {
@@ -476,6 +605,16 @@ const ModalReader = ({
                 onItemClick={() => {
                   if (window.innerWidth <= MOBILE_BREAKPOINT) setTocOpen(false)
                 }}
+                getPageOfHeadingId={
+                  readerMode === 'smooth' || readerMode === 'flip'
+                    ? (id: string) => paginatedReaderRef.current?.getPageOfHeadingId(id) ?? -1
+                    : undefined
+                }
+                goToPage={
+                  readerMode === 'smooth' || readerMode === 'flip'
+                    ? (idx: number) => paginatedReaderRef.current?.goToPage(idx)
+                    : undefined
+                }
               />
             )}
             <div
@@ -502,6 +641,7 @@ const ModalReader = ({
                 <div className={`${proseClass} loading-center`}>加载中...</div>
               ) : (
                 <ReaderBody
+                  ref={paginatedReaderRef}
                   bookSlug={bookSlug}
                   modalType={modalType}
                   modalKey={modalKey}

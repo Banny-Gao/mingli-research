@@ -1,5 +1,6 @@
 // src/components/ModalReader/reader-mode/SmoothBody.tsx
-import { PaginatedReader } from './PaginatedReader'
+import { forwardRef } from 'react'
+import { PaginatedReader, type PaginatedReaderHandle } from './PaginatedReader'
 import { SmoothPages } from './SmoothPages'
 
 interface SmoothBodyProps {
@@ -17,7 +18,10 @@ interface SmoothBodyProps {
  * SmoothBody: 平滑翻页模式入口。
  * 组合 PaginatedReader（分页 + 导航）+ SmoothPages（CSS scroll-snap 渲染）。
  */
-export function SmoothBody(props: SmoothBodyProps) {
+export const SmoothBody = forwardRef<PaginatedReaderHandle, SmoothBodyProps>(function SmoothBody(
+  props,
+  ref
+) {
   const {
     annotatedBody,
     proseClass,
@@ -31,6 +35,7 @@ export function SmoothBody(props: SmoothBodyProps) {
 
   return (
     <PaginatedReader
+      ref={ref}
       annotatedBody={annotatedBody}
       proseClass={proseClass}
       bookSlug={bookSlug}
@@ -44,4 +49,4 @@ export function SmoothBody(props: SmoothBodyProps) {
       )}
     </PaginatedReader>
   )
-}
+})
