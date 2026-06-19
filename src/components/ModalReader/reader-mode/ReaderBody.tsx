@@ -5,11 +5,12 @@ import { SmoothBody } from './SmoothBody'
 import { FlipBody } from './FlipBody'
 import type { PaginatedReaderHandle } from './PaginatedReader'
 import type { ReaderMode } from './types'
+import type { ModalType } from '../modalType'
 import { MOBILE_BREAKPOINT } from './constants'
 
 interface ReaderBodyProps {
   bookSlug: string
-  modalType: 'interp' | 'skill' | 'source'
+  modalType: ModalType
   modalKey: string
   annotatedBody: string
   proseClass: string

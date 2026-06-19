@@ -3,9 +3,23 @@ import { useLayoutEffect, useEffect, useState, useCallback, useRef } from 'react
 import type { RefObject } from 'react'
 import type { PaginatedPage, PageSize, UsePaginatedBlocksResult, MarkdownBlock } from './types'
 import { RESIZE_DEBOUNCE_MS } from './constants'
+import { findPageIndexByOffset } from './findPageIndexByOffset'
+import { greedyPackPages } from './greedyPackPages'
 
 const isClient = typeof window !== 'undefined'
 const useIsoLayoutEffect = isClient ? useLayoutEffect : useEffect
+
+/**
+ * 给定 page，从 measure DOM 取其首 block 的 offsetTop。
+ * 集中封装"root.children[p.startBlockIdx] as HTMLElement"模式，避免三处重复。
+ */
+function getPageFirstTop(
+  page: PaginatedPage,
+  children: HTMLCollection | HTMLElement[]
+): number | undefined {
+  const firstEl = children[page.startBlockIdx] as HTMLElement | undefined
+  return firstEl?.offsetTop
+}
 
 /**
  * 从 measure DOM 的 children 测量高度，贪心装页。
@@ -38,37 +52,7 @@ export function usePaginatedBlocks(
     }
     const { height: pageHeight } = pageSize
     if (pageHeight <= 0) return
-
-    const result: PaginatedPage[] = []
-    let pageStart = 0
-    let pageFirstTop = children[0].offsetTop
-
-    for (let i = 0; i < children.length; i++) {
-      const el = children[i]
-      const top = el.offsetTop
-      const elHeight = el.offsetHeight
-
-      if (top - pageFirstTop + elHeight > pageHeight && i > pageStart) {
-        result.push({
-          index: result.length,
-          startBlockIdx: pageStart,
-          endBlockIdx: i - 1,
-          blockCount: i - pageStart,
-        })
-        pageStart = i
-        pageFirstTop = top
-      }
-
-      if (i === children.length - 1) {
-        result.push({
-          index: result.length,
-          startBlockIdx: pageStart,
-          endBlockIdx: i,
-          blockCount: i - pageStart + 1,
-        })
-      }
-    }
-    setPages(result)
+    setPages(greedyPackPages(children, pageHeight))
   }, [measureRef, pageSize])
 
   // 保持最新 recompute 引用，避免 RO 重建
@@ -112,19 +96,9 @@ export function usePaginatedBlocks(
 
   const getPageOf = useCallback(
     (el: HTMLElement): number => {
-      const top = el.offsetTop
-      let lo = 0
-      let hi = pages.length - 1
-      while (lo < hi) {
-        const mid = (lo + hi + 1) >> 1
-        const p = pages[mid]
-        const root = measureRef.current
-        if (!root) return 0
-        const firstEl = root.children[p.startBlockIdx] as HTMLElement | undefined
-        if (firstEl && firstEl.offsetTop <= top) lo = mid
-        else hi = mid - 1
-      }
-      return lo
+      const root = measureRef.current
+      if (!root) return 0
+      return findPageIndexByOffset(pages, el.offsetTop, p => getPageFirstTop(p, root.children))
     },
     [pages, measureRef]
   )
@@ -164,17 +138,7 @@ export function usePaginatedBlocks(
       // 二分查 page
       const target = root.children[blockIdx] as HTMLElement | undefined
       if (!target) return -1
-      const top = target.offsetTop
-      let lo = 0
-      let hi = pages.length - 1
-      while (lo < hi) {
-        const mid = (lo + hi + 1) >> 1
-        const p = pages[mid]
-        const firstEl = root.children[p.startBlockIdx] as HTMLElement | undefined
-        if (firstEl && firstEl.offsetTop <= top) lo = mid
-        else hi = mid - 1
-      }
-      return lo
+      return findPageIndexByOffset(pages, target.offsetTop, p => getPageFirstTop(p, root.children))
     },
     [pages, measureRef]
   )
@@ -185,9 +149,7 @@ export function usePaginatedBlocks(
    * 找不到返回 null。
    */
   const findText = useCallback(
-    (
-      text: string
-    ): { pageIdx: number; searchText: string } | null => {
+    (text: string): { pageIdx: number; searchText: string } | null => {
       const root = measureRef.current
       if (!root || pages.length === 0) return null
       const searchText = text.trim()
@@ -236,17 +198,9 @@ export function usePaginatedBlocks(
 
       // 二分查 page
       const top = children[blockIdx].offsetTop
-      let lo = 0
-      let hi = pages.length - 1
-      while (lo < hi) {
-        const mid = (lo + hi + 1) >> 1
-        const p = pages[mid]
-        const firstEl = children[p.startBlockIdx] as HTMLElement | undefined
-        if (firstEl && firstEl.offsetTop <= top) lo = mid
-        else hi = mid - 1
-      }
+      const pageIdx = findPageIndexByOffset(pages, top, p => getPageFirstTop(p, children))
 
-      return { pageIdx: lo, searchText }
+      return { pageIdx, searchText }
     },
     [pages, measureRef]
   )

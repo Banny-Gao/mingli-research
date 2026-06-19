@@ -78,6 +78,7 @@ export const BackToTop = ({
     if (!el) return
     const handler = () => setVisible(el.scrollTop > BACK_TO_TOP_THRESHOLD)
     el.addEventListener('scroll', handler, { passive: true })
+    handler()
     return () => el.removeEventListener('scroll', handler)
   }, [scrollRef, readerMode])
 
@@ -129,7 +130,15 @@ interface TocSidebarProps {
   goToPage?: (idx: number) => void
 }
 
-export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode, getPageOfHeadingId, goToPage }: TocSidebarProps) => {
+export const TocSidebar = ({
+  html,
+  scrollRef,
+  open,
+  onItemClick,
+  readerMode,
+  getPageOfHeadingId,
+  goToPage,
+}: TocSidebarProps) => {
   const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([])
   const [activeId, setActiveId] = useState('')
 
@@ -190,8 +199,12 @@ export const TocSidebar = ({ html, scrollRef, open, onItemClick, readerMode, get
           // 翻页动画完成后滚动到 heading（smooth: 滚 smooth-page 内部；flip: 等翻完）
           // 这里用一帧延迟 + measure DOM 中目标 heading 节点
           requestAnimationFrame(() => {
-            const measureRoot = scrollRef.current?.querySelector('.measure-dom') as HTMLElement | null
-            const target = measureRoot?.querySelector(`[id="${CSS.escape(id)}"]`) as HTMLElement | null
+            const measureRoot = scrollRef.current?.querySelector(
+              '.measure-dom'
+            ) as HTMLElement | null
+            const target = measureRoot?.querySelector(
+              `[id="${CSS.escape(id)}"]`
+            ) as HTMLElement | null
             if (target) {
               target.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }
