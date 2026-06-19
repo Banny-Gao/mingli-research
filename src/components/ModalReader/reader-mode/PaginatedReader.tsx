@@ -15,7 +15,9 @@ import { groupBlocksIntoPages } from './groupBlocksIntoPages'
 import { usePageNavigation } from './usePageNavigation'
 import { markdownComponents } from './markdownComponents'
 import { remarkPlugins, rehypePlugins } from './markdownPlugins'
+import { MEASURE_OFFSCREEN_LEFT } from './constants'
 import type { PageSize, PageRenderProps } from './types'
+import type { ModalType } from '../modalType'
 
 export interface PaginatedReaderHandle {
   /** 通过 heading id 找 page（用于目录跳转）。找不到返回 -1 */
@@ -30,7 +32,7 @@ interface PaginatedReaderProps {
   annotatedBody: string
   proseClass: string
   bookSlug: string
-  modalType: 'interp' | 'skill' | 'source'
+  modalType: ModalType
   modalKey: string
   initialPage?: number
   onCrossChapter?: (dir: 'prev' | 'next') => void
@@ -88,11 +90,11 @@ export const PaginatedReader = forwardRef<PaginatedReaderHandle, PaginatedReader
       onCrossChapter,
     })
 
-    useImperativeHandle(
-      ref,
-      () => ({ getPageOfHeadingId, findText, goToPage: nav.goToPage }),
-      [getPageOfHeadingId, findText, nav.goToPage]
-    )
+    useImperativeHandle(ref, () => ({ getPageOfHeadingId, findText, goToPage: nav.goToPage }), [
+      getPageOfHeadingId,
+      findText,
+      nav.goToPage,
+    ])
 
     // 稳定引用，避免 ReactMarkdown 因 props 变化而重建
     // 直接使用 markdownPlugins 模块顶层常量（已稳定），不再多余 useMemo 包一层
@@ -101,16 +103,18 @@ export const PaginatedReader = forwardRef<PaginatedReaderHandle, PaginatedReader
         <div
           ref={measureRef}
           className={`${proseClass} measure-dom`}
-          style={{
-            position: 'absolute',
-            left: '-99999px',
-            top: 0,
-            width: pageSize.width || '100%',
-            visibility: 'hidden',
-            // contain: layout style 让浏览器把 measure DOM 当独立子树，
-            // 限制重排影响范围（mermaid 异步渲染时不触发外层 reflow）
-            contain: 'layout style',
-          } as React.CSSProperties}
+          style={
+            {
+              position: 'absolute',
+              left: MEASURE_OFFSCREEN_LEFT,
+              top: 0,
+              width: pageSize.width || '100%',
+              visibility: 'hidden',
+              // contain: layout style 让浏览器把 measure DOM 当独立子树，
+              // 限制重排影响范围（mermaid 异步渲染时不触发外层 reflow）
+              contain: 'layout style',
+            } as React.CSSProperties
+          }
           aria-hidden="true"
         >
           <ReactMarkdown
@@ -122,7 +126,7 @@ export const PaginatedReader = forwardRef<PaginatedReaderHandle, PaginatedReader
           </ReactMarkdown>
         </div>
       ),
-      [annotatedBody, proseClass, pageSize.width, remarkPlugins, rehypePlugins]
+      [annotatedBody, proseClass, pageSize.width]
     )
 
     return (

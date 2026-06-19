@@ -5,7 +5,25 @@ import { PageFlip } from 'page-flip'
 import { markdownComponents } from './markdownComponents'
 import { remarkPlugins, rehypePlugins } from './markdownPlugins'
 import { usePageGesture } from './usePageGesture'
+import { trySilent } from '@/utils/trySilent'
 import type { PageRenderProps } from './types'
+
+/** pageSize 测量在 jsdom 下为 0 时的 fallback。生产环境不会触发。 */
+const MIN_DIMENSION_PX = 1
+
+/** page-flip 实例配置：固定大小、仿真卷页、portrait 模式 */
+const PAGE_FLIP_CONFIG = {
+  size: 'fixed' as const,
+  showCover: false,
+  mobileScrollSupport: false,
+  flippingTime: 500,
+  drawShadow: true,
+  usePortrait: true,
+  maxShadowOpacity: 0.5,
+  useMouseEvents: false,
+  disableFlipByClick: false,
+  swipeDistance: 15,
+}
 
 function PageContent({ md, proseClass }: { md: string; proseClass: string }) {
   return (
@@ -71,7 +89,6 @@ export function FlipPages(
     }
     // 已处理过该 currentPage 变化（StrictMode 防御）
     if (handledPageRef.current === currentPage) {
-      console.log('[FlipPages] StrictMode skip — already handled currentPage=', currentPage)
       return
     }
     handledPageRef.current = currentPage
@@ -80,13 +97,10 @@ export function FlipPages(
     prevPageRef.current = currentPage
 
     if (currentPage === prev + 1) {
-      console.log('[FlipPages] currentPage', prev, '→', currentPage, '→ flipNext()')
       flip.flipNext()
     } else if (currentPage === prev - 1) {
-      console.log('[FlipPages] currentPage', prev, '→', currentPage, '→ flipPrev()')
       flip.flipPrev()
     } else if (currentPage !== prev) {
-      console.log('[FlipPages] currentPage', prev, '→', currentPage, '→ turnToPage()')
       flip.turnToPage(currentPage)
     }
   }, [currentPage, ready])
@@ -108,23 +122,14 @@ export function FlipPages(
       return
     }
 
-    const width = pageSize.width || container.clientWidth || 1
-    const height = pageSize.height || container.clientHeight || 1
+    const width = pageSize.width || container.clientWidth || MIN_DIMENSION_PX
+    const height = pageSize.height || container.clientHeight || MIN_DIMENSION_PX
 
     const flip = new PageFlip(container, {
       width,
       height,
-      size: 'fixed',
-      showCover: false,
-      mobileScrollSupport: false,
-      flippingTime: 500,
       startPage: currentPage,
-      drawShadow: true,
-      usePortrait: true,
-      maxShadowOpacity: 0.5,
-      useMouseEvents: false,
-      disableFlipByClick: false,
-      swipeDistance: 15,
+      ...PAGE_FLIP_CONFIG,
     })
 
     flipRef.current = flip
@@ -144,24 +149,16 @@ export function FlipPages(
       if (prev) {
         // page-flip 的 loadFromHTML 把元素移入 distElement；
         // destroy 前先搬回 container，避免 React 元素丢失。
-        try {
+        trySilent(() => {
           const rescued = container.querySelectorAll('.flip-book-page')
           rescued.forEach(el => {
             if (el.parentElement !== container) container.appendChild(el)
           })
-        } catch {
-          /* DOM 操作极少失败 */
-        }
-        try {
-          prev.clear()
-        } catch {
-          /* 忽略 */
-        }
-        try {
-          prev.destroy()
-        } catch {
-          /* 忽略 */
-        }
+        })
+        // clear + destroy 在 page-flip 内部可能抛错（如元素已被解构），
+        // 但已 unmount/组件销毁路径上无补救意义，吞错。
+        trySilent(() => prev.clear())
+        trySilent(() => prev.destroy())
       }
       if (flipRef.current === prev) {
         flipRef.current = null

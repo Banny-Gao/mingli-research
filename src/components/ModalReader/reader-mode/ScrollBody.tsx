@@ -5,10 +5,11 @@ import gsap from 'gsap'
 import { markdownComponents } from './markdownComponents'
 import { remarkPlugins, rehypePlugins } from './markdownPlugins'
 import { saveScroll, loadScroll } from './persistence'
+import type { ModalType } from '../modalType'
 
 interface ScrollBodyProps {
   bookSlug: string
-  modalType: 'interp' | 'skill' | 'source'
+  modalType: ModalType
   modalKey: string
   annotatedBody: string
   proseClass: string
@@ -51,9 +52,8 @@ export function ScrollBody({
     if (saved > 0) {
       gsap.to(el, { scrollTop: saved, duration: 0.4, ease: 'power2.out', overwrite: 'auto' })
     }
-    // 故意省略 scrollRef：ref 对象稳定
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chapterKey, bookSlug, modalType, modalKey, annotatedBody])
+    // scrollRef 是 RefObject<HTMLDivElement>，React 官方建议 ref 不进 deps（ref 引用稳定）。
+  }, [chapterKey, bookSlug, modalType, modalKey, annotatedBody, scrollRef])
 
   // 持久化滚动位置
   useEffect(() => {
@@ -71,12 +71,11 @@ export function ScrollBody({
       el.removeEventListener('scroll', handler)
       if (timerRef.current) clearTimeout(timerRef.current)
     }
-    // 故意省略 scrollRef：ref 对象稳定
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bookSlug, modalType, modalKey, onScroll])
+    // scrollRef 是 RefObject，引用稳定；React 官方建议 ref 不进 deps。
+  }, [bookSlug, modalType, modalKey, onScroll, scrollRef])
 
   return (
-    <div className={className} ref={scrollRef}>
+    <div className={className}>
       {children ?? (
         <div className={proseClass} onClick={() => onCenterTap?.()}>
           <ReactMarkdown

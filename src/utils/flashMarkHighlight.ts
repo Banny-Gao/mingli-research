@@ -1,4 +1,9 @@
 // src/utils/flashMarkHighlight.ts
+import {
+  findTextNodeByCharIndex,
+  findNextTextNodeAfter,
+  replaceTextRangeWithElement,
+} from './domWalk'
 
 /**
  * 在 root 内查找 searchText 首次出现位置，将对应字符包裹 <mark class="search-flash">。
@@ -12,41 +17,26 @@
  */
 export const AUTO_FADE_MS = 4000
 
+/**
+ * 返回 `setTimeout` 的 timerId，调用方应在 effect cleanup 中 clearTimeout，
+ * 避免组件卸载后操作已脱离的 DOM（NotFoundError）。
+ * 未命中 / 未找到 text node 时返回 undefined（无需清理）。
+ */
 export function flashMarkHighlight(
   searchText: string,
   root: HTMLElement,
   onConsume?: () => void
-): void {
+): number | undefined {
   const container = root
   const plainText = container.textContent || ''
-  let charCount = 0
-  let targetNode: Text | null = null
-  let targetOffset = 0
-  const walk = (node: Node) => {
-    if (targetNode) return
-    if (node.nodeType === Node.TEXT_NODE) {
-      const t = (node as Text).textContent || ''
-      const nextCount = charCount + t.length
-      if (searchTextId < nextCount) {
-        targetNode = node as Text
-        targetOffset = searchTextId - charCount
-        return
-      }
-      charCount = nextCount
-    } else {
-      for (const child of Array.from(node.childNodes)) {
-        walk(child)
-        if (targetNode) return
-      }
-    }
-  }
   const searchTextId = plainText.indexOf(searchText)
-  if (searchTextId < 0) return
-  walk(container)
-  if (!targetNode) return
+  if (searchTextId < 0) return undefined
 
-  let current: Text | null = targetNode
-  let offset = targetOffset
+  const located = findTextNodeByCharIndex(container, searchTextId)
+  if (!located) return undefined
+
+  let current: Text | null = located.node
+  let offset = located.offset
   let remaining = searchText.length
   // 跨 text node 拼接：每次 replaceChild 后，原 `current` 已脱离 DOM，
   // 必须用其父节点（DOM 仍在的位置）走 nextSibling 找到下一个 text 节点。
@@ -60,8 +50,8 @@ export function flashMarkHighlight(
     if (take <= 0) {
       const parent = current.parentNode
       if (!parent) return
-      let next: Node | null = parent.nextSibling ? null : null
       let sibling: Node | null = current.nextSibling
+      let next: Node | null = null
       while (sibling) {
         if (sibling.nodeType === Node.TEXT_NODE) {
           next = sibling
@@ -74,31 +64,26 @@ export function flashMarkHighlight(
       continue
     }
 
-    const validOffset = Math.max(0, Math.min(offset, nodeText.length))
-    const validEnd = validOffset + take
     const parent = current.parentNode
     if (!parent) return
 
     const mark = document.createElement('mark')
     mark.className = 'search-flash'
-    mark.textContent = nodeText.slice(validOffset, validEnd)
-    const before = document.createTextNode(nodeText.slice(0, validOffset))
-    const after = document.createTextNode(nodeText.slice(validEnd))
-    const frag = document.createDocumentFragment()
-    frag.appendChild(before)
-    frag.appendChild(mark)
-    frag.appendChild(after)
+    const validOffset = Math.max(0, Math.min(offset, nodeText.length))
+    mark.textContent = nodeText.slice(validOffset, validOffset + take)
+    const frag = replaceTextRangeWithElement(current, validOffset, take, mark)
     const idx = Array.from(parent.childNodes).indexOf(current)
     parent.replaceChild(frag, current)
     if (restoreIdx < 0) restoreIdx = idx
 
     remaining -= take
     if (remaining <= 0) {
-      setTimeout(() => {
+      const timerId = setTimeout(() => {
         if (!parent || restoreIdx < 0) {
           onConsume?.()
           return
         }
+        // frag = [before(text), wrapper(mark), after(text)]，三段固定槽位
         const a = parent.childNodes[restoreIdx] as Text
         const b = parent.childNodes[restoreIdx + 1] as HTMLElement
         const c = parent.childNodes[restoreIdx + 2] as Text
@@ -108,17 +93,16 @@ export function flashMarkHighlight(
         parent.removeChild(parent.childNodes[restoreIdx + 1])
         onConsume?.()
       }, AUTO_FADE_MS)
-      return
+      return timerId
     }
 
     // 关键修复：原代码用 current.nextSibling 找下一个 text 节点，
     // 但 replaceChild 后 current 已脱离 DOM，nextSibling=null。
-    // 改用 TreeWalker 沿 DOM 树向下找下一个 text 节点（自然处理跨 span/嵌套边界）。
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-    walker.currentNode = after
-    current = walker.nextNode() as Text | null
+    // 用 findNextTextNodeAfter 从 mark 之后找下一个 text（不进入 mark 内部）。
+    current = findNextTextNodeAfter(mark, root)
     offset = 0
   }
 
   onConsume?.()
+  return undefined
 }
