@@ -57,6 +57,18 @@
     box-sizing: border-box;
     touch-action: pan-y;
   }
+
+  /* 手势层：覆盖在 .smooth-track 之上，确保 Hammer.js 能收到触摸事件。
+     与 .flip-gesture-layer 架构对称。touch-action: none 覆盖 .smooth-page 的 pan-y，
+     防止 iOS Safari / Android WebView 让浏览器接管水平 pan（touch path 上第一个
+     非 auto 的 touch-action 祖先会被浏览器优先采用，gesture-layer 比 .smooth-page
+     离手指更近，因此优先选 none）。 */
+  .smooth-gesture-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    touch-action: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
