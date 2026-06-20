@@ -38,15 +38,6 @@ interface ModalReaderProps {
   onScrollToTextConsumed: () => void
 }
 
-interface BookData {
-  interpContent?: Record<string, () => Promise<string>>
-  sourceContent?: Record<string, () => Promise<string>>
-  skillRawContent?: Record<string, () => Promise<string>>
-  skillDisplayNames?: Record<string, string>
-  chapterToSkills?: Record<string, string[]>
-  skillToChapters?: Record<string, string[]>
-}
-
 const ANNOTATION_SCROLL_OFFSET = 80
 
 const ModalReader = ({
@@ -75,7 +66,7 @@ const ModalReader = ({
     setHeaderVisible,
   } = useChapterLocalState(modalKey)
 
-  const bookData = getBook<BookData>(bookSlug)
+  const bookData = getBook(bookSlug)
 
   // bookData 子表用 useMemo 稳定引用（避免下游 useEffect 依赖列表因 ?? {} 触发连锁重渲）
   const interpContent = useMemo(() => bookData.interpContent ?? {}, [bookData])
