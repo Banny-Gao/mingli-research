@@ -12,11 +12,17 @@ export function SmoothPages(
 ) {
   const { pageMds, currentPage, goToPage, proseClass, onCenterTap } = props
   const viewportRef = useRef<HTMLDivElement>(null)
+  const gestureRef = useRef<HTMLDivElement>(null)
   const pendingScrollRef = useRef(false)
 
   // 共享手势系统：Pan 滑动 + Tap 点击 → goToPage
+  // 绑在独立手势层（.smooth-gesture-layer）上，避免 .smooth-page 的
+  // touch-action: pan-y 覆盖 hammer 的 touch-action: none（iOS Safari /
+  // Android WebView 决策 touch 行为时，touch path 上第一个非 auto 的
+  // touch-action 祖先会被优先采用，gesture-layer 离手指更近因此胜出）。
+  // onPanMove 仍写 viewportRef.current.scrollLeft（跟手目标仍是滚动容器）。
   usePageGesture({
-    containerRef: viewportRef,
+    containerRef: gestureRef,
     currentPage,
     totalPages: pageMds.length,
     goToPage,
@@ -72,6 +78,9 @@ export function SmoothPages(
           </div>
         ))}
       </div>
+      {/* 手势层：覆盖在 .smooth-track 之上（z-index 20 > 默认），
+          确保 Hammer.js 能收到触摸事件。架构与 .flip-gesture-layer 对称。 */}
+      <div ref={gestureRef} className="smooth-gesture-layer" />
     </div>
   )
 }
