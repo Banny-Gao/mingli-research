@@ -620,10 +620,8 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                   </Button>
                 </div>
                 {history.map((h, i) => (
-                  <Button
+                  <div
                     key={h.query}
-                    variant="ghost"
-                    size="sm"
                     className={`search-result-item${i === historyIdx ? ' search-result-selected' : ''}`}
                     onClick={() => setQuery(h.query)}
                     onMouseEnter={() => setHistoryIdx(i)}
@@ -655,7 +653,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                         <path d="M18 6 6 18M6 6l12 12" />
                       </svg>
                     </Button>
-                  </Button>
+                  </div>
                 ))}
               </div>
             )}
