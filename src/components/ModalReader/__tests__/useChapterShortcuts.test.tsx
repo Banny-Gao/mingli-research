@@ -20,9 +20,9 @@ const setActiveElement = (el: Element | null) => {
 interface HookParams {
   chapters: Array<{ name: string }>
   modalKey: string
-  modalType: 'interp' | 'skill' | 'source'
-  onNavigate: (type: 'interp' | 'skill' | 'source', key: string) => void
-  toggleBookmark: (key: string, type: 'interp' | 'skill' | 'source') => void
+  modalType: 'interp' | 'source'
+  onNavigate: (type: 'interp' | 'source', key: string) => void
+  toggleBookmark: (key: string, type: 'interp' | 'source') => void
   onCancelSelection: () => void
 }
 
@@ -107,13 +107,13 @@ describe('useChapterShortcuts', () => {
     renderShortcuts({
       chapters: [{ name: 'a' }],
       modalKey: 'a',
-      modalType: 'skill',
+      modalType: 'source',
       onNavigate: vi.fn(),
       toggleBookmark,
       onCancelSelection: vi.fn(),
     })
     fireKey('b')
-    expect(toggleBookmark).toHaveBeenCalledWith('a', 'skill')
+    expect(toggleBookmark).toHaveBeenCalledWith('a', 'source')
   })
 
   it('Escape → 调 onCancelSelection', () => {

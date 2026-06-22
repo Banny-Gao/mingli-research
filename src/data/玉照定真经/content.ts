@@ -8,10 +8,6 @@ const interpModules = import.meta.glob(
   '../../../books/玉照定真经/articles/*/interpretation.md',
   { query: '?raw', import: 'default', eager: false }
 )
-const skillModules = import.meta.glob(
-  '../../../books/玉照定真经/articles/*/skill.md',
-  { query: '?raw', import: 'default', eager: false }
-)
 
 function extractPathKey(mod: Record<string, () => Promise<string>>, suffix: string): Record<string, () => Promise<string>> {
   const result: Record<string, () => Promise<string>> = {};
@@ -30,7 +26,3 @@ export const sourceKeys = ["综论","杂论一","杂论二","杂论三","杂论�
 export const sourceContent = extractPathKey(sourceModules as any, '/source.md');
 export const interpKeys = [] as const;
 export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');
-export const skillKeys = [] as const;
-export const skillContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillRawContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillDisplayNames: Record<string, string> = {};

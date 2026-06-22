@@ -54,7 +54,7 @@ const Reader = () => {
     const normalizedType = type === 'chapter' ? 'interp' : type
     openReader({
       bookSlug: slug,
-      modalType: normalizedType as 'interp' | 'skill' | 'source',
+      modalType: normalizedType as 'interp' | 'source',
       modalKey: decodeURIComponent(key),
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

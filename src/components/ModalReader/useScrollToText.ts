@@ -14,7 +14,6 @@ interface UseScrollToTextParams {
   scrollToText: string | null
   contentLoading: boolean
   loadedContent: string
-  skillRawText: string
   readerMode: ReaderMode
   modalBodyRef: React.RefObject<HTMLDivElement | null>
   paginatedReaderRef: React.RefObject<PaginatedReaderHandle | null>
@@ -37,7 +36,6 @@ export function useScrollToText(params: UseScrollToTextParams) {
     scrollToText,
     contentLoading,
     loadedContent,
-    skillRawText,
     readerMode,
     modalBodyRef,
     paginatedReaderRef,
@@ -111,7 +109,6 @@ export function useScrollToText(params: UseScrollToTextParams) {
     onConsumed,
     loadedContent,
     contentLoading,
-    skillRawText,
     readerMode,
     modalBodyRef,
     paginatedReaderRef,

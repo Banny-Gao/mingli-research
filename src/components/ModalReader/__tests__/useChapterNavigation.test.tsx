@@ -8,10 +8,6 @@ function makeBookData(overrides: Partial<BookData> = {}): BookData {
   return {
     interpContent: {},
     sourceContent: {},
-    skillRawContent: {},
-    skillDisplayNames: {},
-    chapterToSkills: {},
-    skillToChapters: {},
     ...overrides,
   }
 }
@@ -97,24 +93,6 @@ describe('useChapterNavigation', () => {
     expect(result.current.nextChapter).toBeNull()
   })
 
-  it('skill 模式：chapterName 通过 skillToChapters 映射', () => {
-    const bookData = makeBookData({ skillToChapters: { 技能A: ['篇章X'] } })
-    const chapters = [{ name: '篇章X' }]
-    const { result } = renderHook(() =>
-      useChapterNavigation({ chapters, modalType: 'skill', modalKey: '技能A', bookData })
-    )
-    expect(result.current.chapterName).toBe('篇章X')
-  })
-
-  it('skill 模式：skillToChapters 缺失 → fallback 到 modalKey', () => {
-    const bookData = makeBookData({ skillToChapters: {} })
-    const chapters = [{ name: '技能A' }]
-    const { result } = renderHook(() =>
-      useChapterNavigation({ chapters, modalType: 'skill', modalKey: '技能A', bookData })
-    )
-    expect(result.current.chapterName).toBe('技能A')
-  })
-
   describe('contentNavItems', () => {
     it('interp 模式：源 + 解读都存在 → 只展示 source（当前类型过滤）', () => {
       const bookData = makeBookData({
@@ -131,44 +109,6 @@ describe('useChapterNavigation', () => {
       )
       expect(result.current.contentNavItems).toEqual([
         { type: 'source', label: '原文', navKey: 'a' },
-      ])
-    })
-
-    it('skill 模式 + chapterSkillName 缺失 → contentNavItems 为空', () => {
-      const bookData = makeBookData({
-        skillRawContent: { a: vi.fn() },
-        chapterToSkills: {},
-      })
-      const { result } = renderHook(() =>
-        useChapterNavigation({
-          chapters: [{ name: 'a' }],
-          modalType: 'skill',
-          modalKey: 'a',
-          bookData,
-        })
-      )
-      expect(result.current.contentNavItems).toEqual([])
-    })
-
-    it('skill 模式 + chapterSkillName 存在 → 展示 interp 项（同篇章其他模式）', () => {
-      // skill 模式本身已展示 skill 内容；contentNavItems 仅展示**其他**模式项
-      const bookData = makeBookData({
-        sourceContent: { a: vi.fn() },
-        interpContent: { a: vi.fn() },
-        skillRawContent: { a: vi.fn() },
-        chapterToSkills: { a: ['skill-1'] },
-      })
-      const { result } = renderHook(() =>
-        useChapterNavigation({
-          chapters: [{ name: 'a' }],
-          modalType: 'skill',
-          modalKey: 'a',
-          bookData,
-        })
-      )
-      expect(result.current.contentNavItems).toEqual([
-        { type: 'source', label: '原文', navKey: 'a' },
-        { type: 'interp', label: '解读', navKey: 'a' },
       ])
     })
 

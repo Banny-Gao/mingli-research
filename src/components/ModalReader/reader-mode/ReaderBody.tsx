@@ -33,10 +33,10 @@ interface ReaderBodyProps {
  * - smooth: CSS scroll-snap 横向平滑翻页（SmoothBody）
  * - flip:  page-flip 3D 卷页仿真翻页（FlipBody）
  *
- * skill 模式强制使用滚动（skill 内容为纯文本，不适合分页）。
+ * scroll 模式强制使用滚动模式（桌面端），不适合分页。
  *
  * ref 暴露 PaginatedReaderHandle（getPageOfHeadingId / findText）给父组件做目录跳转和搜索闪黄。
- * 在 scroll / skill 模式下 ref.current 为 null。
+ * 在 scroll 模式下 ref.current 为 null。
  */
 export const ReaderBody = forwardRef<PaginatedReaderHandle | null, ReaderBodyProps>(
   function ReaderBody(props, ref) {
@@ -57,22 +57,6 @@ export const ReaderBody = forwardRef<PaginatedReaderHandle | null, ReaderBodyPro
 
     // 桌面端强制滚动模式
     const effectiveMode: ReaderMode = !isMobile ? 'scroll' : mode
-
-    // skill 模式（纯文本）强制滚动
-    if (modalType === 'skill') {
-      return (
-        <ScrollBody
-          bookSlug={bookSlug}
-          modalType={modalType}
-          modalKey={modalKey}
-          annotatedBody={annotatedBody}
-          proseClass={proseClass}
-          scrollRef={scrollRef}
-          onScroll={onScrollProgress}
-          className="modal-body"
-        />
-      )
-    }
 
     const initialPageValue = initialPage
 

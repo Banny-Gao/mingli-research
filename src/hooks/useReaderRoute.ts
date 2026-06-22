@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { books } from '../data/books'
 
 /** 匹配 reader 路由段：/books/:section/:slug/read/:type/:key  或  /:slug/read/:type/:key */
-export const READER_PATH_RE = /\/read\/(interp|skill|source)\/[^/]+$/
+export const READER_PATH_RE = /\/read\/(interp|source)\/[^/]+$/
 
 export function buildReaderPath(bookSlug: string, modalType: string, modalKey: string): string {
   const book = books.find(b => b.slug === bookSlug)

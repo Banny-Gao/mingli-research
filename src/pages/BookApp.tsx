@@ -18,9 +18,7 @@ const BookApp = () => {
   const book = books.find(b => b.slug === bookSlug)
   const bookCompat = getBook(bookSlug)
 
-  const skillContent = (bookCompat.skillContent as Record<string, any>) || {}
   const sourceContent = (bookCompat.sourceContent as Record<string, any>) || {}
-  const chapterToSkills = bookCompat.chapterToSkills || {}
 
   // sourceKeys 为 generate.js 静态生成，比 import.meta.glob 运行时结果更可靠
   const staticSourceKeys = (bookCompat.sourceKeys as readonly string[]) || []
@@ -28,7 +26,6 @@ const BookApp = () => {
     staticSourceKeys.length > 0
       ? [...staticSourceKeys]
       : (Object.keys(sourceContent) as unknown as string[])
-  const skillKeys = Object.keys(skillContent || {})
 
   // Handle URL params for search navigation — extract from query string on mount, clean up after
   useEffect(() => {
@@ -39,7 +36,7 @@ const BookApp = () => {
     const normalizedType = open === 'chapter' ? 'interp' : open
     openReader({
       bookSlug,
-      modalType: normalizedType as 'interp' | 'skill' | 'source',
+      modalType: normalizedType as 'interp' | 'source',
       modalKey: decodeURIComponent(key),
       scrollToText: params.get('match') ? decodeURIComponent(params.get('match')!) : undefined,
     })
@@ -49,7 +46,7 @@ const BookApp = () => {
 
   const pageTitle = book ? `《${book.title}》- 玄学文化馆` : '404 - 玄学文化馆'
   const pageDesc = book
-    ? `共${book.total}篇·已解读${book.done}篇·已有${skillKeys.length}个技能`
+    ? `共${book.total}篇·已解读${book.done}篇`
     : '未找到该典籍'
 
   if (!book) {
@@ -73,7 +70,7 @@ const BookApp = () => {
     )
   }
 
-  const openModal = (type: 'interp' | 'skill' | 'source', key: string) => {
+  const openModal = (type: 'interp' | 'source', key: string) => {
     openReader({ bookSlug, modalType: type, modalKey: key })
   }
 
@@ -116,9 +113,7 @@ const BookApp = () => {
               book={book}
               onChapterClick={n => openModal('interp', n)}
               onSourceClick={n => openModal('source', n)}
-              onSkillClick={sk => openModal('skill', sk)}
               sourceNames={bookSourceKeys}
-              chapterToSkills={chapterToSkills}
             />
           </div>
         </div>

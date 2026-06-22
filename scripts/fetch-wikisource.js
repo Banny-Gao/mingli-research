@@ -35,7 +35,7 @@ const WIKI_BOOKS = {
       description: '紫微斗数经典著作，托名宋初陈抟撰。包含太微赋、骨髓赋等核心赋文及安星诀法。',
       shushu: '命',
       category: '紫微斗数',
-      contentTypes: 'source, interpretation, skill',
+      contentTypes: 'source, interpretation',
     },
   },
 }
@@ -179,7 +179,6 @@ const buildCatalogFromChapters = chapters => {
       id: String(idCounter).padStart(2, '0'),
       name: ch.name,
       status: '待解读',
-      skills: '',
     })
   }
   if (currentVolume) volumes.push(currentVolume)
@@ -203,10 +202,10 @@ const renderCatalogMd = (bookTitle, meta, volumes) => {
   for (const vol of volumes) {
     lines.push(`## ${vol.title}`)
     lines.push('')
-    lines.push('| 编号 | 篇名 | 状态 | 关联技能 |')
-    lines.push('| ---- | ---- | ---- | -------- |')
+    lines.push('| 编号 | 篇名 | 状态 |')
+    lines.push('| ---- | ---- | ---- |')
     for (const ch of vol.chapters) {
-      lines.push(`| ${ch.id} | ${ch.name} | ${ch.status} | ${ch.skills} |`)
+      lines.push(`| ${ch.id} | ${ch.name} | ${ch.status} |`)
     }
     lines.push('')
   }

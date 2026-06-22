@@ -71,19 +71,16 @@ const ModalReader = ({
   // bookData 子表用 useMemo 稳定引用（避免下游 useEffect 依赖列表因 ?? {} 触发连锁重渲）
   const interpContent = useMemo(() => bookData.interpContent ?? {}, [bookData])
   const sourceContent = useMemo(() => bookData.sourceContent ?? {}, [bookData])
-  const skillRawContent = useMemo(() => bookData.skillRawContent ?? {}, [bookData])
 
-  // 章节导航派生（chapterName / prev-next / contentNavItems），封装在 useChapterNavigation
-  const { chapterName, chapterIndex, hasPrev, hasNext, prevChapter, nextChapter, contentNavItems } =
+  // 章节导航派生（prev-next / contentNavItems），封装在 useChapterNavigation
+  const { chapterIndex, hasPrev, hasNext, prevChapter, nextChapter, contentNavItems } =
     useChapterNavigation({ chapters, modalType, modalKey, bookData })
 
-  // interp / source / skill 章节内容加载（统一在 useChapterContent 内）
-  const { loadedContent, contentLoading, skillRawText } = useChapterContent({
+  // interp / source 章节内容加载（统一在 useChapterContent 内）
+  const { loadedContent, contentLoading } = useChapterContent({
     modalType,
     modalKey,
-    loaders: modalType === 'interp' ? interpContent : modalType === 'source' ? sourceContent : {},
-    skillLoaders: skillRawContent,
-    chapterKey: chapterName,
+    loaders: modalType === 'interp' ? interpContent : sourceContent,
   })
 
   // 阅读模式
@@ -112,7 +109,6 @@ const ModalReader = ({
     scrollToText,
     contentLoading,
     loadedContent,
-    skillRawText,
     readerMode,
     modalBodyRef,
     paginatedReaderRef,
@@ -205,14 +201,12 @@ const ModalReader = ({
             </Button>
             <ActionBar
               key={modalKey}
-              bookSlug={bookSlug}
               modalType={modalType}
               modalKey={modalKey}
               isBookmarked={isBookmarked}
               toggleBookmark={toggleBookmark}
               annotationsCount={annotations.length}
               onTogglePanel={() => setShowPanel(v => !v)}
-              skillRawContent={skillRawContent}
             />
             <Button variant="ghost" size="sm" onClick={onClose} className="modal-close-btn">
               <X size={18} />
@@ -264,11 +258,7 @@ const ModalReader = ({
                   : undefined
               }
             >
-              {modalType === 'skill' ? (
-                <pre className="skill-raw-body">
-                  <code>{skillRawText || '加载中...'}</code>
-                </pre>
-              ) : contentLoading ? (
+              {contentLoading ? (
                 <div className={`${proseClass} loading-center`}>加载中...</div>
               ) : (
                 <ReaderBody
@@ -301,7 +291,7 @@ const ModalReader = ({
                   displayName={Object.fromEntries(
                     contentNavItems.map(({ type, label }) => [type, label])
                   )}
-                  // itemKey 由 data 项自身决定（source/interp/skill），保证每个 tag 用对 CSS 颜色
+                  // itemKey 由 data 项自身决定（source/interp），保证每个 tag 用对 CSS 颜色
                   itemKey={item => item}
                   size="xs"
                   onItemClick={item => {
