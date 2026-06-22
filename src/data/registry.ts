@@ -1,9 +1,9 @@
 // Auto-generated — do not edit manually
 // 动态加载各典籍数据，避免前端代码硬编码 slug
-import * as _book0 from './bazi-tiyao';
-import * as _book1 from './三命通会';
-import * as _book2 from './五行大义';
-import * as _book3 from './五行精纪';
+import * as _book0 from './三命通会';
+import * as _book1 from './五行大义';
+import * as _book2 from './五行精纪';
+import * as _book3 from './八字提要';
 import * as _book4 from './千里命稿';
 import * as _book5 from './命理探原';
 import * as _book6 from './子平真诠';
@@ -16,10 +16,10 @@ import * as _book12 from './穷通宝鉴';
 import * as _book13 from './紫微斗数全书';
 
 const registry: Record<string, any> = {
-  'bazi-tiyao': _book0,
-  '三命通会': _book1,
-  '五行大义': _book2,
-  '五行精纪': _book3,
+  '三命通会': _book0,
+  '五行大义': _book1,
+  '五行精纪': _book2,
+  '八字提要': _book3,
   '千里命稿': _book4,
   '命理探原': _book5,
   '子平真诠': _book6,
