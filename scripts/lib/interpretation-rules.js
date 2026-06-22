@@ -54,7 +54,9 @@ export const INTERPRETATION_RULES = {
     {
       id: 'school-absolutism',
       label: '流派武断',
-      regex: /唯一正确|绝对正确|毫无疑义|无可争议/,
+      // 仅匹配 blockquote 外的命中（blockquote 内是「原文照录」，不视为 LLM 自我武断）
+      // 实现：先剥掉所有 `> ` 开头的行，再对剩余文本做规则匹配
+      regex: null,
       promptDesc: '"唯一正确""绝对正确"等绝对定论',
     },
     {

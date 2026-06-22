@@ -14,6 +14,17 @@
 import { INTERPRETATION_RULES } from './interpretation-rules.js'
 
 /**
+ * 剥除 blockquote（`> ...`）行，避免原文转录中的"敏感词"误伤 LLM 解读输出。
+ * 仅对致命规则 `school-absolutism` 生效（绝对定论措辞——原文转录不算 LLM 武断）。
+ */
+function stripBlockquotes(text) {
+  return text
+    .split('\n')
+    .filter(line => !/^\s*>/.test(line))
+    .join('\n')
+}
+
+/**
  * @param {string} text - interpretation.md 全文
  * @returns {{fatal: number, score: number, issues: {fatal: string[], format: string[], content: string[]}}}
  */
@@ -22,7 +33,9 @@ export function runSelfCheckLite(text) {
 
   // === 致命错误 ===
   for (const rule of INTERPRETATION_RULES.fatal) {
-    if (rule.regex && rule.regex.test(text)) {
+    // school-absolutism 特殊处理：只对 blockquote 外的文本做 grep
+    const target = rule.id === 'school-absolutism' ? stripBlockquotes(text) : text
+    if (rule.regex && rule.regex.test(target)) {
       issues.fatal.push(`${rule.label}：${rule.promptDesc || ''}`)
     }
   }
