@@ -6,7 +6,6 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
-  hasSkill: boolean;
   category: string;
 }
 
@@ -21,6 +20,5 @@ export interface Book {
   total: number;
   done: number;
   chapters: ChapterInfo[];
-  skills: { name: string }[];
   sources: { name: string }[];
 }

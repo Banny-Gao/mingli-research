@@ -30,7 +30,7 @@ const DEFAULT_STATE: ChapterLocalState = {
  * - modalKey 变化（章节身份切换）时自动 reset 到默认值
  * - 暴露 reset() 供其他需要主动清除的 effect 调用
  *
- * 与父级 ModalReader 的 `setSkillRawText` / `setLoadedContent` 无关——那些是
+ * 与父级 ModalReader 的 `setLoadedContent` 无关——那些是
  * 数据加载状态，归属各自 effect；本 hook 只管"用户交互 / 跨章节无意义"的 UI 标志。
  */
 export function useChapterLocalState(modalKey: string) {

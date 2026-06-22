@@ -12,7 +12,7 @@ interface SearchEntry {
   category?: string
   author?: string
   chapterCategory?: string
-  type: 'chapter' | 'skill' | 'source'
+  type: 'chapter' | 'source'
   key: string
   displayName?: string
   text: string
@@ -29,7 +29,6 @@ interface SearchIndexJson {
   category?: string
   author?: string
   interp: Array<{ key: string; chapterCategory?: string; text: string }>
-  skill: Array<{ key: string; chapterCategory?: string; displayName?: string; text: string }>
   source: Array<{ key: string; chapterCategory?: string; text: string }>
 }
 
@@ -97,19 +96,17 @@ const SearchIcon = ({ className, size = 14 }: { className?: string; size?: numbe
   </svg>
 )
 
-type TypeFilter = 'all' | 'source' | 'chapter' | 'skill'
+type TypeFilter = 'all' | 'source' | 'chapter'
 
 const TYPE_FILTERS: { value: TypeFilter; label: string; shortcut: string }[] = [
   { value: 'all', label: '全部', shortcut: 'Ctrl+1' },
   { value: 'source', label: '原文', shortcut: 'Ctrl+2' },
   { value: 'chapter', label: '解读', shortcut: 'Ctrl+3' },
-  { value: 'skill', label: '技能', shortcut: 'Ctrl+4' },
 ]
 
 const TYPE_TO_FILTER: Record<SearchEntry['type'], TypeFilter> = {
   source: 'source',
   chapter: 'chapter',
-  skill: 'skill',
 }
 
 const ART_SECTIONS = ['山', '医', '命', '相', '卜'] as const
@@ -186,7 +183,6 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     all: 0,
     source: 0,
     chapter: 0,
-    skill: 0,
   })
   const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
   const inputRef = useRef<HTMLInputElement>(null)
@@ -204,7 +200,6 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
   const BADGE_CONFIG = {
     chapter: { className: 'badge-chapter', label: '解读' },
     source: { className: 'badge-source', label: '原文' },
-    skill: { className: 'badge-skill', label: '技能' },
   } as const
 
   const loadSearchIndex = useCallback(async (): Promise<SearchEntry[]> => {
@@ -231,20 +226,6 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
               type: 'chapter' as const,
               key: ch.key,
               text: ch.text,
-            })),
-          ...book.skill
-            .filter(sk => sk.text)
-            .map(sk => ({
-              slug: book.slug,
-              title: book.title,
-              section: book.section,
-              category: book.category,
-              author: book.author,
-              chapterCategory: sk.chapterCategory,
-              type: 'skill' as const,
-              key: sk.key,
-              displayName: sk.displayName,
-              text: sk.text,
             })),
           ...(book.source || [])
             .filter(src => src.text)
@@ -340,7 +321,6 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
         all: results.length,
         source: 0,
         chapter: 0,
-        skill: 0,
       }
       const catCounts: Record<string, number> = {}
       for (const r of results) {
@@ -394,7 +374,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
         setOpen(false)
         setQuery('')
       }
-      if (e.ctrlKey && e.key >= '1' && e.key <= '4') {
+      if (e.ctrlKey && e.key >= '1' && e.key <= '3') {
         if (tag === 'INPUT' || tag === 'TEXTAREA') return
         e.preventDefault()
         setTypeFilter(TYPE_FILTERS[Number(e.key) - 1].value)
@@ -441,7 +421,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     saveHistory([])
   }, [])
 
-  const handleNavigate = (slug: string, key: string, type: 'chapter' | 'skill' | 'source') => {
+  const handleNavigate = (slug: string, key: string, type: 'chapter' | 'source') => {
     const match = queryRef.current.slice(0, SCROLL_TEXT_PREVIEW)
     addToHistory(queryRef.current)
     setOpen(false)
@@ -449,7 +429,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     const normalizedType = type === 'chapter' ? 'interp' : type
     openReader({
       bookSlug: slug,
-      modalType: normalizedType as 'interp' | 'skill' | 'source',
+      modalType: normalizedType as 'interp' | 'source',
       modalKey: key,
       scrollToText: match || undefined,
     })
@@ -539,7 +519,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                   }
                 }
               }}
-              placeholder="搜索篇目、技能、注解内容..."
+              placeholder="搜索篇目、注解内容..."
               className="search-input"
             />
             {loading && <span className="search-spinner" />}
@@ -604,7 +584,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
           <div className="search-results">
             {fetchError && <div className="search-empty">搜索索引加载失败，请刷新页面重试</div>}
             {!fetchError && !query && history.length === 0 && (
-              <div className="search-empty">输入关键词全文搜索篇目和技能</div>
+              <div className="search-empty">输入关键词全文搜索篇目</div>
             )}
             {!fetchError && !query && history.length > 0 && (
               <div className="search-history">
@@ -692,13 +672,13 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
                     >
                       <Badge
                         variant="secondary"
-                        className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? BADGE_CONFIG.skill.className}`}
+                        className={`search-type-badge ${BADGE_CONFIG[r.type]?.className ?? ''}`}
                       >
-                        {BADGE_CONFIG[r.type]?.label ?? BADGE_CONFIG.skill.label}
+                        {BADGE_CONFIG[r.type]?.label ?? ''}
                       </Badge>
                       <div className="search-result-text">
                         <span className="search-item-name">
-                          {(r.type === 'skill' && r.displayName) || r.key}
+                          {r.key}
                           {r.chapterCategory && (
                             <span className="search-chapter-category"> — {r.chapterCategory}</span>
                           )}

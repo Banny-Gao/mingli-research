@@ -101,9 +101,7 @@ const parseCatalog = catalogPath => {
 
 const readChapterContent = (bookRoot, row, chaptersData, interpKeys, sourceData) => {
   const interpPath = `articles/${row.title}/interpretation.md`
-  const skillPath = `articles/${row.title}/skill.md`
   const isDone = fs.existsSync(path.join(bookRoot, interpPath))
-  const hasSkill = fs.existsSync(path.join(bookRoot, skillPath))
 
   if (isDone) {
     const fullPath = path.join(bookRoot, interpPath)
@@ -118,33 +116,7 @@ const readChapterContent = (bookRoot, row, chaptersData, interpKeys, sourceData)
     sourceData[row.title] = parseMarkdown(fs.readFileSync(srcPath, 'utf-8'))
   }
 
-  return { num: row.num, name: row.title, isDone, hasSkill, category: row.category }
-}
-
-const readSkills = (bookRoot, catalogRows) => {
-  const data = {},
-    rawData = {},
-    displayNames = {},
-    keys = []
-  const chapterToSkills = {},
-    skillToChapters = {}
-
-  for (const row of catalogRows) {
-    const skillPath = path.join(bookRoot, 'articles', row.title, 'skill.md')
-    if (!fs.existsSync(skillPath)) continue
-
-    const content = fs.readFileSync(skillPath, 'utf-8')
-    data[row.title] = parseMarkdown(content)
-    rawData[row.title] = content
-
-    const dn = content.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)
-    if (dn) displayNames[row.title] = dn[1].trim()
-    keys.push(row.title)
-
-    chapterToSkills[row.title] = [row.title]
-    skillToChapters[row.title] = [row.title]
-  }
-  return { data, rawData, displayNames, keys, chapterToSkills, skillToChapters }
+  return { num: row.num, name: row.title, isDone, category: row.category }
 }
 
 const processBook = bookSlug => {
@@ -173,9 +145,6 @@ const processBook = bookSlug => {
     readChapterContent(bookRoot, row, chaptersData, interpKeys, sourceData)
   )
 
-  const skills = readSkills(bookRoot, catalogRows)
-  const { chapterToSkills, skillToChapters } = skills
-
   return {
     slug: bookSlug,
     title: meta.title,
@@ -190,13 +159,7 @@ const processBook = bookSlug => {
     chapters,
     chaptersData,
     sourceData,
-    skillsData: skills.data,
-    skillsRawData: skills.rawData,
-    skillDisplayNames: skills.displayNames,
     interpKeys,
-    skillKeys: skills.keys,
-    chapterToSkills,
-    skillToChapters,
   }
 }
 
@@ -207,7 +170,7 @@ const generateBookFiles = book => {
   fs.mkdirSync(outDir, { recursive: true })
 
   // 清理旧子目录
-  for (const sub of ['interp', 'source', 'skill']) {
+  for (const sub of ['interp', 'source']) {
     const d = path.join(outDir, sub)
     if (fs.existsSync(d)) fs.rmSync(d, { recursive: true })
   }
@@ -223,10 +186,6 @@ const generateBookFiles = book => {
   '../../../books/${book.slug}/articles/*/source.md',
   { query: '?raw', import: 'default', eager: false }
 )`,
-    skill: `const skillModules = import.meta.glob(
-  '../../../books/${book.slug}/articles/*/skill.md',
-  { query: '?raw', import: 'default', eager: false }
-)`,
   }
 
   const exports = {
@@ -234,10 +193,6 @@ const generateBookFiles = book => {
 export const interpContent = extractPathKey(interpModules as any, '/interpretation.md');`,
     source: `export const sourceKeys = ${JSON.stringify(sourceKeys)} as const;
 export const sourceContent = extractPathKey(sourceModules as any, '/source.md');`,
-    skill: `export const skillKeys = ${JSON.stringify(book.skillKeys)} as const;
-export const skillContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillRawContent = extractPathKey(skillModules as any, '/skill.md');
-export const skillDisplayNames: Record<string, string> = ${JSON.stringify(book.skillDisplayNames, null, 2)};`,
   }
 
   const selected = type => book.contentTypes.includes(type)
@@ -271,18 +226,9 @@ ${book.contentTypes
 `
   )
 
-  fs.writeFileSync(
-    path.join(outDir, 'assoc.ts'),
-    `// Auto-generated — do not edit manually
-export const chapterToSkills: Record<string, string[]> = ${JSON.stringify(book.chapterToSkills, null, 2)};
-export const skillToChapters: Record<string, string[]> = ${JSON.stringify(book.skillToChapters, null, 2)};
-`
-  )
-
   const typeExports = {
     interpretation: 'interpKeys, interpContent',
     source: 'sourceKeys, sourceContent',
-    skill: 'skillKeys, skillContent, skillRawContent, skillDisplayNames',
   }
   const idxExports = book.contentTypes
     .filter(t => typeExports[t])
@@ -295,7 +241,6 @@ export const skillToChapters: Record<string, string[]> = ${JSON.stringify(book.s
     path.join(outDir, 'index.ts'),
     `// Auto-generated — do not edit manually
 export { ${idxExports} } from './content';
-export { chapterToSkills, skillToChapters } from './assoc';
 
 export type ChapterKey = ${chapterKey};
 `
@@ -319,9 +264,6 @@ const generateGlobalFiles = books => {
     total: b.total,
     done: b.done,
     chapters: b.chapters,
-    skills: Object.keys(b.skillsData)
-      .sort((a, b) => a.localeCompare(b, 'zh'))
-      .map(name => ({ name })),
     sources: Object.keys(b.sourceData || {})
       .sort((a, b) => a.localeCompare(b, 'zh'))
       .map(name => ({ name })),
@@ -337,7 +279,6 @@ export interface ChapterInfo {
   num: string;
   name: string;
   isDone: boolean;
-  hasSkill: boolean;
   category: string;
 }
 
@@ -352,7 +293,6 @@ export interface Book {
   total: number;
   done: number;
   chapters: ChapterInfo[];
-  skills: { name: string }[];
   sources: { name: string }[];
 }
 `
@@ -414,16 +354,6 @@ const generateSearchIndex = books => {
           MAX_SEARCH_TEXT
         ),
       })),
-      skill: b.skillKeys.map(k => ({
-        key: k,
-        chapterCategory: chapterCatMap[k] || '',
-        displayName:
-          b.skillsRawData[k]?.match(/^---[\s\S]*?\ndisplayName:\s*(.+)\n[\s\S]*?^---/m)?.[1] ?? k,
-        text: truncateText(
-          stripHtml(b.skillsData[k] || '', { collapseWhitespace: true }),
-          MAX_SEARCH_TEXT
-        ),
-      })),
       source: Object.keys(b.sourceData || {}).map(k => ({
         key: k,
         chapterCategory: chapterCatMap[k] || '',
@@ -466,6 +396,5 @@ console.log(`Generated ${books.length} book(s):`)
 for (const b of books) {
   console.log(`  ${b.slug}: total=${b.total}, done=${b.done}`)
   console.log(`    interp keys: ${b.interpKeys.join(', ')}`)
-  console.log(`    skill keys: ${b.skillKeys.join(', ')}`)
 }
 console.log('Done.')

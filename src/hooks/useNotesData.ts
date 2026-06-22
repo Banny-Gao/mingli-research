@@ -1,5 +1,4 @@
 import { ANN_KEY, BOOKMARK_KEY } from '../lib/constants'
-import { getBook } from '../data/registry'
 import type { Annotation, AnnotationType } from './useAnnotations'
 
 // Constants
@@ -63,10 +62,8 @@ export const TYPE_COLORS: Record<AnnotationType, string> = {
   quote: 'var(--color-quote)',
 }
 
-export function normalizeChapter(chapter: string, bookSlug: string): string {
-  const { skillToChapters } = getBook(bookSlug)
-  const mapped = skillToChapters?.[chapter]
-  return mapped?.length ? mapped[0] : chapter
+export function normalizeChapter(chapter: string, _bookSlug: string): string {
+  return chapter
 }
 
 export function deleteAnnotation(slug: string, chapter: string, annId: string) {

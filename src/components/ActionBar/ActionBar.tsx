@@ -1,55 +1,30 @@
 import { useState } from 'react'
-import { Star, Bookmark, MoreHorizontal, Copy } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Star, Bookmark, MoreHorizontal } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
-import { getBook } from '@/data/registry'
 
 interface ActionBarProps {
-  bookSlug: string
-  modalType: 'interp' | 'skill' | 'source'
+  modalType: 'interp' | 'source'
   modalKey: string
   isBookmarked: (key: string) => boolean
   toggleBookmark: (key: string, type?: string) => void
   annotationsCount: number
   onTogglePanel: () => void
-  skillRawContent: Record<string, () => Promise<string>>
 }
 
 const ActionBar = ({
-  bookSlug,
   modalType,
   modalKey,
   isBookmarked,
   toggleBookmark,
   annotationsCount,
   onTogglePanel,
-  skillRawContent,
 }: ActionBarProps) => {
   const [actionPopoverOpen, setActionPopoverOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-
-  const COPIED_RESET_MS = 2000
-
-  const handleCopy = async () => {
-    if (modalType !== 'skill') return
-    const { skillToChapters } = getBook(bookSlug)
-    const contentKey = skillToChapters?.[modalKey]?.[0] || modalKey
-    const loader = skillRawContent[contentKey]
-    if (!loader) return
-    const text = await loader()
-    try {
-      await navigator.clipboard.writeText(text)
-    } catch {
-      /* ignore */
-    }
-    setCopied(true)
-    setTimeout(() => setCopied(false), COPIED_RESET_MS)
-  }
 
   return (
     <>
@@ -89,16 +64,6 @@ const ActionBar = ({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )}
-      {modalType === 'skill' && modalKey && (
-        <Button
-          variant="ghost"
-          onClick={handleCopy}
-          className={['action-copy-btn', copied ? ' copied' : ''].join(' ')}
-        >
-          <Copy size={14} />
-          {copied ? '已复制' : '复制'}
-        </Button>
       )}
     </>
   )

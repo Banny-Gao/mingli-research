@@ -11,850 +11,729 @@ export const books: Book[] = [
     "version": "据问真八字网（iwzbz.com）整理本",
     "description": "民国命学家韦千里所著子平八字提要，按\"月×日\"网格分述 12 月×10 天干 = 120 节，每节析论该月该日所生之格局宜忌、喜忌用神。",
     "total": 120,
-    "done": 0,
+    "done": 120,
     "chapters": [
       {
         "num": "01",
         "name": "寅月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "02",
         "name": "寅月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "03",
         "name": "寅月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "04",
         "name": "寅月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "05",
         "name": "寅月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "06",
         "name": "寅月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "07",
         "name": "寅月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "08",
         "name": "寅月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "09",
         "name": "寅月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "10",
         "name": "寅月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "寅月"
       },
       {
         "num": "11",
         "name": "卯月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "12",
         "name": "卯月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "13",
         "name": "卯月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "14",
         "name": "卯月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "15",
         "name": "卯月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "16",
         "name": "卯月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "17",
         "name": "卯月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "18",
         "name": "卯月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "19",
         "name": "卯月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "20",
         "name": "卯月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "卯月"
       },
       {
         "num": "21",
         "name": "辰月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "22",
         "name": "辰月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "23",
         "name": "辰月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "24",
         "name": "辰月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "25",
         "name": "辰月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "26",
         "name": "辰月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "27",
         "name": "辰月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "28",
         "name": "辰月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "29",
         "name": "辰月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "30",
         "name": "辰月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "辰月"
       },
       {
         "num": "31",
         "name": "巳月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "32",
         "name": "巳月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "33",
         "name": "巳月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "34",
         "name": "巳月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "35",
         "name": "巳月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "36",
         "name": "巳月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "37",
         "name": "巳月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "38",
         "name": "巳月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "39",
         "name": "巳月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "40",
         "name": "巳月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "巳月"
       },
       {
         "num": "41",
         "name": "午月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "42",
         "name": "午月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "43",
         "name": "午月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "44",
         "name": "午月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "45",
         "name": "午月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "46",
         "name": "午月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "47",
         "name": "午月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "48",
         "name": "午月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "49",
         "name": "午月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "50",
         "name": "午月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "午月"
       },
       {
         "num": "51",
         "name": "未月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "52",
         "name": "未月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "53",
         "name": "未月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "54",
         "name": "未月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "55",
         "name": "未月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "56",
         "name": "未月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "57",
         "name": "未月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "58",
         "name": "未月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "59",
         "name": "未月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "60",
         "name": "未月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "未月"
       },
       {
         "num": "61",
         "name": "申月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "62",
         "name": "申月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "63",
         "name": "申月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "64",
         "name": "申月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "65",
         "name": "申月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "66",
         "name": "申月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "67",
         "name": "申月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "68",
         "name": "申月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "69",
         "name": "申月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "70",
         "name": "申月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "申月"
       },
       {
         "num": "71",
         "name": "酉月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "72",
         "name": "酉月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "73",
         "name": "酉月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "74",
         "name": "酉月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "75",
         "name": "酉月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "76",
         "name": "酉月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "77",
         "name": "酉月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "78",
         "name": "酉月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "79",
         "name": "酉月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "80",
         "name": "酉月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "酉月"
       },
       {
         "num": "81",
         "name": "戌月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "82",
         "name": "戌月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "83",
         "name": "戌月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "84",
         "name": "戌月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "85",
         "name": "戌月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "86",
         "name": "戌月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "87",
         "name": "戌月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "88",
         "name": "戌月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "89",
         "name": "戌月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "90",
         "name": "戌月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "戌月"
       },
       {
         "num": "91",
         "name": "亥月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "92",
         "name": "亥月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "93",
         "name": "亥月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "94",
         "name": "亥月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "95",
         "name": "亥月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "96",
         "name": "亥月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "97",
         "name": "亥月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "98",
         "name": "亥月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "99",
         "name": "亥月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "100",
         "name": "亥月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "亥月"
       },
       {
         "num": "101",
         "name": "子月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "102",
         "name": "子月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "103",
         "name": "子月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "104",
         "name": "子月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "105",
         "name": "子月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "106",
         "name": "子月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "107",
         "name": "子月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "108",
         "name": "子月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "109",
         "name": "子月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "110",
         "name": "子月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "子月"
       },
       {
         "num": "111",
         "name": "丑月甲日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "112",
         "name": "丑月乙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "113",
         "name": "丑月丙日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "114",
         "name": "丑月丁日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "115",
         "name": "丑月戊日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "116",
         "name": "丑月己日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "117",
         "name": "丑月庚日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "118",
         "name": "丑月辛日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "119",
         "name": "丑月壬日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       },
       {
         "num": "120",
         "name": "丑月癸日",
-        "isDone": false,
-        "hasSkill": false,
+        "isDone": true,
         "category": "丑月"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "辰月丙日"
@@ -1233,2664 +1112,2283 @@ export const books: Book[] = [
         "num": "001",
         "name": "原造化之始",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "002",
         "name": "论五行生成",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "003",
         "name": "论五行生克",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "004",
         "name": "论支干源流",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "005",
         "name": "总论纳音",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "006",
         "name": "论纳音取象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "007",
         "name": "释六十甲子性质吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "008",
         "name": "释六十甲子性质吉凶二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "009",
         "name": "释六十甲子性质吉凶三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "010",
         "name": "释六十甲子性质吉凶四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "011",
         "name": "释六十甲子性质吉凶五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "012",
         "name": "释六十甲子性质吉凶六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "013",
         "name": "释六十甲子性质吉凶七",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论与纳音"
       },
       {
         "num": "014",
         "name": "论天干阴阳生死",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "015",
         "name": "论地支",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "016",
         "name": "十干分配天文",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "017",
         "name": "十二支分配地理",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "018",
         "name": "论地支属相",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "019",
         "name": "论人元司事",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "020",
         "name": "论四时节气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "021",
         "name": "论五行旺相休囚死并寄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "022",
         "name": "论遁月时",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "023",
         "name": "论年月日时",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "024",
         "name": "论胎元",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "025",
         "name": "论坐命官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "026",
         "name": "论大运",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "027",
         "name": "论小运",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "028",
         "name": "论太岁",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "029",
         "name": "总论岁运",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "030",
         "name": "论十干合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "031",
         "name": "论进交退伏",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "032",
         "name": "论十干化气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "033",
         "name": "论支元六合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "034",
         "name": "论支元三合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "035",
         "name": "论将星华盖",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "036",
         "name": "论咸池",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "037",
         "name": "论六害",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "038",
         "name": "论三刑",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "039",
         "name": "论冲击",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 干支时运"
       },
       {
         "num": "040",
         "name": "论十干禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "041",
         "name": "论金舆",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "042",
         "name": "论驿马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "043",
         "name": "总论禄马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "044",
         "name": "论天乙贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "045",
         "name": "论三奇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "046",
         "name": "论天月德",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "047",
         "name": "论太极贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "048",
         "name": "论学堂词馆",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "049",
         "name": "论正印",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "050",
         "name": "论德秀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "051",
         "name": "论劫煞亡神",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "052",
         "name": "论羊刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "053",
         "name": "论空亡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "054",
         "name": "论元辰",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "055",
         "name": "论暗金的煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "056",
         "name": "论灾煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "057",
         "name": "论六厄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "058",
         "name": "论勾绞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "059",
         "name": "论孤辰寡宿",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "060",
         "name": "论天罗地网",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "061",
         "name": "论十恶大败",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "062",
         "name": "总论诸神煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 神煞"
       },
       {
         "num": "063",
         "name": "论十二月支得日干吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "064",
         "name": "论五行时地分野吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "065",
         "name": "论木",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "066",
         "name": "论火",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "067",
         "name": "论土",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "068",
         "name": "论金",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "069",
         "name": "论水",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "070",
         "name": "论古人立印食官财名义",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 十二月五行"
       },
       {
         "num": "071",
         "name": "论正官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "072",
         "name": "天福贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "073",
         "name": "天元作禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "074",
         "name": "岁德正官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "075",
         "name": "时上正官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "076",
         "name": "官印禄库",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "077",
         "name": "相刑遇贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "078",
         "name": "三合遇贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "079",
         "name": "金木间隔",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "080",
         "name": "水火既济",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "081",
         "name": "金火相成",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "082",
         "name": "天元坐煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "083",
         "name": "时上一位贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "084",
         "name": "年上七煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "085",
         "name": "官煞混杂",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "086",
         "name": "专禄要制",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "087",
         "name": "弃命从煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "088",
         "name": "官煞去留杂论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "089",
         "name": "壬骑龙背",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 正官格局"
       },
       {
         "num": "090",
         "name": "子遥巳禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "091",
         "name": "丑遥巳禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "092",
         "name": "冲合禄马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "093",
         "name": "破官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "094",
         "name": "飞财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "095",
         "name": "破财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "096",
         "name": "虎午奔巳",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "097",
         "name": "羊击猪蛇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "098",
         "name": "六阴朝阳",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "099",
         "name": "六乙鼠贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "100",
         "name": "日禄归时",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "101",
         "name": "拱禄拱贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "102",
         "name": "冲禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "103",
         "name": "六壬趋艮",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "104",
         "name": "六甲趋乾",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "105",
         "name": "财官双美",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "106",
         "name": "日贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "107",
         "name": "日德",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "108",
         "name": "魁罡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "109",
         "name": "福德秀气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "110",
         "name": "禄元互换",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "111",
         "name": "子午双包",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "112",
         "name": "青龙伏形",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "113",
         "name": "白虎持势",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "114",
         "name": "朱雀乘风",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "115",
         "name": "玄武当权",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "116",
         "name": "勾陈得位",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "117",
         "name": "还魂借气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "118",
         "name": "八专禄旺",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "119",
         "name": "曲直",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "120",
         "name": "炎上",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "121",
         "name": "从革",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "122",
         "name": "润下",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "123",
         "name": "稼穑",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "124",
         "name": "土局润下",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "125",
         "name": "金白水清",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "126",
         "name": "木火交辉",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "127",
         "name": "火金铸印",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "128",
         "name": "火土夹杂",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "129",
         "name": "墓煞",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "130",
         "name": "四位纯全",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "131",
         "name": "一气生成",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "132",
         "name": "背禄逐马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "133",
         "name": "十干十二年生大贵人例",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "134",
         "name": "论正财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "135",
         "name": "带正马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "136",
         "name": "时带正马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "137",
         "name": "财旺生官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "138",
         "name": "天元坐财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "139",
         "name": "论偏财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "140",
         "name": "时上偏财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "141",
         "name": "弃命从财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "142",
         "name": "日坐天财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "143",
         "name": "偏正财合论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "144",
         "name": "论印绶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "145",
         "name": "时逢生印",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "146",
         "name": "胞胎逢印绶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "147",
         "name": "弃印就财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "148",
         "name": "论倒食",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "149",
         "name": "论杂气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "150",
         "name": "附论墓运",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "151",
         "name": "论伤官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "152",
         "name": "论食神",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "153",
         "name": "飞天禄马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "154",
         "name": "倒冲禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "155",
         "name": "福星贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "156",
         "name": "食神同窠",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "157",
         "name": "食神带合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "158",
         "name": "红鸾天印",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "159",
         "name": "墨池涌泉",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "160",
         "name": "论阳刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "161",
         "name": "论建禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 格局详论"
       },
       {
         "num": "162",
         "name": "论性情相貌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "163",
         "name": "论疾病先知五脏六腑所",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "164",
         "name": "论女命",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "165",
         "name": "纯",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "166",
         "name": "和",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "167",
         "name": "清",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "168",
         "name": "贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "169",
         "name": "浊",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "170",
         "name": "滥",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "171",
         "name": "娼",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "172",
         "name": "淫",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "173",
         "name": "旺夫克子",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "174",
         "name": "旺子伤夫",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "175",
         "name": "伤夫克子",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "176",
         "name": "安静守分",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "177",
         "name": "横夭少年",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "178",
         "name": "福寿两备",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "179",
         "name": "正偏自处",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "180",
         "name": "招嫁不定",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "181",
         "name": "论小儿",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "182",
         "name": "论六亲",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "183",
         "name": "定妇人孕生男女",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 性相六亲女命"
       },
       {
         "num": "184",
         "name": "六甲日甲子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "185",
         "name": "六甲日乙丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "186",
         "name": "六甲日丙寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "187",
         "name": "六甲日丁卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "188",
         "name": "六甲日戊辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "189",
         "name": "六甲日己巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "190",
         "name": "六甲日庚午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "191",
         "name": "六甲日辛未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "192",
         "name": "六甲日壬申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "193",
         "name": "六甲日癸酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "194",
         "name": "六甲日甲戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "195",
         "name": "六甲日乙亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "196",
         "name": "六乙日丙子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "197",
         "name": "六乙日丁丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "198",
         "name": "六乙日戊寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "199",
         "name": "六乙日己卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "200",
         "name": "六乙日庚辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "201",
         "name": "六乙日辛巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "202",
         "name": "六乙日壬午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "203",
         "name": "六乙日癸未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "204",
         "name": "六乙日甲申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "205",
         "name": "六乙日乙酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "206",
         "name": "六乙日丙戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "207",
         "name": "六乙日丁亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "208",
         "name": "六丙日戊子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "209",
         "name": "六丙日己丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "210",
         "name": "六丙日庚寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "211",
         "name": "六丙日辛卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "212",
         "name": "六丙日壬辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "213",
         "name": "六丙日癸巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "214",
         "name": "六丙日甲午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "215",
         "name": "六丙日乙未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "216",
         "name": "六丙日丙申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "217",
         "name": "六丙日丁酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "218",
         "name": "六丙日戊戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "219",
         "name": "六丙日己亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "220",
         "name": "六丁日庚子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "221",
         "name": "六丁日辛丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "222",
         "name": "六丁日壬寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "223",
         "name": "六丁日癸卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "224",
         "name": "六丁日甲辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "225",
         "name": "六丁日乙巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "226",
         "name": "六丁日丙午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "227",
         "name": "六丁日丁未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "228",
         "name": "六丁日戊申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "229",
         "name": "六丁日己酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "230",
         "name": "六丁日庚戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "231",
         "name": "六丁日辛亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "232",
         "name": "六戊日壬子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "233",
         "name": "六戊日癸丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "234",
         "name": "六戊日甲寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "235",
         "name": "六戊日乙卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "236",
         "name": "六戊日丙辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "237",
         "name": "六戊日丁巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "238",
         "name": "六戊日戊午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "239",
         "name": "六戊日己未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "240",
         "name": "六戊日庚申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "241",
         "name": "六戊日辛酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "242",
         "name": "六戊日壬戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "243",
         "name": "六戊日癸亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷八 · 日时断上（六甲至六戊）"
       },
       {
         "num": "244",
         "name": "六己日甲子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "245",
         "name": "六己日乙丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "246",
         "name": "六己日丙寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "247",
         "name": "六己日丁卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "248",
         "name": "六己日戊辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "249",
         "name": "六己日己巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "250",
         "name": "六己日庚午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "251",
         "name": "六己日辛未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "252",
         "name": "六己日壬申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "253",
         "name": "六己日癸酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "254",
         "name": "六己日甲戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "255",
         "name": "六己日乙亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "256",
         "name": "六庚日丙子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "257",
         "name": "六庚日丁丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "258",
         "name": "六庚日戊寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "259",
         "name": "六庚日己卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "260",
         "name": "六庚日庚辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "261",
         "name": "六庚日辛巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "262",
         "name": "六庚日壬午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "263",
         "name": "六庚日癸未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "264",
         "name": "六庚日甲申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "265",
         "name": "六庚日乙酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "266",
         "name": "六庚日丙戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "267",
         "name": "六庚日丁亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "268",
         "name": "六辛日戊子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "269",
         "name": "六辛日己丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "270",
         "name": "六辛日庚寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "271",
         "name": "六辛日辛卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "272",
         "name": "六辛日壬辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "273",
         "name": "六辛日癸巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "274",
         "name": "六辛日甲午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "275",
         "name": "六辛日乙未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "276",
         "name": "六辛日丙申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "277",
         "name": "六辛日丁酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "278",
         "name": "六辛日戊戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "279",
         "name": "六辛日己亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "280",
         "name": "六壬日庚子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "281",
         "name": "六壬日辛丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "282",
         "name": "六壬日壬寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "283",
         "name": "六壬日癸卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "284",
         "name": "六壬日甲辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "285",
         "name": "六壬日乙巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "286",
         "name": "六壬日丙午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "287",
         "name": "六壬日丁未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "288",
         "name": "六壬日戊申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "289",
         "name": "六壬日己酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "290",
         "name": "六壬日庚戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "291",
         "name": "六壬日辛亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "292",
         "name": "六癸日壬子时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "293",
         "name": "六癸日癸丑时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "294",
         "name": "六癸日甲寅时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "295",
         "name": "六癸日乙卯时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "296",
         "name": "六癸日丙辰时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "297",
         "name": "六癸日丁巳时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "298",
         "name": "六癸日戊午时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "299",
         "name": "六癸日己未时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "300",
         "name": "六癸日庚申时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "301",
         "name": "六癸日辛酉时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "302",
         "name": "六癸日壬戌时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "303",
         "name": "六癸日癸亥时断",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷九 · 日时断下（六己至六癸）"
       },
       {
         "num": "304",
         "name": "看命口诀一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "305",
         "name": "看命口诀二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "306",
         "name": "看命口诀三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "307",
         "name": "看命口诀四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "308",
         "name": "看命口诀五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "309",
         "name": "看命口诀六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "310",
         "name": "看命口诀七",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "311",
         "name": "看命口诀八",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "312",
         "name": "看命口诀九",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "313",
         "name": "看命口诀十",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "314",
         "name": "看命口诀十一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "315",
         "name": "看命口诀十二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "316",
         "name": "看命口诀十三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "317",
         "name": "看命口诀十四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "318",
         "name": "巫咸撮要一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "319",
         "name": "巫咸撮要二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "320",
         "name": "巫咸撮要三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "321",
         "name": "巫咸撮要四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "322",
         "name": "巫咸撮要五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "323",
         "name": "巫咸撮要六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "324",
         "name": "玉井奥诀一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "325",
         "name": "玉井奥诀二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "326",
         "name": "玉井奥诀三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "327",
         "name": "玉井奥诀五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "329",
         "name": "玉井奥诀六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "330",
         "name": "玉井奥诀七",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "331",
         "name": "玉井奥诀八",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "332",
         "name": "玉井奥诀九",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "333",
         "name": "玉井奥诀十",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "334",
         "name": "玉井奥诀十一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "335",
         "name": "玉井奥诀十二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "336",
         "name": "玉井奥诀十三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "337",
         "name": "玉井奥诀十四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "338",
         "name": "玉井奥诀十五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "339",
         "name": "玉井奥诀十六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "340",
         "name": "玉井奥诀十七",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "341",
         "name": "玉井奥诀十八",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "342",
         "name": "玉井奥诀十九",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "343",
         "name": "玉井奥诀二十",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "344",
         "name": "玉井奥诀二十一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十 · 看命口诀与玉井奥诀"
       },
       {
         "num": "345",
         "name": "气象篇一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "346",
         "name": "气象篇二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "347",
         "name": "气象篇三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "348",
         "name": "气象篇四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "349",
         "name": "六神篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "350",
         "name": "憎爱赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "351",
         "name": "消息赋一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "352",
         "name": "消息赋二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "353",
         "name": "消息赋三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "354",
         "name": "消息赋四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "355",
         "name": "消息赋五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "356",
         "name": "消息赋六",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "357",
         "name": "消息赋八",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "359",
         "name": "通玄子撰集",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "360",
         "name": "明通赋一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "361",
         "name": "明通赋二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "362",
         "name": "明通赋三",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "363",
         "name": "明通赋四",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "364",
         "name": "明通赋五",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "365",
         "name": "喜忌篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "366",
         "name": "继善篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十一 · 赋文"
       },
       {
         "num": "367",
         "name": "元理赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "368",
         "name": "真宝赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "369",
         "name": "金声玉振赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "370",
         "name": "金鼎神秘赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "371",
         "name": "络绎赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "372",
         "name": "金玉赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "373",
         "name": "心镜五七赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "374",
         "name": "造微论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "375",
         "name": "人鉴论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "376",
         "name": "元妙论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "377",
         "name": "精微论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "378",
         "name": "惊神论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "379",
         "name": "明津先生骨髓歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "380",
         "name": "搜髓歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "381",
         "name": "四言独步",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       },
       {
         "num": "382",
         "name": "五言独步",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷十二 · 赋文续"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "安静守分"
@@ -5049,207 +4547,177 @@ export const books: Book[] = [
         "num": "01",
         "name": "五行大义简介",
         "isDone": true,
-        "hasSkill": false,
         "category": "序跋"
       },
       {
         "num": "02",
         "name": "五行大义序",
         "isDone": true,
-        "hasSkill": false,
         "category": "序跋"
       },
       {
         "num": "03",
         "name": "题五行大义后",
         "isDone": true,
-        "hasSkill": false,
         "category": "序跋"
       },
       {
         "num": "04",
         "name": "释名",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "05",
         "name": "论支干名",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "06",
         "name": "起大衍论易动静数",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "07",
         "name": "论五行及生成数",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "08",
         "name": "论支干数",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "09",
         "name": "论纳音数",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "10",
         "name": "论九宫数",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷一"
       },
       {
         "num": "11",
         "name": "论相生",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "12",
         "name": "论配支干",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "13",
         "name": "论相杂",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "14",
         "name": "论德",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "15",
         "name": "论合",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "16",
         "name": "论扶抑",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "17",
         "name": "论害",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "18",
         "name": "论冲破",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷二"
       },
       {
         "num": "19",
         "name": "配五色至五事",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷三"
       },
       {
         "num": "20",
         "name": "论律吕",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷四"
       },
       {
         "num": "21",
         "name": "论七政",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷四"
       },
       {
         "num": "22",
         "name": "论八卦八风",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷四"
       },
       {
         "num": "23",
         "name": "论情性",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷四"
       },
       {
         "num": "24",
         "name": "论治政",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷四"
       },
       {
         "num": "25",
         "name": "论诸神",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷五"
       },
       {
         "num": "26",
         "name": "论五帝",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷五"
       },
       {
         "num": "27",
         "name": "论诸官",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷五"
       },
       {
         "num": "28",
         "name": "论诸人",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷五"
       },
       {
         "num": "29",
         "name": "论禽虫",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷五"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "论八卦八风"
@@ -5355,228 +4823,195 @@ export const books: Book[] = [
         "num": "01",
         "name": "序",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷首"
       },
       {
         "num": "02",
         "name": "六十甲子上",
         "isDone": true,
-        "hasSkill": false,
         "category": "论六十甲子"
       },
       {
         "num": "03",
         "name": "六甲纳音法",
         "isDone": true,
-        "hasSkill": false,
         "category": "论六十甲子"
       },
       {
         "num": "04",
         "name": "六十甲子下",
         "isDone": true,
-        "hasSkill": false,
         "category": "论六十甲子"
       },
       {
         "num": "05",
         "name": "干神一",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "06",
         "name": "干神二",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "07",
         "name": "干神三",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "08",
         "name": "甲乙",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "09",
         "name": "戊己",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "10",
         "name": "庚辛",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "11",
         "name": "壬癸",
         "isDone": true,
-        "hasSkill": false,
         "category": "论干神"
       },
       {
         "num": "12",
         "name": "支神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论支神"
       },
       {
         "num": "13",
         "name": "十神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论支神"
       },
       {
         "num": "14",
         "name": "五行一",
         "isDone": true,
-        "hasSkill": false,
         "category": "论五行"
       },
       {
         "num": "15",
         "name": "五行二",
         "isDone": true,
-        "hasSkill": false,
         "category": "论五行"
       },
       {
         "num": "16",
         "name": "五行三",
         "isDone": true,
-        "hasSkill": false,
         "category": "论五行"
       },
       {
         "num": "17",
         "name": "年月日时胎",
         "isDone": true,
-        "hasSkill": false,
         "category": "论时与节气"
       },
       {
         "num": "18",
         "name": "释日时凶中凶格",
         "isDone": true,
-        "hasSkill": false,
         "category": "论时与节气"
       },
       {
         "num": "19",
         "name": "十二月节气",
         "isDone": true,
-        "hasSkill": false,
         "category": "论时与节气"
       },
       {
         "num": "20",
         "name": "释吉贵神例",
         "isDone": true,
-        "hasSkill": false,
         "category": "论贵神禄马"
       },
       {
         "num": "21",
         "name": "天乙贵神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论贵神禄马"
       },
       {
         "num": "22",
         "name": "禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "论贵神禄马"
       },
       {
         "num": "23",
         "name": "马",
         "isDone": true,
-        "hasSkill": false,
         "category": "论贵神禄马"
       },
       {
         "num": "24",
         "name": "并论禄马",
         "isDone": true,
-        "hasSkill": false,
         "category": "论贵神禄马"
       },
       {
         "num": "25",
         "name": "官神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "26",
         "name": "印绶",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "27",
         "name": "食神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "28",
         "name": "三奇四奇附",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "29",
         "name": "进神",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "30",
         "name": "正印",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "31",
         "name": "库墓",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       },
       {
         "num": "32",
         "name": "财",
         "isDone": true,
-        "hasSkill": false,
         "category": "论官印食财"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "并论禄马"
@@ -5691,158 +5126,135 @@ export const books: Book[] = [
         "num": "01",
         "name": "序",
         "isDone": true,
-        "hasSkill": false,
         "category": "序言起例"
       },
       {
         "num": "02",
         "name": "起例问答",
         "isDone": true,
-        "hasSkill": false,
         "category": "序言起例"
       },
       {
         "num": "03",
         "name": "天干篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "04",
         "name": "地支篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "05",
         "name": "人元篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "06",
         "name": "五行篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "07",
         "name": "强弱篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "08",
         "name": "六神篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "09",
         "name": "比劫禄刃篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "强弱神煞"
       },
       {
         "num": "10",
         "name": "格局篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局"
       },
       {
         "num": "11",
         "name": "外格篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局"
       },
       {
         "num": "12",
         "name": "运限篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "13",
         "name": "流年篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "14",
         "name": "月建篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "运限"
       },
       {
         "num": "15",
         "name": "六亲篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "六亲女命"
       },
       {
         "num": "16",
         "name": "女命篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "六亲女命"
       },
       {
         "num": "17",
         "name": "富贵吉寿篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "评断"
       },
       {
         "num": "18",
         "name": "贫贱凶夭篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "评断"
       },
       {
         "num": "19",
         "name": "补充篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "20",
         "name": "评断篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "21",
         "name": "应运篇上",
         "isDone": true,
-        "hasSkill": false,
         "category": "补遗"
       },
       {
         "num": "22",
         "name": "应运篇下",
         "isDone": true,
-        "hasSkill": false,
         "category": "补遗"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "比劫禄刃篇"
@@ -5927,67 +5339,57 @@ export const books: Book[] = [
         "num": "01",
         "name": "本原",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "02",
         "name": "起例",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "03",
         "name": "强弱",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "04",
         "name": "宜忌",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "05",
         "name": "化合刑冲",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "06",
         "name": "先贤名论",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "07",
         "name": "润德堂藏稿",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "08",
         "name": "星家十要",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       },
       {
         "num": "09",
         "name": "跋",
         "isDone": false,
-        "hasSkill": false,
         "category": ""
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "跋"
@@ -6033,354 +5435,303 @@ export const books: Book[] = [
         "num": "01",
         "name": "子平真诠评注序",
         "isDone": true,
-        "hasSkill": false,
         "category": "序言"
       },
       {
         "num": "02",
         "name": "子平真诠评注凡例",
         "isDone": true,
-        "hasSkill": false,
         "category": "序言"
       },
       {
         "num": "03",
         "name": "论十干十二支",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "04",
         "name": "论阴阳生克",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "05",
         "name": "论阴阳生死",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "06",
         "name": "论十干配合性情",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "07",
         "name": "论十干合而不合",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "08",
         "name": "论十干得时不旺失时不弱",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "09",
         "name": "论刑冲会合解法",
         "isDone": true,
-        "hasSkill": false,
         "category": "基础理论"
       },
       {
         "num": "10",
         "name": "论用神",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "11",
         "name": "论用神成败救应",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "12",
         "name": "论用神变化",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "13",
         "name": "论用神纯杂",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "14",
         "name": "论用神格局高低",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "15",
         "name": "论用神因成得败因败得成",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "16",
         "name": "论用神配气候得失",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "17",
         "name": "论相神紧要",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "18",
         "name": "论杂气如何取用",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "19",
         "name": "论墓库刑冲之说",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "20",
         "name": "论四吉神能破格",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "21",
         "name": "论四凶神能成格",
         "isDone": true,
-        "hasSkill": false,
         "category": "用神论"
       },
       {
         "num": "22",
         "name": "论生克先后分吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "23",
         "name": "论星辰无关格局",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "24",
         "name": "论外格用舍",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "25",
         "name": "论宫分用神配六亲",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "26",
         "name": "论妻子",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "27",
         "name": "论行运",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "28",
         "name": "论行运成格变格",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "29",
         "name": "论喜忌干支有别",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "30",
         "name": "论支中喜忌逢运透清",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "31",
         "name": "论时说拘泥格局",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "32",
         "name": "论时说以讹传讹",
         "isDone": true,
-        "hasSkill": false,
         "category": "格局通论"
       },
       {
         "num": "33",
         "name": "论正官",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "34",
         "name": "论正官取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "35",
         "name": "论财",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "36",
         "name": "论财取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "37",
         "name": "论印绶",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "38",
         "name": "论印绶取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "39",
         "name": "论食神",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "40",
         "name": "论食神取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "41",
         "name": "论偏官",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "42",
         "name": "论偏官取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "43",
         "name": "论伤官",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "44",
         "name": "论伤官取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "45",
         "name": "论阳刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "46",
         "name": "论阳刃取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "47",
         "name": "论建禄月劫",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "48",
         "name": "论建禄月劫取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "各格详论"
       },
       {
         "num": "49",
         "name": "论杂格",
         "isDone": true,
-        "hasSkill": false,
         "category": "杂格"
       },
       {
         "num": "50",
         "name": "附论杂格取运",
         "isDone": true,
-        "hasSkill": false,
         "category": "杂格"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "附论杂格取运"
@@ -6549,193 +5900,165 @@ export const books: Book[] = [
         "num": "01",
         "name": "提要",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷首"
       },
       {
         "num": "02",
         "name": "原序",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷首"
       },
       {
         "num": "03",
         "name": "甲子纳音六十位",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "04",
         "name": "六十位轻重总结",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "05",
         "name": "本家贵人命",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "06",
         "name": "天乙贵人",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "07",
         "name": "论贵神优劣",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "08",
         "name": "此格三等",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "09",
         "name": "紫虚局",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "10",
         "name": "贵合贵食",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "11",
         "name": "天乙贵神合",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷上"
       },
       {
         "num": "12",
         "name": "清浊阴阳易卦",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "13",
         "name": "干支纳音数理",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "14",
         "name": "五行方位与变通",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "15",
         "name": "三元四柱主本",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "16",
         "name": "五行性情",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "17",
         "name": "真假邪正",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "18",
         "name": "升降清浊",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷中"
       },
       {
         "num": "19",
         "name": "衰旺取时",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "20",
         "name": "三元九限",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "21",
         "name": "天承地禄起论",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "22",
         "name": "六合之德六十表",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "23",
         "name": "鬼谷自谓",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "24",
         "name": "六十干支格局表",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "25",
         "name": "五行体合方位",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "26",
         "name": "神头禄总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       },
       {
         "num": "27",
         "name": "水土名用",
         "isDone": false,
-        "hasSkill": false,
         "category": "卷下"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "本家贵人命"
@@ -6835,1712 +6158,1467 @@ export const books: Book[] = [
         "num": "01",
         "name": "题记与引",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "02",
         "name": "论五行所生之始",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "03",
         "name": "论天地干支所出",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "04",
         "name": "天干相合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "05",
         "name": "十干所属方位十二支所属论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "06",
         "name": "论十二地支阴阳所属",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "07",
         "name": "论十二支六合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "08",
         "name": "论十二支三合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "09",
         "name": "论十二支相冲",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "10",
         "name": "论十二支相穿",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "11",
         "name": "论十二支相刑",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "12",
         "name": "论干支字义",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "13",
         "name": "论六十花甲子纳音并注解",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "14",
         "name": "论天干生旺死绝",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "15",
         "name": "天干五阳通变",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "16",
         "name": "天干五阴通变",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "17",
         "name": "论年上起月例",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "18",
         "name": "论日上起时例",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "19",
         "name": "论起玉堂天乙贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "20",
         "name": "论三奇贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "21",
         "name": "论月德贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "22",
         "name": "论天德贵人",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "23",
         "name": "论三元",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "24",
         "name": "论十干禄",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "25",
         "name": "论驿马",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "26",
         "name": "论天赦",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "27",
         "name": "论华盖",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "28",
         "name": "论六甲空亡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "29",
         "name": "论四大空亡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "30",
         "name": "论天罗地网",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "31",
         "name": "论羊刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "32",
         "name": "论起大运法",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "33",
         "name": "论行小运法",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "34",
         "name": "论五行相生相克",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "35",
         "name": "论天地干支暗藏总诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "36",
         "name": "地支藏遁歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "37",
         "name": "论日为主",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "38",
         "name": "论月令",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "39",
         "name": "论生旺",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "40",
         "name": "又论五行生旺衰绝吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "41",
         "name": "论五行墓库财印",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "42",
         "name": "论官杀混杂要制伏",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "43",
         "name": "论五行生克制化各有所喜所害例",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "44",
         "name": "子平举要歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "45",
         "name": "详解定真论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷一 · 基础理论"
       },
       {
         "num": "46",
         "name": "喜忌篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "47",
         "name": "继善篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "48",
         "name": "正官论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "49",
         "name": "论官星太过",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "50",
         "name": "论偏官即七杀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "51",
         "name": "论七杀即偏官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "52",
         "name": "论印绶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "53",
         "name": "论正财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "54",
         "name": "论偏财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "55",
         "name": "论食神",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "56",
         "name": "论倒食",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "57",
         "name": "论伤官",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "58",
         "name": "论劫财",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "59",
         "name": "论羊刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "60",
         "name": "论刑合",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "61",
         "name": "论福德秀气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "62",
         "name": "论杂气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "63",
         "name": "论日贵",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "64",
         "name": "论日德",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "65",
         "name": "论日刃",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "66",
         "name": "论魁罡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "67",
         "name": "论金神",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "68",
         "name": "论时墓",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "69",
         "name": "正官格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "70",
         "name": "杂气财官格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "71",
         "name": "月上偏官格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "72",
         "name": "时上偏财格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "73",
         "name": "时上一位贵格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "74",
         "name": "飞天禄马格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "75",
         "name": "倒冲格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "76",
         "name": "六乙鼠贵格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "77",
         "name": "合禄格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "78",
         "name": "子遥巳格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "79",
         "name": "壬骑龙背格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "80",
         "name": "井栏叉格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "81",
         "name": "归禄格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "82",
         "name": "六阴朝阳格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "83",
         "name": "刑合格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "84",
         "name": "拱贵格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "85",
         "name": "拱禄格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "86",
         "name": "印绶格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "87",
         "name": "杂气印绶格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "88",
         "name": "六壬趋艮格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "89",
         "name": "六甲趋干格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "90",
         "name": "勾陈得位格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "91",
         "name": "玄武当权格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "92",
         "name": "炎上格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "93",
         "name": "润下格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "94",
         "name": "从革格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "95",
         "name": "稼穑格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "96",
         "name": "曲直格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "97",
         "name": "日德秀气格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "98",
         "name": "弃命从财格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "99",
         "name": "伤官生财格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "100",
         "name": "弃命从杀格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "101",
         "name": "伤官带杀格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "102",
         "name": "岁德扶杀格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "103",
         "name": "岁德扶财格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "104",
         "name": "夹丘格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "105",
         "name": "两干不杂格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "106",
         "name": "五行俱足格",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷二 · 格局十神"
       },
       {
         "num": "107",
         "name": "六亲总论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "108",
         "name": "六亲捷要歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "109",
         "name": "论父",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "110",
         "name": "论母",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "111",
         "name": "论妻妾",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "112",
         "name": "论兄弟姐妹",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "113",
         "name": "论子息",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "114",
         "name": "论妇人总诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "115",
         "name": "阴命赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "116",
         "name": "女命富贵贫贱篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "117",
         "name": "论小儿",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "118",
         "name": "论小儿关杀例",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "119",
         "name": "论性情",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "120",
         "name": "论疾病",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "121",
         "name": "论大运",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "122",
         "name": "论太岁吉凶",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "123",
         "name": "论运化气",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "124",
         "name": "化气十段锦",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "125",
         "name": "神趣八法-类象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "126",
         "name": "神趣八法-属象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "127",
         "name": "神趣八法-从象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "128",
         "name": "神趣八法-化象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "129",
         "name": "神趣八法-照象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "130",
         "name": "神趣八法-返象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "131",
         "name": "神趣八法-鬼象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "132",
         "name": "神趣八法-伏象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "133",
         "name": "杂论口诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "134",
         "name": "群兴论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "135",
         "name": "论兴亡",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "136",
         "name": "宝法第一",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "137",
         "name": "宝法第二",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "138",
         "name": "寸金搜髓论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "139",
         "name": "论命细法",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "140",
         "name": "伤官说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "141",
         "name": "心镜歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "142",
         "name": "妖祥赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "143",
         "name": "络绎赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "144",
         "name": "相心赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "145",
         "name": "玄机赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "146",
         "name": "幽微赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "147",
         "name": "五行元理消息赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷三 · 六亲进阶"
       },
       {
         "num": "148",
         "name": "金玉赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "149",
         "name": "碧渊赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "150",
         "name": "造微论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "151",
         "name": "人鉴论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "152",
         "name": "爱憎赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "153",
         "name": "万金赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "154",
         "name": "掣要捷驰玄妙诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "155",
         "name": "渊源集说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "156",
         "name": "子平百章歌",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "157",
         "name": "四言独步",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "158",
         "name": "身弱论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "159",
         "name": "弃命从杀论",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "160",
         "name": "五言独步",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "161",
         "name": "十干体象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "162",
         "name": "十二支体象",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷四 · 赋文精要"
       },
       {
         "num": "163",
         "name": "正官诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "164",
         "name": "偏官诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "165",
         "name": "印绶诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "166",
         "name": "正财诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "167",
         "name": "偏财诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "168",
         "name": "食神诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "169",
         "name": "伤官诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "170",
         "name": "羊刃诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "171",
         "name": "刑合诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "172",
         "name": "日贵诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "173",
         "name": "金神诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "174",
         "name": "日德诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "175",
         "name": "魁罡诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "176",
         "name": "时墓诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "177",
         "name": "杂气财官诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "178",
         "name": "时上偏财诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "179",
         "name": "时上一位贵诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "180",
         "name": "飞天禄马诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "181",
         "name": "六乙鼠贵诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "182",
         "name": "合禄诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "183",
         "name": "子遥巳诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "184",
         "name": "壬骑龙背诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "185",
         "name": "井栏叉格诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "186",
         "name": "归禄格诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "187",
         "name": "六阴朝阳诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "188",
         "name": "拱禄拱贵诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "189",
         "name": "六甲趋干诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "190",
         "name": "六壬趋艮诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "191",
         "name": "勾陈得位诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "192",
         "name": "玄武当权诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "193",
         "name": "润下诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "194",
         "name": "从革诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "195",
         "name": "稼穑诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "196",
         "name": "曲直格诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "197",
         "name": "炎上格诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "198",
         "name": "福德格诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "199",
         "name": "弃命从财诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "200",
         "name": "弃命从杀诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "201",
         "name": "杀重有救诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "202",
         "name": "天元一气诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "203",
         "name": "化气诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "204",
         "name": "刑冲诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "205",
         "name": "克妻诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "206",
         "name": "克子诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "207",
         "name": "运晦诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "208",
         "name": "运通诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "209",
         "name": "带疾诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "210",
         "name": "寿元诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "211",
         "name": "飘荡诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "212",
         "name": "女命诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "213",
         "name": "长生诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "214",
         "name": "沐浴诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "215",
         "name": "冠带诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "216",
         "name": "临官诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "217",
         "name": "帝旺诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "218",
         "name": "衰病死诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "219",
         "name": "墓库诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "220",
         "name": "胞胎诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "221",
         "name": "胎养诗诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "222",
         "name": "五行生克赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "223",
         "name": "珞琭子消息赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "224",
         "name": "论八字撮要法",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "225",
         "name": "会命要说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷五 · 诗诀口诀"
       },
       {
         "num": "226",
         "name": "病药说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "227",
         "name": "雕枯旺弱四病说类",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "228",
         "name": "损益生长四药说类",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "229",
         "name": "动静说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "230",
         "name": "盖头说",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "231",
         "name": "玉井奥诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "232",
         "name": "气象篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "233",
         "name": "看命口诀",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "234",
         "name": "巫咸撮要",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "235",
         "name": "元理赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "236",
         "name": "明通赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "237",
         "name": "六神篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "238",
         "name": "金声玉振赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "239",
         "name": "一行禅师天元赋注解",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷六 · 高阶论法"
       },
       {
         "num": "240",
         "name": "崖泉摘锦",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "241",
         "name": "渭泾篇",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "242",
         "name": "女命大义",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "243",
         "name": "讲命捷径赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       },
       {
         "num": "244",
         "name": "金鼎神秘赋",
         "isDone": true,
-        "hasSkill": false,
         "category": "卷七 · 杂论补遗"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "爱憎赋"
@@ -9288,447 +8366,379 @@ export const books: Book[] = [
         "num": "01",
         "name": "天道",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "02",
         "name": "坤道",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "03",
         "name": "人道",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "04",
         "name": "知命",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "05",
         "name": "理气",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "06",
         "name": "配合",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "07",
         "name": "天干",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "08",
         "name": "地支",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "09",
         "name": "干支总论",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "10",
         "name": "形象",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "11",
         "name": "方局",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "12",
         "name": "八格",
         "isDone": true,
-        "hasSkill": true,
         "category": "上篇 · 通神论"
       },
       {
         "num": "13",
         "name": "体用",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "14",
         "name": "精神",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "15",
         "name": "月令",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "16",
         "name": "生时",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "17",
         "name": "衰旺",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "18",
         "name": "中和",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "19",
         "name": "源流",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "20",
         "name": "通关",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "21",
         "name": "官杀",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "22",
         "name": "伤官",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "23",
         "name": "清气",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "24",
         "name": "浊气",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "25",
         "name": "真神",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "26",
         "name": "假神",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "27",
         "name": "刚柔",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "28",
         "name": "顺逆",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "29",
         "name": "寒暖",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "30",
         "name": "燥湿",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "31",
         "name": "隐显",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "32",
         "name": "众寡",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "33",
         "name": "震兑",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "34",
         "name": "坎离",
         "isDone": true,
-        "hasSkill": false,
         "category": "上篇 · 通神论"
       },
       {
         "num": "35",
         "name": "夫妻",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "36",
         "name": "子女",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "37",
         "name": "父母",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "38",
         "name": "兄弟",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "39",
         "name": "何知",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "40",
         "name": "女命",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "41",
         "name": "小儿",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "42",
         "name": "才德",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "43",
         "name": "奋郁",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "44",
         "name": "恩怨",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "45",
         "name": "闲神",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "46",
         "name": "从象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "47",
         "name": "化象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "48",
         "name": "假从",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "49",
         "name": "假化",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "50",
         "name": "顺局",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "51",
         "name": "反局",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "52",
         "name": "战局",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "53",
         "name": "合局",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "54",
         "name": "君象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "55",
         "name": "臣象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "56",
         "name": "母象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "57",
         "name": "子象",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "58",
         "name": "性情",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "59",
         "name": "疾病",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "60",
         "name": "出身",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "61",
         "name": "地位",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "62",
         "name": "岁运",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
       },
       {
         "num": "63",
         "name": "贞元",
         "isDone": true,
-        "hasSkill": false,
         "category": "下篇 · 六亲论"
-      }
-    ],
-    "skills": [
-      {
-        "name": "八格"
       }
     ],
     "sources": [
@@ -9938,130 +8948,111 @@ export const books: Book[] = [
         "num": "01",
         "name": "综论",
         "isDone": false,
-        "hasSkill": false,
         "category": "综论"
       },
       {
         "num": "02",
         "name": "杂论一",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "03",
         "name": "杂论二",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "04",
         "name": "杂论三",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "05",
         "name": "杂论四",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "06",
         "name": "杂论五",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "07",
         "name": "杂论六",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "08",
         "name": "杂论七",
         "isDone": false,
-        "hasSkill": false,
         "category": "杂论"
       },
       {
         "num": "09",
         "name": "疾病论",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "10",
         "name": "天干论",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "11",
         "name": "六神论",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "12",
         "name": "家人论一",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "13",
         "name": "家人论二",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "14",
         "name": "论专旺",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "15",
         "name": "干合论一",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "16",
         "name": "干合论二",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "17",
         "name": "地支论",
         "isDone": false,
-        "hasSkill": false,
         "category": "专题论"
       },
       {
         "num": "18",
         "name": "上下论",
         "isDone": false,
-        "hasSkill": false,
         "category": "余论"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "地支论"
@@ -10134,795 +9125,681 @@ export const books: Book[] = [
         "num": "01",
         "name": "五星正说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "02",
         "name": "五星谬说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "03",
         "name": "男女合婚说",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "04",
         "name": "总论子平谬说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "05",
         "name": "动静说",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "06",
         "name": "盖头说",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "07",
         "name": "六亲说",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "08",
         "name": "病药说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "09",
         "name": "雕桔旺弱四病说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "10",
         "name": "损益生长四药说类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "11",
         "name": "正官格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "12",
         "name": "偏官格 附弃命从杀格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "13",
         "name": "时上一位贵格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "14",
         "name": "附官杀去留杂格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷一"
       },
       {
         "num": "15",
         "name": "月支正财格 附弃从财格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "16",
         "name": "时上偏财格 附月偏财格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "17",
         "name": "伤官食神格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "18",
         "name": "印绶格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "19",
         "name": "阳刃格 附比劫、建禄格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "20",
         "name": "杂气财官印绶格 附时墓格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "21",
         "name": "金神格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷二"
       },
       {
         "num": "22",
         "name": "飞天禄马格 附倒冲禄马格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "23",
         "name": "子遥巳格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "24",
         "name": "丑遥巳格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "25",
         "name": "壬骑龙背格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "26",
         "name": "井栏叉格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "27",
         "name": "六乙鼠贵格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "28",
         "name": "六阴朝阳格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "29",
         "name": "刑合格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "30",
         "name": "合禄格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "31",
         "name": "曲直仁寿格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "32",
         "name": "稼穑格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "33",
         "name": "炎上格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "34",
         "name": "润下格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "35",
         "name": "从革格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "36",
         "name": "年时上官星格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "37",
         "name": "从化格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "38",
         "name": "来兵拱财格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "39",
         "name": "岁德扶杀格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "40",
         "name": "专财格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "41",
         "name": "日德格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "42",
         "name": "日贵格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "43",
         "name": "魁罡格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "44",
         "name": "勾陈得位格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "45",
         "name": "玄武当权格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "46",
         "name": "财官双美格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "47",
         "name": "拱禄拱贵二格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "48",
         "name": "日禄归时格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "49",
         "name": "四位纯全格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "50",
         "name": "天元一气格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "51",
         "name": "三合聚集格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "52",
         "name": "福德格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "53",
         "name": "神趣八法",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "54",
         "name": "论大运",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "55",
         "name": "论太岁",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "56",
         "name": "认格局生死之歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "57",
         "name": "五星论",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "58",
         "name": "金不换骨髓歌断",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷三"
       },
       {
         "num": "59",
         "name": "十天干体象全编论",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "60",
         "name": "十二支咏",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "61",
         "name": "总咏",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "62",
         "name": "吉神类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "63",
         "name": "凶神类",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "64",
         "name": "起八字诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "65",
         "name": "子平举要",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "66",
         "name": "男女命小运定局",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "67",
         "name": "天干阴阳通变、定格局决",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "68",
         "name": "子平泛论",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "69",
         "name": "十干从化定诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "70",
         "name": "十段锦",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "71",
         "name": "十段化气",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "72",
         "name": "五阴歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "73",
         "name": "天元一字歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "74",
         "name": "运晦运通歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "75",
         "name": "刑克歌 刑妻歌 克子歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "76",
         "name": "带疾歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "77",
         "name": "寿元歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "78",
         "name": "飘荡歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "79",
         "name": "女命歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "80",
         "name": "月建生克",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "81",
         "name": "看命捷歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "82",
         "name": "论诸格有救",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "83",
         "name": "取格指诀歌断",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "84",
         "name": "节气歌断",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "85",
         "name": "万尚书琼玑三盘赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "86",
         "name": "崖泉男女命赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "87",
         "name": "讲命捷径赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "88",
         "name": "四言独步 身弱论 弃命从杀格",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "89",
         "name": "五步独言",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷四"
       },
       {
         "num": "90",
         "name": "喜忌篇",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "91",
         "name": "继善篇",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "92",
         "name": "六神篇",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "93",
         "name": "气象篇",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "94",
         "name": "渭泾论",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "95",
         "name": "定真篇",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷五"
       },
       {
         "num": "96",
         "name": "五行元理消息赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "97",
         "name": "五行生克赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "98",
         "name": "一行禅师天元赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "99",
         "name": "捷驰千里马赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "100",
         "name": "络绎赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "101",
         "name": "玄机赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "102",
         "name": "憎爱赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "103",
         "name": "万金赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "104",
         "name": "相心赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "105",
         "name": "仙机赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "106",
         "name": "金玉赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "107",
         "name": "人鉴论",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "108",
         "name": "渊源集说",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "109",
         "name": "妖祥赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "110",
         "name": "幽微天干赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "111",
         "name": "人元消息赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "112",
         "name": "地支赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       },
       {
         "num": "113",
         "name": "病源赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "神峰通考卷六"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "病药说类"
@@ -11280,809 +10157,693 @@ export const books: Book[] = [
         "num": "001",
         "name": "五行总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "五行总论"
       },
       {
         "num": "002",
         "name": "甲木总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "003",
         "name": "正月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "004",
         "name": "二月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "005",
         "name": "三月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "006",
         "name": "四月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "007",
         "name": "五月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "008",
         "name": "五、六月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "009",
         "name": "七月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "010",
         "name": "八月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "011",
         "name": "九月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "012",
         "name": "十月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "013",
         "name": "十一月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "014",
         "name": "十二月甲木",
         "isDone": false,
-        "hasSkill": false,
         "category": "甲木"
       },
       {
         "num": "015",
         "name": "正月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "016",
         "name": "二月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "017",
         "name": "三月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "018",
         "name": "四月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "019",
         "name": "五月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "020",
         "name": "六月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "021",
         "name": "七月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "022",
         "name": "八月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "023",
         "name": "九月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "024",
         "name": "十月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "025",
         "name": "十一月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "026",
         "name": "十二月乙木",
         "isDone": false,
-        "hasSkill": false,
         "category": "乙木"
       },
       {
         "num": "027",
         "name": "正月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "028",
         "name": "二月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "029",
         "name": "三月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "030",
         "name": "四月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "031",
         "name": "五月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "032",
         "name": "六月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "033",
         "name": "七月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "034",
         "name": "八月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "035",
         "name": "九月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "036",
         "name": "十月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "037",
         "name": "十一月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "038",
         "name": "十二月丙火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丙火"
       },
       {
         "num": "039",
         "name": "正月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "040",
         "name": "二月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "041",
         "name": "三月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "042",
         "name": "四月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "043",
         "name": "五月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "044",
         "name": "六月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "045",
         "name": "七月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "046",
         "name": "八、九月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "047",
         "name": "十月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "048",
         "name": "十一、十二月丁火",
         "isDone": false,
-        "hasSkill": false,
         "category": "丁火"
       },
       {
         "num": "049",
         "name": "论土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "050",
         "name": "正二月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "051",
         "name": "三月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "052",
         "name": "四月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "053",
         "name": "五月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "054",
         "name": "六月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "055",
         "name": "七月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "056",
         "name": "八月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "057",
         "name": "九月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "058",
         "name": "十月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "059",
         "name": "十一、十二月戊土",
         "isDone": false,
-        "hasSkill": false,
         "category": "戊土"
       },
       {
         "num": "060",
         "name": "正月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "061",
         "name": "二月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "062",
         "name": "三月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "063",
         "name": "四五六月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "064",
         "name": "七八九月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "065",
         "name": "十、十一、十二月己土",
         "isDone": false,
-        "hasSkill": false,
         "category": "己土"
       },
       {
         "num": "066",
         "name": "庚金总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "067",
         "name": "正月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "068",
         "name": "二月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "069",
         "name": "三月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "070",
         "name": "四月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "071",
         "name": "五月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "072",
         "name": "六月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "073",
         "name": "七月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "074",
         "name": "八月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "075",
         "name": "九月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "076",
         "name": "十月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "077",
         "name": "十一月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "078",
         "name": "十二月庚金",
         "isDone": false,
-        "hasSkill": false,
         "category": "庚金"
       },
       {
         "num": "079",
         "name": "正月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "080",
         "name": "二月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "081",
         "name": "三月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "082",
         "name": "四月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "083",
         "name": "五月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "084",
         "name": "六月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "085",
         "name": "七月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "086",
         "name": "八月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "087",
         "name": "九月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "088",
         "name": "十月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "089",
         "name": "十一月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "090",
         "name": "十二月辛金",
         "isDone": false,
-        "hasSkill": false,
         "category": "辛金"
       },
       {
         "num": "091",
         "name": "壬水总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "092",
         "name": "正月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "093",
         "name": "二月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "094",
         "name": "三月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "095",
         "name": "四月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "096",
         "name": "五月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "097",
         "name": "六月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "098",
         "name": "七月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "099",
         "name": "八月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "100",
         "name": "九月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "101",
         "name": "十月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "102",
         "name": "十一月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "103",
         "name": "十二月壬水",
         "isDone": false,
-        "hasSkill": false,
         "category": "壬水"
       },
       {
         "num": "104",
         "name": "正月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "105",
         "name": "二月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "106",
         "name": "三月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "107",
         "name": "四月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "108",
         "name": "五月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "109",
         "name": "六月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "110",
         "name": "七月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "111",
         "name": "八月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "112",
         "name": "九月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "113",
         "name": "十月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "114",
         "name": "十一月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       },
       {
         "num": "115",
         "name": "十二月癸水",
         "isDone": false,
-        "hasSkill": false,
         "category": "癸水"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "八、九月丁火"
@@ -12446,627 +11207,537 @@ export const books: Book[] = [
         "num": "01",
         "name": "罗序",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "02",
         "name": "太微赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "03",
         "name": "形性赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "04",
         "name": "星垣论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "05",
         "name": "斗数准绳",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "06",
         "name": "斗数发微论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "07",
         "name": "重补斗数彀率",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "08",
         "name": "增补太微赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "09",
         "name": "问紫微所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "10",
         "name": "问天机所主如何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "11",
         "name": "问太阳所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "12",
         "name": "问武曲星所主为何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "13",
         "name": "问天同星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "14",
         "name": "问廉贞所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "15",
         "name": "问天府所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "16",
         "name": "问太阴星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "17",
         "name": "问贪狼所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "18",
         "name": "问巨门所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "19",
         "name": "问天相星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "20",
         "name": "问天梁星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "21",
         "name": "问七杀星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "22",
         "name": "问破军所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "23",
         "name": "问文昌星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "24",
         "name": "问文曲星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "25",
         "name": "问流年昌曲若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "26",
         "name": "问左辅所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "27",
         "name": "问右弼所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "28",
         "name": "问天魁天钺星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "29",
         "name": "问禄存星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "30",
         "name": "问天马星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "31",
         "name": "问化禄星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "32",
         "name": "问化权星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "33",
         "name": "问化科星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "34",
         "name": "问化忌星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "35",
         "name": "问擎羊星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "36",
         "name": "问陀罗星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "37",
         "name": "羊陀二星总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "38",
         "name": "问火星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "39",
         "name": "问铃星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "40",
         "name": "羊陀火铃四星总论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "41",
         "name": "问天空地劫所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "42",
         "name": "问天伤天使所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "43",
         "name": "问天刑星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "44",
         "name": "问天姚星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "45",
         "name": "问天哭天虚二星所主若何？",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "46",
         "name": "斗数骨髓赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "47",
         "name": "女命骨髓赋",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "48",
         "name": "定富贵贫贱十等论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "49",
         "name": "十二宫诸星得地合格诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "50",
         "name": "十二宫诸星失陷破格诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "51",
         "name": "十二宫诸星得地富贵论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "52",
         "name": "十二宫诸星失陷贫贱论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "53",
         "name": "定富局",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "54",
         "name": "定贵局",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "55",
         "name": "定贫贱局",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "56",
         "name": "定杂局",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷一"
       },
       {
         "num": "57",
         "name": "安身命例",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "58",
         "name": "命宫",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "59",
         "name": "兄弟",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "60",
         "name": "妻妾",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "61",
         "name": "子女",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "62",
         "name": "财帛",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "63",
         "name": "疾厄",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "64",
         "name": "迁移",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "65",
         "name": "奴仆",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "66",
         "name": "官禄",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "67",
         "name": "田宅",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "68",
         "name": "福德",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "69",
         "name": "父母",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷二"
       },
       {
         "num": "70",
         "name": "谈星要论",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "71",
         "name": "论人命入格",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "72",
         "name": "论格星数高下",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "73",
         "name": "论男女命同异",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "74",
         "name": "论小儿命",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "75",
         "name": "定小儿生时诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "76",
         "name": "论人生时安命吉凶",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "77",
         "name": "论人生时要审的确",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "78",
         "name": "论小儿克亲",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "79",
         "name": "论命先贫后富",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "80",
         "name": "论大限十年祸福何如",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "81",
         "name": "论二限太岁吉凶",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "82",
         "name": "论行限分南北斗",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "83",
         "name": "论流年太岁吉凶星杀",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "84",
         "name": "论阴骘延寿",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "85",
         "name": "论羊陀迭并",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "86",
         "name": "论七杀重逢",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "87",
         "name": "论大小限星辰过十二宫遇十二支所忌诀",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "88",
         "name": "论立命行限宫歌",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       },
       {
         "num": "89",
         "name": "论诸星同垣各司所宜分别富贵贫贱夭寿",
         "isDone": false,
-        "hasSkill": false,
         "category": "紫微斗数全书卷三"
       }
     ],
-    "skills": [],
     "sources": [
       {
         "name": "安身命例"

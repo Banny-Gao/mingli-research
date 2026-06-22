@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 // DP-3: State Machine - explicit chapter state types
 export type ChapterState = 'unread' | 'reading' | 'annotated' | 'completed'
-export type BookmarkType = 'interp' | 'source' | 'skill'
+export type BookmarkType = 'interp' | 'source'
 
 // DP-3: State transition helper
 export function getChapterState(

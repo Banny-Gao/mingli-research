@@ -310,7 +310,7 @@ const Notes = () => {
                               onClick={() =>
                                 openReader({
                                   bookSlug: bm.slug,
-                                  modalType: chm.type as 'interp' | 'skill' | 'source',
+                                  modalType: chm.type as 'interp' | 'source',
                                   modalKey: chm.name,
                                 })
                               }
