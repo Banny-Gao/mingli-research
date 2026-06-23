@@ -44,6 +44,19 @@ export function useChapterNavigation(
   const { chapters, modalType, modalKey, bookData } = params
 
   return useMemo(() => {
+    // skill 模式没有章节目录，跳过导航派生（chapterIndex / prev / next 均返回 null/空）
+    if (modalType === 'skill') {
+      return {
+        chapterName: modalKey,
+        chapterIndex: -1,
+        hasPrev: false,
+        hasNext: false,
+        prevChapter: null,
+        nextChapter: null,
+        contentNavItems: [],
+      }
+    }
+
     const chapterName = modalKey
     const chapterIndex = chapters.findIndex(c => c.name === chapterName)
     const hasPrev = chapterIndex > 0

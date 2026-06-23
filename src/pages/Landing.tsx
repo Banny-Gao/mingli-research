@@ -1,13 +1,19 @@
 import { useState, useRef, useLayoutEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { UserStar } from 'lucide-react'
+import { UserStar, Wand2 } from 'lucide-react'
 import gsap from 'gsap'
 import { books } from '../data/books'
 import type { ArtSection } from '../data/book-types'
 import SearchBar from '../components/SearchBar'
 import SectionHeader from '../components/SectionHeader'
 import { ThemeToggle } from '../components/ThemeToggle'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from '../components/ui/dropdown-menu'
 import { CATEGORY_TREE, SECTION_ORDER } from '../data/category-tree'
 
 const Landing = () => {
@@ -72,9 +78,30 @@ const Landing = () => {
       </Helmet>
 
       <div className="top-actions">
-        <Link to="/notes">
-          <UserStar color="var(--color-purple-light)" size={20} />
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={<UserStar color="var(--color-purple-light)" size={20} />}
+            aria-label="笔记与技能菜单"
+          />
+          <DropdownMenuContent align="end" sideOffset={8}>
+            <DropdownMenuItem
+              render={
+                <Link to="/notes">
+                  <UserStar size={14} color="var(--color-purple-light)" />
+                  <span>个人笔记</span>
+                </Link>
+              }
+            />
+            <DropdownMenuItem
+              render={
+                <Link to="/skills">
+                  <Wand2 size={14} color="var(--color-gold)" />
+                  <span>技能列表</span>
+                </Link>
+              }
+            />
+          </DropdownMenuContent>
+        </DropdownMenu>
         <SearchBar />
         <ThemeToggle />
       </div>

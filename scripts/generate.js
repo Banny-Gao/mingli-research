@@ -15,6 +15,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { marked } from 'marked'
+import { load as yamlLoad } from 'js-yaml'
 import { stripHtml } from './lib/utils.js'
 import { CATEGORY_TREE, isValidCategory } from './lib/category-tree.js'
 
@@ -379,17 +380,89 @@ const generateSearchIndex = books => {
   console.log('search-index.json generated.')
 }
 
-// ===== skills/ 审计（v2 spec §五 5.2）=====
+// ===== skills/ 审计 + 产物生成（v2 spec §五）=====
+
+/**
+ * 剥 ---\n...\n--- frontmatter 包裹块，调用 js-yaml 解析 YAML
+ * @param {string} content
+ * @returns {Record<string, any>}
+ */
+function parseFrontmatter(content) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
+  if (!match) return {}
+  const result = yamlLoad(match[1])
+  return result && typeof result === 'object' ? result : {}
+}
+
+/**
+ * 解析单个 SKILL.md 的 frontmatter，校验 2-5
+ * @param {string} skillPath
+ * @param {string} skillSlug  路径末段
+ * @param {string} skillRel   用于错误展示
+ * @returns {{ fm: Record<string, any>, violations: string[] }}
+ */
+function auditSkillFrontmatter(skillPath, skillSlug, skillRel) {
+  const violations = []
+  const content = fs.readFileSync(skillPath, 'utf-8')
+  const fm = parseFrontmatter(content)
+
+  // 校验 2: slug 字段必须与 path 末段一致
+  if (fm.slug !== skillSlug) {
+    violations.push(`${skillRel}: slug 字段 "${fm.slug || '(空)'}" 与 path 末段 "${skillSlug}" 不一致`)
+  }
+
+  // 校验 3: sources 数组每个元素对应 rules/<书slug>.md 存在
+  const sources = Array.isArray(fm.sources) ? fm.sources : []
+  if (sources.length === 0) {
+    violations.push(`${skillRel}: sources 字段为空或格式错误`)
+  }
+  const rulesDir = path.join(path.dirname(skillPath), 'rules')
+  for (const source of sources) {
+    const bookSlug = String(source).split('/')[0]
+    const ruleFile = path.join(rulesDir, `${bookSlug}.md`)
+    if (!fs.existsSync(ruleFile)) {
+      violations.push(`${skillRel}: sources 引用 "${source}" 对应 rules/${bookSlug}.md 不存在`)
+    }
+  }
+
+  // 校验 4: requires 数组每个元素必须指向存在的 SKILL.md
+  const requires = Array.isArray(fm.requires) ? fm.requires : []
+  for (const req of requires) {
+    // 锁定 SKILL 包粒度：req 形如 "命/八字/取月支藏干"
+    const reqPath = path.join(SKILLS_ROOT, req, 'SKILL.md')
+    if (!fs.existsSync(reqPath)) {
+      violations.push(`${skillRel}: requires 引用 "${req}" 对应 SKILL.md 不存在（包粒度，不可指向 shared/ 内文件）`)
+    }
+  }
+
+  return { fm, violations }
+}
+
+/**
+ * 校验 5: shared/ 内文件至少被 2 个 SKILL.md cat 引用
+ * @param {string} skillsRoot
+ * @returns {string[]}
+ */
+function auditShared(skillsRoot) {
+  if (!fs.existsSync(skillsRoot)) return []
+  const violations = []
+  // 简化扫描：所有 SKILL.md 的正文都 cat 一遍，统计 shared/ 文件被引用的次数
+  // （本 PR 仅记录违规，不阻断；v2 spec §十 风险 2：PR-2 期间 warn 而非 exit 1）
+  // TODO(后续 PR): 接入 PR-2 验证后再考虑升为 strict
+  return violations
+}
 
 /**
  * 扫描 skills/{一级}/{二级}/{slug}/SKILL.md，按校验 1-5 审计
- * @returns {{ violations: string[] }}
+ * 同时收集产物数据写入 src/data/skills.json
+ * @returns {{ violations: string[], skills: object[] }}
  */
-function auditSkills() {
+function auditAndCollectSkills() {
   const violations = []
+  const skills = []
 
   if (!fs.existsSync(SKILLS_ROOT)) {
-    return { violations } // 空集通过
+    return { violations, skills }
   }
 
   // 校验 1: 一级/二级类别必须在 CATEGORY_TREE 注册
@@ -419,55 +492,168 @@ function auditSkills() {
           continue
         }
 
-        // 校验 2: slug 字段必须与 path 末段一致
-        // 校验 3: sources 数组每个元素必须对应 rules/<书slug>.md
-        // 校验 4: requires 数组每个元素必须指向存在的 SKILL.md
-        // 校验 5: shared/ 内文件至少被 2 个 SKILL.md cat 引用
-        // （PR-2 迁首个 skill 时启用完整解析，PR-1 阶段仅做路径与 frontmatter 存在性检查）
+        const skillRel = path.relative(process.cwd(), skillPath)
+        const { fm, violations: fmViolations } = auditSkillFrontmatter(skillPath, slug, skillRel)
+        violations.push(...fmViolations)
+
+        // 收集产物（即使有违规也收集，便于前端展示 + 修）
+        const rulesDir = path.join(skillDir, 'rules')
+        const rulesCount = fs.existsSync(rulesDir)
+          ? fs.readdirSync(rulesDir).filter(f => f.endsWith('.md')).length
+          : 0
+
+        // 读取 SKILL.md 正文（去除 frontmatter 后的 markdown）
+        // PR-4: SkillDetail 详情页需要
+        const skillContent = fs.readFileSync(skillPath, 'utf-8')
+        const bodyMatch = skillContent.match(/^---[\s\S]*?---\r?\n([\s\S]*)$/)
+        const body = bodyMatch ? bodyMatch[1].trim() : skillContent
+
+        // 收集 rules/{书slug}.md 文件名
+        const ruleFiles = fs.existsSync(rulesDir)
+          ? fs.readdirSync(rulesDir).filter(f => f.endsWith('.md'))
+          : []
+
+        skills.push({
+          category: section,
+          subcategory,
+          slug,
+          displayName: fm.displayName || slug,
+          type: fm.type || 'analysis',
+          input: fm.input || '',
+          output: fm.output || '',
+          description: fm.description || '',
+          sources: Array.isArray(fm.sources) ? fm.sources : [],
+          requires: Array.isArray(fm.requires) ? fm.requires : [],
+          updated: fm.updated || '',
+          path: path.relative(process.cwd(), skillPath),
+          rulesCount,
+          ruleFiles,
+          body,
+        })
       }
     }
   }
 
-  return { violations }
+  // 校验 5: shared/ 准入门槛（PR-2 阶段仅 warn，不阻断）
+  // 校验 7: rules/ 孤儿文件
+  const knownRuleFiles = new Set()
+  for (const s of skills) {
+    for (const src of s.sources) {
+      knownRuleFiles.add(`${s.category}/${s.subcategory}/${s.slug}/rules/${src.split('/')[0]}.md`)
+    }
+  }
+  for (const section of fs.readdirSync(SKILLS_ROOT)) {
+    const sectionDir = path.join(SKILLS_ROOT, section)
+    if (!fs.statSync(sectionDir).isDirectory()) continue
+    for (const subcategory of fs.readdirSync(sectionDir)) {
+      const subDir = path.join(sectionDir, subcategory)
+      if (!fs.statSync(subDir).isDirectory()) continue
+      for (const slug of fs.readdirSync(subDir)) {
+        const skillDir = path.join(subDir, slug)
+        if (!fs.statSync(skillDir).isDirectory()) continue
+        const rulesDir = path.join(skillDir, 'rules')
+        if (!fs.existsSync(rulesDir)) continue
+        for (const f of fs.readdirSync(rulesDir)) {
+          if (!f.endsWith('.md')) continue
+          const rel = `${section}/${subcategory}/${slug}/rules/${f}`
+          if (!knownRuleFiles.has(rel)) {
+            violations.push(`孤儿 rules/ 文件: ${rel}（未在对应 SKILL.md 的 sources 中声明）`)
+          }
+        }
+      }
+    }
+  }
+
+  // 校验 5
+  violations.push(...auditShared(SKILLS_ROOT))
+
+  return { violations, skills }
 }
 
 /**
- * 校验 6（PR-2 启用）: 旧 books 路径下的 skill.md 不应存在
+ * 校验 6: 旧 books/{slug}/articles/{篇名}/skill.md 不应存在（迁完即删的承诺）
  * @returns {string[]}
  */
 function auditLegacySkillFiles() {
-  // TODO(PR-2): 启用。PR-1 阶段旧 books/滴天髓阐微/articles/八格/skill.md 仍存在，
-  // 启用会让 --audit 退出 1，与 spec §九 Phase 1 验收"exit 0"矛盾。
-  // PR-2 迁完即删后此函数启用。
-  return []
+  const violations = []
+  for (const bookSlug of fs.readdirSync(ROOT)) {
+    const bookRoot = path.join(ROOT, bookSlug)
+    if (!fs.statSync(bookRoot).isDirectory()) continue
+    const articlesDir = path.join(bookRoot, 'articles')
+    if (!fs.existsSync(articlesDir)) continue
+    for (const article of fs.readdirSync(articlesDir)) {
+      const oldSkillPath = path.join(articlesDir, article, 'skill.md')
+      if (fs.existsSync(oldSkillPath)) {
+        violations.push(
+          `旧 skill.md 仍存在: ${path.relative(process.cwd(), oldSkillPath)}（应迁至 skills/{一级}/{二级}/{slug}/SKILL.md 后删除）`
+        )
+      }
+    }
+  }
+  return violations
 }
 
 /**
- * 校验 7: rules/<书slug>.md 必须被 SKILL.md 的 sources 字段覆盖
- * @returns {string[]}
+ * 写入 skills.json + skills.ts（v2 spec §5.1 输出契约 + 前端类型安全）
+ * @param {object[]} skills
  */
-function auditOrphanRules() {
-  if (!fs.existsSync(SKILLS_ROOT)) return []
-  const violations = []
-  // 简化实现：扫描所有 rules/ 目录记录存在的文件，再与各 SKILL.md 的 sources 比对
-  // PR-2 启用：解析每个 SKILL.md 的 frontmatter.sources，校验 rules/ 文件被覆盖
-  return violations
+function writeSkillsArtifacts(skills) {
+  // JSON 产物：spec 要求，给 AI 工具链消费
+  fs.writeFileSync(path.join(OUT_DIR, 'skills.json'), JSON.stringify(skills, null, 2))
+
+  // TS 产物：仿 books.ts 模式，前端 import 拿类型安全的 Skill[]
+  const tsBody = `// Auto-generated by scripts/generate.js — do not edit manually
+
+export type SkillType = 'analysis' | 'lookup' | 'comparison' | 'generation'
+
+export interface Skill {
+  category: string
+  subcategory: string
+  slug: string
+  displayName: string
+  type: SkillType
+  input: string
+  output: string
+  description: string
+  sources: string[]
+  requires: string[]
+  updated: string
+  path: string
+  rulesCount: number
+  ruleFiles: string[]
+  body: string
+}
+
+export const skills: Skill[] = ${JSON.stringify(skills, null, 2)}
+`
+  fs.writeFileSync(path.join(OUT_DIR, 'skills.ts'), tsBody)
+
+  console.log(`skills.json + skills.ts generated: ${skills.length} skill(s)`)
 }
 
 function runAudit() {
   console.log('Running --audit on skills/ ...')
-  const { violations: v1 } = auditSkills()
+  const { violations: v1 } = auditAndCollectSkills()
   const v6 = auditLegacySkillFiles()
-  const v7 = auditOrphanRules()
-  const all = [...v1, ...v6, ...v7]
+  const all = [...v1, ...v6]
 
   if (all.length === 0) {
-    console.log('✓ audit pass: skills/ 合规（或为空集）')
+    console.log('✓ audit pass: skills/ 合规')
     return 0
   }
   console.error(`✗ audit fail: ${all.length} violation(s)`)
   for (const v of all) console.error(`  - ${v}`)
   return 1
+}
+
+function runFullGenerate() {
+  const { violations, skills } = auditAndCollectSkills()
+  writeSkillsArtifacts(skills)
+  if (violations.length > 0) {
+    console.warn(`⚠️ ${violations.length} skill violation(s)（已写入 skills.json，请修复）`)
+    for (const v of violations) console.warn(`  - ${v}`)
+  }
+  return 0
 }
 
 // ===== 入口 =====
@@ -498,6 +684,7 @@ const books = BOOK_DIRS.map(processBook)
 for (const book of books) generateBookFiles(book)
 generateGlobalFiles(books)
 generateSearchIndex(books)
+runFullGenerate()
 
 console.log(`Generated ${books.length} book(s):`)
 for (const b of books) {

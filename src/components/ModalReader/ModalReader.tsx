@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo, useEffect } from 'react'
 import { X, PanelLeftClose, PanelLeft, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup, ButtonGroupText } from '@/components/ui/button-group'
@@ -20,6 +20,11 @@ import { ReaderSettingsDrawer } from './reader-mode/ReaderSettingsDrawer'
 import { MOBILE_BREAKPOINT, isPaginatedMode, CLASS as MODAL_CLASS } from './reader-mode/constants'
 import { useAnimatedCollapse } from './reader-mode/useAnimatedCollapse'
 import { MODAL_TYPE_CAPS, NOT_FOUND_MSG, type ModalType } from './modalType'
+import { marked } from 'marked'
+import { skills } from '../../data/skills'
+
+// SKILL.md 正文缓存（load => 调用一次后 skip）
+const skillMarkdownCache: Record<string, string> = {}
 import { useChapterLocalState } from './useChapterLocalState'
 import { useChapterShortcuts } from './useChapterShortcuts'
 import { useChapterContent } from './useChapterContent'
@@ -76,11 +81,49 @@ const ModalReader = ({
   const { chapterIndex, hasPrev, hasNext, prevChapter, nextChapter, contentNavItems } =
     useChapterNavigation({ chapters, modalType, modalKey, bookData })
 
-  // interp / source 章节内容加载（统一在 useChapterContent 内）
+  // skill 模式：从 skills.ts 直接取 markdown body，保持与 interp/source 同构
+  const [skillMarkdown, setSkillMarkdown] = useState<(() => Promise<string>) | null>(null)
+
+  // skill 加载：同类闭包同构模式（返回 () => Promise<string>）
+  useEffect(() => {
+    if (modalType !== 'skill') return
+    const key = modalKey  // modalKey = "{category}/{subcategory}/{slug}"
+    if (skillMarkdownCache[key]) {
+      // 已缓存，创建 dummy loader 返回缓存值
+      const cached = skillMarkdownCache[key]
+      const loader = async () => cached
+      setSkillMarkdown(() => loader)
+      return
+    }
+    // 从 skills.ts 找对应 body
+    const [category, subcategory, slug] = key.split('/')
+    const skill = skills.find(s => s.category === category && s.subcategory === subcategory && s.slug === slug)
+    if (skill?.body) {
+      const htmlContent = marked.parse(skill.body) as string
+      skillMarkdownCache[key] = htmlContent
+      const loader = async () => htmlContent
+      setSkillMarkdown(() => loader)
+    } else {
+      skillMarkdownCache[key] = NOT_FOUND_MSG.skill
+      const loader = async () => NOT_FOUND_MSG.skill
+      setSkillMarkdown(() => loader)
+    }
+  }, [modalType, modalKey])
+
+  // skill 模式下用 skillMarkdown 的"loader map"注册到 useChapterContent
+  const skillContent = useMemo(() => {
+    if (modalType !== 'skill' || !skillMarkdown) return {}
+    return { [modalKey]: skillMarkdown } as Record<string, () => Promise<string>>
+  }, [modalType, skillMarkdown, modalKey])
+
+  // interp / source / skill 章节内容加载（统一在 useChapterContent 内）
   const { loadedContent, contentLoading } = useChapterContent({
     modalType,
     modalKey,
-    loaders: modalType === 'interp' ? interpContent : sourceContent,
+    loaders:
+      modalType === 'interp' ? interpContent :
+      modalType === 'source' ? sourceContent :
+      skillContent,
   })
 
   // 阅读模式

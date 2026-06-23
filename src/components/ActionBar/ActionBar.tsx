@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 interface ActionBarProps {
-  modalType: 'interp' | 'source'
+  modalType: 'interp' | 'source' | 'skill'
   modalKey: string
   isBookmarked: (key: string) => boolean
   toggleBookmark: (key: string, type?: string) => void

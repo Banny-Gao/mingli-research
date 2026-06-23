@@ -8,7 +8,7 @@ import { useReaderRoute, buildReaderPath, READER_PATH_RE } from './useReaderRout
 const MOBILE_QUERY = '(max-width: 640px)'
 export interface ReaderParams {
   bookSlug: string
-  modalType: 'interp' | 'source'
+  modalType: 'interp' | 'source' | 'skill'
   modalKey: string
   scrollToText?: string
 }
@@ -19,7 +19,7 @@ interface ReaderContextType {
   consumeScrollToText: () => void
   state: {
     bookSlug: string
-    modalType: 'interp' | 'source' | null
+    modalType: 'interp' | 'source' | 'skill' | null
     modalKey: string
     scrollToText: string | null
   }
@@ -31,7 +31,7 @@ const ReaderContext = createContext<ReaderContextType | null>(null)
 
 export function ReaderProvider({ children }: { children: ReactNode }) {
   const [bookSlug, setBookSlug] = useState('')
-  const [modalType, setModalType] = useState<'interp' | 'source' | null>(null)
+  const [modalType, setModalType] = useState<'interp' | 'source' | 'skill' | null>(null)
   const [modalKey, setModalKey] = useState('')
   const [scrollToText, setScrollToText] = useState<string | null>(null)
   const [closeVersion, setCloseVersion] = useState(0)

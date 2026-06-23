@@ -11,7 +11,7 @@
  */
 
 /** 权威字面量元组（不可变） */
-export const MODAL_TYPES = ['interp', 'source'] as const
+export const MODAL_TYPES = ['interp', 'source', 'skill'] as const
 
 /** 联合类型由 MODAL_TYPES 派生 */
 export type ModalType = (typeof MODAL_TYPES)[number]
@@ -32,19 +32,22 @@ export interface ModalTypeCapabilities {
 
 export const MODAL_TYPE_CAPS: Record<ModalType, ModalTypeCapabilities> = {
   interp: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-interp' },
-  source: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-interp' },
+  source: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-source' },
+  skill:  { allowsAnnotation: false, supportsPagination: false, proseClass: 'prose-skill' },
 }
 
 /** 用户可见标签（中文） */
 export const MODAL_TYPE_LABEL: Record<ModalType, string> = {
   interp: '解读',
   source: '原文',
+  skill: '技能',
 }
 
 /** "未找到内容" 占位文本（仅对可加载内容的类型有意义） */
 export const NOT_FOUND_MSG: Record<ModalType, string> = {
   source: '<p class="not-found-msg">未找到该篇原文</p>',
   interp: '<p class="not-found-msg">未找到该篇解读内容</p>',
+  skill: '<p class="not-found-msg">未找到该技能内容</p>',
 }
 
 /**

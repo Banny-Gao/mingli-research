@@ -20,6 +20,7 @@ const LazyLanding = lazy(() => import('./pages/Landing'))
 const LazyBookApp = lazy(() => import('./pages/BookApp'))
 const LazyNotes = lazy(() => import('./pages/Notes'))
 const LazyReader = lazy(() => import('./pages/Reader'))
+const LazySkills = lazy(() => import('./pages/Skills'))
 
 // ModalReader 惰性加载（CSS 优先加载，再加载组件）
 const LazyModalReader = lazy(async () => {
@@ -72,6 +73,7 @@ ReactDOM.createRoot(document.body!).render(
             <Routes>
               <Route path="/" element={<LazyLanding />} />
               <Route path="/notes" element={<LazyNotes />} />
+              <Route path="/skills" element={<LazySkills />} />
               <Route path="/books/:section/:slug" element={<LazyBookApp />} />
               {/* 移动端阅读路由：push 一条新历史，系统返回键可关闭 */}
               <Route path="/books/:section/:slug/read/:type/:key" element={<LazyReader />} />
