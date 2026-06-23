@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button'
 
 export interface CategoryTree {
   section: ArtSection
-  categories: string[]
+  categories: readonly string[]
 }
 
 interface Props {
-  tree: CategoryTree[]
+  tree: readonly CategoryTree[]
   activeSection: ArtSection
   activeCategory: string
   onSelectCategory: (category: string) => void

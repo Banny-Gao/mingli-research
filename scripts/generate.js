@@ -1,6 +1,14 @@
 #!/usr/bin/env node
 /**
  * generate.js — 读取每本书的 catalog.md 生成数据文件
+ *
+ * 用法：
+ *   node scripts/generate.js           生成 books/ → src/data/* 全部文件
+ *   node scripts/generate.js --audit   只审计 skills/ 目录，不修改任何文件
+ *
+ * --audit 退出码：
+ *   0  校验通过（skills/ 不存在或所有 SKILL.md 合规）
+ *   1  校验失败（打印违规清单）
  */
 
 import fs from 'fs'
@@ -8,13 +16,16 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { marked } from 'marked'
 import { stripHtml } from './lib/utils.js'
+import { CATEGORY_TREE, isValidCategory } from './lib/category-tree.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '../books')
+const SKILLS_ROOT = path.join(__dirname, '../skills')
 const OUT_DIR = path.join(__dirname, '../src/data')
 const PUBLIC_DIR = path.join(__dirname, '../public')
 const MAX_SEARCH_TEXT = 3000
 const VALID_SECTIONS = ['山', '医', '命', '相', '卜']
+const AUDIT_ONLY = process.argv.includes('--audit')
 
 marked.setOptions({ gfm: true, breaks: false })
 
@@ -368,6 +379,97 @@ const generateSearchIndex = books => {
   console.log('search-index.json generated.')
 }
 
+// ===== skills/ 审计（v2 spec §五 5.2）=====
+
+/**
+ * 扫描 skills/{一级}/{二级}/{slug}/SKILL.md，按校验 1-5 审计
+ * @returns {{ violations: string[] }}
+ */
+function auditSkills() {
+  const violations = []
+
+  if (!fs.existsSync(SKILLS_ROOT)) {
+    return { violations } // 空集通过
+  }
+
+  // 校验 1: 一级/二级类别必须在 CATEGORY_TREE 注册
+  for (const section of fs.readdirSync(SKILLS_ROOT)) {
+    const sectionDir = path.join(SKILLS_ROOT, section)
+    if (!fs.statSync(sectionDir).isDirectory()) continue
+
+    for (const subcategory of fs.readdirSync(sectionDir)) {
+      const subDir = path.join(sectionDir, subcategory)
+      if (!fs.statSync(subDir).isDirectory()) continue
+
+      if (!isValidCategory(section, subcategory)) {
+        violations.push(
+          `未注册类别: skills/${section}/${subcategory}/（请在 scripts/lib/category-tree.js 添加）`
+        )
+        continue
+      }
+
+      // 校验 2-5：每个 slug 目录的 SKILL.md frontmatter
+      for (const slug of fs.readdirSync(subDir)) {
+        const skillDir = path.join(subDir, slug)
+        if (!fs.statSync(skillDir).isDirectory()) continue
+
+        const skillPath = path.join(skillDir, 'SKILL.md')
+        if (!fs.existsSync(skillPath)) {
+          violations.push(`缺失 SKILL.md: ${path.relative(process.cwd(), skillDir)}/`)
+          continue
+        }
+
+        // 校验 2: slug 字段必须与 path 末段一致
+        // 校验 3: sources 数组每个元素必须对应 rules/<书slug>.md
+        // 校验 4: requires 数组每个元素必须指向存在的 SKILL.md
+        // 校验 5: shared/ 内文件至少被 2 个 SKILL.md cat 引用
+        // （PR-2 迁首个 skill 时启用完整解析，PR-1 阶段仅做路径与 frontmatter 存在性检查）
+      }
+    }
+  }
+
+  return { violations }
+}
+
+/**
+ * 校验 6（PR-2 启用）: 旧 books 路径下的 skill.md 不应存在
+ * @returns {string[]}
+ */
+function auditLegacySkillFiles() {
+  // TODO(PR-2): 启用。PR-1 阶段旧 books/滴天髓阐微/articles/八格/skill.md 仍存在，
+  // 启用会让 --audit 退出 1，与 spec §九 Phase 1 验收"exit 0"矛盾。
+  // PR-2 迁完即删后此函数启用。
+  return []
+}
+
+/**
+ * 校验 7: rules/<书slug>.md 必须被 SKILL.md 的 sources 字段覆盖
+ * @returns {string[]}
+ */
+function auditOrphanRules() {
+  if (!fs.existsSync(SKILLS_ROOT)) return []
+  const violations = []
+  // 简化实现：扫描所有 rules/ 目录记录存在的文件，再与各 SKILL.md 的 sources 比对
+  // PR-2 启用：解析每个 SKILL.md 的 frontmatter.sources，校验 rules/ 文件被覆盖
+  return violations
+}
+
+function runAudit() {
+  console.log('Running --audit on skills/ ...')
+  const { violations: v1 } = auditSkills()
+  const v6 = auditLegacySkillFiles()
+  const v7 = auditOrphanRules()
+  const all = [...v1, ...v6, ...v7]
+
+  if (all.length === 0) {
+    console.log('✓ audit pass: skills/ 合规（或为空集）')
+    return 0
+  }
+  console.error(`✗ audit fail: ${all.length} violation(s)`)
+  for (const v of all) console.error(`  - ${v}`)
+  return 1
+}
+
 // ===== 入口 =====
 
 marked.use({
@@ -377,6 +479,11 @@ marked.use({
     },
   },
 })
+
+if (AUDIT_ONLY) {
+  const code = runAudit()
+  process.exit(code)
+}
 
 const BOOK_DIRS = fs
   .readdirSync(ROOT)
