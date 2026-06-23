@@ -1,9 +1,11 @@
 # 【架构重构】类别化 Skill 体系：按术数类别聚合 + 跨书维护
 
-> 日期：2026-06-22
-> 状态：**待启动**（设计 prompt 已就绪，等下一轮 brainstorming + spec 落地）
+> 日期：2026-06-22（创建）/ 2026-06-23（v2 spec 落盘）
+> 状态：**设计已完成**——v2 spec 已落盘，进入分阶段实施（PR-1 ~ PR-4）
 > 前置 commit：`f16f3c3` clean(skill): 拆除篇章→skill 1:1 体系（旧体系已拆除，回归干净状态）
-> 关联文件：`research-dispute/SPEC-skill.md`（待重写）、`src/`（待新增入口）、`books/`（待解耦）
+> 设计交付：`docs/superpowers/specs/2026-06-23-v2-category-skill-system-design.md`（v2 spec，权威）
+> 历史对照：`research-dispute/SPEC-skill.md`（1:1 文档导向 SPEC，已加废弃横幅）
+> 实施入口：Phase 1 PR（创建 `scripts/lib/category-tree.js` + TS 门面）—— 待启动
 
 ---
 
@@ -153,13 +155,28 @@ skill 应归属"**术数 × 二级类别**"（如"命·八字·格局判定"、"
 
 本次 issue 的"完成"不意味着实施完成，而是 **设计 prompt 被消费并产出 SPEC.md + 落地清单**。后续实施（src 改造 / scripts 扩展 / 数据迁移）应拆为独立 issue。
 
-| 验收项                                              | 判定方式                       |
-| --------------------------------------------------- | ------------------------------ |
-| 重写后的 `research-dispute/SPEC-skill.md` 提交并 tracked | git log 显示对应 commit    |
-| 设计 prompt 回答完整（7 个必答设计点）              | 检查 SPEC 是否逐一回应         |
-| 数据迁移路径明确                                    | SPEC 含"从旧到新"的具体操作步骤 |
-| 风险与未决问题清单                                  | SPEC 含 ≥3 条                  |
-| 实施步骤分阶段，每阶段有可验证标准                  | SPEC 含清单                    |
+### 4.1 设计交付验收（本期完成）
+
+| 验收项                                              | 判定方式                       | v2 spec 定位 | 状态 |
+| --------------------------------------------------- | ------------------------------ | ------------ | ---- |
+| 重写后的 `research-dispute/SPEC-skill.md` 提交并 tracked | git log 显示对应 commit    | 已被 v2 替代，保留为历史快照 | ✓ |
+| 设计 prompt 回答完整（7 个必答设计点）              | 检查 SPEC 是否逐一回应         | v2 spec 全面回应（§三、§四、§五、§六、§七） | ✓ |
+| 数据迁移路径明确                                    | SPEC 含"从旧到新"的具体操作步骤 | v2 spec §七 详述一 skill 一 PR | ✓ |
+| 风险与未决问题清单                                  | SPEC 含 ≥3 条                  | v2 spec §十 列出 8 项未决风险 | ✓ |
+| 实施步骤分阶段，每阶段有可验证标准                  | SPEC 含清单                    | v2 spec §九 Phase 1-4 | ✓ |
+
+### 4.2 实施验收（后续 PR）
+
+实施按 v2 spec §九 落地清单分 4 个 PR：
+
+| PR | 内容 | 验收命令 |
+|----|------|---------|
+| PR-1 | Phase 1 基础设施（CATEGORY_TREE 真源抽取） | `npm run build` + `npm run dev` + `npm run generate -- --audit` exit 0 |
+| PR-2 | Phase 2 首个 skill 迁移（八格判定） + generate.js 扩展 | `npm run generate` 后 `src/data/skills.json` 含 1 条；旧 `books/.../八格/skill.md` 已删 |
+| PR-3 | Phase 3 Skills.tsx 列表页 + 路由 | 浏览器能进入 `/skills` 看到"命·八字·八格判定"卡 |
+| PR-4 | Phase 3 SkillDetail.tsx 详情页 + search-index 决策 | 浏览器能进入 `/skills/命/八字/八格判定` 看正文 + 输入表单 |
+
+PR 全部合并后，本 issue 验收状态从"设计已完成"升为"实施已完成"。
 
 ---
 

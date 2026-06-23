@@ -1,10 +1,16 @@
 # 类别化 Skill 体系：按术数类别聚合 + 跨书维护
 
+> ⚠️ **本 spec 是 v1 历史快照，已被 v2 替代**
+>
+> - 权威版本：`docs/superpowers/specs/2026-06-23-v2-category-skill-system-design.md`
+> - v1 主要缺陷：`rules/` 放在"按需扩展"条件里（实际应是默认形态）；CATEGORY_TREE 真源位置未落实；正文允许复制原文注家（导致双份内容漂移）；迁完保留 1 个 minor 版本（实际应迁完即删）
+> - v1 保留原因：与 v2 做差异对照，避免 v2 误删 v1 已探讨的设计选项
+
 > 日期：2026-06-23
-> 状态：设计已通过 brainstorming，进入待实施
+> 状态：v1 设计已通过 brainstorming，进入待实施 → **已被 v2 替代，进入历史快照**
 > 前置 commit：`f16f3c3` clean(skill): 拆除篇章→skill 1:1 体系
 > 上游 issue：`issues/10-类别化-skill-体系重构-按术数类别聚合-跨书维护.md`
-> 替代 SPEC：`research-dispute/SPEC-skill.md`（1:1 文档导向 SPEC，全文重写）
+> 替代 SPEC：`research-dispute/SPEC-skill.md`（1:1 文档导向 SPEC，已加废弃横幅）
 
 ---
 
