@@ -139,35 +139,16 @@ async function generateOne({
   let output
   let score = 0
   let lastCheck = null
+  let userForRound = user
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
     output = await callClaudeWithRetry({
       client,
       model: config.model,
       system,
-      user,
+      user: userForRound,
       signal,
       retryBaseMs,
     })
-    // 重写之间的反馈注入：把上一次的致命问题列入 user prompt
-    let userForNext = user
-    if (lastCheck && lastCheck.fatal > 0) {
-      const issues = lastCheck.issues.fatal.map(i => `- ${i}`).join('\n')
-      userForNext =
-        user +
-        `\n\n## 上一次重写命中致命规则（必须修正后再交）\n\n${issues}\n\n请重新生成，确保上述致命问题均已解决。`
-    }
-    // 重新装订：仅在 rewrite > 0 时使用增强 user
-    if (rewrite > 0) {
-      // 重新调用以使用增强 prompt（首次失败后才有意义）
-      output = await callClaudeWithRetry({
-        client,
-        model: config.model,
-        system,
-        user: userForNext,
-        signal,
-        retryBaseMs,
-      })
-    }
     // 落盘前永远跑一次后处理（剥离围栏、补收束节）— 解决 LLM 偶发截断
     output = postProcessOutput(output, chapter)
     const check = runSelfCheckLite(output)
@@ -194,6 +175,13 @@ async function generateOne({
         report: fixedCheck,
       }
     }
+    // 下一轮用增强 prompt：把上一次的致命问题注入 user
+    if (lastCheck && lastCheck.fatal > 0) {
+      const issues = lastCheck.issues.fatal.map(i => `- ${i}`).join('\n')
+      userForRound =
+        user +
+        `\n\n## 上一次重写命中致命规则（必须修正后再交）\n\n${issues}\n\n请重新生成，确保上述致命问题均已解决。`
+    }
   }
 
   // 备份（如有）— 不覆盖现有 .bak，使用 .bak.N 递增
@@ -214,12 +202,13 @@ async function generateOne({
  * @param {string} opts.slug
  * @param {string[]} opts.chapters
  * @param {Object} opts.specBundle
- * @param {{apiKey: string, baseUrl: string, model: string}} opts.config
+ * @param {{apiKey: string, baseUrl: string, model: string, concurrency: number}} opts.config
  * @param {string} opts.projectRoot
  * @param {boolean} [opts.force=false]
  * @param {Function} [opts.onProgress]
  * @param {AbortSignal} [opts.signal]
  * @param {number} [opts.retryBaseMs=2000] - 429/5xx 重试退避基数（测试可缩小）
+ * @param {number} [opts.concurrency] - 外层并发篇章数；缺省从 config.concurrency 取
  */
 export async function generateInterpretations(opts) {
   const {
@@ -232,32 +221,50 @@ export async function generateInterpretations(opts) {
     onProgress,
     signal,
     retryBaseMs = DEFAULT_RETRY_BASE_MS,
+    concurrency = config.concurrency,
   } = opts
   const client = new Anthropic({ apiKey: config.apiKey, baseURL: config.baseUrl })
+  // client 共享于所有 worker（Anthropic SDK 线程安全）
 
-  const results = []
-  for (let i = 0; i < chapters.length; i++) {
-    const chapter = chapters[i]
-    if (signal?.aborted) {
-      results.push({ chapter, status: 'skipped', reason: 'aborted' })
-      continue
+  // 手写 sem 池：limit 个槽位，空闲即取 next index
+  let nextIdx = 0
+  const results = new Array(chapters.length)
+  const total = chapters.length
+  const limit = Math.max(1, concurrency)
+
+  async function worker() {
+    while (true) {
+      if (signal?.aborted) return
+      const i = nextIdx++
+      if (i >= total) return
+      const chapter = chapters[i]
+      try {
+        const result = await generateOne({
+          chapter,
+          specBundle,
+          config: { ...config, slug },
+          projectRoot,
+          force,
+          signal,
+          client,
+          retryBaseMs,
+        })
+        results[i] = result
+        onProgress?.(i + 1, total, chapter, result.status)
+      } catch (err) {
+        results[i] = { chapter, status: 'failed', reason: err.message }
+        onProgress?.(i + 1, total, chapter, 'failed')
+      }
     }
-    try {
-      const result = await generateOne({
-        chapter,
-        specBundle,
-        config: { ...config, slug },
-        projectRoot,
-        force,
-        signal,
-        client,
-        retryBaseMs,
-      })
-      results.push(result)
-      onProgress?.(i + 1, chapters.length, chapter, result.status)
-    } catch (err) {
-      results.push({ chapter, status: 'failed', reason: err.message })
-      onProgress?.(i + 1, chapters.length, chapter, 'failed')
+  }
+
+  const workers = Array.from({ length: Math.min(limit, total) }, () => worker())
+  await Promise.all(workers)
+
+  // 兜底：被 abort 跳过但未填入 results 的篇章
+  for (let i = 0; i < total; i++) {
+    if (!results[i]) {
+      results[i] = { chapter: chapters[i], status: 'skipped', reason: 'aborted' }
     }
   }
   return results

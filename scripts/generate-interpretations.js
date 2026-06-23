@@ -59,7 +59,7 @@ async function main() {
 
   if (args.help || !args.slug) {
     console.log(`用法: node scripts/generate-interpretations.js <slug> [chapters] [--force] [--dry-run]
-                          [--api-key <key>] [--base-url <url>] [--model <id>]`)
+                          [--api-key <key>] [--base-url <url>] [--model <id>] [--concurrency <n>|-c <n>]`)
     process.exit(args.help ? 0 : 1)
   }
 
@@ -75,7 +75,7 @@ async function main() {
   // 3. 实跑才需要 API key
   let config
   try {
-    config = resolveConfig({ apiKey: args.apiKey, baseUrl: args.baseUrl, model: args.model })
+    config = resolveConfig({ apiKey: args.apiKey, baseUrl: args.baseUrl, model: args.model, concurrency: args.concurrency })
   } catch (err) {
     if (err instanceof ConfigError) {
       console.error(err.message)
@@ -85,7 +85,7 @@ async function main() {
   }
 
   console.log(`\n# 批量生成 interpretation.md`)
-  console.log(`书: ${args.slug} | 篇章: ${chapters.length} 篇 | 模型: ${config.model}\n`)
+  console.log(`书: ${args.slug} | 篇章: ${chapters.length} 篇 | 模型: ${config.model} | 并发: ${config.concurrency}\n`)
 
   const start = Date.now()
   const specBundle = loadSpecBundle(args.slug, { projectRoot: ROOT })
