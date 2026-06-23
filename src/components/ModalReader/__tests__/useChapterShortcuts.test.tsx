@@ -20,9 +20,9 @@ const setActiveElement = (el: Element | null) => {
 interface HookParams {
   chapters: Array<{ name: string }>
   modalKey: string
-  modalType: 'interp' | 'source'
-  onNavigate: (type: 'interp' | 'source', key: string) => void
-  toggleBookmark: (key: string, type: 'interp' | 'source') => void
+  modalType: 'interp' | 'source' | 'skill'
+  onNavigate: (type: 'interp' | 'source' | 'skill', key: string) => void
+  toggleBookmark: (key: string, type: 'interp' | 'source' | 'skill') => void
   onCancelSelection: () => void
 }
 
