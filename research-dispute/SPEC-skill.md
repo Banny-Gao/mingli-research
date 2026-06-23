@@ -1,6 +1,13 @@
 # AI 可执行技能规范
 
-> **用途：** 规范典籍篇章 `skill.md` 的产出格式
+> ⚠️ **本 SPEC 已被替代**
+>
+> - 权威版本：`docs/superpowers/specs/2026-06-23-v2-category-skill-system-design.md`（类别化 skill 体系 v2）
+> - 历史快照：本文件保留作 1:1 文档导向体系的对照参考，**新 skill 不应再遵循本文件**
+> - 替代原因：commit `f16f3c3` 拆除篇章→skill 1:1 体系后，issue 10 启动类别化重构，v2 spec 是其交付物
+> - 关联 issue：`issues/10-类别化-skill-体系重构-按术数类别聚合-跨书维护.md`
+
+> **用途：** 历史快照——规范典籍篇章 `skill.md` 的产出格式（1:1 文档导向，已废弃）
 > **生成依赖：** `SPEC-source.md` + `SPEC-interpretation.md`（生成期间）
 > **产出特性：** 生成后文件独立、自包含，可复制到其他地方使用
 > **面向受众：** AI 执行者（Hermes Agent / Claude Code / 其他 LLM Agent）
