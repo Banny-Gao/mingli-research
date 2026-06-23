@@ -3446,7 +3446,7 @@ export const books: Book[] = [
     "version": "据《四库全书》本",
     "description": "隋萧吉撰。五卷。书中所论皆阴阳五行之事，\"文章醇古，非唐以下所能为\"；萧吉以阴阳算术著称，书中多援引今已佚亡之古书。本书为现存最早系统讨论五行理论的专著之一。本书早于子平体系（子平法成熟于两宋），可作八字五行基础参考。",
     "total": 29,
-    "done": 3,
+    "done": 26,
     "chapters": [
       {
         "num": "01",
@@ -3469,19 +3469,19 @@ export const books: Book[] = [
       {
         "num": "04",
         "name": "释名",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
         "num": "05",
         "name": "论支干名",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
         "num": "06",
         "name": "起大衍论易动静数",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
@@ -3493,43 +3493,43 @@ export const books: Book[] = [
       {
         "num": "08",
         "name": "论支干数",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
         "num": "09",
         "name": "论纳音数",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
         "num": "10",
         "name": "论九宫数",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一"
       },
       {
         "num": "11",
         "name": "论相生",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "12",
         "name": "论配支干",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "13",
         "name": "论相杂",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "14",
         "name": "论德",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
@@ -3541,31 +3541,31 @@ export const books: Book[] = [
       {
         "num": "16",
         "name": "论扶抑",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "17",
         "name": "论害",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "18",
         "name": "论冲破",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二"
       },
       {
         "num": "19",
         "name": "配五色至五事",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三"
       },
       {
         "num": "20",
         "name": "论律吕",
-        "isDone": false,
+        "isDone": true,
         "category": "卷四"
       },
       {
@@ -3577,49 +3577,49 @@ export const books: Book[] = [
       {
         "num": "22",
         "name": "论八卦八风",
-        "isDone": false,
+        "isDone": true,
         "category": "卷四"
       },
       {
         "num": "23",
         "name": "论情性",
-        "isDone": false,
+        "isDone": true,
         "category": "卷四"
       },
       {
         "num": "24",
         "name": "论治政",
-        "isDone": false,
+        "isDone": true,
         "category": "卷四"
       },
       {
         "num": "25",
         "name": "论诸神",
-        "isDone": false,
+        "isDone": true,
         "category": "卷五"
       },
       {
         "num": "26",
         "name": "论五帝",
-        "isDone": false,
+        "isDone": true,
         "category": "卷五"
       },
       {
         "num": "27",
         "name": "论诸官",
-        "isDone": false,
+        "isDone": true,
         "category": "卷五"
       },
       {
         "num": "28",
         "name": "论诸人",
-        "isDone": false,
+        "isDone": true,
         "category": "卷五"
       },
       {
         "num": "29",
         "name": "论禽虫",
-        "isDone": false,
+        "isDone": true,
         "category": "卷五"
       }
     ],
