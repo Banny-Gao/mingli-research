@@ -26,6 +26,7 @@ const FAKE_CONFIG = {
   apiKey: 'sk-test',
   baseUrl: 'https://api.test',
   model: 'claude-opus-4-8',
+  concurrency: 1,
 }
 
 const TEST_SLUG = 'test-book'
@@ -191,5 +192,48 @@ describe('generateInterpretations', () => {
     expect(capturedCalls[1]).toContain('BBB')
     expect(capturedCalls[1]).not.toContain('AAA')
     expect(capturedCalls[1]).toContain('B 篇原文')
+  })
+
+  // 并发测试：3 篇 + concurrency=3，断言 LLM 调用并发峰值 ≥ 2
+  it('runs chapters concurrently when concurrency > 1', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    let inFlight = 0
+    let peakInFlight = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        create: vi.fn().mockImplementation(() => {
+          inFlight++
+          peakInFlight = Math.max(peakInFlight, inFlight)
+          return new Promise(resolve => {
+            setTimeout(() => {
+              inFlight--
+              resolve({
+                content: [{ type: 'text', text: '## 标题\n\n> 【原文】原文。\n\n解读。' }],
+              })
+            }, 50)
+          })
+        }),
+      },
+    }))
+
+    const chapters = ['chap-1', 'chap-2', 'chap-3']
+    const dirs = chapters.map(c => path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/${c}`))
+    dirs.forEach(d => {
+      fs.mkdirSync(d, { recursive: true })
+      fs.writeFileSync(path.join(d, 'source.md'), '# 原文\n\n源文。', 'utf-8')
+    })
+
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters,
+      specBundle: FAKE_BUNDLE,
+      config: { ...FAKE_CONFIG, concurrency: 3 },
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results).toHaveLength(3)
+    expect(results.every(r => r.status === 'success')).toBe(true)
+    expect(peakInFlight).toBeGreaterThanOrEqual(2)
   })
 })

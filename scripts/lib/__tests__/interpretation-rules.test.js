@@ -27,7 +27,10 @@ describe('INTERPRETATION_RULES', () => {
         expect(rule).toHaveProperty('label')
         expect(rule).toHaveProperty('regex')
         expect(rule).toHaveProperty('promptDesc')
-        expect(rule.regex).toBeInstanceOf(RegExp)
+        // regex 可为 null（prompt-only 约束，硬匹配易误杀时）
+        if (rule.regex !== null) {
+          expect(rule.regex).toBeInstanceOf(RegExp)
+        }
       }
     }
   })

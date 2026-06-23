@@ -11,6 +11,7 @@ export function parseCliArgs(argv) {
     apiKey: null,
     baseUrl: null,
     model: null,
+    concurrency: null,
   }
 
   let i = 0
@@ -42,6 +43,14 @@ export function parseCliArgs(argv) {
     } else if (flag === '--model') {
       if (argv[i + 1] && !argv[i + 1].startsWith('--')) args.model = argv[++i]
       else throw new Error('--model 需要参数值')
+    } else if (flag === '--concurrency' || flag === '-c') {
+      if (argv[i + 1] && !argv[i + 1].startsWith('--')) {
+        const n = Number(argv[++i])
+        if (!Number.isInteger(n) || n < 1) throw new Error('--concurrency 必须是 ≥1 的整数')
+        args.concurrency = n
+      } else {
+        throw new Error('--concurrency 需要参数值')
+      }
     } else if (flag === '--help' || flag === '-h') args.help = true
     i++
   }
