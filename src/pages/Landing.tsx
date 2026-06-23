@@ -6,18 +6,9 @@ import gsap from 'gsap'
 import { books } from '../data/books'
 import type { ArtSection } from '../data/book-types'
 import SearchBar from '../components/SearchBar'
-import SectionHeader, { type CategoryTree } from '../components/SectionHeader'
+import SectionHeader from '../components/SectionHeader'
 import { ThemeToggle } from '../components/ThemeToggle'
-
-const SECTION_ORDER: ArtSection[] = ['命', '医', '山', '相', '卜']
-
-const CATEGORY_TREE: CategoryTree[] = [
-  { section: '山', categories: ['拳法'] },
-  { section: '医', categories: ['中医'] },
-  { section: '命', categories: ['八字', '紫微斗数', '七政四余'] },
-  { section: '相', categories: ['地相', '人相', '星相'] },
-  { section: '卜', categories: ['易经', '六爻', '梅花易数', '奇门遁甲', '大六壬'] },
-]
+import { CATEGORY_TREE, SECTION_ORDER } from '../data/category-tree'
 
 const Landing = () => {
   const [activeSection, setActiveSection] = useState<ArtSection>('命')
