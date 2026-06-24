@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小言</title>
+    <link rel ="stylesheet" href="../pccontent.css" />
+   <script src="../jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 出现弹框时的阴影背景 -->
+    <div class="shadowMask"></div>
+    <div id="container" class="container">
+        <!-- 古籍内容 -->
+        <div class="book-detail">
+            <div class="book-detail-btn-catalog bookDetailBtn pointer">
+                <img class="bookDetailBtnIcon" src="../images/catalog_icon.png" />
+                <span>目录</span>
+            </div>
+            <div class="book-detail-btn-read bookDetailBtn pointer">
+                <img class="openbookcode bookDetailBtnIcon" src="../images/phone_read_icon.png" />
+                <span class="openbookcode" >手机阅读</span>
+                <div id="bookcode" class="book-popup">
+                    <img  id="closebookcode" class="book-popup-close" src="../images/close_icon.png" alt="">
+                    <img class="book-popup-qrcode" src="https://bzapi2.iwzbz.com/bookcode/qr_code.php?id=3_1_17_1" alt="">
+                    <div class="book-popup-tip">扫码下载/打开问真八字</div>
+                    <div class="book-popup-tip">在手机上继续阅读本书</div>
+                </div>
+            </div>
+            <div class="book-detail-title">小言</div>
+            <div class="book-detail-tip">书名：<span class="book-detail-tip-value">呱呱集</span>作者名：<span
+                    class="book-detail-tip-value">［民国］韦千里</span>本章字数：<span class="book-detail-tip-value">361字</span>
+            </div>
+            <div class="book-detail-content">
+              <p id="c1">人自呱呱坠地地之后，一生巧通寿夭，贫富贵贱，若已有数在焉。然则命固可信乎？唐李淳风有言：长平坑卒，岂皆命犯三刑，南阳贵人，宁必生当六合。命固不可信乎？南史沉攸之尝言：早知穷达有命，恨不十年读书。孔子五十而知天命。孟子曰：莫非命也，顺受其正，是故知命者，不立乎严墙之下。然则，命之可信与不可信，精微奥妙，寂静感通，不易言也。吾倚读古人书，硏摩命理，素位而行，有从无违，要皆修身之一助耳。余不敢谓知命，不过谓推命，溯自行道以还，所见富贵之命固多，贫贱之命，实亦不少，爱捡其特殊者，走笔记之。集名呱呱者，卽俗言所谓「啼声初试，八字已定」之意也。噫！天下滔滔，前途茫茫，我不如人，还有人不如我。愿读吾文者，争时待时，各安天命，则虽覆瓿之作，亦不无小补于世道人心欤。中华民国五二年几次癸卯韦千里写于香江寓次。</p>
+</div>
+        </div>
+    </div>
+    <!-- 目录弹框 -->
+    <div class="catalog-box">
+        <div class="catalog-box-header">
+            <img class="catalog-box-header-img" src="../face/bk_3_1_17.png" />
+            <div class="catalog-box-header-right columnFlex">
+                <div class="catalog-box-header-right-title">呱呱集</div>
+                <div class="catalog-box-header-right-author">［民国］韦千里</div>
+            </div>
+        </div>
+        <div id="catalog" class="catalog-box-content  scrollBar"><a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_17_1.html" style="color:#B2955D"><p class="items">小言</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_17_2.html" ><p class="items">上集：名人命造</p></a>
+<a href="https://www.iwzbz.com/artical/pcbook/v2/3_1_17_3.html" ><p class="items2">下集：命运答客问</p></a>
+
+        </div>
+    </div>
+
+    <script>
+
+    var bookid = "bk_3_1_17";
+    var pageid = "3_1_17_1";
+
+        $('.openbookcode').click(function(){
+            $('#bookcode').css('display','block');
+        });
+        $('#closebookcode').click(function(){
+            $('#bookcode').css('display','none');
+        });
+
+        let isClickMask = false // 是否点击阴影背景
+        const catalogBox = document.getElementsByClassName('catalog-box')[0]
+        const shadowMask = document.getElementsByClassName('shadowMask')[0]
+        const bookDetail = document.getElementsByClassName('book-detail')[0]
+        const bookDetailBtnCatalog = document.getElementsByClassName('book-detail-btn-catalog')[0]
+        shadowMask.addEventListener('click', (e) => {
+            isClickMask = true
+        })
+        window.addEventListener('click', (e) => {
+            if (isClickMask) {
+                shadowMask.style.display = 'none'
+                catalogBox.style.display = 'none'
+                isClickMask = false
+            }
+        })
+        bookDetailBtnCatalog.addEventListener('click', (e) => {
+            shadowMask.style.display = 'block'
+            catalogBox.style.display = 'block'
+        });
+$(document).ready(function(){
+        window.localStorage.setItem('wzxt_' + bookid,  pageid + '.html');
+	});
+$(".catalogitem").click(function()
+	{
+		$(".childitems").css("display","none");
+		var index = $(this).attr("val");
+var state = $(this).attr("state");
+if(state == '0'){
+		$("#childitem"+index).css("display","");$(this).attr("state",'1');
+
+		$("#itemicon"+index).attr("src","../iconup.png");
+}else
+{
+		$("#childitem"+index).css("display","none");$(this).attr("state",'0');
+
+		$("#itemicon"+index).attr("src","../icondown.png");
+}
+	});
+let h = document.getElementById("container").clientHeight;
+ window.parent.postMessage(
+          {
+            code: "iframeheight",
+            text: h
+          },
+          "*"
+        );
+    </script>
+   <script src="../content.js"></script>
+</body>
+
+</html>
