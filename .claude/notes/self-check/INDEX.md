@@ -58,3 +58,9 @@
 
 | 2026-06-15 | interpretation | 千里命稿 | [./千里命稿-interpretation-2026-06-15.md] | 19/16/32 |
 | 2026-06-16 | interpretation | 三命通会 | [./三命通会-interpretation-2026-06-16.md] | 5/27/138 |
+| 2026-06-24 | interpretation | 三命通会（明通赋四）| [./三命通会-interpretation-明通赋四-2026-06-24.md](./三命通会-interpretation-明通赋四-2026-06-24.md) | 3/6/5/2 ⚠待用户确认落盘 | 0/0/1/0 | ✅ R2 fatal 清零（[R2 报告](./5篇-interpretation-R2验证-2026-06-24.md)）|
+| 2026-06-24 | interpretation | 三命通会（释六十甲子性质吉凶七）| [./三命通会-interpretation-释六十甲子性质吉凶七-2026-06-24.md](./三命通会-interpretation-释六十甲子性质吉凶七-2026-06-24.md) | 0/4/5/2 ✅ 干净（fatal=0；F012 卷次事实错误 subagent 自改判为 error 并出修复建议）|
+| 2026-06-24 | interpretation | 五行大义（论七政）| [./五行大义-interpretation-论七政-2026-06-24.md](./五行大义-interpretation-论七政-2026-06-24.md) | 1/2/1/0 ⚠待用户确认落盘 | 0/0/0/0 | ✅ R2 fatal 清零 |
+| 2026-06-24 | interpretation | 五行大义（论五行及生成数）| [./五行大义-interpretation-论五行及生成数-2026-06-24.md](./五行大义-interpretation-论五行及生成数-2026-06-24.md) | 1/1/0/0 ⚠待用户确认落盘 | 0/0/1/0 | ✅ R2 fatal 清零（F002「通贯诸术数」R2 复核降 warn）|
+| 2026-06-24 | interpretation | 五行大义（论合）| [./五行大义-interpretation-论合-2026-06-24.md](./五行大义-interpretation-论合-2026-06-24.md) | 1/1/2/1 ⚠待用户确认落盘 | 0/0/1/1 | ✅ R2 fatal 清零 |
+| 2026-06-24 | interpretation R2 | 5 篇（4 篇修过的）| [./5篇-interpretation-R2验证-2026-06-24.md](./5篇-interpretation-R2验证-2026-06-24.md) | 0/0/3/1 | | ✅ R1 修复 6 项 fatal 全清零，无衍生；R3 修 3 项 R2 残留 warn |
