@@ -6,17 +6,16 @@
 
 **动作**：
 
-1. Read `research-dispute/SPEC-skill.md` 全文
-2. Read `research-dispute/general.md` 全文
-3. Read `research-dispute/{术数}.md`（如 `bazi.md`，从 catalog.md 术数字段取）
-5. Read `scripts/lib/category-tree.js` 全文（确认 CATEGORY_TREE 当前注册情况）
-6. 跑 `python3 scripts/self-check-fingerprint.py | grep -E "SPEC-skill|general.md|bazi.md"`
-7. 把指纹打印到对话上下文
+1. Read `shared/sources/SPEC-skill.md` 全文（含"继承自 SPEC-interpretation §2.1"那条对 rules/ 块引用格式的声明）
+2. Read `shared/sources/general.md` 全文
+3. Read `shared/sources/{术数}.md`（如 `bazi.md`，从 catalog.md 术数字段取）
+4. Read `shared/sources/category-tree.json` 全文（确认 CATEGORY_TREE 当前注册情况）
+5. 跑 `python3 shared/sources/scripts/self-check-fingerprint.py --project-root shared/sources --source-prefix "" | grep -E "SPEC-skill|general.md|bazi.md"`
+6. 把指纹打印到对话上下文
 
 **不通过处置**：
 
-- SPEC-skill.md 缺失 → 全阻断，提示「请先恢复 research-dispute/SPEC-skill.md」
-- spec 缺失 → 全阻断，提示「请先恢复 spec」
+- 副本缺失 → 全阻断，提示「请跑 npm run ingest-skill-sources 重录」
 - 17 指纹漂移 → 警告用户，让其选择「继续 / 重启流程」
 
 ---

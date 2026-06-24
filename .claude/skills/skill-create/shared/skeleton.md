@@ -137,7 +137,7 @@ updated: {YYYY-MM-DD}
 
 | # | 指纹 | 验证方式 |
 |---|------|----------|
-| 1 | 路径在 CATEGORY_TREE 注册 | 一级/二级均存在于 `scripts/lib/category-tree.js` |
+| 1 | 路径在 CATEGORY_TREE 注册 | 一级/二级均存在于 `shared/sources/category-tree.json` |
 | 2 | YAML frontmatter 完整 | awk 解析 frontmatter 块闭合，行数 ≥ 8 |
 | 3 | frontmatter 必填 7 字段 | grep -cE `^(slug\|type\|input\|output\|description\|sources\|updated):` >= 7 |
 | 4 | `requires` 字段若存在，元素均为 SKILL 包粒度 | grep 不含 `shared/` |
