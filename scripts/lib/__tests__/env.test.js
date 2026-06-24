@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { resolveConfig, ConfigError } from '../env.js'
+import { resolveConfig, ConfigError, loadDotenvInto } from '../env.js'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'url'
+import os from 'node:os'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 describe('resolveConfig', () => {
   let savedEnv
@@ -65,5 +71,65 @@ describe('resolveConfig', () => {
       expect(e.message).toContain('ANTHROPIC_API_KEY')
       expect(e.message).toContain('--api-key')
     }
+  })
+})
+
+describe('loadDotenvInto', () => {
+  let tmpFile
+  let savedEnv
+
+  beforeEach(() => {
+    savedEnv = { ...process.env }
+    tmpFile = path.join(os.tmpdir(), `mingli-dotenv-test-${Date.now()}-${Math.random().toString(36).slice(2)}.env`)
+  })
+
+  afterEach(() => {
+    if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile)
+    process.env = savedEnv
+  })
+
+  it('parses KEY=VALUE into a fresh target object', () => {
+    fs.writeFileSync(tmpFile, 'ANTHROPIC_API_KEY=sk-x\nANTHROPIC_MODEL=claude-y\n')
+    const target = {}
+    loadDotenvInto(tmpFile, target)
+    expect(target.ANTHROPIC_API_KEY).toBe('sk-x')
+    expect(target.ANTHROPIC_MODEL).toBe('claude-y')
+  })
+
+  it('does not overwrite pre-existing keys in target (precedence: target > .env)', () => {
+    fs.writeFileSync(tmpFile, 'ANTHROPIC_API_KEY=sk-from-dotenv\n')
+    const target = { ANTHROPIC_API_KEY: 'sk-from-shell' }
+    loadDotenvInto(tmpFile, target)
+    expect(target.ANTHROPIC_API_KEY).toBe('sk-from-shell')
+  })
+
+  it('strips surrounding single or double quotes from values', () => {
+    fs.writeFileSync(tmpFile, "ANTHROPIC_API_KEY=\"sk-dq\"\nANTHROPIC_BASE_URL='https://sq'\n")
+    const target = {}
+    loadDotenvInto(tmpFile, target)
+    expect(target.ANTHROPIC_API_KEY).toBe('sk-dq')
+    expect(target.ANTHROPIC_BASE_URL).toBe('https://sq')
+  })
+
+  it('skips comment lines and blank lines', () => {
+    fs.writeFileSync(tmpFile, '# header comment\n\nANTHROPIC_API_KEY=sk-z\n# trailing\n')
+    const target = {}
+    loadDotenvInto(tmpFile, target)
+    expect(target.ANTHROPIC_API_KEY).toBe('sk-z')
+    expect(Object.keys(target)).toEqual(['ANTHROPIC_API_KEY'])
+  })
+
+  it('handles CR/LF line endings (Windows)', () => {
+    fs.writeFileSync(tmpFile, 'ANTHROPIC_API_KEY=sk-crlf\r\nANTHROPIC_MODEL=m\r\n')
+    const target = {}
+    loadDotenvInto(tmpFile, target)
+    expect(target.ANTHROPIC_API_KEY).toBe('sk-crlf')
+    expect(target.ANTHROPIC_MODEL).toBe('m')
+  })
+
+  it('is a no-op when file does not exist', () => {
+    const target = { ANTHROPIC_API_KEY: 'sk-untouched' }
+    loadDotenvInto(path.join(os.tmpdir(), 'nope-nonexistent.env'), target)
+    expect(target).toEqual({ ANTHROPIC_API_KEY: 'sk-untouched' })
   })
 })
