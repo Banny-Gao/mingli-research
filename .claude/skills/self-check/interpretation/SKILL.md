@@ -1,6 +1,6 @@
 ---
 name: self-check-interpretation
-description: interpretation 自检。检查 books/{slug}/articles/{篇名}/interpretation.md 的解读合规：表层义理 / 深化洞见 / 通俗注释层 / 引用规范 / 注家分层 / 红线禁令 / 模式判定（短篇/标准/密集）/ 自检清单合规分。遵守 research-dispute/SPEC-interpretation.md + research-dispute/general.md + （术数=命时）research-dispute/bazi.md。
+description: interpretation 自检。检查 books/{slug}/articles/{篇名}/interpretation.md 的解读合规：表层义理 / 深化洞见 / 通俗注释层 / 引用规范 / 注家分层 / 红线禁令 / 模式判定（短篇/标准/密集）/ 自检清单合规分。遵守 shared/sources/SPEC-interpretation.md + shared/sources/general.md + （术数=命时）shared/sources/bazi.md。
 ---
 
 # interpretation 自检
@@ -13,9 +13,9 @@ description: interpretation 自检。检查 books/{slug}/articles/{篇名}/inter
 
 子 SKILL.md 启动时按 `shared/spec-bundles.md` 加载：
 
-1. `research-dispute/SPEC-interpretation.md` 全文
-2. `research-dispute/general.md` 全文（含 14 条红线）
-3. （术数=命时追加 `research-dispute/bazi.md`）
+1. `shared/sources/SPEC-interpretation.md` 全文
+2. `shared/sources/general.md` 全文（含 14 条红线）
+3. （术数=命时追加 `shared/sources/bazi.md`）
 
 ## 必检项目
 

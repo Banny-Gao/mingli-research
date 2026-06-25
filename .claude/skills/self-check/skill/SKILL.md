@@ -1,6 +1,6 @@
 ---
 name: self-check-skill
-description: skill 自检。检查 books/{slug}/articles/{篇名}/skill.md 的 AI 技能文件合规：YAML frontmatter（displayName/type/input/output/description）/ 功能定位 / 输入参数 / 处理逻辑（含兜底分支）/ 输出模板 / 至少 1 个示例 / 与 catalog 关联（文件存在即关联）。遵守 research-dispute/SPEC-skill.md + research-dispute/general.md + （术数=命时）research-dispute/bazi.md。
+description: skill 自检。检查 books/{slug}/articles/{篇名}/skill.md 的 AI 技能文件合规：YAML frontmatter（displayName/type/input/output/description）/ 功能定位 / 输入参数 / 处理逻辑（含兜底分支）/ 输出模板 / 至少 1 个示例 / 与 catalog 关联（文件存在即关联）。遵守 shared/sources/SPEC-skill.md + shared/sources/general.md + （术数=命时）shared/sources/bazi.md。
 ---
 
 # skill 自检
@@ -13,9 +13,9 @@ description: skill 自检。检查 books/{slug}/articles/{篇名}/skill.md 的 A
 
 子 SKILL.md 启动时按 `shared/spec-bundles.md` 加载：
 
-1. `research-dispute/SPEC-skill.md` 全文
-2. `research-dispute/general.md` 全文
-3. （术数=命时追加 `research-dispute/bazi.md`）
+1. `shared/sources/SPEC-skill.md` 全文
+2. `shared/sources/general.md` 全文
+3. （术数=命时追加 `shared/sources/bazi.md`）
 
 ## 必检项目
 

@@ -1,7 +1,7 @@
 ---
 name: self-check
 description: 五术研究项目自检技能。覆盖 catalog/source/interpretation/skill 4 类内容管道的合规扫描。每次自检严格遵守 general.md + 对应 SPEC，使用隔离的 subagent 输出按书聚合的 markdown 报告。
-trigger: 自检|合规扫描|规范校验
+trigger: 自检|合规扫描|规范校验|目录检查|原文检查|解读检查|技能检查|catalog|source|interpretation|skill自检|自检catalog|自检source|自检interpretation|自检skill
 ---
 
 # self-check 自检技能（主入口）
