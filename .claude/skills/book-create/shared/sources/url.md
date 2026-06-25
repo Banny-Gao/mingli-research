@@ -15,14 +15,14 @@
 3. 填充 `BookDraft` 中间表示（同模式 A）
 4. **raw HTML 持久化**（详见 §3）—— LLM 能从中生成 catalog.md 就同步落 `books/{slug}/catalog.html`
 
-## §3 raw HTML 持久化
+## raw HTML 持久化
 
 **触发条件：** WebFetch 拿到的 HTML 经主 agent 解析后**能**抽出 ≥3 章节（即 LLM 能从这段 HTML 生成 catalog.md）。
 
 **强约束：** 一旦解析成功，**原始 HTML 必须落盘**到 `books/{slug}/catalog.html`。理由：
 - HTML 是 LLM 工作的输入素材，丢了下次重跑（重 WebFetch）会因站点变化/反爬/cookies 失效而失败
 - 即使 fetch-sources.js 当前**不**直接消费 catalog.html，LLM 在 source-create 模式 D 兜底时仍可重新读它来生成 URL 列表
-- 6 本已有 catalog.html 的书（千里命稿/子平真诠/穷通宝鉴/三命通会/渊海子平/滴天髓阐微）都是建书时同步落的，新书不应缺
+- 已有书的 catalog.html 都是建书时同步落的，新书不应缺
 
 **落盘动作（在 Step 6 由主 agent 执行）：**
 ```
