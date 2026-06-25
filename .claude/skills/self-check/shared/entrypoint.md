@@ -15,6 +15,10 @@
 
 **捷径：** Step 1 接受"类别作为命令参数"（如 `/self-check source`），跳过类别选择直接进 Step 2。其他 Step 不接受命令参数。
 
+**当前支持的命令参数：**
+
+- `--focus`（仅 source 类型，Step 1 之后任意时刻触发；强制走 Step 3 篇章选择，默认单书单篇聚焦。其他 type 暂未实现命令参数，传则忽略）
+
 ## Step 1 — 类别
 
 - 触发：用户输入 `/self-check` 或 `/自检`
@@ -39,7 +43,7 @@
 - 分支：
   - **catalog 类型**：跳过 Step 3（catalog 不针对篇章）
   - **skill / interpretation 类型**：Bash `ls books/{slug}/articles/`，列目录名作为可选篇名；**必问且至少选 1 篇**
-  - **source 类型**：默认全检（不再问篇章），直接进入 Step 4；如用户主动要求聚焦篇章，可在 Step 2 选单书时用命令参数 `/self-check source --focus` 显式进入 Step 3
+  - **source 类型**：默认全检（不再问篇章），直接进入 Step 4；如用户主动要求聚焦篇章，可用命令参数 `/self-check source --focus` 显式进入 Step 3（多书场景亦可）
 - 抽检选项（条件性）：
   - 仅在 books 模式 + 总篇章数 > 5 时出现
   - "全检 / 抽检 N 篇" 两选项

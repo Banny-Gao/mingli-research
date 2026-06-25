@@ -1,6 +1,6 @@
 ---
 name: self-check-source
-description: source 自检。检查 books/{slug}/articles/{篇名}/source.md 的原文录入合规：照录原则、字形策略（catalog.md blockquote 声明）、排版规范、注家标注、勘误标记。遵守 research-dispute/SPEC-source.md + research-dispute/general.md。
+description: source 自检。检查 books/{slug}/articles/{篇名}/source.md 的原文录入合规：照录原则、字形策略（catalog.md blockquote 声明）、排版规范、注家标注、勘误标记。遵守 shared/sources/SPEC-source.md + shared/sources/general.md。
 ---
 
 # source 自检
@@ -13,8 +13,8 @@ description: source 自检。检查 books/{slug}/articles/{篇名}/source.md 的
 
 子 SKILL.md 启动时按 `shared/spec-bundles.md` 加载：
 
-1. `research-dispute/SPEC-source.md` 全文
-2. `research-dispute/general.md` 全文
+1. `shared/sources/SPEC-source.md` 全文
+2. `shared/sources/general.md` 全文
 
 注：source 不需要 bazi.md（原文不涉及命理解读）。
 
