@@ -43,7 +43,7 @@ describe('MODAL_TYPE_CAPS', () => {
       const caps = MODAL_TYPE_CAPS[t]
       expect(caps.allowsAnnotation).toBe(true)
       expect(caps.supportsPagination).toBe(true)
-      expect(caps.proseClass).toBe('prose-interp')
+      expect(caps.proseClass).toBe('prose-content')
     }
   })
 })

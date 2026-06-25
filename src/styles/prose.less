@@ -1,6 +1,4 @@
-/* ===== Prose Styles: prose-interp, prose-skill ===== */
-
-.prose-interp,.prose-source {
+.prose-content {
   padding: 0 0.75rem;
   line-height: 1.5;
   font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', serif;
@@ -50,6 +48,12 @@
   code {
     white-space: pre-wrap;
     word-break: break-all;
+    background: #0f1628;
+    border: 1px solid var(--color-border-hover);
+    border-radius: 0.375rem;
+    padding: 0.875rem 1.125rem;
+    margin: 0.75rem 0;
+    overflow-x: auto;
   }
 
   table {
@@ -91,56 +95,5 @@
   li {
     margin: 0.25rem 0;
     list-style: disc;
-  }
-}
-
-.prose-skill {
-  padding: 0 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.8;
-  font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', serif;
-
-  h2 {
-    color: var(--color-gold);
-    margin: 1.5rem 0 0.75rem;
-    border-bottom: 1px dashed var(--color-border-hover);
-    padding-bottom: 0.375rem;
-  }
-  h3 {
-    color: #e8a040;
-    margin: 1.25rem 0 0.625rem;
-  }
-  pre {
-    background: #0f1628;
-    border: 1px solid var(--color-border-hover);
-    border-radius: 0.375rem;
-    padding: 0.875rem 1.125rem;
-    margin: 0.75rem 0;
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0.75rem 0;
-    font-size: 0.8125rem;
-  }
-  th {
-    background: #2a1f5e;
-    color: var(--color-gold);
-    padding: 0.375rem 0.625rem;
-    text-align: left;
-    border: 1px solid var(--color-border-hover);
-  }
-  td {
-    padding: 0.375rem 0.625rem;
-    border: 1px solid var(--color-border-card);
-  }
-  strong {
-    color: var(--color-gold);
-  }
-  ul,
-  ol {
-    padding-left: 1.25rem;
-    margin: 0.375rem 0;
   }
 }

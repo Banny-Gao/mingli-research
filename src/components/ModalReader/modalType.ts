@@ -31,9 +31,9 @@ export interface ModalTypeCapabilities {
 }
 
 export const MODAL_TYPE_CAPS: Record<ModalType, ModalTypeCapabilities> = {
-  interp: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-interp' },
-  source: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-source' },
-  skill:  { allowsAnnotation: false, supportsPagination: false, proseClass: 'prose-skill' },
+  interp: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-content' },
+  source: { allowsAnnotation: true, supportsPagination: true, proseClass: 'prose-content' },
+  skill: { allowsAnnotation: false, supportsPagination: false, proseClass: 'prose-content' },
 }
 
 /** 用户可见标签（中文） */
