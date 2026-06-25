@@ -32,6 +32,7 @@ const clearWillChange = (targets: HTMLElement[]) =>
  * - 空 refs（全部 null）安全跳过
  * - 卸载时 GSAP 自动 kill active tweens（killTweensOf 也会清理）
  */
+let catchedVisible: boolean
 export function useAnimatedCollapse({
   refs,
   visible,
@@ -50,6 +51,8 @@ export function useAnimatedCollapse({
 
     setWillChange(targets, 'height, opacity')
     gsap.killTweensOf(targets)
+    if (catchedVisible === visible) return
+    
     if (visible) {
       gsap.fromTo(
         targets,
@@ -72,5 +75,7 @@ export function useAnimatedCollapse({
         onComplete: () => clearWillChange(targets),
       })
     }
+
+    catchedVisible = visible
   }, [visible, refs, expandDuration, collapseDuration])
 }
