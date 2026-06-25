@@ -11,10 +11,10 @@
 2. 拼命令：
    ```bash
    # dry-run 预览
-   node scripts/fetch-sources.js <slug> <chapter1>,<chapter2> --force --dry-run
+   node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force --dry-run
 
    # 实跑
-   node scripts/fetch-sources.js <slug> <chapter1>,<chapter2> --force
+   node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force
    ```
 3. **先 dry-run**让用户确认范围
 4. 用户确认后**去掉 `--dry-run`**实跑
@@ -23,7 +23,7 @@
    - 行数 / 字符数（如 < 100 字标记"过短"）
 6. 收尾报告
 
-## fetch-sources.js 能力继承（v1 不动内部代码）
+## fetch-source.js 能力继承（v1 不动内部代码）
 
 - 自动发现 books/ 下含 catalog.md 的书
 - EXTRACTORS 数组：iwzbz.com（`book-detail-content` 提取）+ generic（`《书名》第X章` 模式）
@@ -36,11 +36,11 @@
 ## v1 不扩充的项
 
 - 不加新站点 EXTRACTORS（CText / 国学大师 / 殆知阁 等 v2 待）
-- 不改 fetch-sources.js 内部代码
+- 不改 fetch-source.js 内部代码
 
 ## 脚本产出的红线合规
 
-**脚本不豁免红线。** fetch-sources.js 只解决"批量抓取 + 已知站点（iwzbz.com / generic）t2s"问题；产出 source.md 后主 agent 仍须按 SPEC-source.md §五 红线 5 条复核：
+**脚本不豁免红线。** fetch-source.js 只解决"批量抓取 + 已知站点（iwzbz.com / generic）t2s"问题；产出 source.md 后主 agent 仍须按 SPEC-source.md §五 红线 5 条复核：
 
 1. 不混解读
 2. 不改字（含 OCR 噪声、t2s 转换后疑似错的字）
@@ -79,6 +79,6 @@
 | 50-200 篇 | 3-10 分钟 | 高（429 / 5xx 概率上升）|
 | 200+ 篇 | 10+ 分钟，建议分批 | 高 |
 
-**进度提示：** fetch-sources.js 跑时**终端输出**含进度条（用户可见），主 agent 在调用 `Bash` 工具时也**实时捕获** stdout 摘要给用户看（避免用户误以为卡死）。
+**进度提示：** fetch-source.js 跑时**终端输出**含进度条（用户可见），主 agent 在调用 `Bash` 工具时也**实时捕获** stdout 摘要给用户看（避免用户误以为卡死）。
 
 **v1 限制：** 不支持后台断点续跑，跑失败须整本重跑。

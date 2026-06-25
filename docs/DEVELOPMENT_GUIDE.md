@@ -147,8 +147,8 @@ scripts/
 ├── generate.js             # catalog.md → src/data/*（必经）
 ├── dev.js                  # watch books/ + Vite
 ├── generate-interpretations.js  # 批量生成解读（CLI 入口 B）
-├── fetch-sources.js        # 通用原文抓取
-├── fetch-wikisource.js     # 维基文库抓取（紫微）
+├── fetch-source.js         # 典籍原文抓取统一入口 (run/wiki subcommand)
+├── fetch-source/           # 内部模块 (format / extractors / run / wiki)
 ├── t2s.js                  # 繁简转换
 ├── self-check-fingerprint.py   # 规范指纹校验
 ├── lib/                    # 共享库

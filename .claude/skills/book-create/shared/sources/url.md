@@ -21,7 +21,7 @@
 
 **强约束：** 一旦解析成功，**原始 HTML 必须落盘**到 `books/{slug}/catalog.html`。理由：
 - HTML 是 LLM 工作的输入素材，丢了下次重跑（重 WebFetch）会因站点变化/反爬/cookies 失效而失败
-- 即使 fetch-sources.js 当前**不**直接消费 catalog.html，LLM 在 source-create 模式 D 兜底时仍可重新读它来生成 URL 列表
+- 即使 fetch-source.js 当前**不**直接消费 catalog.html，LLM 在 source-create 模式 D 兜底时仍可重新读它来生成 URL 列表
 - 已有书的 catalog.html 都是建书时同步落的，新书不应缺
 
 **落盘动作（在 Step 6 由主 agent 执行）：**

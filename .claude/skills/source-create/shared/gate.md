@@ -11,7 +11,7 @@ source-create 流程有 1 次字形策略 gate + 1 次落盘冲突 4 选项。
 | 字段值 | 处置 |
 |--------|------|
 | `原文照录` | 直接进 Step 5，无 gate |
-| `简体规范化` | 提示用户"建议走 fetch-sources.js 批量通道（已含 t2s），或手动用 `node scripts/t2s.js` 转换已录文件"；v1 不自动 t2s |
+| `简体规范化` | 提示用户"建议走 fetch-source.js run 批量通道（已含 t2s），或手动用 `node scripts/t2s.js` 转换已录文件"；v1 不自动 t2s |
 | 声明缺失 | 视为 `原文照录`，不 gate |
 
 **v1 不自动 t2s 的原因：** SPEC-source.md §X.3 要求"歧义字清单 + 人工 spot-check"，全流程复杂；v1 字形 gate 退化为"提示"，不阻塞流程。

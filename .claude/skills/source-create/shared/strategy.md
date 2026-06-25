@@ -20,7 +20,7 @@
 | A. URL | 用户给单篇章 URL（任意站点）| WebFetch (L1) / +CSS (L2) / Playwright (L3) |
 | B. 文本 | 用户给 .txt / 粘到聊天 / 给文件路径 | Read + LLM 清洗 |
 | C. 图片/PDF | 用户给扫描件 | 多模态读图 |
-| D. 调脚本 | 已有 catalog.html + URL 模式整本 | `node scripts/fetch-sources.js` |
+| D. 调脚本 | 已有 catalog.html + URL 模式整本 | `node scripts/fetch-source.js run` |
 
 **AskUserQuestion 4 选项：**
 - A. URL
@@ -46,10 +46,10 @@ WebFetch URL
 
 ```bash
 # dry-run 预览
-node scripts/fetch-sources.js <slug> <chapter1>,<chapter2> --force --dry-run
+node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force --dry-run
 
 # 实跑
-node scripts/fetch-sources.js <slug> <chapter1>,<chapter2> --force
+node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force
 ```
 
-> 注：v1 不动 fetch-sources.js 内部代码；脚本是 data layer，skill 是 UI layer。
+> 注：v1 不动 fetch-source.js 内部代码；脚本是 data layer，skill 是 UI layer。
