@@ -74,7 +74,7 @@ books/神峰通考/articles/偏官格 附弃命从杀格/  # ✓ 正确
 5. `Write` `books/{slug}/catalog.md`
 6. 不自动跑 `node scripts/generate.js`，由用户决定
 
-## §3 raw HTML 落盘
+## raw HTML 落盘
 
 **触发条件：**
 - `BookDraft.source_input.rawHtmlPath` 存在（模式 A 输入侧）
@@ -101,6 +101,5 @@ Write books/<slug>/catalog.html
 - 用户**选**取消或退出 → 整个 book-create 流程退出，已创建的 articles 骨架保留（**不**清理）
 
 **与已建书的一致性：**
-- 6 本已有 catalog.html 的书（千里命稿/子平真诠/穷通宝鉴/三命通会/渊海子平/滴天髓阐微）都是建书时同步落的
-- 3 本新书（命理探原/神峰通考/紫微斗数全书）当前**缺** catalog.html，v1 改进后未来新书不会再缺
-- 旧 3 本书的 catalog.html 补不补 → 走 source-create 模式 D 时按需手工补（**不**是 book-create 责任）
+- 已有 catalog.html 的书都是建书时同步落的
+- 缺 catalog.html 的旧书 → 走 source-create 模式 D 时按需手工补（**不**是 book-create 责任）

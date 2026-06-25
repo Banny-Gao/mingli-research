@@ -5,7 +5,7 @@
 - **必填：** 用户提供 `catalog.html` 绝对路径
 - **路径要求：** 必须是文件系统可读的实际文件
 
-**输入与持久化的关系：** 用户提供的 catalog.html 是 LLM 解析的**输入素材**，主 agent 在 Step 6 必须**自动 cp** 到 `books/{slug}/catalog.html`（详见 `shared/skeleton.md` §落盘顺序）。这不是"建议"，是 skill 默认行为——避免"读完即丢"造成 3 本新书（命理探原/神峰通考/紫微斗数全书）无 catalog.html 的死法重演。
+**输入与持久化的关系：** 用户提供的 catalog.html 是 LLM 解析的**输入素材**，主 agent 在 Step 6 必须**自动 cp** 到 `books/{slug}/catalog.html`（详见 `shared/skeleton.md` §落盘顺序）。这不是"建议"，是 skill 默认行为——避免"读完即丢"造成新书无 catalog.html 的死法重演。
 
 ## 主 agent 动作
 
