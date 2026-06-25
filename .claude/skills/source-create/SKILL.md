@@ -15,7 +15,7 @@ trigger: 录入|录入原文|补录|录原文
 | A. URL | 用户给单篇章 URL | `shared/sources/url.md`（L1 通用 / L2 CSS 提示 / L3 JS 渲染）|
 | B. 文本 | 用户给 .txt / 粘到聊天 / 给文件路径 | `shared/sources/text.md` |
 | C. 图片/PDF | 用户给扫描件 | `shared/sources/image-pdf.md` |
-| D. 调脚本 | 书 slug + 篇章列表 | `shared/sources/script.md`（调 fetch-sources.js）|
+| D. 调脚本 | 书 slug + 篇章列表 | `shared/sources/script.md`（调 fetch-source.js run）|
 
 ## 调用方式
 
@@ -61,7 +61,7 @@ trigger: 录入|录入原文|补录|录原文
 - 读 `books/{slug}/catalog.md` blockquote 的 `字形策略` 字段
 - 校验 `shared/spec-bundles.md` 指纹（动态化：跑 `scripts/self-check-fingerprint.py` 实时取指纹，与上轮对比）
 - `原文照录` → 直接进 Step 5
-- `简体规范化` → 提示用户走 fetch-sources.js 通道或手动 t2s；v1 不自动转换（不阻塞流程，详见 `shared/gate.md` §Gate 1）
+- `简体规范化` → 提示用户走 fetch-source.js run 通道或手动 t2s；v1 不自动转换（不阻塞流程，详见 `shared/gate.md` §Gate 1）
 - 声明缺失 → 视为 `原文照录`
 
 ### Step 5 — 落盘

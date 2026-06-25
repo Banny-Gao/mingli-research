@@ -458,8 +458,7 @@ deploy-pages@v4 → GitHub Pages
 | ------------------------------------- | --------------------------------------------------- |
 | `generate.js`                         | `catalog.md` → `src/data/*` 数据生成（必经）          |
 | `dev.js`                              | 监听 `books/**/*.md` 自动重生成 + 启动 Vite           |
-| `fetch-sources.js`                    | 通用原文抓取（HTML / 文本）                           |
-| `fetch-wikisource.js`                 | 维基文库抓取（紫微斗数全书专用）                       |
+| `fetch-source.js`                     | 通用原文抓取（HTML / 文本）+ 维基文库抓取（run / wiki subcommand）  |
 | `t2s.js`                              | 繁简转换（基于 opencc-js）                            |
 | `rebuild-ziwei-source.js`             | 紫微斗数全书原文重建                                  |
 | `verify-ziwei-source.js`              | 紫微斗数全书原文校验                                  |

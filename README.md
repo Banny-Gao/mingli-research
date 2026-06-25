@@ -112,8 +112,8 @@ mingli-research/
 ├── scripts/
 │   ├── generate.js                     # catalog.md → src/data/*
 │   ├── dev.js                          # 开发服务器包装
-│   ├── fetch-sources.js                # 通用原文抓取
-│   ├── fetch-wikisource.js             # 维基文库抓取（紫微斗数全书）
+│   ├── fetch-source.js                 # 通用原文抓取 + 维基文库抓取（run/wiki subcommand）
+│   ├── fetch-source/                   # 内部模块 (format / extractors / run / wiki)
 │   ├── t2s.js                          # 繁简转换（opencc-js）
 │   ├── self-check-fingerprint.py       # 内容指纹自检
 │   └── lib/utils.js
