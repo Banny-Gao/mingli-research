@@ -1,84 +1,102 @@
-# 模式 D：调脚本批量
+# 模式 D：站点分析 + 抓取决策 + 自生成（方法论契约）
 
 ## 输入契约
 
 - **必填：** 书 slug（与 `books/{slug}/` 一致）
+- **必填：** `books/{slug}/catalog.md`（篇章列表来源）
+- **推荐：** `books/{slug}/catalog.html`（Step 3.1 站点分析 URL 取样）
 - **可选：** 篇章列表（逗号或空格分隔；缺省 = 整本所有未录篇章）
 
-## 主 agent 动作
+## 主 agent 流程
 
-1. 收源：书 slug + 篇章列表
-2. 拼命令：
-   ```bash
-   # dry-run 预览
-   node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force --dry-run
+### Step 3.1 站点分析
 
-   # 实跑
-   node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force
-   ```
-3. **先 dry-run**让用户确认范围
-4. 用户确认后**去掉 `--dry-run`**实跑
-5. 校验产出：
-   - `ls books/<slug>/articles/<篇名>/source.md` 存在性
-   - 行数 / 字符数（如 < 100 字标记"过短"）
-6. 收尾报告
+读 catalog.html 中 1-2 篇 URL，用 LLM 推断：
 
-## fetch-source.js 能力继承（v1 不动内部代码）
+- `siteType`：古籍站 / 文献库 / 博客 / 论坛 / 学术平台 / 未知
+- `urlPattern`：URL 模板（如 `<base>/<book>/<chapter>.html`）
+- `isSSR`：是否需要 JS 渲染（true 走 Playwright，否则 fetch 即可）
+- `hasPagination`：是否分页（true 需遍历页码）
 
-- 自动发现 books/ 下含 catalog.md 的书
-- EXTRACTORS 数组：iwzbz.com（`book-detail-content` 提取）+ generic（`《书名》第X章` 模式）
-- catalog.html + catalog.md 联合解析
-- t2s 转换（仅字形策略为"简体规范化"时启用）
-- 注家标记 `【XX】` 检测
-- 进度条 + 错误日志 + 模糊 URL 匹配
-- `--force` 覆盖已存在文件；`--dry-run` 预览
+产物：`siteAnalysis = { siteType, urlPattern, isSSR, hasPagination }`
 
-## v1 不扩充的项
+### Step 3.2 探查现有抓取工具
 
-- 不加新站点 EXTRACTORS（CText / 国学大师 / 殆知阁 等 v2 待）
-- 不改 fetch-source.js 内部代码
+详见 `shared/sources/probe.md`。
 
-## 脚本产出的红线合规
+运行时在 `scripts/` 子树扫 `.js` 文件，识别 fetch/scrape/crawl/source 类工具，
+查是否覆盖目标站点。
 
-**脚本不豁免红线。** fetch-source.js 只解决"批量抓取 + 已知站点（iwzbz.com / generic）t2s"问题；产出 source.md 后主 agent 仍须按 SPEC-source.md §五 红线 5 条复核：
+产物：`probeResult = { existingTools: [...], uncovered: bool }`
 
-1. 不混解读
-2. 不改字（含 OCR 噪声、t2s 转换后疑似错的字）
-3. 不加非 `> 【注家名】` 块引用之外的标记
-4. 不分段处理长段原文
-5. 不加非空行的任何内容
+### Step 3.3 决策路由
 
-**复核点：**
-- 抽 3-5 篇 source.md 看 t2s 转换是否合理（仅适用字形策略 `简体规范化` 的书）
-- 抽 1-2 篇含注家的，看 `【XX】` 是否全部转为 `> 【XX】` 块引用
-- 抽 1-2 篇长段，看是否被错误分段
+| 探查结果 | skill 动作 |
+|---|---|
+| 探到 1+ 候选且覆盖目标站点 | 告知用户工具名 + runner，等用户决定执行权 |
+| 探到 0 个候选 | 进入 Step 3.4 自生成 |
+| 探到但都不覆盖 | 告知候选清单 + 建议用户在工具内补 extractor（**skill 不做**） |
 
-复核发现违规 → 不接受脚本产出，回到 source-create 重录或手工修补。
+### Step 3.4 自生成临时脚本（仅未探到或用户明确选择时）
+
+详见 `shared/sources/scratch-template.md`。
+
+加载 prompt 模板 → 注入 siteAnalysis / chapterList / skeletonRedLines / formatSpec
+→ LLM 生成一次性 Node 脚本 → 落 `.scratch/<slug>-<YYYYMMDD>.js`
+→ 跑 `node --check <path>` 自检（语法错回退 Step 3.4 重生成，最多 3 次）
+
+### Step 3.5 dry-run 合并 gate
+
+AskUserQuestion 一次性呈现：
+
+| 项 | 内容 |
+|---|---|
+| 范围 | slug + 篇章数 + 估算耗时 |
+| 抓取方式 | 自生成 / 复用 X / 用户自跑 |
+| 执行权 | AI 经确认后跑 / 用户自跑 |
+
+### 执行
+
+- **用户自跑**：skill 打印完整命令（自生成脚本路径 / 复用工具的 runner），等用户回报
+- **AI 跑**：skill 跑进程 → 捕获 stdout/stderr → 回到 Step 5 红线复核
+
+### Step 5 红线复核
+
+详见 `shared/skeleton.md` 红线 5 条（不混解读 / 不改字 / 不加标记 / 不分段 / 不加空行外的任何内容）。
+
+抽检：
+
+- 抽 3-5 篇 source.md：注家块 / 字形 / 段长 / 空行 / 无解读
+- 抽 1-2 篇含注家：`> 【XX】` 块引用完整
+- 抽 1-2 篇长段：未被错误分段
+
+`fatal > 0` → 不接受产出，提示手工修补或回 Step 2。
+
+## 红线
+
+1. **不绑定任何外部脚本路径**——probe.md 的探查方法不含具体路径
+2. **不修改任何已有抓取工具**——`scripts/fetch-source/` 作为外部工具实例之一存在，skill 不动它
+3. **不自动覆盖已有 source.md**——4 选项 gate（覆盖/备份/取消/退出）沿用
 
 ## 失败兜底
 
 | 异常 | 处置 |
-|------|------|
-| 调脚本失败（非 0 退出）| 报告 stderr，不重试 |
-| 调脚本后产出校验失败（行数过少/缺失篇）| 报告详情，让用户决定 |
-| 模糊匹配未命中 | 报告"未匹配篇章名：..."，让用户修正 |
-| 网络失败（429 / 5xx）| 脚本内部已重试 3 次；最终失败 → 报告 |
+|---|---|
+| 站点分析失败（catalog.html 缺失 / URL 不可达） | 报告 + 询问：改 URL 子模式 / 改源模式 / 取消 |
+| 探查失败（`scripts/` 不存在 / 无 `.js`） | 视为"未探到"，进入自生成 |
+| 探到但不覆盖 | 告知候选清单 + 建议补 extractor（skill 不做） |
+| 自生成脚本语法错 | 回 Step 3.4 重新生成，最多 3 次 |
+| 自生成脚本产出红线违规 | 报告违规项 + 不接受产出 + 让用户决定 |
+| 用户取消 dry-run gate | 不写脚本、不跑，退出模式 D |
+| 用户拒绝 AI 执行 | skill 打印命令，等用户回报 |
+| 自生成脚本运行时网络失败 | 脚本内已重试 3 次；最终失败 → 非 0 退出 → skill 报告 stderr |
+| 自生成脚本产物行数过短（< 100 字） | 报告可疑篇名 + 让用户决定 |
 
-## 与 source-create URL 模式的分工
+## 共享契约引用
 
-- URL 模式：单点 + 任意站点（用 LLM 通用能力）
-- 脚本模式：批量 + 已知 2 站点（用脚本 EXTRACTORS）
-- **不重复造轮子**：v1 单点 LLM、批量脚本，各司其职
-
-## 批量预期耗时
-
-| 篇章数 | 典型耗时 | 网络/站点稳定性依赖 |
-|--------|---------|-------------------|
-| 1-10 篇 | < 1 分钟 | 低 |
-| 10-50 篇 | 1-3 分钟 | 中（脚本内已重试 3 次）|
-| 50-200 篇 | 3-10 分钟 | 高（429 / 5xx 概率上升）|
-| 200+ 篇 | 10+ 分钟，建议分批 | 高 |
-
-**进度提示：** fetch-source.js 跑时**终端输出**含进度条（用户可见），主 agent 在调用 `Bash` 工具时也**实时捕获** stdout 摘要给用户看（避免用户误以为卡死）。
-
-**v1 限制：** 不支持后台断点续跑，跑失败须整本重跑。
+| 契约 | 路径 |
+|---|---|
+| 探查方法论 | `shared/sources/probe.md` |
+| 自生成 prompt 模板 | `shared/sources/scratch-template.md` |
+| source.md 落盘规则 + 红线 | `shared/skeleton.md` |
+| 字形策略 gate | `shared/gate.md` |
