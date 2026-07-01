@@ -54,3 +54,6 @@ test-results
 .env
 .env.*
 !.env.example
+
+/.scratch/
+*.bak-2026*

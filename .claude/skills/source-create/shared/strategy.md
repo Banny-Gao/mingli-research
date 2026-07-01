@@ -20,13 +20,13 @@
 | A. URL | 用户给单篇章 URL（任意站点）| WebFetch (L1) / +CSS (L2) / Playwright (L3) |
 | B. 文本 | 用户给 .txt / 粘到聊天 / 给文件路径 | Read + LLM 清洗 |
 | C. 图片/PDF | 用户给扫描件 | 多模态读图 |
-| D. 调脚本 | 已有 catalog.html + URL 模式整本 | `node scripts/fetch-source.js run` |
+| D. 站点分析 + 自生成 | 用户给书 slug + 篇章列表（catalog.html 推荐） | 运行时探查 `scripts/` 子树；未覆盖则自生成临时脚本（详见 `sources/probe.md` + `sources/scratch-template.md`） |
 
 **AskUserQuestion 4 选项：**
 - A. URL
 - B. 文本
 - C. 图片/PDF
-- D. 调脚本批量
+- D. 站点分析+抓取
 
 ## URL 子模式 auto-detect（Step 3 内部）
 
@@ -42,14 +42,5 @@ WebFetch URL
             └─ C. 退出，建议改用模式 C 截屏
 ```
 
-## 批量脚本调命令模板
+> 模式 D 不绑定任何外部脚本路径；详见 `shared/sources/probe.md` + `shared/sources/scratch-template.md`。
 
-```bash
-# dry-run 预览
-node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force --dry-run
-
-# 实跑
-node scripts/fetch-source.js run <slug> <chapter1>,<chapter2> --force
-```
-
-> 注：v1 不动 fetch-source.js 内部代码；脚本是 data layer，skill 是 UI layer。
