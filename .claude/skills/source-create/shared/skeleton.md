@@ -43,7 +43,7 @@ books/神峰通考/articles/万金赋/source.md
 1. 读 `books/{slug}/articles/{篇名}/source.md` 是否已存在
 2. 存在 → 4 选项（覆盖/备份/取消/退出）
 3. 不存在 → 直接 `Write` source.md
-4. 不自动跑 `node scripts/generate.js`，由用户决定
+4. 不自动跑后续生成流程，由用户决定
 
 ## 关键红线（来自 SPEC-source.md §五）
 

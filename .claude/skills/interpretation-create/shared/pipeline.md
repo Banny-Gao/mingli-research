@@ -55,20 +55,20 @@
 
 ## 实现
 
-`scripts/lib/pipeline.js` 提供：
+`buildPipelinePrompt` 提供：
 
 - `buildPipelinePrompt({sourceText, condition, specBundle})` → 完整 9 步 prompt
 
-`scripts/lib/self-check-lite.js` 提供：
+`runSelfCheckLite` 提供：
 
 - `runSelfCheckLite(text)` → 返回 `{fatal, score, issues}`，其中 `score` 是 0-5 分
 
 **调用方**：
 
 - 主 agent（单点）：产出草稿后调 `runSelfCheckLite(draft)`，自评 score < 4 → 现场重写（最多 3 次）
-- 批量（`scripts/lib/llm-batch.js`）：每篇重写循环里调 `runSelfCheckLite(output)`，score < 4 → 重写或失败
+- 批量：每篇重写循环里调 self-check，score < 4 → 重写或失败
 
-**规则单源化**：所有 10 类致命错误 + 3 类格式错误定义在 `scripts/lib/interpretation-rules.js`，由 `buildPipelinePrompt`（prompt prose 生成）和 `runSelfCheckLite`（regex 检测）共同消费。
+**规则单源化**：所有 10 类致命错误 + 3 类格式错误定义在 interpretation-rules，由 `buildPipelinePrompt`（prompt prose 生成）和 `runSelfCheckLite`（regex 检测）共同消费。
 
 ## token 预算（per-篇）
 

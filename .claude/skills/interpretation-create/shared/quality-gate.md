@@ -1,10 +1,10 @@
 # 落盘前 self-check 合规门
 
-主 agent / CLI 脚本在 Step 6 落盘前必须跑精简版 self-check。
+主 agent / 批量执行器在 Step 6 落盘前必须跑精简版 self-check。
 
 ## 实现
 
-`scripts/lib/self-check-lite.js` 的 `runSelfCheckLite(text)` 函数：
+`runSelfCheckLite(text)` 函数：
 
 - **致命错误（10 类）**：
   1. 元自我引用（"本解读" / "本文" / "本篇解读"）
@@ -38,13 +38,13 @@
 3. fatal > 0 → 报告致命项 → 回 Step 5 重写（最多 3 次）
 4. fatal = 0 → 准许落盘
 
-## CLI 脚本流程（批量）
+## 批量执行器流程
 
-1. 调 `lib/llm-batch.js` 跑 9 步流水线
+1. 跑 9 步流水线
 2. per-篇 `runSelfCheckLite(output)`
 3. fatal > 0 → 跳过该篇 + 记日志
 4. fatal = 0 → 写文件
 
 ## v1 不调 self-check-interpretation subagent
 
-理由：self-check-interpretation 当前是 subagent 形式，CLI 脚本无法直接调。v1 在 Node 端跑精简版。v2 评估是否合并。
+理由：self-check-interpretation 当前是 subagent 形式，脱离 Claude Code 会话的执行器无法直接调。v1 跑精简版。v2 评估是否合并。

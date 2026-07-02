@@ -13,7 +13,7 @@
 | 5 | 有无脱漏/残缺 | 扫 source.md 含 `【脱漏】` / `【残缺】` / `【原文此处残缺】` | `脱漏：是` |
 | 6 | 是否超长 | 有效正文字符（去空白）> 5000 | `超长：是（N 字符）` |
 
-实现：`scripts/lib/condition-check.js` 的 `checkCondition(text)` 函数，返回 6 项对象。
+实现：`checkCondition(text)` 函数，返回 6 项对象。
 
 ## 体检报告输出格式
 

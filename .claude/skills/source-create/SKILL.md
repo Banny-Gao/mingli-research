@@ -59,7 +59,7 @@ trigger: 录入|录入原文|补录|录原文
 ### Step 4 — 字形策略 gate
 
 - 读 `books/{slug}/catalog.md` blockquote 的 `字形策略` 字段
-- 校验 `shared/spec-bundles.md` 指纹（动态化：跑 `scripts/self-check-fingerprint.py` 实时取指纹，与上轮对比）
+- 校验 `shared/spec-bundles.md` 指纹（动态化：跑 `shared/sources/scripts/self-check-fingerprint.py` 实时取指纹，与上轮对比）
 - `原文照录` → 直接进 Step 5
 - `简体规范化` → 提示用户"建议走支持 t2s 的批量抓取通道，或手动用项目内繁简转换工具处理已录文件"；v1 不自动 t2s
 - 声明缺失 → 视为 `原文照录`
@@ -110,5 +110,5 @@ trigger: 录入|录入原文|补录|录原文
 - **Step 3.1 站点分析**：读 catalog.html 1-2 篇 URL → LLM 推断 siteType / urlPattern / isSSR / hasPagination
 - **Step 3.2 探查现有抓取工具**：扫 `scripts/` 子树 `.js` 文件，识别 fetch/scrape/crawl/source 类工具（详见 `shared/sources/probe.md`）
 - **Step 3.3 决策路由**：复用 / 建议补 extractor / 自生成（三选一）
-- **Step 3.4 自生成临时脚本**：加载 `shared/sources/scratch-template.md` prompt → LLM 生成一次性 Node 脚本 → 落 `.scratch/<slug>-<YYYYMMDD>.js` → `node --check` 自检
+- **Step 3.4 自生成临时脚本**：加载 `shared/sources/scratch-template.md` prompt → LLM 生成一次性抓取脚本 → 落 `.scratch/<slug>-<YYYYMMDD>.js` → 语法自检
 - **Step 3.5 dry-run 合并 gate**：AskUserQuestion 一次性确认范围 + 抓取方式 + 执行权

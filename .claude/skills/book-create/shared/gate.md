@@ -28,7 +28,7 @@ book-create 流程有 2 次强人工 gate。每次必走，不可跳过。
 1. 展示拟填入的 6 个 blockquote 字段
 2. 实时校验：
    - `shu` ∈ {山, 医, 命, 相, 卜}
-   - `category` 在 `scripts/lib/category-tree.js` 的 `CATEGORY_TREE` 已注册
+   - `category` 在 `shared/sources/category-tree.json` 的 `CATEGORY_TREE` 已注册
    - `contentTypes` 至少包含 `source`
    - `fontStrategy` 默认 `原文照录`
 4. AskUserQuestion 4 选项（A 全部确认 / B 修改字段 / C 重填 / D 退出）

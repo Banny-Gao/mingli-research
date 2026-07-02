@@ -2,7 +2,7 @@
 
 ## 必含规范（5 份）
 
-副本路径均相对 skill 目录自身。**真源路径与录入机制见 `shared/sources/manifest.json`**（由 `scripts/ingest-skill-sources.js` 录入）。
+副本路径均相对 skill 目录自身。**真源路径与录入机制见 `shared/sources/manifest.json`**（由 ingest-skill-sources 录入）。
 
 | # | 规范 | 副本路径 | 真源 | 用途 |
 |---|------|----------|------|------|
@@ -14,7 +14,7 @@
 
 **注**：SPEC-interpretation.md 未单独录入——其 §2.1 块引用格式通过 SPEC-skill.md 副本内的引用传递（搜"继承自 SPEC-interpretation §2.1"那条）。
 
-**任一副本缺失立即终止**（套 SPEC-skill.md §九 GATE 1 失败处置）。恢复方式：跑 `node scripts/ingest-skill-sources.js` 重新录入。
+**任一副本缺失立即终止**（套 SPEC-skill.md §九 GATE 1 失败处置）。恢复方式：跑 ingest-skill-sources 重新录入。
 
 ## 上游输入（产物来源，2 份）
 
@@ -42,7 +42,7 @@ node -e "import('./shared/sources/category-tree.json', { with: { type: 'json' } 
 
 ## 指纹校验（动态化）
 
-不存死值。**先**用 `scripts/ingest-skill-sources.js` 录入后，副本的指纹可由本目录内任何方式生成（如 `sha256sum`）。与"上次录入时的指纹"对比由调用方负责。
+不存死值。**先**用 ingest-skill-sources 录入后，副本的指纹可由本目录内任何方式生成（如 `sha256sum`）。与"上次录入时的指纹"对比由调用方负责。
 
 ```bash
 # 录入后对副本生成指纹

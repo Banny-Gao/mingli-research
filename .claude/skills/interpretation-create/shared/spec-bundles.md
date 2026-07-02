@@ -4,9 +4,9 @@
 
 | # | 规范 | 路径 | 用途 |
 |---|------|------|------|
-| 1 | SPEC-interpretation.md | `research-dispute/SPEC-interpretation.md` | 解读格式与原则（337 行） |
-| 2 | general.md | `research-dispute/general.md` | 通用红线 + 学术语体（含 14 条红线） |
-| 3 | 术数专项 | `research-dispute/{术数}.md`（如 `bazi.md`）| 领域硬约束（按 `catalog.md` 术数字段动态加载）|
+| 1 | SPEC-interpretation.md | `shared/sources/SPEC-interpretation.md` | 解读格式与原则（337 行） |
+| 2 | general.md | `shared/sources/general.md` | 通用红线 + 学术语体（含 14 条红线） |
+| 3 | 术数专项 | `shared/sources/{术数}.md`（如 `bazi.md`）| 领域硬约束（按 `catalog.md` 术数字段动态加载）|
 | 4 | catalog.md | `books/{slug}/catalog.md` | 元信息（术数 / 类别 / 篇章表）|
 | 5 | source.md | `books/{slug}/articles/{篇名}/source.md` | 待解读的原文 |
 
@@ -17,14 +17,14 @@
 不存死值。5 份规范的指纹在每次强装载时实时取，与"上次录入时的指纹"对比。
 
 ```bash
-python3 scripts/self-check-fingerprint.py | grep -E "SPEC-interpretation|general.md|bazi.md"
+python3 shared/sources/scripts/self-check-fingerprint.py | grep -E "SPEC-interpretation|general.md|bazi.md"
 ```
 
 输出形如：
 ```
-research-dispute/general.md 指纹: 123:5432d31f0a7024e3
-research-dispute/SPEC-interpretation.md 指纹: 337:abc123def456
-research-dispute/bazi.md 指纹: 50:789ghi012jkl
+shared/sources/general.md 指纹: 123:5432d31f0a7024e3
+shared/sources/SPEC-interpretation.md 指纹: 337:abc123def456
+shared/sources/bazi.md 指纹: 50:789ghi012jkl
 ```
 
 **漂移处置：**

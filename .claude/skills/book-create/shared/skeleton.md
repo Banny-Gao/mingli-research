@@ -72,7 +72,7 @@ books/神峰通考/articles/偏官格 附弃命从杀格/  # ✓ 正确
 3. 按 `chapter_list` 逐章 `mkdir -p` + `touch .gitkeep`
 4. **raw HTML 落盘**（条件性，详见 §3）
 5. `Write` `books/{slug}/catalog.md`
-6. 不自动跑 `node scripts/generate.js`，由用户决定
+6. 不自动跑后续生成流程，由用户决定
 
 ## raw HTML 落盘
 

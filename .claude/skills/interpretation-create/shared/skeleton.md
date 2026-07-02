@@ -65,4 +65,4 @@
 2. 检查 `books/{slug}/articles/{篇名}/interpretation.md` 是否已存在
 3. 存在 → 自动备份为 .bak
 4. Write interpretation.md
-5. 不自动跑 `node scripts/generate.js`，由用户决定
+5. 不自动跑后续生成流程，由用户决定
