@@ -15,7 +15,7 @@
 
 **不通过处置**：
 
-- 副本缺失 → 全阻断，提示「请跑 npm run ingest-skill-sources 重录」
+- 副本缺失 → 全阻断，提示「请跑 ingest-skill-sources 重录」
 - 17 指纹漂移 → 警告用户，让其选择「继续 / 重启流程」
 
 ---

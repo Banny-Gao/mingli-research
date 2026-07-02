@@ -1,6 +1,6 @@
 # 4 类自检的"规范包"内容定义
 
-> 副本路径相对 skill 目录自身。**真源路径与录入机制见 `shared/sources/manifest.json`**（由 `scripts/ingest-skill-sources.js` 录入）。
+> 副本路径相对 skill 目录自身。**真源路径与录入机制见 `shared/sources/manifest.json`**（由 ingest-skill-sources 录入）。
 >
 > `manifest.json` 的 `_root` 字段控制脚本解析 `from` 路径的根：默认 `null` 走 `process.cwd()`；非 null 时相对 manifest 自身目录解析。在子目录跑 `ingest` 时请显式传 `--project-root` 避免误解析。
 
@@ -21,7 +21,7 @@
 - general.md：`research-dispute/general.md`
 - bazi.md：`research-dispute/bazi.md`
 
-**任一副本缺失立即终止**。恢复方式：跑 `node scripts/ingest-skill-sources.js --target self-check` 重新录入。
+**任一副本缺失立即终止**。恢复方式：跑 ingest-skill-sources --target self-check 重新录入。
 
 ## bazi.md 条件追加
 

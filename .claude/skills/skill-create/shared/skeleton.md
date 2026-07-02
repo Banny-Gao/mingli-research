@@ -159,7 +159,7 @@ updated: {YYYY-MM-DD}
 
 ## 落盘后 CI 校验（不归 skill-create 责任）
 
-`scripts/generate.js --audit` 在 git commit 后自动触发，校验 1-8 条规则（spec §5.2）：
+CI 审计流程在 git commit 后自动触发，校验 1-8 条规则（spec §5.2）：
 
 1. `{一级}` / `{二级}` 在 CATEGORY_TREE 注册
 2. `slug` 字段与 path 末段一致
@@ -170,4 +170,4 @@ updated: {YYYY-MM-DD}
 7. 所有 `rules/<书slug>.md` 必须被 SKILL.md 的 `sources` 字段覆盖（无孤儿）
 8. SKILL.md + rules/ 中所有 `cat <path>.md` 引用能 resolve 到真实文件
 
-**任一失败 → CI 拒绝 PR。**
+**任一失败 → CI 拒绝。**

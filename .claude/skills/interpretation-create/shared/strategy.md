@@ -1,4 +1,4 @@
-# 模式选择 + dry-run 命令模板
+# 模式选择
 
 主 agent 在 Step 1（单/批）按本模板引导。
 
@@ -25,18 +25,6 @@
 5. 落盘前 self-check 精简版（详见 `quality-gate.md`）
 6. 自动备份后 Write 文件（详见 `skeleton.md`，v1 取消 4 选项 gate）
 
-## 批量模式双轨入口
+## 批量模式入口
 
-详见 `subagent-batch.md`（入口 A，交互式）与 `script-batch.md`（入口 B，后台/CI）。
-
-## dry-run 命令模板
-
-```bash
-# CLI 入口
-node scripts/generate-interpretations.js <slug> <chapter1>,<chapter2> --force --dry-run
-
-# 整本所有未解读篇章
-node scripts/generate-interpretations.js <slug> --dry-run
-```
-
-subagent 派发入口的 dry-run 由主 agent 在 dispatch 前打印（不调脚本）。
+详见 `batch.md`。

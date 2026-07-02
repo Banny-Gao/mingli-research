@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "_root": "../../../../..",
+  "_root_comment": "相对 manifest 自身目录的路径，指向项目根（manifest 在 .claude/skills/interpretation-create/shared/sources/ 下，5 层上溯到项目根）",
+  "description": "interpretation-create 录入源映射表（manifest 是真源；shared/sources/ 副本由 scripts/ingest-skill-sources.js 按本表生成）",
+  "sources": [
+    {
+      "id": "SPEC-interpretation",
+      "from": "research-dispute/SPEC-interpretation.md",
+      "to": "SPEC-interpretation.md",
+      "kind": "markdown",
+      "required": true,
+      "comment": "解读格式与原则的唯一真源；本副本由 ingest 自动生成"
+    },
+    {
+      "id": "general",
+      "from": "research-dispute/general.md",
+      "to": "general.md",
+      "kind": "markdown",
+      "required": true,
+      "comment": "通用红线 + 学术语体的唯一真源；本副本由 ingest 自动生成"
+    },
+    {
+      "id": "bazi",
+      "from": "research-dispute/bazi.md",
+      "to": "bazi.md",
+      "kind": "markdown",
+      "required": true,
+      "comment": "八字命理领域硬约束的唯一真源；本副本由 ingest 自动生成"
+    },
+    {
+      "id": "self-check-fingerprint",
+      "from": "scripts/self-check-fingerprint.py",
+      "to": "scripts/self-check-fingerprint.py",
+      "kind": "script",
+      "required": true,
+      "comment": "spec-bundles.md 指纹校验命令依赖此脚本；封装性要求副本自带"
+    }
+  ]
+}

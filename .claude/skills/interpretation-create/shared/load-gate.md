@@ -6,9 +6,9 @@
 
 | # | 文件 | 何时读 | 打印确认 |
 |---|------|--------|---------|
-| 1 | `research-dispute/SPEC-interpretation.md`（337 行）| Step 3 起始 | `⏳ 正在通读 SPEC-interpretation.md（337 行）⏳` |
-| 2 | `research-dispute/general.md`（含 14 条红线）| 紧接 #1 | `⏳ 正在通读 general.md（含 14 条红线）⏳` |
-| 3 | `research-dispute/{术数专项}.md`（如 `bazi.md`）| 紧接 #2 | `⏳ 正在通读 {术数专项}.md ⏳` |
+| 1 | `shared/sources/SPEC-interpretation.md`（337 行）| Step 3 起始 | `⏳ 正在通读 SPEC-interpretation.md（337 行）⏳` |
+| 2 | `shared/sources/general.md`（含 14 条红线）| 紧接 #1 | `⏳ 正在通读 general.md（含 14 条红线）⏳` |
+| 3 | `shared/sources/{术数专项}.md`（如 `bazi.md`）| 紧接 #2 | `⏳ 正在通读 {术数专项}.md ⏳` |
 | 4 | `books/{slug}/catalog.md` | 紧接 #3 | `⏳ 正在通读 books/{slug}/catalog.md ⏳` |
 | 5 | `books/{slug}/articles/{篇名}/source.md` | 紧接 #4 | `⏳ 正在通读 source.md ⏳` |
 
@@ -35,8 +35,8 @@
 ## 术数专项动态加载
 
 术数 → 专项文件路径的映射：
-- 命 → `research-dispute/bazi.md`
-- 卜 → `research-dispute/liuyao.md`（v1 假设只有八字，v2 扩充）
+- 命 → `shared/sources/bazi.md`
+- 卜 → `shared/sources/liuyao.md`（v2 待，当前不可用）
 - 山 / 医 / 相 → v2 待
 
-读取方式：解析 `catalog.md` blockquote 的 `> 术数：命` 字段，拼接得到 `research-dispute/bazi.md`。
+读取方式：解析 `catalog.md` blockquote 的 `> 术数：命` 字段，拼接得到 `shared/sources/bazi.md`。
