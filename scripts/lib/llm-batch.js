@@ -89,6 +89,7 @@ async function callClaudeWithRetry({
         max_tokens: 16000,
         system,
         messages: [{ role: 'user', content: user }],
+        thinking: {"type": "adaptive"}
       })
       return response.content[0].text
     } catch (err) {
