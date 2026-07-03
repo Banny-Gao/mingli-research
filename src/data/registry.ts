@@ -16,6 +16,7 @@ import * as _book12 from './玉照定真经';
 import * as _book13 from './神峰通考';
 import * as _book14 from './穷通宝鉴';
 import * as _book15 from './紫微斗数全书';
+import * as _book16 from './造化元钥评注';
 
 const registry: Record<string, any> = {
   '三命通会': _book0,
@@ -34,6 +35,7 @@ const registry: Record<string, any> = {
   '神峰通考': _book13,
   '穷通宝鉴': _book14,
   '紫微斗数全书': _book15,
+  '造化元钥评注': _book16,
 };
 
 export function getBook(slug: string) {
