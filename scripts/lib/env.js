@@ -1,5 +1,5 @@
 /**
- * scripts/lib/env.js — 解析 ANTHROPIC_* 配置
+ * scripts/lib/env.js — 通用 schema 驱动 resolveConfig
  *
  * 加载顺序（先到先得）：
  *   1. CLI 参数（--api-key 等）
@@ -47,41 +47,87 @@ export class ConfigError extends Error {
   }
 }
 
-const DEFAULTS = {
-  baseUrl: 'https://api.anthropic.com',
-  model: 'claude-opus-4-8',
-  concurrency: 4,
+function validateConcurrency(v) {
+  const n = Number(v)
+  if (!Number.isInteger(n) || n < 1) {
+    throw new ConfigError(`❌ INTERPRETATION_CONCURRENCY 无效：${v}（必须是 ≥1 的整数）`)
+  }
+}
+
+export function validateN(v) {
+  const n = Number(v)
+  if (!Number.isInteger(n) || n < 1 || n > 9) {
+    throw new ConfigError(`❌ T2I_DEFAULT_N 无效：${v}（必须是 1-9 的整数）`)
+  }
 }
 
 /**
- * @param {{apiKey?: string, baseUrl?: string, model?: string, concurrency?: number}} cli
- * @returns {{apiKey: string, baseUrl: string, model: string, concurrency: number}}
+ * 通用配置解析：按优先级 cli > process.env > schema.default 合并。
+ *
+ * @param {Record<string, {
+ *   env?: string,        // 环境变量名，不传则只从 cli / default 取值
+ *   default?: any,       // 默认值
+ *   required?: boolean,  // 缺失时抛 ConfigError
+ *   message?: string,    // required 缺失时的错误消息
+ *   validate?: (value: any) => void  // 校验函数，不合法则抛错
+ * }>} schema
+ * @param {Record<string, any>} cli
+ * @returns {Record<string, any>}
  */
-export function resolveConfig(cli = {}) {
-  const apiKey = cli.apiKey || process.env.ANTHROPIC_API_KEY
-  if (!apiKey) {
-    throw new ConfigError(
-      `❌ 缺少 ANTHROPIC_API_KEY 环境变量\n\n` +
+export function resolveConfig(schema, cli = {}) {
+  const config = {}
+  for (const [key, def] of Object.entries(schema)) {
+    // 1. CLI 参数优先（null 视为未指定）
+    let value = cli[key] ?? undefined
+    // 2. 环境变量次之
+    if (value === undefined && def.env) {
+      const envVal = process.env[def.env]
+      if (envVal !== undefined) value = envVal
+    }
+    // 3. 默认值兜底
+    if (value === undefined && def.default !== undefined) {
+      value = def.default
+    }
+    // required 检查
+    if (value === undefined && def.required) {
+      throw new ConfigError(
+        def.message || `❌ 缺少必填配置项: ${key}（设置环境变量 ${def.env} 或通过 CLI 传入）`
+      )
+    }
+    // 校验
+    if (value !== undefined && def.validate) {
+      def.validate(value)
+    }
+    config[key] = value
+  }
+  return config
+}
+
+export const ANTHROPIC_SCHEMA = {
+  apiKey: {
+    env: 'LLM_API_KEY',
+    required: true,
+    message:
+      `❌ 缺少 LLM_API_KEY 环境变量\n\n` +
       `请按以下任一方式配置：\n` +
       `1. 在 .env 中设置（推荐，参考 .env.example）\n` +
-      `2. 在 shell 中 export：export ANTHROPIC_API_KEY=sk-ant-...\n` +
+      `2. 在 shell 中 export：export LLM_API_KEY=sk-ant-...\n` +
       `3. 用 CLI 参数：--api-key sk-ant-...\n\n` +
-      `获取 API key：https://console.anthropic.com/settings/keys`
-    )
-  }
-  const rawConcurrency = cli.concurrency ?? process.env.INTERPRETATION_CONCURRENCY
-  let concurrency = DEFAULTS.concurrency
-  if (rawConcurrency !== undefined) {
-    const n = Number(rawConcurrency)
-    if (!Number.isInteger(n) || n < 1) {
-      throw new ConfigError(`❌ INTERPRETATION_CONCURRENCY 无效：${rawConcurrency}（必须是 ≥1 的整数）`)
-    }
-    concurrency = n
-  }
-  return {
-    apiKey,
-    baseUrl: cli.baseUrl || process.env.ANTHROPIC_BASE_URL || DEFAULTS.baseUrl,
-    model: cli.model || process.env.ANTHROPIC_MODEL || DEFAULTS.model,
-    concurrency,
-  }
+      `获取 API key：https://console.anthropic.com/settings/keys`,
+  },
+  baseUrl: {
+    env: 'LLM_BASE_URL',
+    default: 'https://api.anthropic.com',
+  },
+  model: {
+    env: 'LLM_MODEL',
+    default: 'claude-opus-4-8',
+  },
+  concurrency: {
+    env: 'INTERPRETATION_CONCURRENCY',
+    default: 4,
+    validate: validateConcurrency,
+  },
 }
+
+export const llmConfig = resolveConfig(ANTHROPIC_SCHEMA)

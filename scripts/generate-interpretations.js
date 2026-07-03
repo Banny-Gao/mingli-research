@@ -13,7 +13,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 import { parseCliArgs } from './lib/generate-interpretations-cli.js'
-import { resolveConfig, ConfigError } from './lib/env.js'
+import { resolveConfig, ConfigError, ANTHROPIC_SCHEMA } from './lib/env.js'
 import { loadSpecBundle } from './lib/spec-bundle.js'
 import { generateInterpretations } from './lib/llm-batch.js'
 import { progressBar, formatDuration } from './lib/utils.js'
@@ -75,7 +75,7 @@ async function main() {
   // 3. 实跑才需要 API key
   let config
   try {
-    config = resolveConfig({ apiKey: args.apiKey, baseUrl: args.baseUrl, model: args.model, concurrency: args.concurrency })
+    config = resolveConfig(ANTHROPIC_SCHEMA, { apiKey: args.apiKey, baseUrl: args.baseUrl, model: args.model, concurrency: args.concurrency })
   } catch (err) {
     if (err instanceof ConfigError) {
       console.error(err.message)

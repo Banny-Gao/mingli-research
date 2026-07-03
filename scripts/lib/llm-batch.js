@@ -7,16 +7,13 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import Anthropic from '@anthropic-ai/sdk'
+import { createLLMClient, callLLM } from './llm-client.js'
 import { checkCondition } from './condition-check.js'
 import { buildPipelinePrompt } from './pipeline.js'
 import { runSelfCheckLite } from './self-check-lite.js'
 
-const MAX_RETRIES = 3
 const DEFAULT_RETRY_BASE_MS = 2000
 const MAX_REWRITE = 3
-
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function fileExists(p) {
   try {
@@ -72,39 +69,6 @@ function postProcessOutput(text, chapter) {
   return out
 }
 
-async function callClaudeWithRetry({
-  client,
-  model,
-  system,
-  user,
-  signal,
-  retryBaseMs = DEFAULT_RETRY_BASE_MS,
-}) {
-  let lastErr
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    if (signal?.aborted) throw new Error('Aborted')
-    try {
-      const response = await client.messages.create({
-        model,
-        max_tokens: 16000,
-        system,
-        messages: [{ role: 'user', content: user }],
-        thinking: {"type": "adaptive"}
-      })
-      return response.content[0].text
-    } catch (err) {
-      lastErr = err
-      if (err.status === 429 || err.status >= 500) {
-        const wait = retryBaseMs * Math.pow(2, attempt - 1) + Math.random() * 1000
-        await sleep(wait)
-        continue
-      }
-      throw err
-    }
-  }
-  throw lastErr
-}
-
 async function generateOne({
   chapter,
   specBundle,
@@ -142,13 +106,14 @@ async function generateOne({
   let lastCheck = null
   let userForRound = user
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
-    output = await callClaudeWithRetry({
-      client,
+    output = await callLLM(client, {
       model: config.model,
       system,
-      user: userForRound,
+      messages: [{ role: 'user', content: userForRound }],
+      maxTokens: 16000,
       signal,
       retryBaseMs,
+      extendedThinking: true,
     })
     // 落盘前永远跑一次后处理（剥离围栏、补收束节）— 解决 LLM 偶发截断
     output = postProcessOutput(output, chapter)
@@ -224,7 +189,7 @@ export async function generateInterpretations(opts) {
     retryBaseMs = DEFAULT_RETRY_BASE_MS,
     concurrency = config.concurrency,
   } = opts
-  const client = new Anthropic({ apiKey: config.apiKey, baseURL: config.baseUrl })
+  const client = createLLMClient(config)
   // client 共享于所有 worker（Anthropic SDK 线程安全）
 
   // 手写 sem 池：limit 个槽位，空闲即取 next index

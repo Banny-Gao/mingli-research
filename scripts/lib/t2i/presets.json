@@ -1,0 +1,12 @@
+{
+  "古籍封面设计": {
+    "name": "古籍封面设计",
+    "model": "image-01",
+    "aspectRatio": "3:4",
+    "n": 1,
+    "promptOptimizer": false,
+    "aigcWatermark": false,
+    "responseFormat": "base64",
+    "savedAt": "2026-07-03T10:19:08.627Z"
+  }
+}
