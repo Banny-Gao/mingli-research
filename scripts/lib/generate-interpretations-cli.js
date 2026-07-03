@@ -4,14 +4,14 @@
 
 export function parseCliArgs(argv) {
   const args = {
-    slug: null,
-    chapters: null,
+    slug: undefined,
+    chapters: undefined,
     force: false,
     dryRun: false,
-    apiKey: null,
-    baseUrl: null,
-    model: null,
-    concurrency: null,
+    apiKey: undefined,
+    baseUrl: undefined,
+    model: undefined,
+    concurrency: undefined,
   }
 
   let i = 0
