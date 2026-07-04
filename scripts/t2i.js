@@ -4,7 +4,7 @@
  *
  * 用法：
  *   node scripts/t2i.js                                   交互模式
- *   node scripts/t2i.js --prompt "制作一个古籍封面：1：书籍名称《滴天髓阐微》，2：字体样式：黑字毛笔行书 3：背景样式：鎏金边，墨蓝背景，文字区域预留白色底，风格古朴仿旧 ，4：图片比例：正常 32 开书籍比例，5：其他细节：文字竖排"      命令行模式
+ *   node scripts/t2i.js --prompt "制作一个古籍封面：1：书籍名称：滴天髓阐微，作者信息：任铁樵著，2：字体样式：黑色 古风 3：背景样式：鎏金边，水墨蓝背景，要简约典雅而有设计感，不要做的跟门框一一样，文字区域适当预留白色底，风格古朴仿旧 ，4：图片比例：正常 32 开书籍比例，5：其他细节：书籍名文字竖排，作者名横排在封面合适位置合适大小"      命令行模式
  *   node scripts/t2i.js --prompt "..." --model image-01-live --style 水彩 --aspect-ratio 16:9 --n 3
  *   node scripts/t2i.js --prompts "猫,狗,鸟" --style 水彩   批量模式
  *
@@ -24,20 +24,136 @@ import {
 } from './lib/t2i/downloader.js'
 import { interactiveMode } from './lib/t2i/interactive.js'
 import { loadPresets } from './lib/t2i/presets.js'
-import { extractTextSpec, renderTextOverlay } from './lib/t2i/text-overlay.js'
+import { extractTextSpec, renderTextOverlay, layoutFromBackground } from './lib/t2i/text-overlay.js'
 import { t2iConfig } from './lib/t2i/constants.js'
+import { ensureFontsInstalled, logInstallSummary } from './lib/t2i/install-system-fonts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = path.join(__dirname, '..')
 
 // .env 由 lib/env.js 模块级自动加载，此处无需重复
 
+// 启动时自动补全 ./public/assets/fonts/（本地复制 + 网络下载 + 进度条）
+// 进程内只跑一次，结果日志立即打印。
+ensureFontsInstalled().then(logInstallSummary)
+
+// ===== 并发限流工具 =====
+
+/**
+ * 复用背景场景：从背景图对应的 metadata 提取 reservedAreas + cleanPrompt，
+ * 重跑步骤 1 (intent) + 步骤 3 (layout)，跳过步骤 2 (cleanPrompt 创作 —— 背景已生成)。
+ *
+ * metadata 路径推导：背景文件名 `t2i-{ts}-bg.png` → 元数据 `t2i-{ts}-metadata.json`。
+ * 如果找不到对应 metadata，退化为完整 extractTextSpec（仍跑全 3 步）。
+ */
+async function extractTextSpecForReuse(prompt, bgPath, apiKey) {
+  const { INTENT_ANALYSIS_PROMPT, INTENT_SYSTEM } = await import('./lib/t2i/prompts/intent.js')
+  const { callLLM, createLLMClient } = await import('./lib/llm-client.js')
+  const { llmConfig } = await import('./lib/env.js')
+  const { cleanJSON } = await import('./lib/t2i/sanitize.js')
+
+  // 找 metadata
+  const dir = path.dirname(bgPath)
+  const base = path.basename(bgPath)
+  // 把 "-bg.png" 结尾的转换为 "-metadata.json"
+  const metaCandidate = base.replace(/-bg\.(png|jpg|jpeg)$/i, '-metadata.json')
+  const metaPath = path.join(dir, metaCandidate)
+
+  let reservedAreas = []
+  let cleanPrompt = ''
+  let previousFontHints = []
+  let previousTexts = []
+  if (fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      reservedAreas = Array.isArray(meta.textOverlay?.reservedAreas)
+        ? meta.textOverlay.reservedAreas
+        : []
+      cleanPrompt = meta.textOverlay?.cleanPrompt || ''
+      previousTexts = Array.isArray(meta.textOverlay?.texts) ? meta.textOverlay.texts : []
+      previousFontHints = previousTexts.map(t => t.fontHint).filter(Boolean)
+      // 为没有 purpose 字段的旧 metadata 自动推断段位（按位置+字号启发式）
+      for (const t of previousTexts) {
+        if (!t.purpose) {
+          const fontSize = t.size || 0
+          const yPct = parseFloat(String(t.position?.y || '0')) || 0
+          if (fontSize >= 48) t.purpose = 'main-title'
+          else if (yPct > 70) t.purpose = 'signature'
+          else if (fontSize >= 24) t.purpose = 'subtitle'
+          else if (fontSize >= 16) t.purpose = 'author'
+          else t.purpose = 'decoration'
+        }
+      }
+      console.log(
+        `   📄 复用 metadata: ${path.relative(PROJECT_ROOT, metaPath)} (${reservedAreas.length} 个预留区, ${previousFontHints.length} 个字体风格延续)`
+      )
+    } catch (err) {
+      console.warn(`   ⚠️ 读 metadata 失败 (${metaPath}): ${err.message}`)
+    }
+  } else {
+    console.log(`   ⚠️ 找不到对应 metadata (${metaPath})，将完整跑 3 步 LLM`)
+    return await extractTextSpec(prompt, apiKey)
+  }
+
+  // 重跑步骤 1 (intent)
+  const client = createLLMClient({ apiKey })
+  const baseOpts = {
+    model: llmConfig.model,
+    maxTokens: 4096,
+    extendedThinking: true,
+  }
+  const intentRaw = await callLLM(client, {
+    ...baseOpts,
+    system: INTENT_SYSTEM,
+    messages: [{ role: 'user', content: `${INTENT_ANALYSIS_PROMPT}\n\n用户描述：${prompt}` }],
+  })
+  const intent = JSON.parse(cleanJSON(intentRaw))
+
+  // 步骤 3 (layout)
+  const texts = await layoutFromBackground({
+    intent,
+    reservedAreas,
+    cleanPrompt,
+    prompt,
+    apiKey,
+    previousFontHints,
+    previousTexts,
+  })
+
+  return { cleanPrompt, reservedAreas, texts }
+}
+
+/**
+ * 用固定大小 worker 池执行异步任务（简单的 Promise 并发限流）。
+ * 任务完成后立刻拉下一个，无需等待整批。
+ */
+async function runWithConcurrency(items, worker, concurrency) {
+  const results = new Array(items.length)
+  let next = 0
+
+  async function run() {
+    while (true) {
+      const idx = next++
+      if (idx >= items.length) return
+      try {
+        results[idx] = await worker(items[idx], idx)
+      } catch (err) {
+        results[idx] = { success: false, error: err }
+      }
+    }
+  }
+
+  const workers = Array.from({ length: Math.min(concurrency, items.length) }, run)
+  await Promise.all(workers)
+  return results
+}
+
 // ===== 命令行模式执行 =====
-async function executeRequest(opts) {
+async function executeRequest(opts, precomputedTextSpec = null) {
   // dry-run 模式：无需 API key，仅展示参数摘要
   if (opts.dryRun) {
     const requestBody = buildRequestBody(opts)
-    console.log('\n📡 调用 MiniMax T2I API...')
+    console.log('\n📋 dry-run 请求参数预览:')
     console.log(`   Model: ${requestBody.model}`)
     console.log(
       `   Prompt: ${requestBody.prompt.slice(0, 80)}${requestBody.prompt.length > 80 ? '...' : ''}`
@@ -100,11 +216,19 @@ async function executeRequest(opts) {
   fs.mkdirSync(outputDir, { recursive: true })
 
   // 文字提取与叠加
-  let textSpec = null
+  // 注意：批量模式下 textSpec 由外层并发提取后传入（precomputedTextSpec），
+  // 避免 N 个 prompt × 3 步 LLM 在 worker 内同时打 API。
+  let textSpec = precomputedTextSpec
   const useTextOverlay = opts.textOverlay !== false
-  if (useTextOverlay) {
+  if (useTextOverlay && !textSpec) {
     console.log('\n🔍 分析 prompt 中的文字需求...')
-    textSpec = await extractTextSpec(requestBody.prompt, apiKey)
+    // 复用背景场景：从最近 metadata 读 reservedAreas + cleanPrompt，
+    // 只重跑 layout 步骤（不重跑 clean —— 背景已生成）。
+    if (opts.reuseBackground) {
+      textSpec = await extractTextSpecForReuse(requestBody.prompt, opts.reuseBackground, apiKey)
+    } else {
+      textSpec = await extractTextSpec(requestBody.prompt, apiKey)
+    }
 
     console.log(`   检测到 ${textSpec.texts.length} 处文字:`)
     for (const t of textSpec.texts) {
@@ -112,7 +236,9 @@ async function executeRequest(opts) {
         `   - "${t.content}" ${t.fontHint ? `(${t.fontHint})` : ''} @ ${JSON.stringify(t.position)}`
       )
     }
-    // 用 cleanPrompt 替换原始 prompt 生成背景
+  }
+  if (textSpec && !opts.reuseBackground) {
+    // 用 cleanPrompt 替换原始 prompt 生成背景（复用背景时背景已生成，跳过）
     requestBody.prompt = textSpec.cleanPrompt
   }
 
@@ -164,12 +290,12 @@ async function executeRequest(opts) {
         return
       }
 
-      console.log(`\n📥 下载 ${urls.length} 张图片到 ${outputDir} ...`)
-      for (let i = 0; i < urls.length; i++) {
+      console.log(`\n📥 并行下载 ${urls.length} 张图片到 ${outputDir} ...`)
+      const downloadTasks = urls.map((url, i) => async () => {
         const filename = generateFilename(timestamp, i)
         const filepath = path.join(outputDir, filename)
         try {
-          const size = await downloadImage(urls[i], filepath, {
+          const size = await downloadImage(url, filepath, {
             onProgress: opts.verbose
               ? p => {
                   process.stdout.write(`\r  [${i + 1}/${urls.length}] ${filename} ${p.percent}%`)
@@ -178,12 +304,13 @@ async function executeRequest(opts) {
           })
           if (opts.verbose) process.stdout.write('\n')
           console.log(`  [${i + 1}/${urls.length}] ${filename} (${(size / 1024).toFixed(1)} KB)`)
-          results.push({ filename, size, url: urls[i] })
+          return { filename, size, url }
         } catch (err) {
           console.error(`  [${i + 1}/${urls.length}] ❌ ${err.message}`)
-          results.push({ filename, size: 0, error: err.message })
+          return { filename, size: 0, error: err.message }
         }
-      }
+      })
+      results.push(...(await Promise.all(downloadTasks.map(t => t()))))
     } else {
       const images = data.data?.image_base64 || []
       if (images.length === 0) {
@@ -191,19 +318,20 @@ async function executeRequest(opts) {
         return
       }
 
-      console.log(`\n💾 保存 ${images.length} 张图片到 ${outputDir} ...`)
-      for (let i = 0; i < images.length; i++) {
+      console.log(`\n💾 并行保存 ${images.length} 张图片到 ${outputDir} ...`)
+      const saveTasks = images.map((img, i) => () => {
         const filename = generateFilename(timestamp, i)
         const filepath = path.join(outputDir, filename)
         try {
-          const size = saveBase64Image(images[i], filepath)
+          const size = saveBase64Image(img, filepath)
           console.log(`  [${i + 1}/${images.length}] ${filename} (${(size / 1024).toFixed(1)} KB)`)
-          results.push({ filename, size })
+          return { filename, size }
         } catch (err) {
           console.error(`  [${i + 1}/${images.length}] ❌ ${err.message}`)
-          results.push({ filename, size: 0, error: err.message })
+          return { filename, size: 0, error: err.message }
         }
-      }
+      })
+      results.push(...(await Promise.all(saveTasks.map(t => t()))))
     }
   }
 
@@ -262,7 +390,21 @@ if (args.length === 0) {
   if (opts.rerender) {
     const metaPath = path.resolve(opts.rerender)
     if (!fs.existsSync(metaPath)) {
-      console.error(`❌ metadata 文件不存在: ${metaPath}`)
+      // 启发式检测 shell 反斜杠被吞：路径里完全没有 / 或 \（连一处都没有），
+      // 但用户又写出了 `publicimagesxxx` 这种拼接形式 —— 几乎肯定是 PowerShell/cmd
+      // 把 `\i` 等转义吃掉了。
+      const looksLikeShellEscape =
+        !opts.rerender.includes('/') && !opts.rerender.includes('\\') && opts.rerender.length > 8
+      if (looksLikeShellEscape) {
+        console.error(`❌ metadata 文件不存在: ${metaPath}`)
+        console.error(`\n提示: 路径看起来被 shell 转义吃掉了。`)
+        console.error(`  - PowerShell/cmd 用反斜杠时必须加双引号:`)
+        console.error(`    node scripts/t2i.js --rerender "public\\images\\file-metadata.json"`)
+        console.error(`  - Git Bash 建议直接用正斜杠:`)
+        console.error(`    node scripts/t2i.js --rerender public/images/file-metadata.json`)
+      } else {
+        console.error(`❌ metadata 文件不存在: ${metaPath}`)
+      }
       process.exit(1)
     }
     const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
@@ -282,7 +424,9 @@ if (args.length === 0) {
     console.log(`   背景: ${bgPath}`)
     console.log(`   文字: ${meta.textOverlay.texts.length} 处`)
     for (const t of meta.textOverlay.texts) {
-      console.log(`   - "${t.content}" ${t.fontHint ? `(${t.fontHint})` : ''} @ ${JSON.stringify(t.position)}`)
+      console.log(
+        `   - "${t.content}" ${t.fontHint ? `(${t.fontHint})` : ''} @ ${JSON.stringify(t.position)}`
+      )
     }
 
     const outputPath = metaPath.replace(/-metadata\.json$/, '-rerender.png')
@@ -300,29 +444,66 @@ if (args.length === 0) {
   // 批量模式
   if (opts.prompts && opts.prompts.length > 0) {
     const main = async () => {
-      let totalSuccess = 0
-      let totalFailed = 0
-      for (let i = 0; i < opts.prompts.length; i++) {
-        const promptOpts = { ...opts, prompt: opts.prompts[i] }
-        delete promptOpts.prompts
-        const { valid, errors } = validate(promptOpts)
-        if (!valid) {
-          console.error(`\n❌ Prompt ${i + 1}/${opts.prompts.length} 校验失败:`)
-          for (const e of errors) console.error(`  ${e}`)
-          totalFailed++
-          continue
-        }
-        console.log(
-          `\n🖼️  [${i + 1}/${opts.prompts.length}] Prompt: "${promptOpts.prompt.slice(0, 60)}..."`
-        )
-        try {
-          await executeRequest(promptOpts)
-          totalSuccess++
-        } catch (err) {
-          console.error(`❌ 失败: ${err.message}`)
-          totalFailed++
-        }
+      const concurrency = Math.max(1, opts.concurrency || 3)
+      const useTextOverlay = opts.textOverlay !== false
+      console.log(`\n🚀 批量模式：${opts.prompts.length} 个 prompt，并发度 ${concurrency}`)
+      if (useTextOverlay) {
+        console.log(`   阶段 1/2：并发提取文字需求（限流 ${concurrency}）`)
+      } else {
+        console.log(`   跳过文字提取（已禁用 text-overlay）`)
       }
+
+      // ===== 阶段 1：先并发做 LLM 文字提取（限流） =====
+      // 避免 worker 内部 N 个 prompt × 3 步 LLM 同时打 API。
+      // 提取失败的 prompt 回退为 { cleanPrompt: 原文, texts: [] }，不阻断流程。
+      const apiKey = opts.apiKey || process.env.LLM_API_KEY
+      const textSpecs = useTextOverlay
+        ? await runWithConcurrency(
+            opts.prompts.map((p, i) => ({ p, i })),
+            async ({ p, i }) => {
+              try {
+                console.log(
+                  `   🔍 [${i + 1}/${opts.prompts.length}] 提取文字: "${p.slice(0, 40)}..."`
+                )
+                return await extractTextSpec(p, apiKey)
+              } catch (err) {
+                console.error(`   ⚠️  [${i + 1}] 文字提取失败: ${err.message}，使用原 prompt`)
+                return { cleanPrompt: p, texts: [] }
+              }
+            },
+            concurrency
+          )
+        : null
+
+      // ===== 阶段 2：并发执行 T2I（传入预提取的 textSpec） =====
+      console.log(`\n   阶段 2/2：并发生成图片（限流 ${concurrency}）`)
+      const results = await runWithConcurrency(
+        opts.prompts.map((p, i) => ({ p, i, textSpec: textSpecs?.[i] || null })),
+        async ({ p, i, textSpec }) => {
+          const promptOpts = { ...opts, prompt: p }
+          delete promptOpts.prompts
+          const { valid, errors } = validate(promptOpts)
+          if (!valid) {
+            console.error(`\n❌ Prompt ${i + 1}/${opts.prompts.length} 校验失败:`)
+            for (const e of errors) console.error(`  ${e}`)
+            return { success: false, error: new Error('validation failed') }
+          }
+          console.log(
+            `\n🖼️  [${i + 1}/${opts.prompts.length}] Prompt: "${promptOpts.prompt.slice(0, 60)}..."`
+          )
+          try {
+            await executeRequest(promptOpts, textSpec)
+            return { success: true }
+          } catch (err) {
+            console.error(`❌ Prompt ${i + 1} 失败: ${err.message}`)
+            return { success: false, error: err }
+          }
+        },
+        concurrency
+      )
+
+      const totalSuccess = results.filter(r => r?.success).length
+      const totalFailed = results.length - totalSuccess
       console.log(`\n🏁 批量完成：成功 ${totalSuccess}，失败 ${totalFailed}`)
       process.exit(totalFailed > 0 ? 1 : 0)
     }

@@ -19,22 +19,20 @@ export const STYLE_WEIGHT_RANGE = { min: 0.01, max: 1 }
 export const N_RANGE = { min: 1, max: 9 }
 export const PROMPT_MAX_LENGTH = 1500
 
-
 export const T2I_SCHEMA = {
-  baseUrl:             { env: 'API_URL', default: 'https://api.minimaxi.com/v1' },
-  model:        { env: 'T2I_DEFAULT_MODEL', default: VALID_MODELS[0] },
-  aspectRatio:  { env: 'T2I_DEFAULT_ASPECT_RATIO', default: VALID_ASPECT_RATIOS[0] },
-  n:            { env: 'T2I_DEFAULT_N', default: 1, validate: validateN },
-  styleWeight:  { env: 'T2I_DEFAULT_STYLE_WEIGHT', default: 0.8 },
+  baseUrl: { env: 'API_URL', default: 'https://api.minimaxi.com/v1' },
+  model: { env: 'T2I_DEFAULT_MODEL', default: VALID_MODELS[0] },
+  aspectRatio: { env: 'T2I_DEFAULT_ASPECT_RATIO', default: VALID_ASPECT_RATIOS[0] },
+  n: { env: 'T2I_DEFAULT_N', default: 1, validate: validateN },
+  styleWeight: { env: 'T2I_DEFAULT_STYLE_WEIGHT', default: 0.8 },
   responseFormat: { env: 'T2I_DEFAULT_RESPONSE_FORMAT', default: VALID_RESPONSE_FORMATS[0] },
-  outputDir:    { env: 'T2I_DEFAULT_OUTPUT_DIR', default: './public/images' },
-  timeoutMs:           { env: 'T2I_TIMEOUT_MS', default: 30000 },
-  retryMax:            { env: 'T2I_RETRY_MAX', default: 3 },
-  retryBaseDelayMs:    { env: 'T2I_RETRY_BASE_DELAY_MS', default: 1000 },
-  presetsFile:         { env: 'T2I_PRESETS_FILE', default: 'scripts/lib/t2i/presets.json' },
+  outputDir: { env: 'T2I_DEFAULT_OUTPUT_DIR', default: './public/images' },
+  timeoutMs: { env: 'T2I_TIMEOUT_MS', default: 120000 },
+  retryMax: { env: 'T2I_RETRY_MAX', default: 3 },
+  retryBaseDelayMs: { env: 'T2I_RETRY_BASE_DELAY_MS', default: 1000 },
+  presetsFile: { env: 'T2I_PRESETS_FILE', default: 'scripts/lib/t2i/presets.json' },
 }
 
 export const t2iConfig = resolveConfig(T2I_SCHEMA)
 
 export const T2I_ENDPOINT = `${t2iConfig.baseUrl}/image_generation`
-

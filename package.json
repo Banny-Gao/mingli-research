@@ -81,5 +81,9 @@
     "vite": "^6.4.2",
     "vitest": "^2.1.9"
   },
-  "pnpm": {}
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "canvas"
+    ]
+  }
 }

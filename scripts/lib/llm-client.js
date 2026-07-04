@@ -65,8 +65,17 @@ export async function callLLM(client, opts = {}) {
         params.thinking = { type: 'adaptive' }
       }
       const response = await client.messages.create(params)
-      const textBlock = response.content.find(c => c.type === 'text')
-      return textBlock?.text || ''
+      // 过滤 thinking 块，拼接所有 text 块的内容
+      const text = response.content
+        .filter(c => c.type === 'text' && typeof c.text === 'string')
+        .map(c => c.text)
+        .join('')
+      if (!text) {
+        // LLM 只返回了 thinking 块或空响应，抛错让上层走 fallback
+        const blockTypes = response.content.map(c => c.type).join(',')
+        throw new Error(`LLM 未返回文本内容 (content blocks: [${blockTypes}])`)
+      }
+      return text
     } catch (err) {
       lastErr = err
       if (err.status === 429 || err.status >= 500) {
