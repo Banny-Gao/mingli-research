@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-07-04T18:07:41.616Z",
+  "prompt": "八字提要，韦千里 著",
+  "model": "image-01",
+  "aspectRatio": "3:4",
+  "width": null,
+  "height": null,
+  "style": null,
+  "styleWeight": null,
+  "n": 1,
+  "seed": null,
+  "promptOptimizer": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "results": [
+    {
+      "filename": "t2i-1783188461616-01.png",
+      "size": 448037
+    }
+  ],
+  "textOverlay": {
+    "cleanPrompt": "竖向构图，比例约二比三，整体弥漫古朴典雅的书卷气质。画面以深沉的水墨蓝为主色调，如同浓墨在宣纸上自然晕染铺展，深处近墨黑，向边缘逐渐透出灰蓝的有机过渡，带有微妙的纸面纤维纹理和不规则的水渍沉淀感。整体呈现仿旧做旧的岁月质感，四角处有轻微的磨损泛黄痕迹和光晕渐淡。鎏金边饰以暗金色点缀于画面四角，纤细的卷草纹样从角落向内延伸但不超过画面宽度的一成，上下边缘处以开放式的断续细纹做收束，不形成封闭框线，暗金色泽带有做旧哑光质感，边缘微微模糊融入深蓝背景。画面中央偏上区域有一块暖白色矩形块面，边缘整齐但带有轻微毛边感，与周围深蓝形成清晰对比，矩形范围内保持素净匀净的浅色基调。矩形下方保留自然过渡空间，整体光照柔和无方向性，营造出旧藏古籍般的沉稳内敛氛围。色彩关系为深水墨蓝、暗金、暖白的层次统一，饱和度偏低，明度偏暗，质感如陈年宣纸与古铜器光泽的交融。 No text, no letters, no characters, no symbols, no watermarks, no signatures, no seals — pure visual image only. 画面中不得出现任何文字、字母、符号、数字、水印或印章。",
+    "reservedAreas": [
+      {
+        "purpose": "main-title",
+        "bbox": {
+          "x": "30%",
+          "y": "22%",
+          "w": "40%",
+          "h": "52%"
+        },
+        "description": "中央偏上的暖白色矩形块面，为竖排书名预留素净空间"
+      },
+      {
+        "purpose": "author",
+        "bbox": {
+          "x": "33%",
+          "y": "76%",
+          "w": "34%",
+          "h": "9%"
+        },
+        "description": "主标题矩形下方居中位置，为横排作者署名预留浅色空间"
+      }
+    ],
+    "texts": [
+      {
+        "purpose": "main-title",
+        "content": "八字提要",
+        "position": {
+          "x": "center",
+          "y": "center"
+        },
+        "size": 72,
+        "color": "#1A1A1A",
+        "fontHint": "MFLingLongNoncommercial",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "purpose": "author",
+        "content": "韦千里 著",
+        "position": {
+          "x": "50%",
+          "y": "80%"
+        },
+        "size": 36,
+        "color": "#1A1A1A",
+        "fontHint": "MFLingLongNoncommercial",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ]
+  },
+  "backgroundPath": "墨兰鎏金-古籍封面.png"
+}

@@ -36,7 +36,11 @@ export async function downloadImage(url, filepath, opts = {}) {
     chunks.push(value)
     received += value.length
     if (onProgress && contentLength > 0) {
-      onProgress({ received, total: contentLength, percent: Math.round((received / contentLength) * 100) })
+      onProgress({
+        received,
+        total: contentLength,
+        percent: Math.round((received / contentLength) * 100),
+      })
     }
   }
 
@@ -81,10 +85,11 @@ export function saveMetadata(outputDir, timestamp, opts, results) {
     responseFormat: opts.responseFormat || 'url',
     results,
   }
-  // 保留文字提取结果（cleanPrompt + texts）
+  // 保留文字提取结果（cleanPrompt + reservedAreas + texts）
   if (opts.textSpec) {
     meta.textOverlay = {
       cleanPrompt: opts.textSpec.cleanPrompt,
+      reservedAreas: opts.textSpec.reservedAreas || [],
       texts: opts.textSpec.texts,
     }
   }

@@ -6,7 +6,9 @@
     "n": 1,
     "promptOptimizer": false,
     "aigcWatermark": false,
-    "responseFormat": "base64",
-    "savedAt": "2026-07-03T10:19:08.627Z"
+    "responseFormat": "url",
+    "textOverlay": true,
+    "outputDir": "./public/images",
+    "savedAt": "2026-07-04T16:32:17.536Z"
   }
 }

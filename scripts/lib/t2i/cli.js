@@ -58,7 +58,16 @@ export function parseArgs(argv) {
     else if (arg === '--width') opts.width = Number(argv[++i])
     else if (arg === '--height') opts.height = Number(argv[++i])
     else if (arg === '--preset') opts.preset = argv[++i]
-    else if (arg === '--dry-run') opts.dryRun = true
+    else if (arg === '--concurrency') opts.concurrency = Number(argv[++i])
+    else if (arg === '--text-overlay-mode') {
+      const mode = argv[++i]
+      if (mode === 'safe') opts.allowPromptOptimizerWithTextOverlay = false
+      else if (mode === 'unsafe') opts.allowPromptOptimizerWithTextOverlay = true
+      else {
+        console.error(`❌ --text-overlay-mode 必须是 safe|unsafe，当前: ${mode}`)
+        process.exit(1)
+      }
+    } else if (arg === '--dry-run') opts.dryRun = true
     else if (arg === '--verbose' || arg === '-v') opts.verbose = true
     else if (arg === '--help' || arg === '-h') opts.help = true
     else {
@@ -99,6 +108,7 @@ t2i.js — MiniMax 文生图脚本
   --no-prompt-optimizer    禁用 prompt 优化
   --aigc-watermark         添加水印（默认关闭）
   --no-aigc-watermark      不添加水印
+  --concurrency <n>        批量模式并发度（--prompts），默认 3
 
 风格（仅 image-01-live）:
   --style <type>           风格类型: ${VALID_STYLES.join(', ')}
@@ -117,6 +127,9 @@ t2i.js — MiniMax 文生图脚本
   --text-overlay           启用文字自动提取与叠加（默认开启）
                            从 prompt 中提取《书名》等文字，T2I 生成背景后再叠加正确文字
   --no-text-overlay        禁用文字叠加，使用原始 prompt 直接生成
+  --text-overlay-mode <m>  safe（默认）：text-overlay 启用时强制关闭 prompt_optimizer
+                           unsafe：允许 text-overlay 与 --prompt-optimizer 共存
+                           （unsafe 模式下服务端改写可能破坏"无字"上下文）
 
 背景复用:
   --save-background        保存文字叠加前的纯背景图（t2i-{timestamp}-bg.png）

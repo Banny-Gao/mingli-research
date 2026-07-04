@@ -94,6 +94,10 @@ export function validate(opts) {
 
 /**
  * 构建 MiniMax T2I API 请求体。
+ *
+ * 副作用：当 textOverlay 启用（opts.textOverlay !== false）且用户未显式允许时，
+ * 强制关闭 prompt_optimizer。理由：服务端改写不理解"已无字"上下文，
+ * 可能重新引入文字/符号。要保留则传 opts.allowPromptOptimizerWithTextOverlay = true。
  */
 export function buildRequestBody(opts) {
   const body = {
@@ -105,7 +109,22 @@ export function buildRequestBody(opts) {
   if (opts.n !== undefined) body.n = opts.n
   if (opts.responseFormat) body.response_format = opts.responseFormat
   if (opts.seed !== undefined) body.seed = opts.seed
-  if (opts.promptOptimizer !== undefined) body.prompt_optimizer = opts.promptOptimizer
+
+  // prompt_optimizer 决定逻辑：
+  // 1. text-overlay 启用 + 用户未允许 → 强制 false（即便用户传了 true）
+  // 2. 用户显式传了 true/false → 尊重（但 case 1 拦截）
+  // 3. 用户没传 → 不写入 body
+  const useTextOverlay = opts.textOverlay !== false
+  const allowOptimizer = opts.allowPromptOptimizerWithTextOverlay === true
+  if (useTextOverlay && !allowOptimizer) {
+    if (opts.promptOptimizer === true) {
+      // 已经在 t2i.js 处打过 warning，这里直接静默改写
+    }
+    body.prompt_optimizer = false
+  } else if (opts.promptOptimizer !== undefined) {
+    body.prompt_optimizer = opts.promptOptimizer
+  }
+
   if (opts.aigcWatermark !== undefined) body.aigc_watermark = opts.aigcWatermark
 
   if (opts.width && opts.height) {
@@ -122,10 +141,14 @@ export function buildRequestBody(opts) {
 }
 
 /**
- * 判断错误是否可重试（5xx 或网络错误）。
+ * 判断错误是否可重试。
+ *
+ * AbortError 视为可重试 —— 我们用 AbortController 仅作为超时机制（api.js:172-173），
+ * 没有任何手动 controller.abort() 调用，所以抛 AbortError 等价于"超时"。
+ * 单次超时不代表服务故障，给一次重试机会。最大总耗时 ≈ timeout × (retries + 1)。
  */
 function isRetryable(err) {
-  // AbortError 不可重试 —— 超时/手动取消应快速失败，否则实际超时为 timeout × (retries + 1)
+  if (err.name === 'AbortError') return true
   if (err.cause?.code === 'ECONNRESET') return true
   if (err.cause?.code === 'ETIMEDOUT') return true
   // HTTP 5xx
