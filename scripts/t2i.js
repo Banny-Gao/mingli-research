@@ -408,6 +408,12 @@ if (args.length === 0) {
       process.exit(1)
     }
     const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+    if (meta.type && meta.type !== 't2i') {
+      console.error(
+        `❌ metadata.type="${meta.type}"，不是 t2i metadata；请用 scripts/${meta.type}.js --rerender 处理`
+      )
+      process.exit(1)
+    }
     if (!meta.textOverlay || !meta.textOverlay.texts || meta.textOverlay.texts.length === 0) {
       console.error('❌ metadata 中没有 textOverlay 数据')
       process.exit(1)

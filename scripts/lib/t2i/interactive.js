@@ -14,6 +14,7 @@ import {
   VALID_RESPONSE_FORMATS,
 } from './constants.js'
 import { t2iConfig } from './constants.js'
+import { pickExistingImage } from '../shared/pick-image.js'
 
 function printSummary(opts) {
   console.log('\n' + '─'.repeat(46))
@@ -226,7 +227,7 @@ export async function interactiveMode(executeFn) {
       // 背景复用 / 保存（与新建流程对齐：本轮操作，preset 不携带）
       const reuseBg = await confirm({ message: '复用已有背景图？', default: false })
       if (reuseBg) {
-        opts.reuseBackground = await input({ message: '背景图路径:' })
+        opts.reuseBackground = await pickExistingImage({ message: '选择复用背景图：' })
       } else {
         opts.saveBackground = await confirm({
           message: '保存纯背景图（供后续复用）？',
@@ -274,7 +275,7 @@ export async function interactiveMode(executeFn) {
   // 背景复用（textOverlay 已在 collectOptionsMerged 内部询问，preset 加载时跳过）
   const reuseBg = await confirm({ message: '复用已有背景图？', default: false })
   if (reuseBg) {
-    opts.reuseBackground = await input({ message: '背景图路径:' })
+    opts.reuseBackground = await pickExistingImage({ message: '选择复用背景图：' })
   } else {
     opts.saveBackground = await confirm({ message: '保存纯背景图（供后续复用）？', default: false })
   }
