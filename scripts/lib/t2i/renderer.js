@@ -24,6 +24,7 @@ const { createCanvas, registerFont } = require('canvas')
 // （如 MFLingLong_Noncommercial-Regular.otf）与 OTF 内部 family 名不一致。
 
 const _registeredFonts = new Set()
+const _warnedFontFailures = new Set()
 
 function ensureFont(fontPath, family) {
   if (!fontPath || !family) return
@@ -34,6 +35,10 @@ function ensureFont(fontPath, family) {
     _registeredFonts.add(key)
   } catch {
     // 字体注册失败（同步路径），后续使用 fallback
+    if (!_warnedFontFailures.has(key)) {
+      _warnedFontFailures.add(key)
+      console.warn(`⚠️ 字体注册失败: ${family} (${fontPath})，将使用 fallback`)
+    }
   }
 }
 
@@ -286,6 +291,13 @@ export async function renderTextOverlay(bgPath, texts, outputPath) {
 
   const { width, height } = metadata
 
+  // 防重叠后处理：LLM 偶尔会把多段文字 bbox 叠在一起（尤其竖排长标题 + 横排副标题），
+  // 这里做最后一道防线——按字号从大到小放置，已放置的占框，新文字若重叠则向下/向右推开。
+  // 仅在 texts.length > 1 时启用（单段文字无重叠可能）。
+  if (texts.length > 1) {
+    resolveTextOverlaps(texts, width, height)
+  }
+
   // 创建 canvas 并绘制背景
   const canvas = createCanvas(width, height)
   const ctx = canvas.getContext('2d')
@@ -305,4 +317,114 @@ export async function renderTextOverlay(bgPath, texts, outputPath) {
   // 导出为 PNG buffer，再写入文件
   const outputBuffer = canvas.toBuffer('image/png')
   fs.writeFileSync(outputPath, outputBuffer)
+}
+
+// ===== 防重叠后处理 =====
+
+/**
+ * 估算一段文字的渲染 bbox（基于 position 是中心锚点）。
+ * 返回 { cx, cy, halfW, halfH }，方便后续做矩形相交的简单比较。
+ */
+function estimateTextBBox(textSpec, canvasWidth, canvasHeight) {
+  const { content, size = 36, layout = 'horizontal', position } = textSpec
+  const chars = [...content]
+  const font = matchFont(textSpec.fontHint)
+  const fontFamily = getFontFamily(font)
+
+  // 用临时 ctx 测宽（避免污染主 ctx 的字体设置）
+  const { createCanvas } = require('canvas')
+  const tmpCanvas = createCanvas(1, 1)
+  const tmpCtx = tmpCanvas.getContext('2d')
+  tmpCtx.font = `${size}px "${fontFamily}", sans-serif`
+
+  let halfW, halfH
+  if (layout === 'vertical') {
+    const charMetrics = chars.map(c => tmpCtx.measureText(c))
+    const maxCharWidth = Math.max(...charMetrics.map(m => m.width), size * 0.6)
+    halfW = maxCharWidth / 2
+    halfH = (chars.length * size * 1.2) / 2
+  } else {
+    const totalWidth = tmpCtx.measureText(content).width || content.length * size * 0.9
+    halfW = totalWidth / 2
+    halfH = (size * 1.2) / 2
+  }
+
+  const { x: cx, y: cy } = resolvePosition(position, canvasWidth, canvasHeight, size, halfW * 2)
+  return { cx, cy, halfW, halfH }
+}
+
+/** 矩形相交检测（AABB） */
+function boxesOverlap(a, b) {
+  return !(
+    a.cx + a.halfW <= b.cx - b.halfW ||
+    a.cx - a.halfW >= b.cx + b.halfW ||
+    a.cy + a.halfH <= b.cy - b.halfH ||
+    a.cy - a.halfH >= b.cy + b.halfH
+  )
+}
+
+/**
+ * 把 texts 中相互重叠的文字 bbox 错开（贪心：大字号优先定位，小字号后挪）。
+ * 策略：sort by area desc；按下推（优先）和右推两种方向尝试，直到不重叠；
+ * 推到画布边界仍重叠 → 缩小字号（按 0.92 系数递减，最多 5 次）。
+ *
+ * 会修改 textSpec.position.y / .x / .size（直接 mutate 外部 texts 数组）。
+ */
+function resolveTextOverlaps(texts, canvasWidth, canvasHeight) {
+  // 1. 给每段计算当前 bbox
+  const bboxes = texts.map(t => ({ spec: t, bbox: estimateTextBBox(t, canvasWidth, canvasHeight) }))
+
+  // 2. 按 bbox 面积降序：大字先占位（字大字多，typography 上也更重要）
+  bboxes.sort((a, b) => b.bbox.halfW * b.bbox.halfH - a.bbox.halfW * a.bbox.halfH)
+
+  const placed = []
+
+  for (const item of bboxes) {
+    let { spec, bbox } = item
+    let attempts = 0
+    const MAX_POS_ATTEMPTS = 12
+
+    // 若与已放置文字的 bbox 相交 → 优先下推，再次推右，缩小兜底
+    while (placed.some(p => boxesOverlap(bbox, p.bbox)) && attempts < MAX_POS_ATTEMPTS) {
+      const conflict = placed.find(p => boxesOverlap(bbox, p.bbox))
+      // 2a. 下推：把当前 bbox 推到冲突 bbox 下方 + 0.4×小字号的安全间距
+      const gap = Math.min(bbox.halfH, conflict.bbox.halfH) * 0.4
+      const targetCy = conflict.bbox.cy + conflict.bbox.halfH + bbox.halfH + gap
+      if (targetCy + bbox.halfH <= canvasHeight - 8) {
+        bbox.cy = targetCy
+        // 把 position.y 同步为百分比
+        spec.position = {
+          ...(spec.position || {}),
+          y: `${Math.round((targetCy / canvasHeight) * 1000) / 10}%`,
+        }
+      } else {
+        // 2b. 下推会出界 → 右推
+        const targetCx = bbox.cx + conflict.bbox.halfW + bbox.halfW + gap
+        if (targetCx + bbox.halfW <= canvasWidth - 8) {
+          bbox.cx = targetCx
+          spec.position = {
+            ...(spec.position || {}),
+            x: `${Math.round((targetCx / canvasWidth) * 1000) / 10}%`,
+          }
+        } else {
+          break // 推到边界都还叠，留给字号缩小兜底
+        }
+      }
+      attempts++
+    }
+
+    // 3. 还叠 → 缩小字号（按 0.92 系数递减，最多 5 次；下限原值 × 0.6）
+    let shrinkRounds = 0
+    const originalSize = spec.size || 36
+    const minSize = Math.max(12, originalSize * 0.6)
+    while (placed.some(p => boxesOverlap(bbox, p.bbox)) && shrinkRounds < 5) {
+      const newSize = Math.max(minSize, (spec.size || 36) * 0.92)
+      if (newSize === spec.size) break
+      spec.size = Math.round(newSize)
+      bbox = estimateTextBBox(spec, canvasWidth, canvasHeight)
+      shrinkRounds++
+    }
+
+    placed.push({ spec, bbox })
+  }
 }

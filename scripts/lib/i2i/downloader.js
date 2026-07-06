@@ -69,6 +69,9 @@ export function saveMetadata(outputDir, timestamp, opts, results, extra = {}) {
     meta.backgroundPath = `i2i-${timestamp}-bg.png`
   }
   const filepath = path.join(outputDir, `i2i-${timestamp}-metadata.json`)
-  fs.writeFileSync(filepath, JSON.stringify(meta, null, 2), 'utf-8')
+  // 原子写入：先写 .tmp，再 rename
+  const tmpPath = filepath + '.tmp'
+  fs.writeFileSync(tmpPath, JSON.stringify(meta, null, 2), 'utf-8')
+  fs.renameSync(tmpPath, filepath)
   return filepath
 }

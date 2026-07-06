@@ -125,7 +125,7 @@ function scanBundledFonts() {
   }
 
   for (const entry of bundled) {
-    if (!onDisk.find(d => d.file === entry.file)) missing.push(entry)
+    if (!onDisk.includes(entry.file)) missing.push(entry)
   }
 
   if (missing.length && !_bundledMissingWarned) {

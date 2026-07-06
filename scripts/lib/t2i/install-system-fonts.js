@@ -125,7 +125,7 @@ function persistBundledAdditions(newEntries) {
     json.bundled = existing
     fs.writeFileSync(PRESETS_FONTS, JSON.stringify(json, null, 2) + '\n', 'utf-8')
   } catch (err) {
-    // 静默失败
+    console.warn(`⚠️ 持久化 bundled 新增条目失败: ${err.message}`)
   }
 }
 
@@ -152,7 +152,7 @@ function persistMissingAdditions(missingFiles) {
     json.missing = existing
     fs.writeFileSync(PRESETS_FONTS, JSON.stringify(json, null, 2) + '\n', 'utf-8')
   } catch (err) {
-    // 静默失败
+    console.warn(`⚠️ 持久化 missing 条目失败: ${err.message}`)
   }
 }
 

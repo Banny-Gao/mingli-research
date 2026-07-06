@@ -25,6 +25,12 @@ export const TEXTS_EXTRACTION_PROMPT = `你是文字排版设计师。根据设�
 4. **字号按主矩形宽度比例计算** — 主标题 size = round(mainRect.w * 0.20 ~ 0.30)（单位 px），这样 4 字竖排时总高度 ≈ 主矩形高度的 80%，5 字横排时总宽度 ≈ 主矩形宽度的 60%
 5. **字体传意** — 字体风格要与画面主题匹配（庄重→衬线/楷体，现代→无衬线/黑体，手写→行楷/草书）。fontHint 直接写**字体关键词**（如 "楷书"、"MFLingLong"、"宋体"），不要列举"如 X/Y/Z"形式的备选——列表会让别名匹配错乱
 6. **传统竖排方向** — 当 layout="vertical" 时，遵循中文古籍传统竖排从右到左（verticalDirection="rtl"）；若为现代排版或多列竖排可用 "ltr"（从左到右）。单列竖排默认 rtl。
+7. **段间不重叠（硬约束）** — 当存在多段文字时，必须先估算每段文字的渲染 bbox（position 是中心/锚点，layout=vertical 时 height ≈ 字数 × size × 1.2，width ≈ 单字宽；layout=horizontal 时 width ≈ 字数 × size × 0.9，height ≈ size × 1.2），再布置：
+   - 段间垂直间距 ≥ 0.6 × 较小字号（避免视觉粘连）
+   - bbox 矩形**互不相交**（必须显式检查每对组合）
+   - 整体高度（首段 top → 末段 bottom）≤ mainRect.h 的 95%
+   - 若按主标题 size 算出 5 字竖排高度 ≥ mainRect.h 的 85%，主标题 size 必须下调到让 5 字竖排高度 ≤ mainRect.h × 0.75，给副标题留出空间
+   - 若仍有冲突：副标题 size 按比例缩小（保留下限 0.6 × 原值），超长副标题可拆行（同一 content 拆为多段不同 position）
 
 注意：mainRect / dominantColor 数据可能尚未注入。如果当前 prompt 中没有收到这些字段，请基于 reservedAreas 文本描述与画面整体构图合理推测。
 

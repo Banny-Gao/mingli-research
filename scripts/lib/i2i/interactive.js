@@ -5,7 +5,7 @@
  *   - 第 0 步先问"输入图路径"（必填）
  *   - 10 步流程对齐 t2i 但文字叠加 prompt 用 i2i 版本（基于参考图变更）
  *   - "复用背景" 复用 t2i 的逻辑，输入图作为底图无需生成
- *   - "保存背景" 对于图生图相当于存"输入图副本"
+ *   - "保存背景" 对于图生图相当于存"生成图（文字叠加前）副本"
  */
 
 import { input, confirm, number } from '@inquirer/prompts'
@@ -247,10 +247,12 @@ async function collectOptionsMerged(preset) {
     })
   }
 
-  // 14. 保存背景（图生图下即为输入图副本，便于后续 --reuse）
-  if (opts.saveBackground == null) {
+  // 14. 保存背景（i2i 下保存"生成图"——文字叠加前的版本——便于后续 --reuse）
+  // 复用底图模式下跳过：用户已显式指定了底图路径，没有"生成图"概念，
+  // 也不需要再复制一份；强行保存只会产生重复文件。
+  if (opts.saveBackground == null && !opts.reuseBackground) {
     opts.saveBackground = await _confirm({
-      message: '保存输入图为背景副本（供后续复用 / 重渲染）？',
+      message: '保存生成图为背景副本（供后续复用 / 重渲染）？',
       default: true,
     })
   }

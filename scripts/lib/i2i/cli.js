@@ -12,35 +12,7 @@ import {
   VALID_RESPONSE_FORMATS,
   VALID_SUBJECT_TYPES,
 } from './constants.js'
-
-/**
- * 解析逗号分隔的 prompt 列表（与 t2i 同款实现）。
- */
-function parsePrompts(raw) {
-  const result = []
-  let current = ''
-  for (let i = 0; i < raw.length; i++) {
-    if (raw[i] === '\\' && raw[i + 1] === ',') {
-      current += ','
-      i++
-    } else if (raw[i] === ',') {
-      if (current.trim()) result.push(current.trim())
-      current = ''
-    } else {
-      current += raw[i]
-    }
-  }
-  if (current.trim()) result.push(current.trim())
-  return result
-}
-
-/**
- * 解析逗号分隔的 --input-images 列表（每个元素对应一个 prompt 的输入图）。
- * 用法：--prompts "p1,p2" --input-images "img1.png,img2.jpg"
- */
-function parseInputImages(raw) {
-  return parsePrompts(raw)
-}
+import { parsePrompts, parseInputImages } from '../shared/parse-prompts.js'
 
 export function parseArgs(argv) {
   const opts = {}
@@ -175,16 +147,17 @@ i2i.js — MiniMax 图生图脚本
   --text-overlay             启用文字自动提取与叠加（默认开启）
                              输入图作为 bg-detect 对象，mainRect + dominantColor 自动
                              注入 layout LLM
+                             启用时会自动给 I2I prompt 追加「不要出现文字」以避免烧字
   --no-text-overlay          禁用文字叠加
   --text-overlay-mode <m>    safe（默认）| unsafe
                              safe 模式 text-overlay 启用时强制关闭 prompt_optimizer
 
 背景复用:
-  --save-background          保存输入图副本为 i2i-{timestamp}-bg.png
+  --save-background          保存生成图（文字叠加前）为 i2i-{timestamp}-bg.png
   --reuse-background <path>  跳过 I2I API，直接用 <path> 作为底图叠加文字
                              适用于：对已有生成图重利用 / 换 prompt 重渲染
   --rerender <metadata>     读 i2i metadata.json 重新执行文字叠加
-                            （不影响背景原图，输出 {metadata}-rerender.png）
+                            （不影响背景原图，输出 {metadata}.png）
 
 调试:
   --dry-run                  仅校验参数，不发起 API 调用

@@ -146,11 +146,25 @@ export function validate(opts) {
  *
  * opts.subjectReference 由调用方（i2i.js）用 makeSubjectReference(opts.inputImage, { subjectType })
  * 构造后传入；这样 caller 可以 cache resolved meta 供 metadata / reuseBackground 使用。
+ *
+ * 文字责任分离：当 textOverlay 启用时，i2i API 仅改色 / 改构图，文字由 canvas 叠加。
+ * 自动在 prompt 末尾追加 negative 提示以阻止 i2i 模型烧字（image-01 中文长串易重排乱套），
+ * 避免与文字叠加双层叠字。用户可在 prompt 中显式否定时不会再叠加。
  */
+const TEXT_BLOCK_NEGATIVE_HINT =
+  '。注意：图中不要出现任何文字、字符、标题、字样、印章、签名；所有文字将由后续处理叠加。'
+
 export function buildRequestBody(opts) {
+  const useTextOverlay = opts.textOverlay !== false
+  const userPrompt = opts.prompt || ''
+  const prompt =
+    useTextOverlay && !userPrompt.includes('不要在图中') && !userPrompt.includes(TEXT_BLOCK_NEGATIVE_HINT)
+      ? `${userPrompt}${TEXT_BLOCK_NEGATIVE_HINT}`
+      : userPrompt
+
   const body = {
     model: opts.model || i2iConfig.model,
-    prompt: opts.prompt,
+    prompt,
   }
 
   if (opts.aspectRatio) body.aspect_ratio = opts.aspectRatio
@@ -166,7 +180,6 @@ export function buildRequestBody(opts) {
   body.subject_reference = [opts.subjectReference]
 
   // prompt_optimizer 决定逻辑（与 t2i 一致）
-  const useTextOverlay = opts.textOverlay !== false
   const allowOptimizer = opts.allowPromptOptimizerWithTextOverlay === true
   if (useTextOverlay && !allowOptimizer) {
     body.prompt_optimizer = false

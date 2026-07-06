@@ -27,6 +27,14 @@ import { loadPresets } from './lib/t2i/presets.js'
 import { extractTextSpec, renderTextOverlay, layoutFromBackground } from './lib/t2i/text-overlay.js'
 import { t2iConfig } from './lib/t2i/constants.js'
 import { ensureFontsInstalled, logInstallSummary } from './lib/t2i/install-system-fonts.js'
+import { runWithConcurrency } from './lib/shared/concurrency.js'
+import { findMetadataForImage } from './lib/shared/find-metadata.js'
+
+// 静态导入 extractTextSpecForReuse 所需的模块（避免动态 import 开销）
+import { INTENT_ANALYSIS_PROMPT, INTENT_SYSTEM } from './lib/t2i/prompts/intent.js'
+import { callLLM, createLLMClient } from './lib/llm-client.js'
+import { llmConfig } from './lib/env.js'
+import { cleanJSON, sanitizeCleanPrompt } from './lib/t2i/sanitize.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = path.join(__dirname, '..')
@@ -34,66 +42,63 @@ const PROJECT_ROOT = path.join(__dirname, '..')
 // .env 由 lib/env.js 模块级自动加载，此处无需重复
 
 // 启动时自动补全 ./public/assets/fonts/（本地复制 + 网络下载 + 进度条）
-// 进程内只跑一次，结果日志立即打印。
-ensureFontsInstalled().then(logInstallSummary)
+// 进程内只跑一次，在入口路由前 await 确保字体就位。
+const _fontResult = await ensureFontsInstalled()
+logInstallSummary(_fontResult)
 
-// ===== 并发限流工具 =====
+// ===== 复用背景文字提取 =====
 
 /**
- * 复用背景场景：从背景图对应的 metadata 提取 reservedAreas + cleanPrompt，
+ * 复用背景场景：调用 `findMetadataForImage` 按 backgroundPath/inputImage/results
+ * basename 反查最近 metadata，提取 reservedAreas + cleanPrompt，
  * 重跑步骤 1 (intent) + 步骤 3 (layout)，跳过步骤 2 (cleanPrompt 创作 —— 背景已生成)。
- *
- * metadata 路径推导：背景文件名 `t2i-{ts}-bg.png` → 元数据 `t2i-{ts}-metadata.json`。
- * 如果找不到对应 metadata，退化为完整 extractTextSpec（仍跑全 3 步）。
+ * 找不到时完整跑 3 步 LLM。
  */
 async function extractTextSpecForReuse(prompt, bgPath, apiKey) {
-  const { INTENT_ANALYSIS_PROMPT, INTENT_SYSTEM } = await import('./lib/t2i/prompts/intent.js')
-  const { callLLM, createLLMClient } = await import('./lib/llm-client.js')
-  const { llmConfig } = await import('./lib/env.js')
-  const { cleanJSON } = await import('./lib/t2i/sanitize.js')
-
-  // 找 metadata
   const dir = path.dirname(bgPath)
-  const base = path.basename(bgPath)
-  // 把 "-bg.png" 结尾的转换为 "-metadata.json"
-  const metaCandidate = base.replace(/-bg\.(png|jpg|jpeg)$/i, '-metadata.json')
-  const metaPath = path.join(dir, metaCandidate)
 
   let reservedAreas = []
   let cleanPrompt = ''
   let previousFontHints = []
   let previousTexts = []
-  if (fs.existsSync(metaPath)) {
-    try {
-      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
-      reservedAreas = Array.isArray(meta.textOverlay?.reservedAreas)
-        ? meta.textOverlay.reservedAreas
-        : []
-      cleanPrompt = meta.textOverlay?.cleanPrompt || ''
-      previousTexts = Array.isArray(meta.textOverlay?.texts) ? meta.textOverlay.texts : []
-      previousFontHints = previousTexts.map(t => t.fontHint).filter(Boolean)
-      // 为没有 purpose 字段的旧 metadata 自动推断段位（按位置+字号启发式）
-      for (const t of previousTexts) {
-        if (!t.purpose) {
-          const fontSize = t.size || 0
-          const yPct = parseFloat(String(t.position?.y || '0')) || 0
-          if (fontSize >= 48) t.purpose = 'main-title'
-          else if (yPct > 70) t.purpose = 'signature'
-          else if (fontSize >= 24) t.purpose = 'subtitle'
-          else if (fontSize >= 16) t.purpose = 'author'
-          else t.purpose = 'decoration'
-        }
-      }
-      console.log(
-        `   📄 复用 metadata: ${path.relative(PROJECT_ROOT, metaPath)} (${reservedAreas.length} 个预留区, ${previousFontHints.length} 个字体风格延续)`
-      )
-    } catch (err) {
-      console.warn(`   ⚠️ 读 metadata 失败 (${metaPath}): ${err.message}`)
-    }
-  } else {
-    console.log(`   ⚠️ 找不到对应 metadata (${metaPath})，将完整跑 3 步 LLM`)
+  let meta = null
+  let source = null
+
+  const found = findMetadataForImage(bgPath, { dir })
+  if (found) {
+    meta = found.meta
+    source = 'lookup'
+    console.log(
+      `   🔎 通过图片反查找到 metadata: ${path.relative(PROJECT_ROOT, found.metaPath)}`
+    )
+  }
+
+  if (!meta) {
+    console.log(`   ⚠️ 未找到对应 metadata，将按 prompt 全新生成`)
     return await extractTextSpec(prompt, apiKey)
   }
+
+  reservedAreas = Array.isArray(meta.textOverlay?.reservedAreas)
+    ? meta.textOverlay.reservedAreas
+    : []
+  cleanPrompt = meta.textOverlay?.cleanPrompt || ''
+  previousTexts = Array.isArray(meta.textOverlay?.texts) ? meta.textOverlay.texts : []
+  previousFontHints = previousTexts.map(t => t.fontHint).filter(Boolean)
+  // 为没有 purpose 字段的旧 metadata 自动推断段位（按位置+字号启发式）
+  for (const t of previousTexts) {
+    if (!t.purpose) {
+      const fontSize = t.size || 0
+      const yPct = parseFloat(String(t.position?.y || '0')) || 0
+      if (fontSize >= 48) t.purpose = 'main-title'
+      else if (yPct > 70) t.purpose = 'signature'
+      else if (fontSize >= 24) t.purpose = 'subtitle'
+      else if (fontSize >= 16) t.purpose = 'author'
+      else t.purpose = 'decoration'
+    }
+  }
+  console.log(
+    `   📄 复用 metadata (${source}): ${reservedAreas.length} 个预留区, ${previousFontHints.length} 个字体风格延续`
+  )
 
   // 重跑步骤 1 (intent)
   const client = createLLMClient({ apiKey })
@@ -121,31 +126,6 @@ async function extractTextSpecForReuse(prompt, bgPath, apiKey) {
   })
 
   return { cleanPrompt, reservedAreas, texts }
-}
-
-/**
- * 用固定大小 worker 池执行异步任务（简单的 Promise 并发限流）。
- * 任务完成后立刻拉下一个，无需等待整批。
- */
-async function runWithConcurrency(items, worker, concurrency) {
-  const results = new Array(items.length)
-  let next = 0
-
-  async function run() {
-    while (true) {
-      const idx = next++
-      if (idx >= items.length) return
-      try {
-        results[idx] = await worker(items[idx], idx)
-      } catch (err) {
-        results[idx] = { success: false, error: err }
-      }
-    }
-  }
-
-  const workers = Array.from({ length: Math.min(concurrency, items.length) }, run)
-  await Promise.all(workers)
-  return results
 }
 
 // ===== 命令行模式执行 =====
@@ -435,7 +415,7 @@ if (args.length === 0) {
       )
     }
 
-    const outputPath = metaPath.replace(/-metadata\.json$/, '-rerender.png')
+    const outputPath = metaPath.replace(/-metadata\.json$/, '.png')
     await renderTextOverlay(bgPath, meta.textOverlay.texts, outputPath)
     console.log(`\n✅ 输出: ${outputPath}`)
     process.exit(0)
@@ -474,7 +454,7 @@ if (args.length === 0) {
                 return await extractTextSpec(p, apiKey)
               } catch (err) {
                 console.error(`   ⚠️  [${i + 1}] 文字提取失败: ${err.message}，使用原 prompt`)
-                return { cleanPrompt: p, texts: [] }
+                return { cleanPrompt: sanitizeCleanPrompt(p), texts: [] }
               }
             },
             concurrency

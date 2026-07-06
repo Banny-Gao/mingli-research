@@ -17,36 +17,47 @@ export function generateFilename(timestamp, index) {
  *
  * @param {string} url
  * @param {string} filepath
- * @param {{ onProgress?: (p: {received: number, total: number, percent: number}) => void }} opts
+ * @param {{ onProgress?: (p: {received: number, total: number, percent: number}) => void, timeout?: number }} opts
  * @returns {Promise<number>} 文件大小（字节）
  */
 export async function downloadImage(url, filepath, opts = {}) {
-  const { onProgress } = opts
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`下载失败: ${res.status} ${res.statusText}`)
+  const { onProgress, timeout = 60000 } = opts
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeout)
+  try {
+    const res = await fetch(url, { signal: controller.signal })
+    if (!res.ok) throw new Error(`下载失败: ${res.status} ${res.statusText}`)
 
-  const contentLength = Number(res.headers.get('content-length')) || 0
-  const reader = res.body.getReader()
-  const chunks = []
-  let received = 0
+    const contentLength = Number(res.headers.get('content-length')) || 0
+    const reader = res.body.getReader()
+    const chunks = []
+    let received = 0
 
-  while (true) {
-    const { done, value } = await reader.read()
-    if (done) break
-    chunks.push(value)
-    received += value.length
-    if (onProgress && contentLength > 0) {
-      onProgress({
-        received,
-        total: contentLength,
-        percent: Math.round((received / contentLength) * 100),
-      })
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      chunks.push(value)
+      received += value.length
+      if (onProgress && contentLength > 0) {
+        onProgress({
+          received,
+          total: contentLength,
+          percent: Math.round((received / contentLength) * 100),
+        })
+      }
     }
-  }
 
-  const buffer = Buffer.concat(chunks)
-  fs.writeFileSync(filepath, buffer)
-  return buffer.length
+    const buffer = Buffer.concat(chunks)
+    fs.writeFileSync(filepath, buffer)
+    return buffer.length
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error(`下载超时 (${timeout / 1000}s): ${url}`)
+    }
+    throw err
+  } finally {
+    clearTimeout(timer)
+  }
 }
 
 /**
@@ -98,6 +109,9 @@ export function saveMetadata(outputDir, timestamp, opts, results) {
     meta.backgroundPath = `t2i-${timestamp}-bg.png`
   }
   const filepath = path.join(outputDir, `t2i-${timestamp}-metadata.json`)
-  fs.writeFileSync(filepath, JSON.stringify(meta, null, 2), 'utf-8')
+  // 原子写入：先写 .tmp，再 rename
+  const tmpPath = filepath + '.tmp'
+  fs.writeFileSync(tmpPath, JSON.stringify(meta, null, 2), 'utf-8')
+  fs.renameSync(tmpPath, filepath)
   return filepath
 }

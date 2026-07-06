@@ -9,27 +9,7 @@ import {
   VALID_STYLES,
   VALID_RESPONSE_FORMATS,
 } from './constants.js'
-
-/**
- * 解析逗号分隔的 prompt 列表，支持 \, 转义。
- */
-function parsePrompts(raw) {
-  const result = []
-  let current = ''
-  for (let i = 0; i < raw.length; i++) {
-    if (raw[i] === '\\' && raw[i + 1] === ',') {
-      current += ','
-      i++
-    } else if (raw[i] === ',') {
-      if (current.trim()) result.push(current.trim())
-      current = ''
-    } else {
-      current += raw[i]
-    }
-  }
-  if (current.trim()) result.push(current.trim())
-  return result
-}
+import { parsePrompts } from '../shared/parse-prompts.js'
 
 export function parseArgs(argv) {
   const opts = {}

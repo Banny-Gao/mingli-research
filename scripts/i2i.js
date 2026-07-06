@@ -27,10 +27,11 @@ import {
   makeSubjectReference,
   resolveInputImage,
 } from './lib/i2i/input.js'
-import { safeExtractTextSpec, renderTextOverlay } from './lib/i2i/text-overlay.js'
+import { safeExtractTextSpec, renderTextOverlay, extractTextSpecForReuseI2I } from './lib/i2i/text-overlay.js'
 import { i2iConfig, SUBJECT_REFERENCE_DEFAULT_TYPE } from './lib/i2i/constants.js'
 import { ensureFontsInstalled, logInstallSummary } from './lib/t2i/install-system-fonts.js'
-import { loadPresets, savePreset } from './lib/t2i/presets.js'
+import { loadPresets } from './lib/t2i/presets.js'
+import { runWithConcurrency } from './lib/shared/concurrency.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = path.join(__dirname, '..')
@@ -38,9 +39,10 @@ const PROJECT_ROOT = path.join(__dirname, '..')
 // .env 由 lib/env.js 模块级自动加载
 
 // 启动时自动补全 ./public/assets/fonts/
-ensureFontsInstalled().then(logInstallSummary)
+const _fontResult = await ensureFontsInstalled()
+logInstallSummary(_fontResult)
 
-// ===== 并发限流（同 t2i） =====
+// ===== reuse-background 模式 =====
 
 /**
  * --reuse-background 模式：用现成底图（不调 API），跑 bg-detect + 文字叠加。
@@ -60,12 +62,12 @@ async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiK
   console.log(`\n♻️  复用底图模式：跳过 I2I API`)
   console.log(`   底图: ${reuseAbs}`)
 
-  // ===== 文字提取：以 reuse 路径作为 bg-detect 输入 =====
+  // ===== 文字提取：以 reuse 路径作为 bg-detect 输入，并复用历史 metadata 锁住文字风格 =====
   let textSpec = precomputedTextSpec
   const useTextOverlay = opts.textOverlay !== false
   if (useTextOverlay && !textSpec) {
     console.log('\n🔍 分析 prompt 中的文字需求（基于复用底图）...')
-    textSpec = await safeExtractTextSpec(opts.prompt, reuseAbs, apiKey)
+    textSpec = await extractTextSpecForReuseI2I(opts.prompt, reuseAbs, apiKey)
     console.log(`   检测到 ${textSpec.texts.length} 处文字:`)
     for (const t of textSpec.texts) {
       console.log(
@@ -114,27 +116,6 @@ async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiK
   console.log(`\n📄 元数据: ${path.relative(PROJECT_ROOT, metaPath)}`)
   console.log(`✅ 完成：成功 1，失败 0`)
 }
-
-
-async function runWithConcurrency(items, worker, concurrency) {
-  const results = new Array(items.length)
-  let next = 0
-  async function run() {
-    while (true) {
-      const idx = next++
-      if (idx >= items.length) return
-      try {
-        results[idx] = await worker(items[idx], idx)
-      } catch (err) {
-        results[idx] = { success: false, error: err }
-      }
-    }
-  }
-  const workers = Array.from({ length: Math.min(concurrency, items.length) }, run)
-  await Promise.all(workers)
-  return results
-}
-
 // ===== 命令行模式执行 =====
 async function executeRequest(opts, precomputedTextSpec = null) {
   // dry-run 模式
@@ -346,21 +327,18 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     }
   }
 
-  // ===== 保存输入图副本作为 "背景"（--save-background 启用时） =====
+  // ===== 保存生成图（文字叠加前）作为 "背景"（--save-background 启用时） =====
+  // 与 t2i 对齐：保存的是 i2i 生成结果（results[0]），不是输入图。
+  // 用法：--reuse-background <bgPath> 后续可对同底图换 prompt 重渲染文字。
   if (opts.saveBackground && results.length > 0 && !results[0].error) {
     const bgFilename = `i2i-${timestamp}-bg.png`
     const bgPath = path.join(outputDir, bgFilename)
-    if (!inputMeta.isUrl) {
-      try {
-        fs.copyFileSync(inputMeta.absPath, bgPath)
-        console.log(`\n💾 输入图副本已保存: ${bgFilename}`)
-      } catch (err) {
-        console.warn(`⚠️ 保存输入图副本失败: ${err.message}`)
-      }
-    } else {
-      console.log(
-        `\n⚠️ 输入图为 URL，已跳过本地副本保存（save-background 仅对本地输入图生效）`
-      )
+    const srcPath = path.join(outputDir, results[0].filename)
+    try {
+      fs.copyFileSync(srcPath, bgPath)
+      console.log(`\n💾 背景已保存: ${bgFilename}`)
+    } catch (err) {
+      console.warn(`⚠️ 保存背景失败: ${err.message}`)
     }
   }
 
@@ -463,7 +441,7 @@ if (args.length === 0) {
       )
     }
 
-    const outputPath = metaPath.replace(/-metadata\.json$/, '-rerender.png')
+    const outputPath = metaPath.replace(/-metadata\.json$/, '.png')
     await renderTextOverlay(bgPath, texts, outputPath)
     console.log(`\n✅ 输出: ${outputPath}`)
     process.exit(0)

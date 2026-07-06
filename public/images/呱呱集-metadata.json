@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-07-05T17:06:23.200Z",
+  "timestamp": "2026-07-06T07:47:27.697Z",
   "type": "i2i",
   "inputImage": {
-    "absPath": "C:\\Users\\Administrator\\Desktop\\mingli-research\\public\\images\\墨兰鎏金-古籍封面..png",
+    "absPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png",
     "mime": null,
     "size": 448037,
     "sha256": "",
     "isUrl": false
   },
   "subjectType": "character",
-  "prompt": "书名：呱呱集 作者信息：韦千里 著",
+  "prompt": "书籍名称：呱呱集 作者信息：韦千里 著",
   "model": "image-01",
   "aspectRatio": "3:4",
   "width": null,
@@ -41,20 +41,21 @@
   },
   "results": [
     {
-      "filename": "i2i-1783271183200-01.png",
+      "filename": "呱呱集.png",
       "size": 448037,
-      "reusedFrom": "C:\\Users\\Administrator\\Desktop\\mingli-research\\public\\images\\墨兰鎏金-古籍封面..png"
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
     }
   ],
   "textOverlay": {
     "texts": [
       {
+        "purpose": "main-title",
         "content": "呱呱集",
         "position": {
-          "x": "50%",
-          "y": "44%"
+          "x": "center",
+          "y": "center"
         },
-        "size": 120,
+        "size": 108,
         "color": "#1A1A1A",
         "fontHint": "MFLingLongNoncommercial",
         "layout": "vertical",
@@ -63,13 +64,14 @@
         "explicitColor": true
       },
       {
-        "content": "韦千里 著",
+        "purpose": "author",
+        "content": "[民国] 韦千里",
         "position": {
-          "x": "50%",
-          "y": "66%"
+          "x": "center",
+          "y": "80%"
         },
-        "size": 40,
-        "color": "#4A4540",
+        "size": 36,
+        "color": "#1A1A1A",
         "fontHint": "MFLingLongNoncommercial",
         "layout": "horizontal",
         "verticalDirection": "rtl",
@@ -95,6 +97,5 @@
         "hex": "#D9D5C8"
       }
     }
-  },
-  "backgroundPath": "墨兰鎏金-古籍封面.png"
+  }
 }
