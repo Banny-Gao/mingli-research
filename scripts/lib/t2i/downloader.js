@@ -4,12 +4,14 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import { writeUniqueFile } from '../shared/output-name.js'
 
 /**
  * 生成统一文件名。
  */
-export function generateFilename(timestamp, index) {
-  return `t2i-${timestamp}-${String(index + 1).padStart(2, '0')}.png`
+export function generateFilename(timestamp, index, name = null) {
+  const base = name || `t2i-${timestamp}`
+  return `${base}-${String(index + 1).padStart(2, '0')}.png`
 }
 
 /**
@@ -79,7 +81,7 @@ export function saveBase64Image(base64Str, filepath) {
  * @param {object} opts - 原始请求参数
  * @param {Array<{filename: string, size: number, url?: string}>} results
  */
-export function saveMetadata(outputDir, timestamp, opts, results) {
+export function saveMetadata(outputDir, timestamp, opts, results, name = null) {
   const meta = {
     timestamp: new Date(timestamp).toISOString(),
     prompt: opts.prompt,
@@ -94,6 +96,7 @@ export function saveMetadata(outputDir, timestamp, opts, results) {
     promptOptimizer: opts.promptOptimizer || false,
     aigcWatermark: opts.aigcWatermark || false,
     responseFormat: opts.responseFormat || 'url',
+    name: name || null,
     results,
   }
   // 保留文字提取结果（cleanPrompt + reservedAreas + texts）
@@ -104,14 +107,20 @@ export function saveMetadata(outputDir, timestamp, opts, results) {
       texts: opts.textSpec.texts,
     }
   }
-  // 保存背景路径，方便后续 --rerender
-  if (opts.saveBackground) {
-    meta.backgroundPath = `t2i-${timestamp}-bg.png`
-  }
-  const filepath = path.join(outputDir, `t2i-${timestamp}-metadata.json`)
-  // 原子写入：先写 .tmp，再 rename
-  const tmpPath = filepath + '.tmp'
-  fs.writeFileSync(tmpPath, JSON.stringify(meta, null, 2), 'utf-8')
-  fs.renameSync(tmpPath, filepath)
-  return filepath
+
+  // 文件名基 = name ?? `t2i-${timestamp}`
+  // 与 --save-background 共享同一 finalBase（写完 metadata 后再写 bg，确保
+  // backgroundPath 指向磁盘实际文件名，rerender 一定找得到）。
+  const base = name || `t2i-${timestamp}`
+  // 用 writeUniqueFile 防止批量模式下并发 worker 写同一 metadata.json 时互相覆盖
+  // （当 --name 在多个 prompt 间重复时，resolveBatchNames 解析出的基名相同）。
+  // 返回 { filepath, finalBase }，调用方可基于 finalBase 写同名 bg。
+  const { filepath, finalBase } = writeUniqueFile(
+    outputDir,
+    base,
+    '-metadata.json',
+    JSON.stringify(meta, null, 2)
+  )
+
+  return { filepath, finalBase }
 }

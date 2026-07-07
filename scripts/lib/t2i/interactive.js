@@ -15,11 +15,13 @@ import {
 } from './constants.js'
 import { t2iConfig } from './constants.js'
 import { pickExistingImage } from '../shared/pick-image.js'
+import { validateName, MAX_NAME_PROMPT_ATTEMPTS } from '../shared/output-name.js'
 
 function printSummary(opts) {
   console.log('\n' + '─'.repeat(46))
   console.log('📋 配置摘要')
   console.log('─'.repeat(46))
+  if (opts.name) console.log(`  Name:              ${opts.name}`)
   console.log(`  Model:            ${opts.model}`)
   console.log(
     `  Prompt:           ${opts.prompt.slice(0, 60)}${opts.prompt.length > 60 ? '...' : ''}`
@@ -62,6 +64,36 @@ async function collectOptionsMerged(preset) {
         return true
       },
     })
+  }
+
+  // 1.5 基础名称（可选，缺省用 timestamp）
+  // 非空 + 非法字符时按 spec 重新询问，不退出也不静默丢弃。
+  // 超过 MAX_NAME_PROMPT_ATTEMPTS 防止用户死循环；超过后回退 null（用 timestamp）。
+  if (opts.name === undefined || opts.name === null) {
+    let resolved = null
+    for (let attempt = 0; attempt < MAX_NAME_PROMPT_ATTEMPTS; attempt++) {
+      const ans = await input({
+        message: `基础名称（可选，直接回车用默认时间戳）${attempt > 0 ? `[${attempt + 1}/${MAX_NAME_PROMPT_ATTEMPTS}]` : ''}：`,
+      })
+      const trimmed = ans.trim()
+      if (!trimmed) {
+        resolved = null
+        break
+      }
+      const v = validateName(trimmed)
+      if (!v.valid) {
+        console.log(`   ⚠️  ${v.error}`)
+        if (attempt < MAX_NAME_PROMPT_ATTEMPTS - 1) {
+          console.log(`   请重新输入（直接回车跳过）`)
+        } else {
+          console.log(`   已达最大重试次数 ${MAX_NAME_PROMPT_ATTEMPTS}，本次生成将使用默认时间戳`)
+        }
+        continue
+      }
+      resolved = trimmed
+      break
+    }
+    opts.name = resolved
   }
 
   // 2. Model
@@ -294,7 +326,8 @@ export async function interactiveMode(executeFn) {
     const name = await input({ message: '预设名称:' })
     if (name.trim()) {
       // 仅剥离运行时/临时字段：prompt（每次必问）、seed（复现用）、reuseBackground/saveBackground（本次行为）
-      const { prompt, seed, reuseBackground, saveBackground, ...presetConfig } = opts
+      // name 也剥离：避免保存"本次临时输入"到 preset；下次加载时再询问
+      const { prompt, seed, reuseBackground, saveBackground, name, ...presetConfig } = opts
       // 显式写入默认输出目录，避免下次加载时被反向询问"自定义目录？"
       if (presetConfig.outputDir == null) {
         presetConfig.outputDir = t2iConfig.outputDir

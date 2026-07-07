@@ -13,6 +13,7 @@ import {
   VALID_SUBJECT_TYPES,
 } from './constants.js'
 import { parsePrompts, parseInputImages } from '../shared/parse-prompts.js'
+import { validateName, parseBatchName } from '../shared/output-name.js'
 
 export function parseArgs(argv) {
   const opts = {}
@@ -25,6 +26,14 @@ export function parseArgs(argv) {
     else if (arg === '--prompts') opts.prompts = parsePrompts(argv[++i])
     else if (arg === '--input-image') opts.inputImage = argv[++i]
     else if (arg === '--input-images') pending.inputImages = parseInputImages(argv[++i])
+    else if (arg === '--name') {
+      const v = argv[++i]
+      if (v === undefined || v.startsWith('--')) {
+        console.error(`❌ --name 缺少值或下一个参数是 flag (${v || 'EOF'})`)
+        process.exit(1)
+      }
+      opts.name = v
+    }
     else if (arg === '--subject-type') opts.subjectType = argv[++i]
     else if (arg === '--use-input-image-url') opts.useInputImageUrl = true
     else if (arg === '--no-use-input-image-url') opts.useInputImageUrl = false
@@ -85,6 +94,20 @@ export function parseArgs(argv) {
     process.exit(1)
   }
 
+  // --name 校验
+  if (opts.name !== undefined) {
+    const v = validateName(opts.name)
+    if (!v.valid) {
+      console.error(`❌ ${v.error}`)
+      process.exit(1)
+    }
+  }
+
+  // 批量模式：--name 数量校验
+  if (opts.prompts && opts.name) {
+    opts.names = parseBatchName(opts)
+  }
+
   return opts
 }
 
@@ -139,6 +162,16 @@ i2i.js — MiniMax 图生图脚本
 输出:
   --response-format <fmt>    url (默认) | base64
   --output-dir <dir>         输出目录，默认 ${i2iConfig.outputDir}
+
+命名:
+  --name <text>            自定义基础名称（替代默认 timestamp）
+                           文件命名: <name>-01.png, <name>-02.png, ...
+                           元数据: <name>-metadata.json
+                           批量模式: 逗号分隔多个，与 --prompts 一一对应；
+                                    单个 --name 应用于全部
+                           冲突时自动追加 -1 / -2 / -3 后缀
+                           禁止字符: / \ : * ? " < > |
+                           最大长度 100 字符
 
 预设:
   --preset <name>            加载指定预设配置（i2i 独立 presets.json）

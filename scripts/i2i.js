@@ -32,6 +32,11 @@ import { i2iConfig, SUBJECT_REFERENCE_DEFAULT_TYPE } from './lib/i2i/constants.j
 import { ensureFontsInstalled, logInstallSummary } from './lib/t2i/install-system-fonts.js'
 import { loadPresets } from './lib/t2i/presets.js'
 import { runWithConcurrency } from './lib/shared/concurrency.js'
+import {
+  resolveRequestName,
+  resolveBatchNames,
+  writeUniqueFile,
+} from './lib/shared/output-name.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PROJECT_ROOT = path.join(__dirname, '..')
@@ -52,8 +57,9 @@ logInstallSummary(_fontResult)
  * @param {string} outputDir
  * @param {object|null} precomputedTextSpec
  * @param {string} apiKey - 文字提取仍需 LLM
+ * @param {string|null} name - 已解析的输出基名（resolveRequestName 结果）
  */
-async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiKey) {
+async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiKey, name) {
   if (!fs.existsSync(opts.reuseBackground)) {
     console.error(`❌ --reuse-background 路径不存在: ${path.resolve(opts.reuseBackground)}`)
     process.exit(1)
@@ -85,7 +91,7 @@ async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiK
   }
 
   const timestamp = Date.now()
-  const filename = generateFilename(timestamp, 0)
+  const filename = generateFilename(timestamp, 0, name)
   const filepath = path.join(outputDir, filename)
   fs.mkdirSync(outputDir, { recursive: true })
   fs.copyFileSync(reuseAbs, filepath)
@@ -112,7 +118,14 @@ async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiK
     inputMeta: { absPath: reuseAbs, mime: null, size, sha256: '', isUrl: false, reusedFrom: true },
     bgInfo: textSpec?.bgInfo || null,
   }
-  const metaPath = saveMetadata(outputDir, timestamp, { ...opts, textSpec }, results, extra)
+  const { filepath: metaPath, finalBase } = saveMetadata(
+    outputDir,
+    timestamp,
+    { ...opts, textSpec },
+    results,
+    extra,
+    name
+  )
   console.log(`\n📄 元数据: ${path.relative(PROJECT_ROOT, metaPath)}`)
   console.log(`✅ 完成：成功 1，失败 0`)
 }
@@ -120,6 +133,9 @@ async function executeReuseBackground(opts, outputDir, precomputedTextSpec, apiK
 async function executeRequest(opts, precomputedTextSpec = null) {
   // dry-run 模式
   if (opts.dryRun) {
+    // 复用与正式生成一致的 name 解析路径：批量走 _resolvedNames，单 prompt 走 opts.name。
+    const dryOutputDir = path.resolve(opts.outputDir || i2iConfig.outputDir)
+    const name = resolveRequestName(opts, dryOutputDir)
     // 仅校验输入图（不读 base64 进内存）—— 走 resolveInputImage 后用占位摘要代替 image_file。
     const dryMeta = resolveInputImage(opts.inputImage)
     const subjectType = opts.subjectType || SUBJECT_REFERENCE_DEFAULT_TYPE
@@ -153,6 +169,7 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     if (requestBody.prompt_optimizer) console.log(`   Prompt Optimizer: on`)
     if (requestBody.aigc_watermark) console.log(`   Watermark: on`)
     console.log(`   Count: ${requestBody.n || 1}`)
+    console.log(`   Output basename: ${name || opts.name || '<auto timestamp>'}`)
 
     if (opts.textOverlay !== false) {
       console.log('\n🔍 分析 prompt 中的文字需求 (dry-run 正则提取)...')
@@ -209,9 +226,13 @@ async function executeRequest(opts, precomputedTextSpec = null) {
   const outputDir = path.resolve(opts.outputDir || i2iConfig.outputDir)
   fs.mkdirSync(outputDir, { recursive: true })
 
+  // 解析 name：批量模式由 caller 预解析后注入 _resolvedNames / _resolvedIndex；
+  // 单次模式由 resolveRequestName 内部走 opts.name + 冲突检测。
+  const name = resolveRequestName(opts, outputDir)
+
   // ===== reuse-background 短路：跳过 I2I API，直接用现成底图叠加文字 =====
   if (opts.reuseBackground) {
-    return await executeReuseBackground(opts, outputDir, precomputedTextSpec, apiKey)
+    return await executeReuseBackground(opts, outputDir, precomputedTextSpec, apiKey, name)
   }
 
   // ===== 文字提取（normal 路径） =====
@@ -285,7 +306,7 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     } else {
       console.log(`\n📥 并行下载 ${urls.length} 张图片到 ${outputDir} ...`)
       const downloadTasks = urls.map((url, i) => async () => {
-        const filename = generateFilename(timestamp, i)
+        const filename = generateFilename(timestamp, i, name)
         const filepath = path.join(outputDir, filename)
         try {
           const size = await downloadImage(url, filepath, {
@@ -312,7 +333,7 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     } else {
       console.log(`\n💾 并行保存 ${images.length} 张图片到 ${outputDir} ...`)
       const saveTasks = images.map((img, i) => () => {
-        const filename = generateFilename(timestamp, i)
+        const filename = generateFilename(timestamp, i, name)
         const filepath = path.join(outputDir, filename)
         try {
           const size = saveBase64Image(img, filepath)
@@ -327,22 +348,12 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     }
   }
 
-  // ===== 保存生成图（文字叠加前）作为 "背景"（--save-background 启用时） =====
-  // 与 t2i 对齐：保存的是 i2i 生成结果（results[0]），不是输入图。
-  // 用法：--reuse-background <bgPath> 后续可对同底图换 prompt 重渲染文字。
-  if (opts.saveBackground && results.length > 0 && !results[0].error) {
-    const bgFilename = `i2i-${timestamp}-bg.png`
-    const bgPath = path.join(outputDir, bgFilename)
-    const srcPath = path.join(outputDir, results[0].filename)
-    try {
-      fs.copyFileSync(srcPath, bgPath)
-      console.log(`\n💾 背景已保存: ${bgFilename}`)
-    } catch (err) {
-      console.warn(`⚠️ 保存背景失败: ${err.message}`)
-    }
-  }
+  // ===== 处理顺序（与 t2i 对齐） =====
+  // 1. 文字叠加到生成图（如果有 textSpec）
+  // 2. 保存元数据：saveMetadata 返回 { filepath, finalBase }
+  // 3. 如果 --save-background：用 finalBase-bg.png 写背景副本，并 patch metadata.backgroundPath
 
-  // ===== 文字叠加到生成图上 =====
+  // 步骤 1：文字叠加
   if (textSpec && textSpec.texts.length > 0) {
     console.log(`\n🔤 叠加 ${textSpec.texts.length} 处文字...`)
     for (const r of results) {
@@ -359,9 +370,36 @@ async function executeRequest(opts, precomputedTextSpec = null) {
     }
   }
 
-  // ===== 保存元数据 =====
+  // 步骤 2：保存元数据
   const extra = { inputMeta, bgInfo: textSpec?.bgInfo || null }
-  const metaPath = saveMetadata(outputDir, timestamp, { ...opts, textSpec }, results, extra)
+  const { filepath: metaPath, finalBase } = saveMetadata(
+    outputDir,
+    timestamp,
+    { ...opts, textSpec },
+    results,
+    extra,
+    name
+  )
+
+  // 步骤 3：保存生成图（文字叠加前）作为 "背景" 副本
+  // 与 t2i 对齐：保存的是 i2i 生成结果（results[0]），不是输入图。
+  // 用法：--reuse-background <bgPath> 后续可对同底图换 prompt 重渲染文字。
+  // 走 writeUniqueFile：连续跑 --name foo --save-background 不会覆盖旧副本。
+  // 拿到 bg 路径后 patch metadata.backgroundPath，保证 rerender 找得到。
+  if (opts.saveBackground && results.length > 0 && !results[0].error) {
+    const bgContent = fs.readFileSync(path.join(outputDir, results[0].filename))
+    try {
+      const { filepath: bgPath } = writeUniqueFile(outputDir, finalBase, '-bg.png', bgContent)
+      console.log(`\n💾 背景已保存: ${path.basename(bgPath)}`)
+      // patch metadata.backgroundPath 与磁盘同步
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      meta.backgroundPath = `${finalBase}-bg.png`
+      fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+    } catch (err) {
+      console.warn(`⚠️ 保存背景失败: ${err.message}`)
+    }
+  }
+
   console.log(`\n📄 元数据: ${path.relative(PROJECT_ROOT, metaPath)}`)
 
   const successCount = results.filter(r => !r.error).length
@@ -410,6 +448,9 @@ if (args.length === 0) {
       console.error(`❌ metadata.type="${meta.type}"，不是 i2i metadata，拒绝处理`)
       process.exit(1)
     }
+    // rerender 模式：从 metadata 提取原 name（兼容旧 metadata 无 name 字段）
+    const originalFilename = meta.results[0]?.filename || ''
+    const rerenderName = meta.name || originalFilename.replace(/-\d{2}\.png$/, '') || null
     const texts = meta.textOverlay?.texts
     if (!texts || texts.length === 0) {
       console.error('❌ metadata 中没有 textOverlay.texts，无法重渲染')
@@ -441,7 +482,9 @@ if (args.length === 0) {
       )
     }
 
-    const outputPath = metaPath.replace(/-metadata\.json$/, '.png')
+    const rerenderDir = path.dirname(metaPath)
+    const rerenderBase = rerenderName || path.basename(metaPath, '-metadata.json')
+    const outputPath = path.join(rerenderDir, `${rerenderBase}-rerender.png`)
     await renderTextOverlay(bgPath, texts, outputPath)
     console.log(`\n✅ 输出: ${outputPath}`)
     process.exit(0)
@@ -497,6 +540,15 @@ if (args.length === 0) {
           )
         : null
 
+      // ===== 阶段 1.5（部分缓解）：串行解析批量 names =====
+      // resolveBatchNames 内部对 opts.names 各基名同步串行调用 resolveUniqueName，
+      // 保证基名互不冲突时返回唯一名字。重复基名（如 --name "x" + --prompts 3 个）
+      // 仍会拿到相同名字，元数据由 saveMetadata 的 writeUniqueFile 兜底。
+      // 图片写盘（downloadImage / saveBase64Image）未走探测，重复基名并发可能
+      // "最后写赢"，属已知限制（spec 已记）。
+      const batchOutputDir = path.resolve(opts.outputDir || i2iConfig.outputDir)
+      const resolvedNames = resolveBatchNames(opts, batchOutputDir)
+
       console.log(`\n   阶段 2/2：并发调用 I2I API（限流 ${concurrency}）`)
       const results = await runWithConcurrency(
         opts.prompts.map((p, i) => ({
@@ -506,9 +558,16 @@ if (args.length === 0) {
           textSpec: textSpecs?.[i] || null,
         })),
         async ({ p, i, img, textSpec }) => {
-          const promptOpts = { ...opts, prompt: p, inputImage: img.absPath }
+          const promptOpts = {
+            ...opts,
+            prompt: p,
+            inputImage: img.absPath,
+            _resolvedNames: resolvedNames,
+            _resolvedIndex: i,
+          }
           delete promptOpts.prompts
           delete promptOpts.inputImages
+          delete promptOpts.names
           const { valid, errors } = validate(promptOpts)
           if (!valid) {
             console.error(`\n❌ Prompt ${i + 1}/${opts.prompts.length} 校验失败:`)

@@ -8,10 +8,11 @@
  *   - "保存背景" 对于图生图相当于存"生成图（文字叠加前）副本"
  */
 
-import { input, confirm, number } from '@inquirer/prompts'
-import { smartSelect, smartConfirm } from '../shared/prompt.js'
+import { number } from '@inquirer/prompts'
+import { smartSelect, smartConfirm, smartInput } from '../shared/prompt.js'
 const select = smartSelect // alias: 智能降级 select（TUX 下用 inquirer，非 TTY 下用 input + 关键词）
 const _confirm = smartConfirm // alias: 同上，confirm 也需要 TTY 降级
+const input = smartInput // alias: input 在非 TTY 下内联 validate 循环
 import {
   VALID_MODELS,
   VALID_ASPECT_RATIOS,
@@ -28,11 +29,13 @@ import {
   listPresets,
 } from '../t2i/presets.js'
 import { pickExistingImage } from '../shared/pick-image.js'
+import { validateName, MAX_NAME_PROMPT_ATTEMPTS } from '../shared/output-name.js'
 
 function printSummary(opts) {
   console.log('\n' + '─'.repeat(46))
   console.log('📋 配置摘要（i2i）')
   console.log('─'.repeat(46))
+  if (opts.name) console.log(`  Name:              ${opts.name}`)
   console.log(`  Input Image:      ${opts.inputImage}`)
   console.log(`  Subject Type:     ${opts.subjectType || 'character'}`)
   console.log(`  Model:            ${opts.model}`)
@@ -125,6 +128,36 @@ async function collectOptionsMerged(preset) {
         return true
       },
     })
+  }
+
+  // 3.5 基础名称（可选，缺省用 timestamp）
+  // 非空 + 非法字符时按 spec 重新询问，不退出也不静默丢弃。
+  // 超过 MAX_NAME_PROMPT_ATTEMPTS 防止用户死循环；超过后回退 null（用 timestamp）。
+  if (opts.name === undefined || opts.name === null) {
+    let resolved = null
+    for (let attempt = 0; attempt < MAX_NAME_PROMPT_ATTEMPTS; attempt++) {
+      const ans = await input({
+        message: `基础名称（可选，直接回车用默认时间戳）${attempt > 0 ? `[${attempt + 1}/${MAX_NAME_PROMPT_ATTEMPTS}]` : ''}：`,
+      })
+      const trimmed = ans.trim()
+      if (!trimmed) {
+        resolved = null
+        break
+      }
+      const v = validateName(trimmed)
+      if (!v.valid) {
+        console.log(`   ⚠️  ${v.error}`)
+        if (attempt < MAX_NAME_PROMPT_ATTEMPTS - 1) {
+          console.log(`   请重新输入（直接回车跳过）`)
+        } else {
+          console.log(`   已达最大重试次数 ${MAX_NAME_PROMPT_ATTEMPTS}，本次生成将使用默认时间戳`)
+        }
+        continue
+      }
+      resolved = trimmed
+      break
+    }
+    opts.name = resolved
   }
 
   // 4. Model
@@ -338,7 +371,8 @@ export async function interactiveMode(executeFn) {
     const name = await input({ message: '预设名称:' })
     if (name.trim()) {
       // 剥离 runtime 字段：inputImage（每次必问）、prompt（每次必问）、seed（运行时）、saveBackground（本次行为）、reuseBackground（本次行为）
-      const { inputImage, prompt, seed, saveBackground, reuseBackground, ...presetConfig } = opts
+      // name 也剥离：避免保存"本次临时输入"到 preset；下次加载时再询问
+      const { inputImage, prompt, seed, saveBackground, reuseBackground, name, ...presetConfig } = opts
       if (presetConfig.outputDir == null) {
         presetConfig.outputDir = i2iConfig.outputDir
       }

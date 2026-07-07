@@ -10,6 +10,7 @@ import {
   VALID_RESPONSE_FORMATS,
 } from './constants.js'
 import { parsePrompts } from '../shared/parse-prompts.js'
+import { validateName, parseBatchName } from '../shared/output-name.js'
 
 export function parseArgs(argv) {
   const opts = {}
@@ -17,6 +18,14 @@ export function parseArgs(argv) {
     const arg = argv[i]
     if (arg === '--prompt') opts.prompt = argv[++i]
     else if (arg === '--prompts') opts.prompts = parsePrompts(argv[++i])
+    else if (arg === '--name') {
+      const v = argv[++i]
+      if (v === undefined || v.startsWith('--')) {
+        console.error(`❌ --name 缺少值或下一个参数是 flag (${v || 'EOF'})`)
+        process.exit(1)
+      }
+      opts.name = v
+    }
     else if (arg === '--model') opts.model = argv[++i]
     else if (arg === '--aspect-ratio') opts.aspectRatio = argv[++i]
     else if (arg === '--n') opts.n = Number(argv[++i])
@@ -55,6 +64,21 @@ export function parseArgs(argv) {
       process.exit(1)
     }
   }
+
+  // --name 校验
+  if (opts.name !== undefined) {
+    const v = validateName(opts.name)
+    if (!v.valid) {
+      console.error(`❌ ${v.error}`)
+      process.exit(1)
+    }
+  }
+
+  // 批量模式：--name 数量校验
+  if (opts.prompts && opts.name) {
+    opts.names = parseBatchName(opts)
+  }
+
   return opts
 }
 
@@ -99,6 +123,16 @@ t2i.js — MiniMax 文生图脚本
                            url: 返回图片 URL，脚本自动下载到本地
                            base64: 返回 base64 编码，脚本解码后保存
   --output-dir <dir>       输出目录，默认 ${t2iConfig.outputDir}
+
+命名:
+  --name <text>            自定义基础名称（替代默认 timestamp）
+                           文件命名: <name>-01.png, <name>-02.png, ...
+                           元数据: <name>-metadata.json
+                           批量模式: 逗号分隔多个，与 --prompts 一一对应；
+                                    单个 --name 应用于全部
+                           冲突时自动追加 -1 / -2 / -3 后缀
+                           禁止字符: / \ : * ? " < > |
+                           最大长度 100 字符
 
 预设:
   --preset <name>          加载指定预设配置

@@ -10,11 +10,13 @@ import {
   downloadImage,
   saveBase64Image,
 } from '../t2i/downloader.js'
+import { writeUniqueFile } from '../shared/output-name.js'
 
 export { downloadImage, saveBase64Image }
 
-export function generateFilename(timestamp, index) {
-  return `i2i-${timestamp}-${String(index + 1).padStart(2, '0')}.png`
+export function generateFilename(timestamp, index, name = null) {
+  const base = name || `i2i-${timestamp}`
+  return `${base}-${String(index + 1).padStart(2, '0')}.png`
 }
 
 /**
@@ -23,7 +25,7 @@ export function generateFilename(timestamp, index) {
  * 与 t2i 差异：保留 inputImage（路径/URL、mime、sha256、isUrl）、subjectType 等信息，
  * 便于后续 --rerender 重渲染或问题追溯。
  */
-export function saveMetadata(outputDir, timestamp, opts, results, extra = {}) {
+export function saveMetadata(outputDir, timestamp, opts, results, extra = {}, name = null) {
   const meta = {
     timestamp: new Date(timestamp).toISOString(),
     type: 'i2i',
@@ -49,6 +51,7 @@ export function saveMetadata(outputDir, timestamp, opts, results, extra = {}) {
     promptOptimizer: opts.promptOptimizer || false,
     aigcWatermark: opts.aigcWatermark || false,
     responseFormat: opts.responseFormat || 'url',
+    name: name || null,
     bgAnalysis: extra.bgInfo
       ? {
           width: extra.bgInfo.width,
@@ -65,13 +68,20 @@ export function saveMetadata(outputDir, timestamp, opts, results, extra = {}) {
       bgInfo: extra.bgInfo || null,
     }
   }
-  if (opts.saveBackground) {
-    meta.backgroundPath = `i2i-${timestamp}-bg.png`
-  }
-  const filepath = path.join(outputDir, `i2i-${timestamp}-metadata.json`)
-  // 原子写入：先写 .tmp，再 rename
-  const tmpPath = filepath + '.tmp'
-  fs.writeFileSync(tmpPath, JSON.stringify(meta, null, 2), 'utf-8')
-  fs.renameSync(tmpPath, filepath)
-  return filepath
+
+  // 文件名基 = name ?? `i2i-${timestamp}`
+  // 与 --save-background 共享同一 finalBase（写完 metadata 后再写 bg，确保
+  // backgroundPath 指向磁盘实际文件名，rerender 一定找得到）。
+  const base = name || `i2i-${timestamp}`
+  // 用 writeUniqueFile 防止批量模式下并发 worker 写同一 metadata.json 时互相覆盖
+  // （当 --name 在多个 prompt 间重复时，resolveBatchNames 解析出的基名相同）。
+  // 返回 { filepath, finalBase }，调用方可基于 finalBase 写同名 bg。
+  const { filepath, finalBase } = writeUniqueFile(
+    outputDir,
+    base,
+    '-metadata.json',
+    JSON.stringify(meta, null, 2)
+  )
+
+  return { filepath, finalBase }
 }
