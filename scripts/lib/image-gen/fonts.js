@@ -1,5 +1,5 @@
 /**
- * scripts/lib/t2i/fonts.js — 字体发现与匹配
+ * scripts/lib/image-gen/fonts.js — 字体发现与匹配
  *
  * 数据源（启动时加载一次，模块级缓存）：
  *   1. 项目内预置字体：./public/assets/fonts/（随仓库提交，跨团队协同）
@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url'
 const require = createRequire(import.meta.url)
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.join(__dirname, '..', '..', '..')
+const PROJECT_ROOT = path.join(__dirname, '..', '..')
 const BUNDLED_FONTS_DIR = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts')
 const PRESETS_FONTS = path.join(__dirname, 'presets', 'fonts.json')
 

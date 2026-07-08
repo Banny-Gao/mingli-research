@@ -1,5 +1,5 @@
 /**
- * scripts/lib/t2i/install-system-fonts.js — 启动时自动补全 ./public/assets/fonts/ 与 fonts.json
+ * scripts/lib/image-gen/install-system-fonts.js — 启动时自动补全 ./public/assets/fonts/ 与 fonts.json
  *
  * 补全策略（双向 + 持久化）：
  *   A. bundled[] 中声明的：
@@ -31,7 +31,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.join(__dirname, '..', '..', '..')
+const PROJECT_ROOT = path.join(__dirname, '..', '..')
 const BUNDLED_FONTS_DIR = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts')
 const PRESETS_FONTS = path.join(__dirname, 'presets', 'fonts.json')
 

@@ -190,33 +190,101 @@
   },
   "aliases": {
     "_comment": "matchFont 别名映射。hint（用户描述中的子串）→ target 数组（按序尝试，第一个命中即返回）。target 与 bundled.family / system_fallbacks.name 匹配（includes 规则，不区分大小写）。",
-    "行楷": ["Xingkai", "STXingkai"],
-    "行书": ["Xingkai", "STXingkai"],
-    "毛笔行书": ["Xingkai", "STXingkai"],
-    "毛笔": ["Xingkai", "STXingkai"],
-    "楷体": ["Kaiti", "KaiTi", "STKaiti"],
-    "楷书": ["Kaiti", "KaiTi", "STKaiti"],
-    "宋体": ["NotoSerifSC", "SimSun"],
-    "仿宋": ["FangSong", "NotoSerifSC"],
-    "黑体": ["NotoSansSC", "SimHei", "Heiti"],
-    "细黑": ["STXihei", "Heiti"],
-    "微软雅黑": ["Microsoft YaHei", "YaHei"],
-    "苹方": ["PingFang"],
-    "隶书": ["Libian"],
-    "隶变": ["Libian"],
-    "报隶": ["Baoli"],
-    "雅痞": ["Yuppy"],
-    "圆体": ["Yuanti"],
-    "娃娃体": ["Wawati"],
-    "可爱": ["Wawati"],
-    "思源宋体": ["NotoSerifSC"],
-    "思源黑体": ["NotoSansSC"],
-    "古风": ["MFLingLongNoncommercial"],
-    "飘逸": ["MFLingLongNoncommercial"],
-    "武侠": ["MFLingLongNoncommercial"],
-    "玲珑": ["MFLingLongNoncommercial"],
-    "MFLingLong": ["MFLingLongNoncommercial"],
-    "造字工房玲珑体（非商用）": ["MFLingLongNoncommercial"]
+    "行楷": [
+      "Xingkai",
+      "STXingkai"
+    ],
+    "行书": [
+      "Xingkai",
+      "STXingkai"
+    ],
+    "毛笔行书": [
+      "Xingkai",
+      "STXingkai"
+    ],
+    "毛笔": [
+      "Xingkai",
+      "STXingkai"
+    ],
+    "楷体": [
+      "Kaiti",
+      "KaiTi",
+      "STKaiti"
+    ],
+    "楷书": [
+      "Kaiti",
+      "KaiTi",
+      "STKaiti"
+    ],
+    "宋体": [
+      "NotoSerifSC",
+      "SimSun"
+    ],
+    "仿宋": [
+      "FangSong",
+      "NotoSerifSC"
+    ],
+    "黑体": [
+      "NotoSansSC",
+      "SimHei",
+      "Heiti"
+    ],
+    "细黑": [
+      "STXihei",
+      "Heiti"
+    ],
+    "微软雅黑": [
+      "Microsoft YaHei",
+      "YaHei"
+    ],
+    "苹方": [
+      "PingFang"
+    ],
+    "隶书": [
+      "Libian"
+    ],
+    "隶变": [
+      "Libian"
+    ],
+    "报隶": [
+      "Baoli"
+    ],
+    "雅痞": [
+      "Yuppy"
+    ],
+    "圆体": [
+      "Yuanti"
+    ],
+    "娃娃体": [
+      "Wawati"
+    ],
+    "可爱": [
+      "Wawati"
+    ],
+    "思源宋体": [
+      "NotoSerifSC"
+    ],
+    "思源黑体": [
+      "NotoSansSC"
+    ],
+    "古风": [
+      "MFLingLongNoncommercial"
+    ],
+    "飘逸": [
+      "MFLingLongNoncommercial"
+    ],
+    "武侠": [
+      "MFLingLongNoncommercial"
+    ],
+    "玲珑": [
+      "MFLingLongNoncommercial"
+    ],
+    "MFLingLong": [
+      "MFLingLongNoncommercial"
+    ],
+    "造字工房玲珑体（非商用）": [
+      "MFLingLongNoncommercial"
+    ]
   },
   "missing": [
     {
@@ -230,6 +298,26 @@
     {
       "file": "STXihei (未找到源)",
       "recordedAt": "2026-07-03T16:52:15.944Z"
+    },
+    {
+      "file": "simsun.ttc",
+      "recordedAt": "2026-07-08T02:37:31.739Z"
+    },
+    {
+      "file": "simhei.ttf",
+      "recordedAt": "2026-07-08T02:37:31.740Z"
+    },
+    {
+      "file": "simfang.ttf",
+      "recordedAt": "2026-07-08T02:37:31.740Z"
+    },
+    {
+      "file": "msyh.ttc",
+      "recordedAt": "2026-07-08T02:37:31.740Z"
+    },
+    {
+      "file": "MFLingLong_Noncommercial-Regular.otf",
+      "recordedAt": "2026-07-08T02:37:31.740Z"
     }
   ]
 }

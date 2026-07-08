@@ -1,5 +1,5 @@
 /**
- * scripts/lib/t2i/prompts/clean.js — 步骤 2：cleanPrompt 背景创作 + 文字预留区元数据
+ * scripts/lib/image-gen/prompts/clean.js — 步骤 2：cleanPrompt 背景创作 + 文字预留区元数据
  *
  * 输入：设计意图 + 用户原始描述
  * 输出：JSON { backgroundPrompt, reservedAreas[] }

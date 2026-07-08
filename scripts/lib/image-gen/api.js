@@ -1,9 +1,12 @@
 /**
- * scripts/lib/t2i/api.js — 校验 + 请求体构建 + API 调用（含重试/超时）
+ * scripts/lib/image-gen/api.js — 共享校验 + 请求体构建 + API 调用
+ *
+ * 与 t2i/i2i 差异通过 profile.applyValidateExtras / profile.applyRequestExtras 注入。
+ * 原有 t2i/api.js 与 i2i/api.js 的 100% 重复段全部归位至此。
  */
 
+import { t2iConfig } from './config.js'
 import {
-  T2I_ENDPOINT,
   VALID_MODELS,
   VALID_ASPECT_RATIOS,
   VALID_STYLES,
@@ -12,13 +15,19 @@ import {
   STYLE_WEIGHT_RANGE,
   N_RANGE,
   PROMPT_MAX_LENGTH,
-  t2iConfig,
+  IMAGE_GEN_ENDPOINT_SUFFIX,
 } from './constants.js'
 
+/** 共享 endpoint：POST {t2iConfig.baseUrl}/image_generation */
+export const IMAGE_GEN_ENDPOINT = `${t2iConfig.baseUrl}${IMAGE_GEN_ENDPOINT_SUFFIX}`
+
 /**
- * 校验 opts，返回 { valid, errors }，不 exit。
+ * 通用校验。
+ *
+ * profile.applyValidateExtras(errors, opts) 在通用规则后追加 i2i 专属规则
+ * （inputImage 路径校验、subjectType 枚举、reuseBackground 路径存在等）。
  */
-export function validate(opts) {
+export function validateCommon(opts) {
   const errors = []
 
   if (!opts.prompt) {
@@ -89,20 +98,38 @@ export function validate(opts) {
     errors.push(`⚠️ width/height 仅在 model=image-01 时可用，image-01-live 请使用 aspect-ratio`)
   }
 
+  return errors
+}
+
+/**
+ * Profile-aware validate。返回 { valid, errors }，不 exit。
+ */
+export function validate(profile, opts) {
+  const errors = validateCommon(opts)
+  // 业务扩展点：i2i 在此追加 inputImage / subjectType / reuseBackground 校验
+  profile.applyValidateExtras(errors, opts)
   return { valid: errors.length === 0, errors }
 }
 
 /**
- * 构建 MiniMax T2I API 请求体。
+ * 构建 API 请求体（共享部分）。
+ *
+ * profile.applyRequestExtras(body, opts) 在通用字段写入后追加 i2i 专属
+ * （subject_reference 注入）。
+ * profile.textOverlayPromptSuffix(opts) 在通用规则之前改写 opts.prompt
+ * （i2i: 自动追加反字提示；t2i: no-op）。
  *
  * 副作用：当 textOverlay 启用（opts.textOverlay !== false）且用户未显式允许时，
  * 强制关闭 prompt_optimizer。理由：服务端改写不理解"已无字"上下文，
  * 可能重新引入文字/符号。要保留则传 opts.allowPromptOptimizerWithTextOverlay = true。
  */
-export function buildRequestBody(opts) {
+export function buildRequestBody(profile, opts) {
+  // 业务扩展点（必须在通用字段写入之前）：i2i 在 textOverlay 启用时追加反字提示
+  const suffix = profile.textOverlayPromptSuffix(opts)
+  const prompt = suffix ? `${opts.prompt}${suffix}` : opts.prompt
   const body = {
-    model: opts.model || t2iConfig.model,
-    prompt: opts.prompt,
+    model: opts.model || profile.defaultModel,
+    prompt,
   }
 
   if (opts.aspectRatio) body.aspect_ratio = opts.aspectRatio
@@ -117,9 +144,6 @@ export function buildRequestBody(opts) {
   const useTextOverlay = opts.textOverlay !== false
   const allowOptimizer = opts.allowPromptOptimizerWithTextOverlay === true
   if (useTextOverlay && !allowOptimizer) {
-    if (opts.promptOptimizer === true) {
-      // 已经在 t2i.js 处打过 warning，这里直接静默改写
-    }
     body.prompt_optimizer = false
   } else if (opts.promptOptimizer !== undefined) {
     body.prompt_optimizer = opts.promptOptimizer
@@ -137,13 +161,14 @@ export function buildRequestBody(opts) {
     if (opts.styleWeight !== undefined) body.style.style_weight = opts.styleWeight
   }
 
-  return body
+  // 业务扩展点：i2i 在此追加 subject_reference[]
+  return profile.applyRequestExtras(body, opts)
 }
 
 /**
  * 判断错误是否可重试。
  *
- * AbortError 视为可重试 —— 我们用 AbortController 仅作为超时机制（api.js:172-173），
+ * AbortError 视为可重试 —— 我们用 AbortController 仅作为超时机制，
  * 没有任何手动 controller.abort() 调用，所以抛 AbortError 等价于"超时"。
  * 单次超时不代表服务故障，给一次重试机会。最大总耗时 ≈ timeout × (retries + 1)。
  */
@@ -157,7 +182,7 @@ function isRetryable(err) {
 }
 
 /**
- * 调用 MiniMax T2I API，含超时和指数退避重试。
+ * 调用 MiniMax image_generation API，含超时和指数退避重试。
  *
  * @param {string} apiKey
  * @param {object} requestBody
@@ -181,11 +206,11 @@ export async function callApi(apiKey, requestBody, opts = {}) {
         console.error(`\n🔄 重试 ${attempt}/${maxRetries}...`)
       }
       if (verbose) {
-        console.error(`📡 POST ${T2I_ENDPOINT}`)
+        console.error(`📡 POST ${IMAGE_GEN_ENDPOINT}`)
         console.error(`   Body: ${JSON.stringify(requestBody).slice(0, 200)}...`)
       }
 
-      const res = await fetch(T2I_ENDPOINT, {
+      const res = await fetch(IMAGE_GEN_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 /**
- * scripts/lib/i2i/input.js — 输入图校验 + subject_reference 构造
+ * scripts/lib/image-gen/input.js — 输入图校验 + subject_reference 构造
  *
  * 输入图接受：
  *   - 本地文件路径（默认走 base64）
@@ -15,7 +15,7 @@ import {
   INPUT_IMAGE_MIME_TYPES,
   VALID_SUBJECT_TYPES,
   SUBJECT_REFERENCE_DEFAULT_TYPE,
-} from './constants.js'
+} from '../image-gen/config.js'
 
 const MIME_BY_EXT = {
   '.png': 'image/png',

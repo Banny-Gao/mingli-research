@@ -1,18 +1,15 @@
 /**
- * scripts/lib/t2i/downloader.js — 图片下载/保存 + 进度回调 + 元数据
+ * scripts/lib/image-gen/downloader.js — 共享图片下载/保存 + 元数据
+ *
+ * 抽离 t2i/i2i downloader.js 的共用部分：
+ *   - downloadImage / saveBase64Image（已合并）
+ *   - generateFilename(ts, idx, profile, name)  —— prefix 由 profile 注入
+ *   - saveMetadata(profile, ...)  —— type / extras 由 profile 注入
  */
 
 import fs from 'node:fs'
 import path from 'node:path'
 import { writeUniqueFile } from '../shared/output-name.js'
-
-/**
- * 生成统一文件名。
- */
-export function generateFilename(timestamp, index, name = null) {
-  const base = name || `t2i-${timestamp}`
-  return `${base}-${String(index + 1).padStart(2, '0')}.png`
-}
 
 /**
  * 下载图片，支持进度回调。
@@ -74,53 +71,76 @@ export function saveBase64Image(base64Str, filepath) {
 }
 
 /**
+ * 生成统一文件名。prefix 由 profile.filenamePrefix 决定（t2i / i2i）。
+ */
+export function generateFilename(profile, timestamp, index, name = null) {
+  const base = name || `${profile.filenamePrefix}-${timestamp}`
+  return `${base}-${String(index + 1).padStart(2, '0')}.png`
+}
+
+/**
  * 保存元数据 JSON 文件。
  *
+ * profile.buildMetadataExtras(opts, extra) 返回 mode 专属字段（inputImage / bgAnalysis）。
+ * textOverlay 流水线全过程证据统一保存，供 --rerender / --reuse-background 使用。
+ *
+ * @param {object} profile
  * @param {string} outputDir
  * @param {number} timestamp
- * @param {object} opts - 原始请求参数
- * @param {Array<{filename: string, size: number, url?: string}>} results
+ * @param {object} opts - 含 textSpec / apiPrompt / promptOptimizerEffective 等扩展字段
+ * @param {Array} results
+ * @param {object} [extra]
+ * @param {string|null} [name]
+ * @returns {{ filepath: string, finalBase: string }}
  */
-export function saveMetadata(outputDir, timestamp, opts, results, name = null) {
+export function saveMetadata(profile, outputDir, timestamp, opts, results, extra = {}, name = null) {
+  const textSpec = opts.textSpec
   const meta = {
     timestamp: new Date(timestamp).toISOString(),
+    type: profile.metadataType,
+    ...profile.buildMetadataExtras(opts, extra),
     prompt: opts.prompt,
-    model: opts.model || 'image-01',
+    apiPrompt: opts.apiPrompt || opts.prompt,
+    model: opts.model || profile.defaultModel,
     aspectRatio: opts.aspectRatio || null,
     width: opts.width || null,
     height: opts.height || null,
-    style: opts.style || null,
-    styleWeight: opts.styleWeight ?? null,
+    style: opts.style
+      ? { style_type: opts.style, style_weight: opts.styleWeight ?? 0.8 }
+      : null,
     n: opts.n || 1,
     seed: opts.seed ?? null,
     promptOptimizer: opts.promptOptimizer || false,
+    promptOptimizerEffective: opts.promptOptimizerEffective ?? opts.promptOptimizer ?? false,
     aigcWatermark: opts.aigcWatermark || false,
     responseFormat: opts.responseFormat || 'url',
     name: name || null,
     results,
   }
-  // 保留文字提取结果（cleanPrompt + reservedAreas + texts）
-  if (opts.textSpec) {
+
+  // 文字叠加流水线全过程证据
+  if (textSpec) {
     meta.textOverlay = {
-      cleanPrompt: opts.textSpec.cleanPrompt,
-      reservedAreas: opts.textSpec.reservedAreas || [],
-      texts: opts.textSpec.texts,
+      intent: textSpec.intent || null,
+      cleanPrompt: textSpec.cleanPrompt ?? null,
+      reservedAreas: textSpec.reservedAreas || [],
+      texts: textSpec.texts || [],
+      bgInfo: textSpec.bgInfo
+        ? {
+            width: textSpec.bgInfo.width,
+            height: textSpec.bgInfo.height,
+            mainRect: textSpec.bgInfo.mainRect || null,
+            dominantColor: textSpec.bgInfo.dominantColor || null,
+          }
+        : null,
+      llmCalls: textSpec.llmCalls || [],
     }
   }
 
-  // 文件名基 = name ?? `t2i-${timestamp}`
-  // 与 --save-background 共享同一 finalBase（写完 metadata 后再写 bg，确保
-  // backgroundPath 指向磁盘实际文件名，rerender 一定找得到）。
-  const base = name || `t2i-${timestamp}`
-  // 用 writeUniqueFile 防止批量模式下并发 worker 写同一 metadata.json 时互相覆盖
-  // （当 --name 在多个 prompt 间重复时，resolveBatchNames 解析出的基名相同）。
-  // 返回 { filepath, finalBase }，调用方可基于 finalBase 写同名 bg。
+  const base = name || `${profile.filenamePrefix}-${timestamp}`
   const { filepath, finalBase } = writeUniqueFile(
-    outputDir,
-    base,
-    '-metadata.json',
+    outputDir, base, '-metadata.json',
     JSON.stringify(meta, null, 2)
   )
-
   return { filepath, finalBase }
 }
