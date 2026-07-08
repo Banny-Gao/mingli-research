@@ -28,6 +28,7 @@ import {
 import { T2I_PROFILE, I2I_PROFILE } from './lib/image-gen/profile.js'
 import { ensureFontsInstalled, logInstallSummary } from './lib/shared/font-installer.js'
 import { runWithConcurrency } from './lib/shared/concurrency.js'
+import { spinner, ProgressPanel } from './lib/shared/progress.js'
 import { resolveRequestName, resolveBatchNames } from './lib/shared/output-name.js'
 import {
   callApiAndCheck, downloadResults, applyTextOverlay, finalizeOutput,
@@ -114,8 +115,8 @@ async function getContext(mode) {
     interactiveImport: () => import('./lib/image-gen/interactive.js'),
     presetsFile: config.presetsFile,
     presetKeys: isI2I
-      ? ['inputImage', 'prompt', 'seed', 'reuseBackground', 'saveBackground']
-      : ['prompt', 'seed', 'reuseBackground', 'saveBackground'],
+      ? ['inputImage', 'prompt', 'seed', 'reuseBackground', 'saveBackground', 'name']
+      : ['prompt', 'seed', 'reuseBackground', 'saveBackground', 'name'],
     batchModeLabel: isI2I ? 'i2i' : '',
     batchConcurrencyLabel: isI2I
       ? '阶段 1/2：并发分析每张输入图 bg-detect + 文字提取'
@@ -152,7 +153,11 @@ async function getContext(mode) {
         return await unifiedExtract(mode, p, apiKey, { inputImagePath: img.absPath })
       } catch (err) {
         console.error(`   ⚠️  [${i + 1}] 文字提取失败: ${err.message}`)
-        return { texts: [], intent: null, llmCalls: [] }
+        return {
+          bgInfo: null, mainRect: null, dominantColor: null,
+          cleanPrompt: null, reservedAreas: [],
+          texts: [], intent: null, llmCalls: [],
+        }
       }
     }
   } else {
@@ -169,7 +174,16 @@ async function getContext(mode) {
       } catch (err) {
         console.error(`   ⚠️  [${i + 1}] 文字提取失败: ${err.message}，使用原 prompt`)
         const { sanitizeCleanPrompt } = await import('./lib/image-gen/sanitize.js')
-        return { cleanPrompt: sanitizeCleanPrompt(p), texts: [], intent: null, llmCalls: [] }
+        return {
+          cleanPrompt: sanitizeCleanPrompt(p),
+          reservedAreas: [],
+          texts: [],
+          bgInfo: null,
+          mainRect: null,
+          dominantColor: null,
+          intent: null,
+          llmCalls: [],
+        }
       }
     }
   }
@@ -204,7 +218,7 @@ async function executeReuseBackground(ctx, opts, outputDir, precomputedTextSpec,
   if (textSpec && textSpec.texts.length === 0) textSpec = null
 
   const timestamp = Date.now()
-  const filename = generateFilename(ctx.profile, timestamp, 0, name)
+  const filename = generateFilename(ctx.profile, timestamp, 0, name, Math.max(1, Number(opts.n) || 1))
   const filepath = path.join(outputDir, filename)
   fs.mkdirSync(outputDir, { recursive: true })
   fs.copyFileSync(reuseAbs, filepath)
@@ -215,8 +229,8 @@ async function executeReuseBackground(ctx, opts, outputDir, precomputedTextSpec,
   await applyTextOverlay(textSpec, results, outputDir, ctx.renderTextOverlay)
 
   const extra = isI2I
-    ? { inputMeta: { absPath: reuseAbs, mime: null, size, sha256: '', isUrl: false, reusedFrom: true }, bgInfo: textSpec?.bgInfo || null }
-    : {}
+    ? { inputMeta: { absPath: reuseAbs, mime: null, size, sha256: '', isUrl: false, reusedFrom: true }, bgInfo: textSpec?.bgInfo || null, reusedFrom: reuseAbs }
+    : { reusedFrom: reuseAbs }
   const { metaPath } = finalizeOutput(ctx.profile, outputDir, timestamp, { ...opts, textSpec }, results, extra, name)
   console.log(`\n📄 元数据: ${path.relative(PROJECT_ROOT, metaPath)}`)
   console.log(`✅ 完成：成功 1，失败 0`)
@@ -281,19 +295,36 @@ async function executeRequest(ctx, opts, precomputedTextSpec = null) {
   const useTextOverlay = opts.textOverlay !== false
   if (useTextOverlay && !textSpec) {
     console.log('\n🔍 分析 prompt 中的文字需求...')
-    if (opts.reuseBackground) {
-      textSpec = await ctx.extractTextSpecForReuse(opts.prompt, opts.reuseBackground, apiKey)
-    } else if (ctx.mode === 'i2i') {
-      const refPath = opts.inputImage && !/^https?:\/\//i.test(opts.inputImage)
-        ? path.resolve(opts.inputImage) : null
-      if (!refPath) {
-        console.warn('⚠️ 输入图为 URL，跳过 bg-detect / 文字叠加')
-        textSpec = EMPTY_TEXT_SPEC
+    const extractSpinner = spinner('文字提取（意图分析 + 背景创作 + 排版设计）')
+    // 顺序约束：t0 必须在 await 之前捕获，succeed 必须在 await 之后调用，
+    // 否则耗时会被 spinner 自身的渲染时间污染。
+    const t0 = Date.now()
+    let extractionRan = false
+    try {
+      if (opts.reuseBackground) {
+        textSpec = await ctx.extractTextSpecForReuse(opts.prompt, opts.reuseBackground, apiKey)
+        extractionRan = true
+      } else if (ctx.mode === 'i2i') {
+        const refPath = opts.inputImage && !/^https?:\/\//i.test(opts.inputImage)
+          ? path.resolve(opts.inputImage) : null
+        if (!refPath) {
+          console.warn('⚠️ 输入图为 URL，跳过 bg-detect / 文字叠加')
+          textSpec = EMPTY_TEXT_SPEC
+        } else {
+          textSpec = await ctx.extractTextSpec(opts.prompt, refPath, apiKey)
+          extractionRan = true
+        }
       } else {
-        textSpec = await ctx.extractTextSpec(opts.prompt, refPath, apiKey)
+        textSpec = await ctx.extractTextSpec(opts.prompt, apiKey)
+        extractionRan = true
       }
-    } else {
-      textSpec = await ctx.extractTextSpec(opts.prompt, apiKey)
+      if (extractSpinner) {
+        if (extractionRan) extractSpinner.succeed(`文字提取完成 (${((Date.now() - t0) / 1000).toFixed(1)}s)`)
+        else extractSpinner.info('已跳过文字提取')
+      }
+    } catch (err) {
+      if (extractSpinner) extractSpinner.fail('文字提取失败')
+      throw err
     }
     console.log(`   检测到 ${textSpec.texts.length} 处文字:`)
     for (const t of textSpec.texts) {
@@ -323,8 +354,18 @@ async function executeRequest(ctx, opts, precomputedTextSpec = null) {
   const results = []
 
   logApiCall(ctx.mode, requestBody)
+  const apiSpinner = spinner(`调用 MiniMax ${ctx.mode.toUpperCase()} API`)
+  // 顺序约束：t0 必须在 await 之前捕获，succeed 必须在 await 之后调用。
+  const apiT0 = Date.now()
+  let data
+  try {
+    data = await callApiAndCheck(apiKey, requestBody, { verbose: opts.verbose })
+  } catch (err) {
+    if (apiSpinner) apiSpinner.fail('API 调用失败')
+    throw err
+  }
+  if (apiSpinner) apiSpinner.succeed(`API 完成 (${((Date.now() - apiT0) / 1000).toFixed(1)}s)`)
 
-  const data = await callApiAndCheck(apiKey, requestBody, { verbose: opts.verbose })
   const format = requestBody.response_format || 'url'
   results.push(...(await downloadResults(format, data, outputDir, timestamp, name, ctx.profile, opts)))
 
@@ -346,6 +387,114 @@ async function executeRequest(ctx, opts, precomputedTextSpec = null) {
 
 // ===== 批量模式 =====
 
+async function runBatchItem(ctx, opts, p, i, img, textSpec, resolvedNames) {
+  const promptOpts = {
+    ...opts, prompt: p,
+    _resolvedNames: resolvedNames, _resolvedIndex: i,
+    ...(img ? ctx.getBatchPromptOptsExtras(p, img) : {}),
+  }
+  delete promptOpts.prompts
+  if (ctx.mode === 'i2i') delete promptOpts.inputImages
+  delete promptOpts.names
+  const { valid, errors } = validate(ctx.profile, promptOpts)
+  if (!valid) {
+    console.error(`\n❌ Prompt ${i + 1}/${opts.prompts.length} 校验失败:`)
+    for (const e of errors) console.error(`  ${e}`)
+    return { success: false, error: new Error('validation failed') }
+  }
+  const imgSuffix = img ? ` (图: ${path.basename(img.absPath)})` : ''
+  console.log(`\n🖼️  [${i + 1}/${opts.prompts.length}] Prompt: "${promptOpts.prompt.slice(0, 60)}..."${imgSuffix}`)
+  try {
+    await executeRequest(ctx, promptOpts, textSpec)
+    return { success: true }
+  } catch (err) {
+    console.error(`❌ Prompt ${i + 1} 失败: ${err.message}`)
+    return { success: false, error: err }
+  }
+}
+
+/**
+ * 创建批量进度面板并填充所有任务的初始 label。
+ */
+function setupBatchPanel(opts, validatedImages, staticLabel, total, isI2I) {
+  const panel = new ProgressPanel(total)
+  for (let i = 0; i < total; i++) {
+    const p = opts.prompts[i]
+    const imgSuffix = isI2I && validatedImages[i]
+      ? ` (图: ${path.basename(validatedImages[i].absPath)})` : ''
+    panel.track(i, `${staticLabel}: "${p.slice(0, 40)}..."${imgSuffix}`)
+  }
+  panel.startAutoRefresh()
+  return panel
+}
+
+/**
+ * 阶段 1：并发文字提取，返回 textSpecs[]。
+ */
+async function runExtractPhase(ctx, opts, concurrency) {
+  const useTextOverlay = opts.textOverlay !== false
+  if (!useTextOverlay) return null
+
+  const validatedImages = ctx.resolveBatchImages(opts)
+  const apiKey = opts.apiKey || process.env.LLM_API_KEY
+  const textWorker = ctx.getBatchTextWorker(apiKey)
+
+  const panel = setupBatchPanel(opts, validatedImages, '提取文字', opts.prompts.length, ctx.mode === 'i2i')
+
+  const textSpecs = await runWithConcurrency(
+    opts.prompts.map((p, i) => ({ p, i, ...ctx.getBatchItemExtras(i, validatedImages) })),
+    async ({ p, i, img }) => {
+      panel.start(i)
+      try {
+        const result = await textWorker({ p, i, img })
+        panel.done(i, true)
+        return result
+      } catch (err) {
+        panel.done(i, false, err.message?.slice(0, 30))
+        throw err
+      }
+    },
+    concurrency
+  )
+
+  panel.stopAutoRefresh()
+  return textSpecs
+}
+
+/**
+ * 阶段 2：并发调用图片 API，返回 results[]。
+ */
+async function runApiPhase(ctx, opts, concurrency, textSpecs) {
+  const validatedImages = ctx.resolveBatchImages(opts)
+  const batchOutputDir = path.resolve(opts.outputDir || ctx.config.outputDir)
+  const resolvedNames = resolveBatchNames(opts, batchOutputDir)
+
+  const panel = setupBatchPanel(opts, validatedImages, '生成', opts.prompts.length, ctx.mode === 'i2i')
+
+  console.log(`\n   阶段 2/2：并发调用 API（限流 ${concurrency}）`)
+
+  const results = await runWithConcurrency(
+    opts.prompts.map((p, i) => ({
+      p, i, img: validatedImages[i] || null, textSpec: textSpecs?.[i] || null,
+    })),
+    async ({ p, i, img, textSpec }) => {
+      panel.start(i)
+      try {
+        const result = await runBatchItem(ctx, opts, p, i, img, textSpec, resolvedNames)
+        panel.done(i, result.success, result.success ? '' : (result.error?.message?.slice(0, 30) || '失败'))
+        return result
+      } catch (err) {
+        panel.done(i, false, err.message?.slice(0, 30) || '失败')
+        throw err
+      }
+    },
+    concurrency
+  )
+
+  panel.stopAutoRefresh()
+  return results
+}
+
 async function runBatch(ctx, opts) {
   const concurrency = Math.max(1, opts.concurrency || 3)
   const useTextOverlay = opts.textOverlay !== false
@@ -357,52 +506,11 @@ async function runBatch(ctx, opts) {
     console.log(`   跳过文字提取（已禁用 text-overlay）`)
   }
 
-  const apiKey = opts.apiKey || process.env.LLM_API_KEY
-  const validatedImages = ctx.resolveBatchImages(opts)
-  const textWorker = ctx.getBatchTextWorker(apiKey)
+  // 阶段 1：并发提取文字
+  const textSpecs = useTextOverlay ? await runExtractPhase(ctx, opts, concurrency) : null
 
-  const textSpecs = useTextOverlay
-    ? await runWithConcurrency(
-        opts.prompts.map((p, i) => ({ p, i, ...ctx.getBatchItemExtras(i, validatedImages) })),
-        textWorker, concurrency
-      )
-    : null
-
-  const batchOutputDir = path.resolve(opts.outputDir || ctx.config.outputDir)
-  const resolvedNames = resolveBatchNames(opts, batchOutputDir)
-
-  console.log(`\n   阶段 2/2：并发调用 API（限流 ${concurrency}）`)
-  const results = await runWithConcurrency(
-    opts.prompts.map((p, i) => ({
-      p, i, img: validatedImages[i] || null, textSpec: textSpecs?.[i] || null,
-    })),
-    async ({ p, i, img, textSpec }) => {
-      const promptOpts = {
-        ...opts, prompt: p,
-        _resolvedNames: resolvedNames, _resolvedIndex: i,
-        ...(img ? ctx.getBatchPromptOptsExtras(p, img) : {}),
-      }
-      delete promptOpts.prompts
-      if (ctx.mode === 'i2i') delete promptOpts.inputImages
-      delete promptOpts.names
-      const { valid, errors } = validate(ctx.profile, promptOpts)
-      if (!valid) {
-        console.error(`\n❌ Prompt ${i + 1}/${opts.prompts.length} 校验失败:`)
-        for (const e of errors) console.error(`  ${e}`)
-        return { success: false, error: new Error('validation failed') }
-      }
-      const imgSuffix = img ? ` (图: ${path.basename(img.absPath)})` : ''
-      console.log(`\n🖼️  [${i + 1}/${opts.prompts.length}] Prompt: "${promptOpts.prompt.slice(0, 60)}..."${imgSuffix}`)
-      try {
-        await executeRequest(ctx, promptOpts, textSpec)
-        return { success: true }
-      } catch (err) {
-        console.error(`❌ Prompt ${i + 1} 失败: ${err.message}`)
-        return { success: false, error: err }
-      }
-    },
-    concurrency
-  )
+  // 阶段 2：并发调用 API
+  const results = await runApiPhase(ctx, opts, concurrency, textSpecs)
 
   const totalSuccess = results.filter(r => r?.success).length
   const totalFailed = results.length - totalSuccess

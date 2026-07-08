@@ -148,7 +148,15 @@ function printSummary(opts, hooks, config) {
 // ===== 共享 collectOptions =====
 
 async function collectOptionsMerged(preset, hooks) {
-  const opts = { ...preset }
+  // 从 preset 中剥离运行期 / 一次性字段，避免：
+  //  - name 提前固定导致用户无法自定义
+  //  - prompt / seed / reuseBackground 提前锁定导致本次无法调整
+  // 与「保存预设」时使用的 presetKeys 保持一致（hooks.presetKeys 已包含 name）
+  const opts = {}
+  for (const [k, v] of Object.entries(preset || {})) {
+    if (hooks.presetKeys.includes(k)) continue
+    opts[k] = v
+  }
 
   // mode-specific pre-steps (i2i: inputImage, subjectType)
   await hooks.collectPreSteps(opts)

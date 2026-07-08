@@ -147,7 +147,8 @@ async function buildContext(mode, intent, prompt, apiKey, opts = {}) {
 
 async function designLayout({ intent, prompt, apiKey, context, mode, previousTexts = [] }) {
   const client = createLLMClient({ apiKey })
-  const baseOpts = { model: llmConfig.model, maxTokens: 4096, extendedThinking: true }
+  // 8192 兼容多段文字 + extendedThinking：4 段 × ~12 字段 × JSON 格式 → 容易撞 4096 上限被截断
+  const baseOpts = { model: llmConfig.model, maxTokens: 8192, extendedThinking: true }
 
   const msgs = [
     `${TEXTS_EXTRACTION_PROMPT}`,
@@ -167,6 +168,18 @@ async function designLayout({ intent, prompt, apiKey, context, mode, previousTex
       '```',
     )
   } else {
+    // t2i 也有两种情况：
+    //   (a) 普通 t2i（无 reuse）：只有 LLM 生成的 cleanPrompt + reservedAreas，无实测 mainRect
+    //   (b) t2i + reuse-background：bg-detect 跑过，context.bgInfo / mainRect / dominantColor 都有
+    //       此时优先使用实测数据（与 i2i 同等待遇），cleanPrompt + reservedAreas 作为辅助上下文保留
+    if (context.bgInfo && context.mainRect) {
+      msgs.push(
+        `## 复用底图实测数据（来自 bg-detect；layout 必须严格对齐 mainRect）`,
+        '```json',
+        JSON.stringify({ width: context.bgInfo.width, height: context.bgInfo.height, mainRect: context.mainRect, dominantColor: context.dominantColor }, null, 2),
+        '```',
+      )
+    }
     msgs.push(
       `## 文字预留区（来自 clean.js，LLM 显式预留）`,
       context.reservedAreas?.length ? '```json\n' + JSON.stringify(context.reservedAreas, null, 2) + '\n```' : '(无)',
@@ -190,12 +203,27 @@ async function designLayout({ intent, prompt, apiKey, context, mode, previousTex
   }
 
   const userMsg = msgs.join('\n')
-  const raw = await callLLM(client, {
-    ...baseOpts,
-    system: LAYOUT_SYSTEM,
-    messages: [{ role: 'user', content: userMsg }],
-  })
-  const texts = JSON.parse(cleanJSON(raw))
+  // LLM 输出偶发被 maxTokens 截断导致 JSON 闭合失败（"Unterminated string"），重试 1 次。
+  // 重试时附带"上次输出被截断"提示，引导 LLM 缩短内容。
+  let raw, texts
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    raw = await callLLM(client, {
+      ...baseOpts,
+      system: LAYOUT_SYSTEM,
+      messages: attempt === 1
+        ? [{ role: 'user', content: userMsg }]
+        : [{ role: 'user', content: userMsg },
+           { role: 'assistant', content: '抱歉，上一次输出被截断。' },
+           { role: 'user', content: '请重新输出更简洁的纯 JSON 数组，去掉所有多余解释，确保 JSON 完整闭合。' }],
+    })
+    try {
+      texts = JSON.parse(cleanJSON(raw))
+      break
+    } catch (err) {
+      if (attempt === 2) throw err
+      console.warn(`   ⚠️ designLayout 输出 JSON 解析失败（${err.message}），重试 1 次`)
+    }
+  }
   if (mode === 'i2i') {
     for (const t of texts) { if (t.color) t.explicitColor = true }
   }
@@ -207,12 +235,20 @@ async function designLayout({ intent, prompt, apiKey, context, mode, previousTex
 
 export async function extractTextSpec(mode, prompt, apiKey, opts = {}) {
   try {
-    const intent = await analyzeIntent(mode, prompt, apiKey, opts.inputImagePath)
-    const llmCalls = [intent._callSummary]
+    const llmCalls = []
+    let intent
+    if (opts.skipContext && opts.presetContext && opts.presetContext._intent) {
+      // 复用底图场景：metadata 已带 intent，不再跑 Stage 1 LLM 调用
+      intent = opts.presetContext._intent
+    } else {
+      intent = await analyzeIntent(mode, prompt, apiKey, opts.inputImagePath)
+      if (intent._callSummary) llmCalls.push(intent._callSummary)
+    }
 
     let context
     if (opts.skipContext) {
       context = opts.presetContext || {}
+      if (context._callSummary) llmCalls.push(context._callSummary)
     } else {
       context = await buildContext(mode, intent, prompt, apiKey, opts)
       if (context._callSummary) llmCalls.push(context._callSummary)
@@ -225,7 +261,11 @@ export async function extractTextSpec(mode, prompt, apiKey, opts = {}) {
 
     const result = {
       texts: texts || [],
-      intent: { composition: intent.composition, style: intent.style, colors: intent.colors, visualElements: intent.visualElements, textRequirements: intent.textRequirements },
+      intent: {
+        composition: intent.composition, style: intent.style,
+        colors: intent.colors, visualElements: intent.visualElements,
+        textRequirements: intent.textRequirements,
+      },
       llmCalls,
     }
     if (mode === 'i2i') {
@@ -237,27 +277,22 @@ export async function extractTextSpec(mode, prompt, apiKey, opts = {}) {
     } else {
       result.cleanPrompt = context.cleanPrompt || prompt
       result.reservedAreas = context.reservedAreas || []
-      result.bgInfo = null
+      result.bgInfo = context.bgInfo || null
+      result.mainRect = context.mainRect || null
+      result.dominantColor = context.dominantColor || null
     }
     return result
   } catch (err) {
-    console.error(`⚠️ 文字提取失败: ${err.message}，使用原始 prompt（保留所有字面符号）`)
+    // 保留可见的失败信号：spinner 只显示"文字提取失败"，但运维需要看到原因
+    console.warn(`⚠️ 文字提取失败: ${err.message}，使用原始 prompt（保留所有字面符号）`)
     if (mode === 'i2i') return { bgInfo: null, mainRect: null, dominantColor: null, cleanPrompt: null, reservedAreas: [], texts: [], intent: null, llmCalls: [] }
-    return { cleanPrompt: prompt, reservedAreas: [], texts: [], bgInfo: null, intent: null, llmCalls: [] }
+    return { cleanPrompt: prompt, reservedAreas: [], texts: [], bgInfo: null, mainRect: null, dominantColor: null, intent: null, llmCalls: [] }
   }
 }
 
 export async function extractReuseTextSpec(mode, prompt, bgPath, apiKey) {
   const found = findMetadataForImage(bgPath)
   const previousTexts = found ? (Array.isArray(found.meta.textOverlay?.texts) ? found.meta.textOverlay.texts : []) : []
-
-  if (previousTexts.length > 0) {
-    console.log(`   🔎 复用背景找到对应 metadata: ${previousTexts.length} 个历史文字（fontHint/color 将被锁定）`)
-  } else if (found) {
-    console.log(`   ℹ️ 复用背景 metadata 中无文字记录，将按 prompt 全新生成`)
-  } else {
-    console.log(`   ⚠️ 未找到对应 metadata，将按 prompt 全新生成`)
-  }
 
   let skipContext = false, presetContext = {}
   if (mode === 't2i' && found) {
@@ -267,10 +302,69 @@ export async function extractReuseTextSpec(mode, prompt, bgPath, apiKey) {
       cleanPrompt: meta.textOverlay?.cleanPrompt || '',
       reservedAreas: Array.isArray(meta.textOverlay?.reservedAreas) ? meta.textOverlay.reservedAreas : [],
     }
+    // 复用场景：metadata 已保留上次 intent 时直接复用，避免再跑一次 Stage 1 LLM 调用
+    if (meta.textOverlay?.intent && typeof meta.textOverlay.intent === 'object') {
+      presetContext._intent = meta.textOverlay.intent
+    }
     skipContext = true
-    console.log(`   📄 复用 metadata: ${presetContext.reservedAreas.length} 个预留区`)
+    // 三种 case 在日志层面要可区分，便于运维判断落到了哪条路径：
+    //   (1) 有 metadata + 有历史文字：fontHint/color 锁定，bg-detect 会跑
+    //   (2) 有 metadata + 无历史文字：cleanPrompt + reservedAreas 复用，但 fontHint/color 不会锁定
+    //   (3) 无 metadata（下面的 else if）：bg-detect 不跑，layout LLM 无 mainRect（中央堆叠风险）
+    if (previousTexts.length > 0) {
+      console.log(`   🔎 复用 metadata: ${previousTexts.length} 个历史文字 + ${presetContext.reservedAreas.length} 预留区（fontHint/color 锁定）`)
+    } else {
+      console.log(`   ℹ️ 复用 metadata 但无文字记录，按 prompt 全新生成（bg-detect 仍会跑以补 mainRect）`)
+    }
+  } else if (mode === 't2i') {
+    console.log(`   ⚠️ 未找到对应 metadata，按 prompt 全新生成；layout LLM 将无 mainRect 数据（中央堆叠风险）`)
   }
 
-  const result = await extractTextSpec(mode, prompt, apiKey, { inputImagePath: bgPath, previousTexts, skipContext, presetContext })
-  return { ...result, previousTexts, source: found ? 'lookup' : null }
+  // t2i + reuse-background：跑 bg-detect 拿实测 mainRect + dominantColor，喂给 layout LLM。
+  // 避免 layout LLM 拿不到任何实测数据时瞎猜 position（之前表现为 30%/50%/62% 全部堆中央轴）。
+  let bgDetectSummary = null
+  if (mode === 't2i' && skipContext) {
+    try {
+      const { analyzeBackground } = await import('./bg-detect.js')
+      const bgInfo = await analyzeBackground(bgPath)
+      const mainRect = normalizeMainRect(bgInfo)
+      presetContext.bgInfo = bgInfo
+      presetContext.mainRect = mainRect
+      presetContext.dominantColor = bgInfo.dominantColor
+      bgDetectSummary = callSummary('bg-detect', `[reuse] ${bgPath}`)
+      const rect = mainRect
+      console.log(`   📐 复用底图实测: ${bgInfo.width}x${bgInfo.height}, mainRect=(${rect.x},${rect.y},${rect.w},${rect.h}), 主色 ${bgInfo.dominantColor?.hex || '(none)'}`)
+    } catch (err) {
+      console.warn(`   ⚠️ 复用底图 bg-detect 失败: ${err.message}，layout LLM 将无 mainRect 数据`)
+    }
+  }
+
+  // 不破坏性修改 extractTextSpec 返回的 llmCalls 数组（防御未来可能的记忆化）
+  let result
+  try {
+    result = await extractTextSpec(mode, prompt, apiKey, { inputImagePath: bgPath, previousTexts, skipContext, presetContext })
+  } catch (err) {
+    // reuse 路径下 LLM 偶发失败时（JSON 截断 / thinking-only 等），用 metadata 的 previousTexts
+    // 兜底，保住复用价值（文字位置/字体/颜色都不丢）
+    if (previousTexts.length > 0) {
+      console.warn(`   ⚠️ reuse 路径 LLM 失败（${err.message}），回退到 metadata 中的 ${previousTexts.length} 段历史文字`)
+      const ctx = presetContext
+      result = {
+        texts: previousTexts,
+        intent: null,
+        cleanPrompt: null,
+        reservedAreas: [],
+        bgInfo: ctx.bgInfo || null,
+        mainRect: ctx.mainRect || null,
+        dominantColor: ctx.dominantColor || null,
+        llmCalls: [{ stage: 'reuse-fallback', model: 'reuse', maxTokens: 0, userMessageLength: 0 }],
+      }
+    } else {
+      throw err
+    }
+  }
+  const llmCalls = bgDetectSummary && result.llmCalls
+    ? [bgDetectSummary, ...result.llmCalls]
+    : result.llmCalls
+  return { ...result, llmCalls, previousTexts, source: found ? 'lookup' : null }
 }

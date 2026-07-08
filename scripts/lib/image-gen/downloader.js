@@ -72,9 +72,13 @@ export function saveBase64Image(base64Str, filepath) {
 
 /**
  * 生成统一文件名。prefix 由 profile.filenamePrefix 决定（t2i / i2i）。
+ *
+ * n === 1 时不带 -NN 后缀（与元数据 `base-metadata.json` 命名一致，避免冗余）；
+ * n > 1 时拼 `${String(index + 1).padStart(2, '0')}` 区分多张图。
  */
-export function generateFilename(profile, timestamp, index, name = null) {
+export function generateFilename(profile, timestamp, index, name = null, n = 1) {
   const base = name || `${profile.filenamePrefix}-${timestamp}`
+  if (n <= 1) return `${base}.png`
   return `${base}-${String(index + 1).padStart(2, '0')}.png`
 }
 

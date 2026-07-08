@@ -20,6 +20,7 @@ import path from 'node:path'
 import { callApi } from './api.js'
 import { downloadImage, saveBase64Image, generateFilename, saveMetadata } from './downloader.js'
 import { writeUniqueFile } from '../shared/output-name.js'
+import { runWithConcurrency } from '../shared/concurrency.js'
 
 /**
  * 调用 API 并校验 status_code。
@@ -39,8 +40,11 @@ export async function callApiAndCheck(apiKey, requestBody, opts = {}) {
  * @returns {Promise<Array<{filename: string, size: number, url?: string, error?: string}>>}
  */
 export async function downloadResults(format, data, outputDir, timestamp, name, profile, opts = {}) {
+  // 单次请求内（--n）的并发上限，默认 3 与批量一致；可通过 opts.concurrency 覆盖
+  const concurrency = Math.max(1, Number(opts.concurrency) || 3)
   const results = []
 
+  const n = Math.max(1, Number(opts.n) || 1)
   if (format === 'url') {
     const urls = data.data?.image_urls || []
     if (urls.length === 0) {
@@ -49,7 +53,7 @@ export async function downloadResults(format, data, outputDir, timestamp, name, 
     }
     console.log(`\n📥 并行下载 ${urls.length} 张图片到 ${outputDir} ...`)
     const tasks = urls.map((url, i) => async () => {
-      const filename = generateFilename(profile, timestamp, i, name)
+      const filename = generateFilename(profile, timestamp, i, name, n)
       const filepath = path.join(outputDir, filename)
       try {
         const size = await downloadImage(url, filepath, {
@@ -65,7 +69,8 @@ export async function downloadResults(format, data, outputDir, timestamp, name, 
         return { filename, size: 0, error: err.message }
       }
     })
-    results.push(...(await Promise.all(tasks.map(t => t()))))
+    // 用 runWithConcurrency 让 --n 并发受 opts.concurrency 控制
+    results.push(...(await runWithConcurrency(tasks, t => t(), concurrency)))
   } else {
     const images = data.data?.image_base64 || []
     if (images.length === 0) {
@@ -74,7 +79,7 @@ export async function downloadResults(format, data, outputDir, timestamp, name, 
     }
     console.log(`\n💾 并行保存 ${images.length} 张图片到 ${outputDir} ...`)
     const tasks = images.map((img, i) => () => {
-      const filename = generateFilename(profile, timestamp, i, name)
+      const filename = generateFilename(profile, timestamp, i, name, n)
       const filepath = path.join(outputDir, filename)
       try {
         const size = saveBase64Image(img, filepath)
@@ -85,7 +90,7 @@ export async function downloadResults(format, data, outputDir, timestamp, name, 
         return { filename, size: 0, error: err.message }
       }
     })
-    results.push(...(await Promise.all(tasks.map(t => t()))))
+    results.push(...(await runWithConcurrency(tasks, t => t(), concurrency)))
   }
 
   return results
@@ -131,6 +136,16 @@ export function finalizeOutput(profile, outputDir, timestamp, opts, results, ext
       fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
     } catch (err) {
       console.warn(`⚠️ 保存背景失败: ${err.message}`)
+    }
+  } else if (extra.reusedFrom && typeof extra.reusedFrom === 'string' && fs.existsSync(extra.reusedFrom) && results.length > 0 && !results[0].error) {
+    // --reuse-background：把"用户传入的源图"记为 backgroundPath（绝对路径），
+    // 让 metadata 显式持有"背景是谁"的语义；rerender 不再依赖 results[0].reusedFrom
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      meta.backgroundPath = extra.reusedFrom
+      fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+    } catch (err) {
+      console.warn(`⚠️ 记录 backgroundPath 失败: ${err.message}`)
     }
   }
 
@@ -209,11 +224,21 @@ export function runRerender(profile, opts, renderTextOverlay) {
   }
 
   // profile 解析底图路径
+  // 优先级：profile.resolveRerenderBgPath > meta.backgroundPath（--save-background 副本）>
+  //         results[0].reusedFrom（--reuse-background 复用源图）> results[0].filename
+  // 最后一项是普通 t2i 单图：图本身就是底图（无文字）。
+  const reusedFrom = meta.results?.[0]?.reusedFrom
+  // backgroundPath 可能是绝对路径（reuse 模式写入）或相对路径（--save-background 副本）。
+  // path.join 不区分两者，所以这里用 path.isAbsolute 显式处理。
+  const resolveBgPath = (relOrAbs) =>
+    path.isAbsolute(relOrAbs) ? relOrAbs : path.join(path.dirname(metaPath), relOrAbs)
   const bgPath = profile.resolveRerenderBgPath
     ? profile.resolveRerenderBgPath(meta, metaPath)
-    : (meta.backgroundPath
-        ? path.join(path.dirname(metaPath), meta.backgroundPath)
-        : path.join(path.dirname(metaPath), meta.results[0]?.filename))
+    : meta.backgroundPath
+      ? resolveBgPath(meta.backgroundPath)
+      : reusedFrom
+        ? reusedFrom
+        : path.join(path.dirname(metaPath), meta.results[0]?.filename)
 
   if (!bgPath || !fs.existsSync(bgPath)) {
     console.error(`❌ 底图不存在${bgPath ? ': ' + bgPath : '（未找到）'}`)
@@ -231,10 +256,12 @@ export function runRerender(profile, opts, renderTextOverlay) {
 
   const rerenderDir = path.dirname(metaPath)
   const rerenderBase = rerenderName || path.basename(metaPath, '-metadata.json')
-  // 覆盖 metadata.results[0] 指向的图；如无 backgroundPath（无 --save-background），
-  // 则源图已含文字，必须改名避免双重叠加
+  // 覆盖 metadata.results[0] 指向的图。
+  //   sameSource = true 仅当底图就是 results[0].filename 本身（即普通 t2i 单图，无文字的纯生成图）。
+  //   用了 --save-background 或 --reuse-background 时，底图是独立副本/源图，sameSource=false。
   const originalName = meta.results[0]?.filename || `${rerenderBase}.png`
-  const sameSource = !meta.backgroundPath
+  const hasIndependentBg = Boolean(meta.backgroundPath) || Boolean(reusedFrom)
+  const sameSource = !hasIndependentBg
   const outName = sameSource ? `${path.parse(originalName).name}-rerender${path.parse(originalName).ext}` : originalName
   const outputPath = path.join(rerenderDir, outName)
   renderTextOverlay(bgPath, texts, outputPath).then(() => {
