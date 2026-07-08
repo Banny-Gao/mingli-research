@@ -26,7 +26,7 @@ import {
   VALID_MODELS, VALID_ASPECT_RATIOS, VALID_STYLES, VALID_SUBJECT_TYPES,
 } from './lib/image-gen/config.js'
 import { T2I_PROFILE, I2I_PROFILE } from './lib/image-gen/profile.js'
-import { ensureFontsInstalled, logInstallSummary } from './lib/image-gen/install-system-fonts.js'
+import { ensureFontsInstalled, logInstallSummary } from './lib/shared/font-installer.js'
 import { runWithConcurrency } from './lib/shared/concurrency.js'
 import { resolveRequestName, resolveBatchNames } from './lib/shared/output-name.js'
 import {

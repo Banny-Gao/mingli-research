@@ -270,6 +270,7 @@ t2i.js — MiniMax 文生图脚本
                            后续可用 --reuse-background 或 --rerender 复用
   --reuse-background <path> 跳过 T2I 生成，直接使用已有背景图叠加文字
   --rerender <metadata>     读取 metadata.json，用其中的 textOverlay 重新渲染文字
+                           覆盖 results[0] 指向的最终输出图
                            适合手动调整 metadata 中的文字参数后重新出图
 
 调试:
@@ -369,7 +370,7 @@ i2i.js — MiniMax 图生图脚本
   --reuse-background <path>  跳过 I2I API，直接用 <path> 作为底图叠加文字
                              适用于：对已有生成图重利用 / 换 prompt 重渲染
   --rerender <metadata>     读 i2i metadata.json 重新执行文字叠加
-                            （不影响背景原图，输出 {metadata}.png）
+                           覆盖 results[0] 指向的最终输出图
 
 调试:
   --dry-run                  仅校验参数，不发起 API 调用

@@ -1,5 +1,5 @@
 /**
- * scripts/lib/image-gen/fonts.js — 字体发现与匹配
+ * scripts/lib/shared/font-matcher.js — 字体发现与匹配
  *
  * 数据源（启动时加载一次，模块级缓存）：
  *   1. 项目内预置字体：./public/assets/fonts/（随仓库提交，跨团队协同）
@@ -18,9 +18,9 @@ import { fileURLToPath } from 'node:url'
 const require = createRequire(import.meta.url)
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.join(__dirname, '..', '..')
+const PROJECT_ROOT = path.join(__dirname, '..', '..', '..')
 const BUNDLED_FONTS_DIR = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts')
-const PRESETS_FONTS = path.join(__dirname, 'presets', 'fonts.json')
+const PRESETS_FONTS = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts', 'fonts.json')
 
 function getPlatformKey() {
   return process.platform === 'darwin'
@@ -68,11 +68,11 @@ function loadPresets() {
 }
 
 /**
- * 获取当前 bundled 列表。优先用 install-system-fonts.js 运行时扩充的结果（内存），
- * 否则从 JSON 读。fonts.js 不能依赖 import 顺序，所以两层都支持。
+ * 获取当前 bundled 列表。优先用 font-installer.js 运行时扩充的结果（内存），
+ * 否则从 JSON 读。font-matcher.js 不能依赖 import 顺序，所以两层都支持。
  */
 function readBundled() {
-  // 1. 优先：运行时扩充（install-system-fonts.js 完成后）
+  // 1. 优先：运行时扩充（font-installer.js 完成后）
   //    通过 globalThis 桥接避免循环 import
   if (globalThis.__t2i_bundled_runtime) return globalThis.__t2i_bundled_runtime
   // 2. fallback：读 JSON
@@ -81,7 +81,7 @@ function readBundled() {
 }
 
 /**
- * 扫描项目内预置字体目录（含 install-system-fonts.js 运行时复制到这里的字体）。
+ * 扫描项目内预置字体目录（含 font-installer.js 运行时复制到这里的字体）。
  * 关键：family 名不能仅从 bundled 拿，要兼容"系统字体被复制过来但未登记"的情况。
  * 解决：用 bundled[].family 优先；找不到时从 system_fallbacks 按 basename 反查 family。
  */

@@ -231,7 +231,12 @@ export function runRerender(profile, opts, renderTextOverlay) {
 
   const rerenderDir = path.dirname(metaPath)
   const rerenderBase = rerenderName || path.basename(metaPath, '-metadata.json')
-  const outputPath = path.join(rerenderDir, `${rerenderBase}-rerender.png`)
+  // 覆盖 metadata.results[0] 指向的图；如无 backgroundPath（无 --save-background），
+  // 则源图已含文字，必须改名避免双重叠加
+  const originalName = meta.results[0]?.filename || `${rerenderBase}.png`
+  const sameSource = !meta.backgroundPath
+  const outName = sameSource ? `${path.parse(originalName).name}-rerender${path.parse(originalName).ext}` : originalName
+  const outputPath = path.join(rerenderDir, outName)
   renderTextOverlay(bgPath, texts, outputPath).then(() => {
     console.log(`\n✅ 输出: ${outputPath}`)
     process.exit(0)

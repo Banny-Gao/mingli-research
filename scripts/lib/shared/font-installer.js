@@ -1,5 +1,5 @@
 /**
- * scripts/lib/image-gen/install-system-fonts.js — 启动时自动补全 ./public/assets/fonts/ 与 fonts.json
+ * scripts/lib/shared/font-installer.js — 启动时自动补全 ./public/assets/fonts/ 与 fonts.json
  *
  * 补全策略（双向 + 持久化）：
  *   A. bundled[] 中声明的：
@@ -31,9 +31,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PROJECT_ROOT = path.join(__dirname, '..', '..')
+const PROJECT_ROOT = path.join(__dirname, '..', '..', '..')
 const BUNDLED_FONTS_DIR = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts')
-const PRESETS_FONTS = path.join(__dirname, 'presets', 'fonts.json')
+const PRESETS_FONTS = path.join(PROJECT_ROOT, 'public', 'assets', 'fonts', 'fonts.json')
 
 let _ran = false
 let _summary = null
@@ -428,7 +428,7 @@ export function logInstallSummary(result = _summary) {
 }
 
 // ===== CLI 入口 =====
-// 用法：node scripts/lib/t2i/install-system-fonts.js [--force]
+// 用法：node scripts/lib/shared/font-installer.js [--force]
 // 被 import 时不会触发。用 realpath 比较以兼容 Windows 路径分隔符与引号。
 import { realpathSync } from 'node:fs'
 const isMain = (() => {
@@ -446,7 +446,7 @@ if (isMain) {
     _ran = false
     globalThis.__t2i_bundled_runtime = null
   }
-  console.log(`📦 install-system-fonts${force ? ' (--force 重新执行)' : ''}`)
+  console.log(`📦 font-installer${force ? ' (--force 重新执行)' : ''}`)
   ensureFontsInstalled()
     .then(r => {
       logInstallSummary(r)
