@@ -39,6 +39,40 @@ let _ran = false
 let _summary = null
 let _bundledRuntime = null
 
+/**
+ * 判断文件是否为 Git LFS 指针（133 字节，首行 "version https://git-lfs.github.com/spec/v1"）。
+ * 用于区分"磁盘上的真实字体"和"未执行 git lfs pull 时残留的指针文件"。
+ *
+ * 注意：必须严格判断 magic 头 + 真实文件不存在（指针文件是 133 字节，远小于任何真实字体）。
+ * 仅看文件大小不够——小字体（如 1.3MB 的玲珑体）和某些 .ttf 也可能接近该范围。
+ */
+export function isLfsPointer(filepath) {
+  try {
+    const stat = fs.statSync(filepath)
+    // 指针文件固定 130-134 字节
+    if (stat.size < 120 || stat.size > 200) return false
+    const fd = fs.openSync(filepath, 'r')
+    try {
+      const buf = Buffer.alloc(120)
+      const bytesRead = fs.readSync(fd, buf, 0, 120, 0)
+      const head = buf.subarray(0, bytesRead).toString('utf-8')
+      return head.startsWith('version https://git-lfs.github.com/spec/v1')
+    } finally {
+      fs.closeSync(fd)
+    }
+  } catch {
+    return false
+  }
+}
+
+/**
+ * 判断磁盘上的字体文件是否"可用"——存在且不是 LFS 指针。
+ * 不存在 → false；存在但是指针 → false（需要 git lfs pull）。
+ */
+function isFontAvailableOnDisk(filepath) {
+  return fs.existsSync(filepath) && !isLfsPointer(filepath)
+}
+
 function getPlatformKey() {
   return process.platform === 'darwin'
     ? 'macos'
@@ -190,8 +224,14 @@ export async function ensureFontsInstalled() {
   for (let i = 0; i < bundled.length; i++) {
     const entry = bundled[i]
     const target = path.join(BUNDLED_FONTS_DIR, entry.file)
-    if (fs.existsSync(target)) {
+    if (isFontAvailableOnDisk(target)) {
       result.skipped.push(entry.file)
+      continue
+    }
+    // LFS 指针状态：不要复制/下载覆盖，否则会污染 Git LFS 工作区。
+    if (fs.existsSync(target) && isLfsPointer(target)) {
+      process.stdout.write(`⚠️  [A${i + 1}/${bundled.length}] ${entry.file} 是 LFS 指针，请先执行 \`git lfs pull\`\n`)
+      result.missing.push(entry.file)
       continue
     }
 
@@ -256,8 +296,8 @@ export async function ensureFontsInstalled() {
         continue
       }
       const target = path.join(BUNDLED_FONTS_DIR, targetFile)
-      if (fs.existsSync(target)) {
-        // 文件已在磁盘但 bundled 未登记 → 静默登记
+      if (isFontAvailableOnDisk(target)) {
+        // 文件已在磁盘（真实文件）但 bundled 未登记 → 静默登记
         result.skipped.push(targetFile)
         bundledFamilies.add(nameKey)
         bundledFiles.add(targetFile.toLowerCase())
@@ -268,6 +308,12 @@ export async function ensureFontsInstalled() {
           source: 'auto',
           auto_added: true,
         })
+        continue
+      }
+      // LFS 指针状态：跳过复制，否则会覆盖 LFS 真实文件
+      if (fs.existsSync(target) && isLfsPointer(target)) {
+        process.stdout.write(`⚠️  [B] ${targetFile} 是 LFS 指针，请先执行 \`git lfs pull\`\n`)
+        result.missing.push(targetFile)
         continue
       }
       const label = `[B] ${targetFile} ← ${fallback.name}`
@@ -311,9 +357,15 @@ export async function ensureFontsInstalled() {
     }
     if (targetFile && downloads[targetFile]) {
       const target = path.join(BUNDLED_FONTS_DIR, targetFile)
-      if (fs.existsSync(target)) {
+      if (isFontAvailableOnDisk(target)) {
         result.skipped.push(targetFile)
         bundledFamilies.add(nameKey)
+        continue
+      }
+      // LFS 指针状态：跳过下载，避免污染 LFS 工作区
+      if (fs.existsSync(target) && isLfsPointer(target)) {
+        process.stdout.write(`⚠️  [B] ${targetFile} 是 LFS 指针，请先执行 \`git lfs pull\`\n`)
+        result.missing.push(targetFile)
         continue
       }
       const label = `[B] ${targetFile} ← ${fallback.name} (download)`
@@ -392,7 +444,7 @@ function snapshotFromDisk() {
     }
     for (const entry of bundled) {
       const target = path.join(BUNDLED_FONTS_DIR, entry.file)
-      if (fs.existsSync(target)) result.skipped.push(entry.file)
+      if (isFontAvailableOnDisk(target)) result.skipped.push(entry.file)
     }
     return result
   } catch {

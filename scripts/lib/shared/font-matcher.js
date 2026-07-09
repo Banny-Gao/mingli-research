@@ -44,6 +44,34 @@ function resolveSystemPath(fallback) {
   }
 }
 
+/**
+ * 判断字体文件是否"真实可用"。
+ * - 不存在 → false
+ * - 是 Git LFS 指针（133 字节，未执行 git lfs pull）→ false
+ * - 是真实字体二进制 → true
+ *
+ * Git LFS 化后必须用这个函数代替裸 fs.existsSync，
+ * 否则会把指针文件当作"已就位"的字体，导致 canvas 注册失败或 t2i 渲染异常。
+ */
+function isFontAvailableOnDisk(filepath) {
+  if (!fs.existsSync(filepath)) return false
+  try {
+    const stat = fs.statSync(filepath)
+    if (stat.size < 120 || stat.size > 200) return true
+    const fd = fs.openSync(filepath, 'r')
+    try {
+      const buf = Buffer.alloc(120)
+      const bytesRead = fs.readSync(fd, buf, 0, 120, 0)
+      const head = buf.subarray(0, bytesRead).toString('utf-8')
+      return !head.startsWith('version https://git-lfs.github.com/spec/v1')
+    } finally {
+      fs.closeSync(fd)
+    }
+  } catch {
+    return false
+  }
+}
+
 // ===== 模块级缓存 =====
 
 let _catalog = null
@@ -108,7 +136,9 @@ function scanBundledFonts() {
   }
 
   // 扫描目录里所有字体文件，对照 bundled + basenameToFamily
-  const onDisk = fs.readdirSync(BUNDLED_FONTS_DIR).filter(f => /\.(ttf|otf|ttc)$/i.test(f))
+  const onDisk = fs
+    .readdirSync(BUNDLED_FONTS_DIR)
+    .filter(f => /\.(ttf|otf|ttc)$/i.test(f) && isFontAvailableOnDisk(path.join(BUNDLED_FONTS_DIR, f)))
 
   const onDiskFamilies = []
   const missing = []
@@ -137,7 +167,8 @@ function scanBundledFonts() {
       if (dl) console.warn(`     下载: ${dl}`)
     }
     if (missing.length > 5) console.warn(`   ... 还有 ${missing.length - 5} 个`)
-    console.warn(`   放入: ${BUNDLED_FONTS_DIR}\n`)
+    console.warn(`   放入: ${BUNDLED_FONTS_DIR}`)
+    console.warn(`   💡 如使用 Git LFS，请先 \`git lfs pull\`\n`)
   }
 }
 
@@ -159,7 +190,7 @@ function listBundled() {
   const result = []
   for (const entry of bundled) {
     const p = path.join(BUNDLED_FONTS_DIR, entry.file)
-    if (fs.existsSync(p)) {
+    if (isFontAvailableOnDisk(p)) {
       result.push({ name: entry.family, path: p, source: 'bundled', style: entry.style })
     }
   }
@@ -168,8 +199,10 @@ function listBundled() {
     for (const f of fs.readdirSync(BUNDLED_FONTS_DIR)) {
       if (!/\.(ttf|otf|ttc)$/i.test(f)) continue
       if (result.find(r => path.basename(r.path) === f)) continue
-      const family = basenameToFamily.get(f.toLowerCase()) || path.basename(f, path.extname(f))
+      // 跳过 LFS 指针文件（isFontAvailableOnDisk 内已判断）
       const p = path.join(BUNDLED_FONTS_DIR, f)
+      if (!isFontAvailableOnDisk(p)) continue
+      const family = basenameToFamily.get(f.toLowerCase()) || path.basename(f, path.extname(f))
       result.push({ name: family, path: p, source: 'auto', style: null })
     }
   }
