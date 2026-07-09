@@ -327,7 +327,7 @@ T2I 和 I2I 共用 `scripts/lib/image-gen/presets.json`：
       "position": { "x": "center", "y": "30%" },
       "size": 72,
       "color": "#1A1A1A",
-      "fontHint": "MFLingLongNoncommercial"
+      "fontHint": "LingLong"
     }],
     "bgInfo": { "width": 864, "height": 1152, "mainRect": {...}, "dominantColor": {...} },
     "llmCalls": [

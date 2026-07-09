@@ -292,7 +292,7 @@ function normalizeHint(hint) {
  * 返回 { path, family } 或 null。
  * family 是 OTF/TTF 文件内部 name 表里的家族名（canvas 需要用这个名字注册）；
  * 不是 path.basename — 后者对带下划线的文件名（如 MFLingLong_Noncommercial-Regular）
- * 会与 OTF 实际 family 名（MFLingLongNoncommercial）不一致，导致 canvas 找不到字体。
+ * 会与 OTF 实际 family 名（LingLong）不一致，导致 canvas 找不到字体。
  */
 export function matchFont(hint) {
   if (!hint) return null
