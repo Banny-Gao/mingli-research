@@ -1,3 +1,6 @@
+# Git LFS tracking for bundled font assets
+# 详见 docs/FONTS_LFS.md
+
 public/assets/fonts/*.ttc filter=lfs diff=lfs merge=lfs -text
 public/assets/fonts/*.ttf filter=lfs diff=lfs merge=lfs -text
 public/assets/fonts/*.otf filter=lfs diff=lfs merge=lfs -text
