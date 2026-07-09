@@ -230,7 +230,9 @@ export async function ensureFontsInstalled() {
     }
     // LFS 指针状态：不要复制/下载覆盖，否则会污染 Git LFS 工作区。
     if (fs.existsSync(target) && isLfsPointer(target)) {
-      process.stdout.write(`⚠️  [A${i + 1}/${bundled.length}] ${entry.file} 是 LFS 指针，请先执行 \`git lfs pull\`\n`)
+      process.stdout.write(
+        `⚠️  [A${i + 1}/${bundled.length}] ${entry.file} 是 LFS 指针，请先执行 \`git lfs pull\`\n`
+      )
       result.missing.push(entry.file)
       continue
     }
@@ -472,7 +474,7 @@ export function logInstallSummary(result = _summary) {
   if (auto_added.length) parts.push(`自动追加 ${auto_added.length}`)
   if (skipped.length) parts.push(`已存在 ${skipped.length}`)
   if (missing.length) parts.push(`⚠️ 缺失 ${missing.length}`)
-  console.log(`📦 字体补全: ${parts.join(' | ')}`)
+
   if (missing.length) {
     console.log(`   缺失: ${missing.join(', ')}`)
     console.log(`   放入路径: ${BUNDLED_FONTS_DIR}`)

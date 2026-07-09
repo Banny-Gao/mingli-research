@@ -57,20 +57,24 @@ export const T2I_PROFILE = {
   applyRequestExtras: (body, _opts) => body,
   applyValidateExtras: (_errors, _opts) => {},
   buildMetadataExtras: (_opts, _extra) => ({}),
-  textOverlayPromptSuffix: (_opts) => '',
+  textOverlayPromptSuffix: _opts => '',
 
   // rerender 钩子
-  validateRerenderMeta: (meta) => {
+  validateRerenderMeta: meta => {
     if (meta.type && meta.type !== 't2i') {
       return `❌ metadata.type="${meta.type}"，不是 t2i metadata；请用 scripts/${meta.type}.js --rerender 处理`
     }
     return null
   },
   resolveRerenderBgPath: (meta, metaPath) => {
-    const bgPath = meta.backgroundPath
-      ? path.join(path.dirname(metaPath), meta.backgroundPath)
+    // backgroundPath 在 --save-background 副本下是相对路径（相对 metaPath 所在目录），
+    // 在 --reuse-background 下是绝对路径（用户传入的源图）。path.join 不会去除前缀，
+    // 所以绝对路径必须直传，否则会被重复拼成 "<dir>/<abs path>"。
+    const joinOrPass = relOrAbs =>
+      path.isAbsolute(relOrAbs) ? relOrAbs : path.join(path.dirname(metaPath), relOrAbs)
+    return meta.backgroundPath
+      ? joinOrPass(meta.backgroundPath)
       : path.join(path.dirname(metaPath), meta.results[0]?.filename)
-    return bgPath
   },
 }
 
@@ -173,7 +177,7 @@ export const I2I_PROFILE = {
   /**
    * i2i 在 textOverlay 启用时自动追加反字提示。
    */
-  textOverlayPromptSuffix: (opts) => {
+  textOverlayPromptSuffix: opts => {
     const useTextOverlay = opts.textOverlay !== false
     const userPrompt = opts.prompt || ''
     if (
@@ -187,7 +191,7 @@ export const I2I_PROFILE = {
   },
 
   // rerender 钩子
-  validateRerenderMeta: (meta) => {
+  validateRerenderMeta: meta => {
     if (meta.type !== 'i2i') {
       return `❌ metadata.type="${meta.type}"，不是 i2i metadata，拒绝处理`
     }
@@ -195,12 +199,15 @@ export const I2I_PROFILE = {
   },
   resolveRerenderBgPath: (meta, metaPath) => {
     // 底图优先级：1) inputImage.absPath  2) backgroundPath  3) results[0].filename
+    // backgroundPath 在 --reuse-background 下是绝对路径，直接传；相对路径才需要 join。
+    const joinOrPass = relOrAbs =>
+      path.isAbsolute(relOrAbs) ? relOrAbs : path.join(path.dirname(metaPath), relOrAbs)
     const candidates = [
       meta.inputImage?.absPath,
-      meta.backgroundPath && path.join(path.dirname(metaPath), meta.backgroundPath),
+      meta.backgroundPath && joinOrPass(meta.backgroundPath),
       meta.results[0]?.filename && path.join(path.dirname(metaPath), meta.results[0].filename),
     ].filter(Boolean)
-    return candidates.find((p) => fs.existsSync(p)) || null
+    return candidates.find(p => fs.existsSync(p)) || null
   },
 }
 
