@@ -109,22 +109,96 @@ git stash pop                   # 恢复未推送的工作（如果有冲突就�
 
 ## 5. 日常维护流程
 
-### 5.1 新增一个字体文件
+### 5.1 从系统添加一个新字体
+
+适合场景：macOS 上装了某个字体，希望它能在 t2i/i2i 中使用，并随仓库发布给所有协作者。
+
+**前置确认**：先在 `public/assets/fonts/fonts.json` 的 `system_fallbacks.<platform>` 里查一下——如果已有该字体的 `path` 条目，font-installer 会自动从系统复制（**这是最常用的入口**）；如果没条目，需要先手动加（见 §5.1.b）。
+
+#### 5.1.a 标准流程（系统已有预设路径）
 
 ```bash
-# 1. 把字体文件放到 public/assets/fonts/
-cp /path/to/新字体.ttc public/assets/fonts/
+# 1. 编辑 fonts.json，在 bundled[] 中加一条声明
+#    （必须！否则 t2i 渲染器找不到该字体）
+{
+  "family": "Xingkai SC Bold",        # 系统中显示的 family 名（PostScript name）
+  "file": "Xingkai.ttc",              # basename 必须与系统路径最后一段一致
+  "purpose": "行楷/毛笔",
+  "source": "auto",
+  "auto_added": true
+}
 
-# 2. 提交
-git add public/assets/fonts/新字体.ttc
-git commit -m "feat(fonts): add 新字体 for xxx"
-git lfs push origin main    # 显式 push LFS 对象（可选，git push 也会带）
+# 2. 跑 font-installer：自动从系统路径复制到 fonts 目录
+node scripts/lib/shared/font-installer.js --force
+
+# 输出示例：
+#   📦 [A7/12] Xingkai.ttc ← Xingkai SC Bold ... ✅
+#   📦 字体补全: bundled 补全 1 | 已存在 11
+
+# 3. 关键安全检查：确认复制成功 + LFS 会正常追踪
+ls -lh public/assets/fonts/Xingkai.ttc          # 必须看到真实体积（如 85M），不是 133B
+git lfs ls-files | grep Xingkai.ttc              # 必须在 LFS 列表里
+git lfs status                                   # 不应有 "object not found"
+
+# 4. 入库
+git add public/assets/fonts/Xingkai.ttc public/assets/fonts/fonts.json
+git commit -m "feat(fonts): add Xingkai SC Bold via system fallback"
 git push
 ```
 
-> **无需修改 `.gitattributes`** —— 扩展名已匹配。如果新文件是 `.woff2` / `.woff` / `.ttc.zip` 等**未列出的扩展名**，先编辑 `.gitattributes` 加一行（见 §5.4）。
+#### 5.1.b 系统未预设路径（首次发现某个 macOS 字体）
 
-**必须在 `fonts.json` 的 `bundled` 数组中同步登记**（family / file / purpose），否则 t2i 渲染器找不到该字体。
+如果 `system_fallbacks.macos` 里没有该字体的 `path` 条目，需要手工查 + 加：
+
+```bash
+# 1. 用 mdfind / 系统工具找到字体真实路径
+mdfind -name "xxx.ttf" 2>/dev/null
+
+# 2. 把路径写到 fonts.json 的 system_fallbacks.macos
+{
+  "name": "Family Name",                       # 系统显示名
+  "path": "/path/to/xxx.ttf",                  # 上面查到的路径（可用 glob 通配符 *）
+  "purpose": "用途描述"
+}
+
+# 3. 然后按 §5.1.a 步骤 2~4 继续
+```
+
+#### 5.1.c 系统未安装（如玲珑体这种第三方字体）
+
+```bash
+# 1. 手动复制到 fonts 目录
+cp /path/to/MFLingLong_Noncommercial-Regular.otf public/assets/fonts/
+
+# 2. fonts.json 的 bundled[] 里加声明（同 §5.1.a 步骤 1）
+
+# 3. 跑 font-installer 确认能识别
+node scripts/lib/shared/font-installer.js --force
+# 输出: 已存在 12 ✓
+
+# 4. 入库
+git add public/assets/fonts/MFLingLong_Noncommercial-Regular.otf public/assets/fonts/fonts.json
+git commit -m "feat(fonts): add MFLingLong (third-party, not on system)"
+git push
+```
+
+#### 5.1.d 仅本机使用（不入库）
+
+只想在当前机器用、不入库分发：
+
+```bash
+# 编辑 system_fallbacks.macos 加条目后跑 font-installer
+# font-installer 会自动把 system-only 字体追加到 bundled[]
+#   输出: 📦 [B] Xingkai.ttc ← Xingkai SC Bold ... ✅
+node scripts/lib/shared/font-installer.js --force
+
+# ⚠️ 不要 commit fonts.json —— 跑完字体已复制到 fonts 目录，但 git 索引未变
+# 如果误 commit 了，回滚：
+git restore --staged public/assets/fonts/fonts.json
+git checkout -- public/assets/fonts/fonts.json
+```
+
+---
 
 ### 5.2 替换一个已有字体
 
