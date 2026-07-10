@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-07-10T08:36:29.407Z",
+  "type": "t2i",
+  "prompt": "书籍名称：紫微斗数全书,作者信息：[宋] 陈抟 撰",
+  "apiPrompt": "书籍名称：紫微斗数全书,作者信息：[宋] 陈抟 撰",
+  "model": "image-01",
+  "aspectRatio": "3:4",
+  "width": null,
+  "height": null,
+  "style": null,
+  "n": 1,
+  "seed": null,
+  "promptOptimizer": false,
+  "promptOptimizerEffective": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "name": "紫微斗数全书",
+  "results": [
+    {
+      "filename": "紫微斗数全书.png",
+      "size": 7448652,
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/紫意星霞-古籍封面.png"
+    }
+  ],
+  "textOverlay": {
+    "intent": null,
+    "cleanPrompt": null,
+    "reservedAreas": [],
+    "texts": [
+      {
+        "content": "紫微斗数全书",
+        "position": {
+          "x": "center",
+          "y": "center"
+        },
+        "size": 122,
+        "color": "#2C1810",
+        "fontHint": "ShouJin",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "content": "[宋] 陈抟 撰",
+        "position": {
+          "x": "center",
+          "y": "80%"
+        },
+        "size": 50,
+        "color": "#3D2B1F",
+        "fontHint": "HYNanGong",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ],
+    "bgInfo": null,
+    "llmCalls": []
+  },
+  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/紫意星霞-古籍封面.png"
+}

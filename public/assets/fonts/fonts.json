@@ -1,0 +1,190 @@
+{
+  "_comment": "t2i 字体清单（项目内预置 + 跨平台系统 fallback + 别名映射 + 启动时自动补全）。",
+  "bundled": [
+    {
+      "family": "SimSun",
+      "file": "simsun.ttc",
+      "purpose": "宋体",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "SimHei",
+      "file": "simhei.ttf",
+      "purpose": "黑体",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "KaiTi",
+      "file": "simkai.ttf",
+      "purpose": "楷体",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "FangSong",
+      "file": "simfang.ttf",
+      "purpose": "仿宋",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "Microsoft YaHei",
+      "file": "msyh.ttc",
+      "purpose": "微软雅黑",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "LingLong",
+      "file": "LingLong.otf",
+      "purpose": "玲珑体 — 古风/飘逸/武侠标题专用",
+      "source": "manual",
+      "auto_added": false
+    },
+    {
+      "family": "Xingkai",
+      "file": "Xingkai.ttc",
+      "purpose": "行楷/毛笔",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "Libian",
+      "file": "Libian.ttc",
+      "purpose": "隶书",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "PingFang",
+      "file": "PingFang.ttc",
+      "purpose": "苹方/默认",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "ShouJin",
+      "file": "ShouJin.ttf",
+      "purpose": "瘦金体",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "HYZhuan",
+      "file": "HYZhuan.ttf",
+      "purpose": "汉仪篆书",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "FZXiaoZhuan",
+      "file": "FZXiaoZhuan.ttf",
+      "purpose": "方正小篆",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "FangMeng",
+      "file": "FangMeng.ttf",
+      "purpose": "方萌",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "XiangSu",
+      "file": "XiangSu.ttf",
+      "purpose": "像素",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "QiaoYan",
+      "file": "QiaoYan.otf",
+      "purpose": "俏颜",
+      "source": "auto",
+      "auto_added": true
+    },
+    {
+      "family": "HYNanGong",
+      "file": "HYNanGong.ttf",
+      "purpose": "汉仪南宫体",
+      "source": "auto",
+      "auto_added": true
+    }
+  ],
+  "system_fallbacks": {
+    "_comment": "运行时查找的兜底系统字体清单（仅在项目内字体未命中时使用，不复制）。",
+    "macos": [],
+    "windows": [],
+    "linux": []
+  },
+  "download": {
+    "_comment": "若本地系统也没有，按此处直链下载到 public/assets/fonts/（启动时自动执行，进度条百分比反馈）。"
+  },
+  "aliases": {
+    "_comment": "matchFont 别名映射。hint（用户描述中的子串）→ target 数组（按序尝试，第一个命中即返回）。target 与 bundled.family / system_fallbacks.name 匹配（includes 规则，不区分大小写）。【排顺序很关键】匹配用 includes() 由上至下扫描——把风格/语义大类放最前（'古风'/'武侠'/'篆书' 等），单字 key 放最后，避免短 key 误吃长词。",
+    "_ordering": "块 1 风格大类（古风/武侠/篆书）→ 块 2 楷/行/隶/毛笔/印刷体族（宋/黑/圆/仿宋）→ 块 3 新加字体（瘦金/方萌/南宫/俏颜/像素）→ 块 4 字体家族原名直接命中（LingLong/HYNanGong/QiaoYan）",
+
+    "古风": ["LingLong"],
+    "飘逸": ["LingLong"],
+    "武侠": ["LingLong"],
+    "玄幻": ["LingLong"],
+    "仙侠": ["LingLong"],
+    "玲珑": ["LingLong"],
+    "LingLong": ["LingLong"],
+
+    "篆书": ["HYZhuan"],
+    "篆体": ["FZXiaoZhuan", "HYZhuan"],
+    "古篆": ["FZXiaoZhuan", "HYZhuan"],
+    "汉仪篆书": ["HYZhuan"],
+    "方正小篆": ["FZXiaoZhuan"],
+    "小篆": ["FZXiaoZhuan"],
+
+    "瘦金": ["ShouJin"],
+    "瘦金体": ["ShouJin"],
+    "宋徽宗": ["ShouJin"],
+
+    "南宫": ["HYNanGong"],
+    "汉仪南宫": ["HYNanGong"],
+    "汉仪": ["HYNanGong"],
+
+    "方萌": ["FangMeng"],
+    "方头": ["FangMeng"],
+    "呆萌": ["FangMeng"],
+
+    "俏颜": ["QiaoYan"],
+    "颜体少女": ["QiaoYan"],
+    "俏皮": ["QiaoYan"],
+
+    "像素": ["XiangSu"],
+    "8bit": ["XiangSu"],
+    "8-bit": ["XiangSu"],
+    "复古游戏": ["XiangSu"],
+    "像素风": ["XiangSu"],
+
+    "行楷": ["Xingkai"],
+    "行书": ["Xingkai"],
+    "毛笔行书": ["Xingkai"],
+    "毛笔": ["Xingkai"],
+    "楷体": ["KaiTi", "KaiTi"],
+    "楷书": ["KaiTi", "KaiTi"],
+    "宋体": ["NotoSerifSC", "SimSun"],
+    "仿宋": ["FangSong", "NotoSerifSC"],
+    "黑体": ["NotoSansSC", "SimHei", "Heiti"],
+    "细黑": ["STXihei", "Heiti"],
+    "微软雅黑": ["Microsoft YaHei", "YaHei"],
+    "苹方": ["PingFang"],
+    "隶书": ["Libian"],
+    "隶变": ["Libian"],
+    "报隶": ["Baoli"],
+    "雅痞": ["Yuppy"],
+    "圆体": ["Yuanti"],
+    "娃娃体": ["Wawati"],
+    "可爱": ["Wawati"],
+    "思源宋体": ["NotoSerifSC"],
+    "思源黑体": ["NotoSansSC"]
+  },
+  "missing": []
+}

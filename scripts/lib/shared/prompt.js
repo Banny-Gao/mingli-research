@@ -107,4 +107,28 @@ export async function smartConfirm(q) {
   }
 }
 
+/**
+ * 自适配 input：TTY 下用 inquirer input（带原生行编辑）；非 TTY 下用同款
+ * readline，但把 validate 内联到循环（避免 inquirer 在非 TTY 下校验失败时的
+ * 异常路径不稳定）。其他 q 字段（default / transformer / filter）原样透传。
+ */
+export async function smartInput(q) {
+  if (HAS_FULL_TTY) return input(q)
+  const defaultVal = q.default != null ? String(q.default) : ''
+  const suffix = defaultVal ? `（默认 ${defaultVal}）` : ''
+  while (true) {
+    const raw = (
+      await input({ message: `${q.message}${suffix}:`, default: q.default })
+    ).trim()
+    const v = raw || defaultVal
+    if (q.validate) {
+      const r = q.validate(v)
+      if (r === true) return v
+      console.log(`   ⚠️  ${typeof r === 'string' ? r : '输入无效，请重试'}`)
+      continue
+    }
+    return v
+  }
+}
+
 export { HAS_FULL_TTY }

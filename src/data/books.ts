@@ -5759,7 +5759,7 @@ export const books: Book[] = [
     "version": "据问真八字网（iwzbz.com）整理本",
     "description": "清陈素庵所著子平命理专著，十卷汇集看命总法、格局用神、贯化诸法、干支神赋、女命小儿等，最末三卷篡辑旧说，体系完整且按法分类，逐法成篇，便于检索查阅。",
     "total": 123,
-    "done": 0,
+    "done": 122,
     "chapters": [
       {
         "num": "001",
@@ -5770,733 +5770,733 @@ export const books: Book[] = [
       {
         "num": "002",
         "name": "袁序",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "003",
         "name": "蒋序",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "004",
         "name": "韦序",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "005",
         "name": "看命总法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "006",
         "name": "看命总法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "007",
         "name": "看格局法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "008",
         "name": "看格局法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "009",
         "name": "看用神法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "010",
         "name": "看生年法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "011",
         "name": "看月令法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "012",
         "name": "看月令法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "013",
         "name": "旧例",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "014",
         "name": "看日主法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "015",
         "name": "看生时法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "016",
         "name": "看生时法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "017",
         "name": "看运法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "018",
         "name": "看运法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "019",
         "name": "看流年法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "020",
         "name": "看正官法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "021",
         "name": "看偏官法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "022",
         "name": "看官煞去留法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "023",
         "name": "看官煞去留法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "024",
         "name": "看官煞去留法三",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "025",
         "name": "看正偏印法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "026",
         "name": "看偏正财法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "027",
         "name": "看食神法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "028",
         "name": "看伤官法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "029",
         "name": "看食神法（二）",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "030",
         "name": "看比劫禄刃法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "031",
         "name": "看拱夹法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "032",
         "name": "看杂气墓库法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "033",
         "name": "看从局法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "034",
         "name": "看化局法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "035",
         "name": "看一行得气法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "036",
         "name": "看两神成象法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "037",
         "name": "看暗冲法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "038",
         "name": "看暗冲法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "039",
         "name": "看暗合法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "040",
         "name": "看六亲法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "041",
         "name": "看六亲法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "042",
         "name": "看贵贱法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "043",
         "name": "看贫富法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "044",
         "name": "看吉凶法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "045",
         "name": "看寿夭法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "046",
         "name": "看富贵吉寿贫贱凶夭总法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "047",
         "name": "富贵吉寿诸局",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "048",
         "name": "贫贱凶夭诸局",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "049",
         "name": "看富贵吉寿贫贱凶夭要法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "050",
         "name": "看科第法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "051",
         "name": "看性情法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "052",
         "name": "看疾病法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "053",
         "name": "看女命法一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "054",
         "name": "看女命法二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "055",
         "name": "看小儿命法",
-        "isDone": false,
+        "isDone": true,
         "category": "卷一（看命总法 · 格局 · 用神 · 六亲 · 女命小儿）"
       },
       {
         "num": "056",
         "name": "总纲赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "057",
         "name": "格局赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "058",
         "name": "行运赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "059",
         "name": "流年赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "060",
         "name": "正官赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "061",
         "name": "偏官赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "062",
         "name": "正印赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "063",
         "name": "偏印赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "064",
         "name": "正财赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "065",
         "name": "偏财赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "066",
         "name": "食神赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "067",
         "name": "伤官赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "068",
         "name": "比劫赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "069",
         "name": "禄刃赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "070",
         "name": "从局赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "071",
         "name": "化局赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "072",
         "name": "一行得气赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "073",
         "name": "两神成象赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "074",
         "name": "暗冲暗合赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "075",
         "name": "女命赋",
-        "isDone": false,
+        "isDone": true,
         "category": "卷二（赋二十篇）"
       },
       {
         "num": "076",
         "name": "天干论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "077",
         "name": "地支论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "078",
         "name": "干合论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "079",
         "name": "支三合论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "080",
         "name": "支六合论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "081",
         "name": "支方论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "082",
         "name": "支冲论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "083",
         "name": "支刑论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "084",
         "name": "支害论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "085",
         "name": "五行旺相休囚论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "086",
         "name": "十干生旺墓等位论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "087",
         "name": "十二支作用论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "088",
         "name": "支干覆载论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "089",
         "name": "诸神煞论一",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "090",
         "name": "诸神煞论二",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "091",
         "name": "太岁论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "092",
         "name": "月煞论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "093",
         "name": "天月二德论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "094",
         "name": "贵人论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "095",
         "name": "月将论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "096",
         "name": "驿马论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "097",
         "name": "空亡论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "098",
         "name": "劫煞论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "099",
         "name": "纳音论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "100",
         "name": "八法论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "101",
         "name": "小运论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "102",
         "name": "干支一气论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "103",
         "name": "双飞两干三朋论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "104",
         "name": "月日时禄论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "105",
         "name": "青龙伏形等格论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "106",
         "name": "福德秀气格论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "107",
         "name": "三奇论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "108",
         "name": "双美论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "109",
         "name": "十恶大败",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "110",
         "name": "壬骑龙背论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "111",
         "name": "六乙鼠贵论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "112",
         "name": "六阴朝阳格",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "113",
         "name": "金神论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "114",
         "name": "趋乾趋艮论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "115",
         "name": "合禄论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "116",
         "name": "时格论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "117",
         "name": "遥合格",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "118",
         "name": "魁罡论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "119",
         "name": "胞胎论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "120",
         "name": "学堂学馆论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "121",
         "name": "支属论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "122",
         "name": "字形论",
-        "isDone": false,
+        "isDone": true,
         "category": "卷三（干支 · 神煞 · 格局诸论）"
       },
       {
         "num": "123",
         "name": "杂论  二十四则",
-        "isDone": false,
+        "isDone": true,
         "category": "卷四（杂论）"
       }
     ],
@@ -7331,6 +7331,507 @@ export const books: Book[] = [
       },
       {
         "name": "子平真诠评注序"
+      }
+    ]
+  },
+  {
+    "slug": "子平管见",
+    "section": "命",
+    "category": "子平/格局",
+    "title": "子平管见",
+    "author": "［清］雷鸣夏",
+    "version": "未详",
+    "description": "《子平管见》又名《子平管见集解》雷鸣夏著，又有名为《管见子平》、《管见子平集解》等版本。均为雷先生之作。此书为雷鸣夏三十余年命理研究之精华，好此道者，值得研究",
+    "total": 54,
+    "done": 54,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "子平管见序",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "02",
+        "name": "正官格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "03",
+        "name": "偏官格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "04",
+        "name": "时上偏官格（即时上一位贵也）",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "05",
+        "name": "正财格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "06",
+        "name": "偏财格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "07",
+        "name": "时上偏财格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "08",
+        "name": "正印格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "09",
+        "name": "偏印格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "10",
+        "name": "伤官格有二",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "11",
+        "name": "食神格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "12",
+        "name": "月令建禄格有二",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "13",
+        "name": "羊刃格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "14",
+        "name": "日禄归时格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "15",
+        "name": "拱禄格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "16",
+        "name": "拱贵格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "17",
+        "name": "二格合言一首",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "18",
+        "name": "六壬趋艮 六甲趋乾（二格同于一理，故总言之。）",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "19",
+        "name": "六阴朝阳格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "20",
+        "name": "六乙鼠贵格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "21",
+        "name": "井栏叉格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "22",
+        "name": "子遥巳格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "23",
+        "name": "丑遥巳格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "24",
+        "name": "飞天禄马格有五",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "25",
+        "name": "合禄格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "26",
+        "name": "壬骑龙背格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "27",
+        "name": "财旺生官格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "28",
+        "name": "财煞格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "29",
+        "name": "杂气有三",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "30",
+        "name": "杂气财官格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "31",
+        "name": "杂气财杀格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "32",
+        "name": "杂气印绶格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "33",
+        "name": "日贵格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "34",
+        "name": "福德秀气格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "35",
+        "name": "魁罡格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "36",
+        "name": "金神格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "37",
+        "name": "日德格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "38",
+        "name": "专禄格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "39",
+        "name": "日刃格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "40",
+        "name": "夹丘格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "41",
+        "name": "胞胎格（绝句）",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "42",
+        "name": "十干喜忌诗",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "43",
+        "name": "论形气",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "44",
+        "name": "论虚邀夹拱",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "45",
+        "name": "管见篇",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "46",
+        "name": "阴命赋",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "47",
+        "name": "二五心鉴篇",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "48",
+        "name": "探玄篇",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "49",
+        "name": "曲直格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "50",
+        "name": "炎上格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "51",
+        "name": "稼穑格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "52",
+        "name": "从革格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "53",
+        "name": "润下格",
+        "isDone": true,
+        "category": "全篇"
+      },
+      {
+        "num": "54",
+        "name": "胆论",
+        "isDone": true,
+        "category": "全篇"
+      }
+    ],
+    "sources": [
+      {
+        "name": "胞胎格（绝句）"
+      },
+      {
+        "name": "财煞格"
+      },
+      {
+        "name": "财旺生官格"
+      },
+      {
+        "name": "丑遥巳格"
+      },
+      {
+        "name": "从革格"
+      },
+      {
+        "name": "胆论"
+      },
+      {
+        "name": "二格合言一首"
+      },
+      {
+        "name": "二五心鉴篇"
+      },
+      {
+        "name": "飞天禄马格有五"
+      },
+      {
+        "name": "福德秀气格"
+      },
+      {
+        "name": "拱贵格"
+      },
+      {
+        "name": "拱禄格"
+      },
+      {
+        "name": "管见篇"
+      },
+      {
+        "name": "合禄格"
+      },
+      {
+        "name": "夹丘格"
+      },
+      {
+        "name": "稼穑格"
+      },
+      {
+        "name": "金神格"
+      },
+      {
+        "name": "井栏叉格"
+      },
+      {
+        "name": "魁罡格"
+      },
+      {
+        "name": "六壬趋艮 六甲趋乾（二格同于一理，故总言之。）"
+      },
+      {
+        "name": "六乙鼠贵格"
+      },
+      {
+        "name": "六阴朝阳格"
+      },
+      {
+        "name": "论形气"
+      },
+      {
+        "name": "论虚邀夹拱"
+      },
+      {
+        "name": "偏财格"
+      },
+      {
+        "name": "偏官格"
+      },
+      {
+        "name": "偏印格"
+      },
+      {
+        "name": "曲直格"
+      },
+      {
+        "name": "壬骑龙背格"
+      },
+      {
+        "name": "日德格"
+      },
+      {
+        "name": "日贵格"
+      },
+      {
+        "name": "日禄归时格"
+      },
+      {
+        "name": "日刃格"
+      },
+      {
+        "name": "润下格"
+      },
+      {
+        "name": "伤官格有二"
+      },
+      {
+        "name": "十干喜忌诗"
+      },
+      {
+        "name": "时上偏财格"
+      },
+      {
+        "name": "时上偏官格（即时上一位贵也）"
+      },
+      {
+        "name": "食神格"
+      },
+      {
+        "name": "探玄篇"
+      },
+      {
+        "name": "炎上格"
+      },
+      {
+        "name": "羊刃格"
+      },
+      {
+        "name": "阴命赋"
+      },
+      {
+        "name": "月令建禄格有二"
+      },
+      {
+        "name": "杂气财官格"
+      },
+      {
+        "name": "杂气财杀格"
+      },
+      {
+        "name": "杂气印绶格"
+      },
+      {
+        "name": "杂气有三"
+      },
+      {
+        "name": "正财格"
+      },
+      {
+        "name": "正官格"
+      },
+      {
+        "name": "正印格"
+      },
+      {
+        "name": "专禄格"
+      },
+      {
+        "name": "子平管见序"
+      },
+      {
+        "name": "子遥巳格"
       }
     ]
   },
@@ -10391,114 +10892,114 @@ export const books: Book[] = [
     "version": "据明代《永乐大典》收录本",
     "description": "现存最早的四柱命理著作，堪称四柱八字命理学的开山之作，被明代的《永乐大典》和清代的《四库全书》列入术数类，有极高的学术价值和历史地位。《四库全书》认为此书\"所言吉凶应验，切近中理，亦有多可采\"。相对于后来的四柱命理著作，《玉照定真经》所述的论命方法更为朴素简洁，书中主要以五行生克制化来作论断，是清晰、朴素、易懂的四柱命理学著作。",
     "total": 18,
-    "done": 0,
+    "done": 18,
     "chapters": [
       {
         "num": "01",
         "name": "综论",
-        "isDone": false,
+        "isDone": true,
         "category": ""
       },
       {
         "num": "02",
         "name": "杂论一",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "03",
         "name": "杂论二",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "04",
         "name": "杂论三",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "05",
         "name": "杂论四",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "06",
         "name": "杂论五",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "07",
         "name": "杂论六",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "08",
         "name": "杂论七",
-        "isDone": false,
+        "isDone": true,
         "category": "杂论"
       },
       {
         "num": "09",
         "name": "疾病论",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "10",
         "name": "天干论",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "11",
         "name": "六神论",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "12",
         "name": "家人论一",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "13",
         "name": "家人论二",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "14",
         "name": "论专旺",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "15",
         "name": "干合论一",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "16",
         "name": "干合论二",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "17",
         "name": "地支论",
-        "isDone": false,
+        "isDone": true,
         "category": "专论"
       },
       {
         "num": "18",
         "name": "上下论",
-        "isDone": false,
+        "isDone": true,
         "category": "余论"
       }
     ],
@@ -13604,6 +14105,246 @@ export const books: Book[] = [
       },
       {
         "name": "乙木"
+      }
+    ]
+  },
+  {
+    "slug": "鬼谷遗文",
+    "section": "命",
+    "category": "八字",
+    "title": "鬼谷遗文",
+    "author": "［春秋］鬼谷子（托名）",
+    "version": "据问真八字（iwzbz.com）网络流传本",
+    "description": "托名春秋鬼谷子所撰命理典籍，分上中下三卷。论六十甲子纳音性情、贵神优劣、天乙贵人合食等，为早期纳音论命之作。",
+    "total": 25,
+    "done": 25,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "甲子纳音六十位",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "02",
+        "name": "六十位轻重总结",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "03",
+        "name": "本家贵人命",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "04",
+        "name": "天乙贵人",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "05",
+        "name": "论贵神优劣",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "06",
+        "name": "此格三等",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "07",
+        "name": "紫虚局",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "08",
+        "name": "贵合贵食",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "09",
+        "name": "天乙贵神合",
+        "isDone": true,
+        "category": "卷上"
+      },
+      {
+        "num": "10",
+        "name": "清浊阴阳易卦",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "11",
+        "name": "干支纳音数理",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "12",
+        "name": "五行方位与变通",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "13",
+        "name": "三元四柱主本",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "14",
+        "name": "五行性情",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "15",
+        "name": "真假邪正",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "16",
+        "name": "升降清浊",
+        "isDone": true,
+        "category": "卷中"
+      },
+      {
+        "num": "17",
+        "name": "衰旺取时",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "18",
+        "name": "三元九限",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "19",
+        "name": "天承地禄起论",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "20",
+        "name": "六合之德六十表",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "21",
+        "name": "鬼谷自谓",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "22",
+        "name": "六十干支格局表",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "23",
+        "name": "五行体合方位",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "24",
+        "name": "神头禄总论",
+        "isDone": true,
+        "category": "卷下"
+      },
+      {
+        "num": "25",
+        "name": "水土名用",
+        "isDone": true,
+        "category": "卷下"
+      }
+    ],
+    "sources": [
+      {
+        "name": "本家贵人命"
+      },
+      {
+        "name": "此格三等"
+      },
+      {
+        "name": "干支纳音数理"
+      },
+      {
+        "name": "鬼谷自谓"
+      },
+      {
+        "name": "贵合贵食"
+      },
+      {
+        "name": "甲子纳音六十位"
+      },
+      {
+        "name": "六合之德六十表"
+      },
+      {
+        "name": "六十干支格局表"
+      },
+      {
+        "name": "六十位轻重总结"
+      },
+      {
+        "name": "论贵神优劣"
+      },
+      {
+        "name": "清浊阴阳易卦"
+      },
+      {
+        "name": "三元九限"
+      },
+      {
+        "name": "三元四柱主本"
+      },
+      {
+        "name": "神头禄总论"
+      },
+      {
+        "name": "升降清浊"
+      },
+      {
+        "name": "衰旺取时"
+      },
+      {
+        "name": "水土名用"
+      },
+      {
+        "name": "天承地禄起论"
+      },
+      {
+        "name": "天乙贵人"
+      },
+      {
+        "name": "天乙贵神合"
+      },
+      {
+        "name": "五行方位与变通"
+      },
+      {
+        "name": "五行体合方位"
+      },
+      {
+        "name": "五行性情"
+      },
+      {
+        "name": "真假邪正"
+      },
+      {
+        "name": "紫虚局"
       }
     ]
   }

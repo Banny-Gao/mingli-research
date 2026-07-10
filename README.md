@@ -4,6 +4,14 @@
 
 **在线访问**：https://banny-gao.github.io/mingli-research/
 
+> [!IMPORTANT]
+> **字体文件通过 Git LFS 托管（约 469 MB）。** clone 本仓库后请确认：
+> 1. 安装 Git LFS（macOS：`brew install git-lfs && git lfs install`）
+> 2. 拉取真实文件：`git lfs pull`（否则 `public/assets/fonts/` 下会是 133 字节的指针文件，t2i/i2i 渲染会失败）
+> 3. CI / Docker 中使用 `actions/checkout` 时需设置 `lfs: true`
+>
+> 新增 / 替换 / 移除字体的维护流程见 [docs/FONTS_LFS.md](./docs/FONTS_LFS.md)。
+
 ---
 
 ## 典籍

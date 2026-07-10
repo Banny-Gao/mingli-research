@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-07-10T08:25:57.786Z",
+  "type": "t2i",
+  "prompt": "书籍名称：神峰通考,作者信息：[明] 张楠",
+  "apiPrompt": "书籍名称：神峰通考,作者信息：[明] 张楠",
+  "model": "image-01",
+  "aspectRatio": "3:4",
+  "width": null,
+  "height": null,
+  "style": null,
+  "n": 1,
+  "seed": null,
+  "promptOptimizer": false,
+  "promptOptimizerEffective": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "name": "神峰通考",
+  "results": [
+    {
+      "filename": "神峰通考.png",
+      "size": 1665447,
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/墨兰鎏金-古籍封面.png"
+    }
+  ],
+  "textOverlay": {
+    "intent": null,
+    "cleanPrompt": null,
+    "reservedAreas": [],
+    "texts": [
+      {
+        "content": "神峰通考",
+        "position": {
+          "x": "center",
+          "y": "center"
+        },
+        "size": 88,
+        "color": "#2C1810",
+        "fontHint": "ShouJin",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "content": "[明] 张楠",
+        "position": {
+          "x": "center",
+          "y": "80%"
+        },
+        "size": 24,
+        "color": "#3D2B1F",
+        "fontHint": "HYNanGong",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ],
+    "bgInfo": null,
+    "llmCalls": []
+  },
+  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/墨兰鎏金-古籍封面.png"
+}
