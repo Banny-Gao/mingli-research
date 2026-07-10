@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:51.233Z",
+  "timestamp": "2026-07-10T03:10:22.712Z",
   "type": "t2i",
   "prompt": "书籍名称：玉照定真经,作者信息：[西晋末年] 郭璞",
   "apiPrompt": "书籍名称：玉照定真经,作者信息：[西晋末年] 郭璞",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 78,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

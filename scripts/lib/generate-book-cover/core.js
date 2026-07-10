@@ -57,6 +57,8 @@ export function resolveTexts(templateTexts, book) {
         // 线性插值：2字→sizeMax, 8字→sizeMin
         const ratio = Math.max(0, Math.min(1, (charCount - 2) / (8 - 2)))
         resolved.size = Math.round(t.sizeMax - ratio * (t.sizeMax - t.sizeMin))
+        delete resolved.sizeMin
+        delete resolved.sizeMax
       }
 
       return resolved

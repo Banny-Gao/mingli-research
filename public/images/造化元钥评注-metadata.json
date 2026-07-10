@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:52.756Z",
+  "timestamp": "2026-07-10T03:10:24.196Z",
   "type": "t2i",
   "prompt": "书籍名称：造化元钥评注,作者信息：［民国］徐乐吾",
   "apiPrompt": "书籍名称：造化元钥评注,作者信息：［民国］徐乐吾",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 72,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

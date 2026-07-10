@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:52.381Z",
+  "timestamp": "2026-07-10T03:10:23.847Z",
   "type": "t2i",
   "prompt": "书籍名称：紫微斗数全书,作者信息：[宋] 陈抟 撰",
   "apiPrompt": "书籍名称：紫微斗数全书,作者信息：[宋] 陈抟 撰",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 72,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:49.421Z",
+  "timestamp": "2026-07-10T03:10:21.146Z",
   "type": "t2i",
   "prompt": "书籍名称：子平真诠,作者信息：[清] 沈孝瞻 撰（乾隆四年进士）/ [民国] 徐乐吾 评注",
   "apiPrompt": "书籍名称：子平真诠,作者信息：[清] 沈孝瞻 撰（乾隆四年进士）/ [民国] 徐乐吾 评注",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 84,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

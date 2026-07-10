@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:49.902Z",
+  "timestamp": "2026-07-10T03:10:21.521Z",
   "type": "t2i",
   "prompt": "书籍名称：李虚中命书,作者信息：[唐]李虚中",
   "apiPrompt": "书籍名称：李虚中命书,作者信息：[唐]李虚中",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 78,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

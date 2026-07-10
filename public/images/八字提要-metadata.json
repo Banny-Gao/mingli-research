@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-07-09T06:48:17.057Z",
+  "timestamp": "2026-07-10T03:10:19.324Z",
   "type": "t2i",
-  "prompt": "书籍名称：八字提要,作者信息：[民国] 韦千里",
-  "apiPrompt": "书籍名称：八字提要,作者信息：[民国] 韦千里",
+  "prompt": "书籍名称：八字提要,作者信息：[民国]韦千里",
+  "apiPrompt": "书籍名称：八字提要,作者信息：[民国]韦千里",
   "model": "image-01",
   "aspectRatio": "3:4",
   "width": null,
@@ -18,54 +18,14 @@
   "results": [
     {
       "filename": "八字提要.png",
-      "size": 448037,
+      "size": 1664805,
       "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
     }
   ],
   "textOverlay": {
-    "intent": {
-      "composition": "书籍封面构图，标题居于画面核心位置（偏上方或中央），作者信息置于下方，整体采用传统中式竖排或中轴对称布局，留白舒朗，营造古籍线装书的庄重感",
-      "style": "中国传统古籍风格，民国学术典籍调性，兼具古典雅致与命理玄学神秘感，类似线装书或老式排印本的视觉语言",
-      "colors": "以深色调为主，赭石、墨黑、暗朱红为底色，辅以金黄或土黄点缀，整体偏暗、饱和度中等，呈现古籍的岁月沉淀感",
-      "visualElements": "可融入天干地支、八卦、太极、罗盘等命理相关纹样作为装饰底纹或边饰，书脊与封面边缘可参考传统线装书的装帧元素",
-      "textRequirements": [
-        {
-          "content": "八字提要",
-          "hierarchy": "primary",
-          "positionHint": "封面核心位置，通常为竖排居中或横排居中偏上",
-          "fontStyleHint": "建议使用传统书法体（如颜体、柳体风格的楷书）或端庄的宋体/仿宋体"
-        },
-        {
-          "content": "[民国] 韦千里",
-          "hierarchy": "secondary",
-          "positionHint": "封面下方居中或偏下，标题之下",
-          "fontStyleHint": "小号楷体或宋体，风格朴素内敛"
-        }
-      ]
-    },
-    "cleanPrompt": "竖向构图，仿古线装书封面的庄重视觉。整体以深邃的墨黑与暗赭石为底色，纸面呈现岁月沉淀的斑驳做旧质感，表面隐约浮现宣纸般的纤维纹理与水墨渗透的自然痕迹，边缘微微泛黄磨损，仿若流传百年的典籍封面。中央偏上位置留出一片素净的暖灰白色矩形空白区域，边缘带有柔和的浅色光晕渐变过渡，形成画面视觉重心，与周围深色底面形成鲜明的明暗对比。中央偏下另有一处略小的浅色调矩形空间，与上方空白遥相呼应。围绕中心区域向外，以暗朱红与土黄绘制精密的八角星形几何纹样与层层扩散的同心圆环纹理，环带之间以细密的几何分界线划分，排列严谨而充满神秘韵律。画面四角与边缘蜿蜒着暗金色的缠枝花卉与回纹装饰边框，线条以低饱和的暖金隐约浮现于深色底面之上，富丽而内敛。整体光线从中心空白区域向外自然衰减，四周逐渐沉入更深的墨色，营造出玄学典籍的幽深肃穆氛围。质感层次丰富，底层做旧斑痕与上层精细线条交叠，色彩以低明度的红、黑、金、赭为主调，饱和度克制，尽显古典学术的厚重底蕴。 No text, no letters, no characters, no symbols, no watermarks, no signatures, no seals — pure visual image only. 画面中不得出现任何文字、字母、符号、数字、水印或印章。",
-    "reservedAreas": [
-      {
-        "purpose": "main-title",
-        "bbox": {
-          "x": "25%",
-          "y": "28%",
-          "w": "50%",
-          "h": "18%"
-        },
-        "description": "中央偏上的暖灰白色矩形空白区域，边缘有柔和光晕过渡，为主标题预留的素净空间"
-      },
-      {
-        "purpose": "author",
-        "bbox": {
-          "x": "30%",
-          "y": "54%",
-          "w": "40%",
-          "h": "8%"
-        },
-        "description": "中央偏下的浅色调矩形空间，为作者署名预留的素净区域"
-      }
-    ],
+    "intent": null,
+    "cleanPrompt": null,
+    "reservedAreas": [],
     "texts": [
       {
         "content": "八字提要",
@@ -73,7 +33,7 @@
           "x": "center",
           "y": "center"
         },
-        "size": 88,
+        "size": 84,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",
@@ -82,7 +42,7 @@
         "explicitColor": true
       },
       {
-        "content": "[民国] 韦千里",
+        "content": "[民国]韦千里",
         "position": {
           "x": "center",
           "y": "80%"
@@ -97,26 +57,7 @@
       }
     ],
     "bgInfo": null,
-    "llmCalls": [
-      {
-        "stage": "intent",
-        "model": "MiniMax-M3",
-        "maxTokens": 4096,
-        "userMessageLength": 649
-      },
-      {
-        "stage": "context",
-        "model": "MiniMax-M3",
-        "maxTokens": 4096,
-        "userMessageLength": 2943
-      },
-      {
-        "stage": "layout",
-        "model": "MiniMax-M3",
-        "maxTokens": 4096,
-        "userMessageLength": 4482
-      }
-    ]
+    "llmCalls": []
   },
   "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:48.851Z",
+  "timestamp": "2026-07-10T03:10:20.752Z",
   "type": "t2i",
   "prompt": "书籍名称：命理约言,作者信息：[清]陈素庵",
   "apiPrompt": "书籍名称：命理约言,作者信息：[清]陈素庵",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 84,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:50.788Z",
+  "timestamp": "2026-07-10T03:10:22.312Z",
   "type": "t2i",
   "prompt": "书籍名称：滴天髓阐微,作者信息：[明] 刘基 撰 / [清] 任铁樵 注",
   "apiPrompt": "书籍名称：滴天髓阐微,作者信息：[明] 刘基 撰 / [清] 任铁樵 注",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 78,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

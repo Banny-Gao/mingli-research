@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:46.768Z",
+  "timestamp": "2026-07-10T03:10:18.259Z",
   "type": "t2i",
   "prompt": "书籍名称：三命通会,作者信息：[明] 万民英（字育吾，号兰谷，明嘉靖二十九年进士）",
   "apiPrompt": "书籍名称：三命通会,作者信息：[明] 万民英（字育吾，号兰谷，明嘉靖二十九年进士）",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 84,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

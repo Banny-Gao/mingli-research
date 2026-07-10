@@ -158,6 +158,21 @@ describe('resolveTexts', () => {
     expect(titleSlot.size).toBeGreaterThanOrEqual(60) // sizeMin
     expect(titleSlot.size).toBeLessThanOrEqual(96) // sizeMax
   })
+
+  it('handles null/undefined title gracefully', () => {
+    const result = resolveTexts(template, { title: null, author: undefined, subtitle: '' })
+    // null/undefined → '' → empty slot filtered out → only subtitle slot left,
+    // but subtitle is '' so that's filtered too → empty array
+    expect(result).toHaveLength(0)
+  })
+
+  it('strips sizeMin/sizeMax from resolved text objects', () => {
+    const result = resolveTexts(template, { title: '八字提要', author: '[民国] 韦千里', subtitle: '' })
+    for (const t of result) {
+      expect(t.sizeMin).toBeUndefined()
+      expect(t.sizeMax).toBeUndefined()
+    }
+  })
 })
 
 // ===== buildMetadata =====

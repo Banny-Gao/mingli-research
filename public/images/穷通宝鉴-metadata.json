@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T02:26:52.018Z",
+  "timestamp": "2026-07-10T03:10:23.488Z",
   "type": "t2i",
   "prompt": "书籍名称：穷通宝鉴,作者信息：[清] 余春台",
   "apiPrompt": "书籍名称：穷通宝鉴,作者信息：[清] 余春台",
@@ -34,8 +34,6 @@
           "y": "center"
         },
         "size": 84,
-        "sizeMin": 60,
-        "sizeMax": 96,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",

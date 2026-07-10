@@ -96,6 +96,10 @@ function parseArgs(argv) {
       case '--help':
         opts.help = true
         break
+      default:
+        if (argv[i].startsWith('--')) {
+          console.warn(`⚠️  未知选项: ${argv[i]}`)
+        }
     }
   }
   return opts
