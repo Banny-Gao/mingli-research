@@ -26,7 +26,8 @@ export function parseCatalogMd(content) {
  * 将模板 texts 数组中的占位符替换为实际值。
  * - {{title}} / {{author}} / {{subtitle}} → 实际文本
  * - 替换后 content 为空字符串的 slot 被过滤掉
- * - 有 sizeMin/sizeMax 的 slot 根据字数线性缩放字号
+ * - 有 charCount 的 slot 根据字数比例缩放字号：actualSize = size × (charCount / actualCharCount)
+ * - 无 charCount 的 slot 保持固定 size
  *
  * @param {Array<object>} templateTexts - 模板的 texts 数组
  * @param {{ title: string, author: string, subtitle?: string }} book
@@ -51,19 +52,36 @@ export function resolveTexts(templateTexts, book) {
       // 空 slot 跳过
       if (!content.trim()) return null
 
-      // 字号自适应（仅当指定了 sizeMin/sizeMax 时生效）
-      if (t.sizeMin != null && t.sizeMax != null) {
+      // 字号自适应（仅当指定了 charCount 时生效）
+      if (t.charCount != null) {
         const charCount = [...content].length
-        // 线性插值：2字→sizeMax, 8字→sizeMin
-        const ratio = Math.max(0, Math.min(1, (charCount - 2) / (8 - 2)))
-        resolved.size = Math.round(t.sizeMax - ratio * (t.sizeMax - t.sizeMin))
-        delete resolved.sizeMin
-        delete resolved.sizeMax
+        resolved.size = Math.round(t.size * (t.charCount / charCount))
+        delete resolved.charCount
       }
 
       return resolved
     })
     .filter(Boolean)
+}
+
+// ===== scaleTextsToCanvas =====
+
+/**
+ * 把基准画布下的字号归一化到实际画布宽度。
+ *
+ * 模板里的 size 是"在 refCanvas 基准画布下的像素值"，不同分辨率模板复用同一套
+ * 字号时，实际渲染需按 实际画布宽 / refCanvas 缩放，否则高分辨率底图上字会偏小。
+ *
+ * @param {Array<object>} texts - resolveTexts 的输出（size 为基准画布像素值）
+ * @param {number} refCanvas - 模板基准画布宽（像素）
+ * @param {number} canvasWidth - 实际背景图宽（像素）
+ * @returns {Array<object>} 缩放后的新数组（不修改入参）
+ */
+export function scaleTextsToCanvas(texts, refCanvas, canvasWidth) {
+  if (!refCanvas || !canvasWidth || refCanvas === canvasWidth) return texts
+  const scale = canvasWidth / refCanvas
+  if (scale === 1) return texts
+  return texts.map(t => (t.size != null ? { ...t, size: Math.round(t.size * scale) } : t))
 }
 
 // ===== buildMetadata =====

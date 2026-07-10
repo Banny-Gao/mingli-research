@@ -226,11 +226,18 @@ async function executeReuseBackground(ctx, opts, outputDir, precomputedTextSpec,
   const results = [{ filename, size, reusedFrom: reuseAbs }]
   if (isI2I) console.log(`\n📂 已复用底图为 ${filename} (${(size / 1024).toFixed(1)} KB)`)
 
+  // 在文字叠加前捕获原始背景内容
+  let _bgContent = null
+  if (opts.saveBackground) {
+    _bgContent = fs.readFileSync(reuseAbs)
+  }
+
   await applyTextOverlay(textSpec, results, outputDir, ctx.renderTextOverlay)
 
   const extra = isI2I
     ? { inputMeta: { absPath: reuseAbs, mime: null, size, sha256: '', isUrl: false, reusedFrom: true }, bgInfo: textSpec?.bgInfo || null, reusedFrom: reuseAbs }
     : { reusedFrom: reuseAbs }
+  if (_bgContent) extra._bgContent = _bgContent
   const { metaPath } = finalizeOutput(ctx.profile, outputDir, timestamp, { ...opts, textSpec }, results, extra, name)
   console.log(`\n📄 元数据: ${path.relative(PROJECT_ROOT, metaPath)}`)
   console.log(`✅ 完成：成功 1，失败 0`)
@@ -369,9 +376,16 @@ async function executeRequest(ctx, opts, precomputedTextSpec = null) {
   const format = requestBody.response_format || 'url'
   results.push(...(await downloadResults(format, data, outputDir, timestamp, name, ctx.profile, opts)))
 
+  // 在文字叠加前捕获原始背景内容，确保 --save-background 保存的是纯背景而非叠加后的图
+  let _bgContent = null
+  if (opts.saveBackground && results.length > 0 && !results[0].error) {
+    _bgContent = fs.readFileSync(path.join(outputDir, results[0].filename))
+  }
+
   await applyTextOverlay(textSpec, results, outputDir, ctx.renderTextOverlay)
 
   const extra = ctx.getExtra(null, textSpec)
+  if (_bgContent) extra._bgContent = _bgContent
   const metaOpts = {
     ...opts, textSpec,
     apiPrompt,

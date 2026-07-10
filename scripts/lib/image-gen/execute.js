@@ -126,8 +126,10 @@ export function finalizeOutput(profile, outputDir, timestamp, opts, results, ext
   )
 
   // --save-background：用 writeUniqueFile 写入纯背景副本 + patch metadata.backgroundPath
+  // extra._bgContent 优先（调用方在文字叠加前捕获的原始图片内容），
+  // 否则从 results[0].filename 读取（兼容未经过文字叠加的路径）。
   if (opts.saveBackground && results.length > 0 && !results[0].error) {
-    const bgContent = fs.readFileSync(path.join(outputDir, results[0].filename))
+    const bgContent = extra._bgContent || fs.readFileSync(path.join(outputDir, results[0].filename))
     try {
       const { filepath: bgPath } = writeUniqueFile(outputDir, finalBase, '-bg.png', bgContent)
       console.log(`\n💾 背景已保存: ${path.basename(bgPath)}`)

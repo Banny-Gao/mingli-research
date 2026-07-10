@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-07-10T03:10:20.752Z",
+  "timestamp": "2026-07-10T08:25:55.701Z",
   "type": "t2i",
-  "prompt": "书籍名称：命理约言,作者信息：[清]陈素庵",
-  "apiPrompt": "书籍名称：命理约言,作者信息：[清]陈素庵",
+  "prompt": "书籍名称：命理约言,作者信息：[清] 陈素庵",
+  "apiPrompt": "书籍名称：命理约言,作者信息：[清] 陈素庵",
   "model": "image-01",
   "aspectRatio": "3:4",
   "width": null,
@@ -18,8 +18,8 @@
   "results": [
     {
       "filename": "命理约言.png",
-      "size": 1664460,
-      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+      "size": 1666221,
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/墨兰鎏金-古籍封面.png"
     }
   ],
   "textOverlay": {
@@ -33,7 +33,7 @@
           "x": "center",
           "y": "center"
         },
-        "size": 84,
+        "size": 88,
         "color": "#2C1810",
         "fontHint": "ShouJin",
         "layout": "vertical",
@@ -42,7 +42,7 @@
         "explicitColor": true
       },
       {
-        "content": "[清]陈素庵",
+        "content": "[清] 陈素庵",
         "position": {
           "x": "center",
           "y": "80%"
@@ -59,5 +59,5 @@
     "bgInfo": null,
     "llmCalls": []
   },
-  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/template/墨兰鎏金-古籍封面.png"
 }

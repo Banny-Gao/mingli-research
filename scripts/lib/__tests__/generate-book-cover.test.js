@@ -3,12 +3,12 @@
  *
  * 覆盖 generate-book-cover.js 的纯函数：
  * - parseCatalogMd: 提取书名 / 作者
- * - resolveTexts: 模板占位符替换 + size 自适应 + 空 slot 跳过
+ * - resolveTexts: 模板占位符替换 + charCount 比例缩放 + 空 slot 跳过
  * - buildMetadata: metadata JSON 构建
  */
 
 import { describe, it, expect } from 'vitest'
-import { parseCatalogMd, resolveTexts, buildMetadata } from '../generate-book-cover/core.js'
+import { parseCatalogMd, resolveTexts, scaleTextsToCanvas, buildMetadata } from '../generate-book-cover/core.js'
 
 // ===== parseCatalogMd =====
 
@@ -74,8 +74,7 @@ describe('resolveTexts', () => {
       content: '{{title}}',
       position: { x: 'center', y: 'center' },
       size: 88,
-      sizeMin: 60,
-      sizeMax: 96,
+      charCount: 4,
       color: '#2C1810',
       fontHint: 'ShouJin',
       layout: 'vertical',
@@ -120,23 +119,21 @@ describe('resolveTexts', () => {
     expect(result[1].content).toBe('[民国] 韦千里')
   })
 
-  it('scales size for long titles (6 chars → near sizeMin)', () => {
+  it('scales size proportionally for long titles (6 chars)', () => {
     const result = resolveTexts(template, { title: '紫微斗数全书', author: '[宋] 陈抟 撰', subtitle: '' })
     const titleSlot = result.find(t => t.content === '紫微斗数全书')
-    // 6 字书名 → 字号应缩到 sizeMin(60) 附近
-    expect(titleSlot.size).toBeLessThan(80)
-    expect(titleSlot.size).toBeGreaterThanOrEqual(60)
+    // 6 字书名 → 88 × (4/6) ≈ 59
+    expect(titleSlot.size).toBe(59)
   })
 
-  it('scales size for short titles (3 chars → near sizeMax)', () => {
+  it('scales size proportionally for short titles (3 chars)', () => {
     const result = resolveTexts(template, { title: '呱呱集', author: '[民国] 韦千里', subtitle: '' })
     const titleSlot = result.find(t => t.content === '呱呱集')
-    // 3 字书名 → 字号应接近 sizeMax(96)
-    expect(titleSlot.size).toBeGreaterThan(85)
-    expect(titleSlot.size).toBeLessThanOrEqual(96)
+    // 3 字书名 → 88 × (4/3) ≈ 117
+    expect(titleSlot.size).toBe(117)
   })
 
-  it('uses original size when sizeMin/sizeMax not specified', () => {
+  it('uses original size when charCount not specified', () => {
     const noScaleTemplate = [
       {
         content: '{{title}}',
@@ -152,11 +149,11 @@ describe('resolveTexts', () => {
     expect(result[0].size).toBe(50)
   })
 
-  it('clamps scaled size to [sizeMin, sizeMax] range', () => {
-    const result = resolveTexts(template, { title: '这是一个超级长的书名标题', author: '', subtitle: '' })
+  it('keeps original size when actual charCount equals charCount', () => {
+    const result = resolveTexts(template, { title: '八字提要', author: '[民国] 韦千里', subtitle: '' })
     const titleSlot = result[0]
-    expect(titleSlot.size).toBeGreaterThanOrEqual(60) // sizeMin
-    expect(titleSlot.size).toBeLessThanOrEqual(96) // sizeMax
+    // 4 字书名 = charCount → 保持 88
+    expect(titleSlot.size).toBe(88)
   })
 
   it('handles null/undefined title gracefully', () => {
@@ -166,12 +163,47 @@ describe('resolveTexts', () => {
     expect(result).toHaveLength(0)
   })
 
-  it('strips sizeMin/sizeMax from resolved text objects', () => {
+  it('strips charCount from resolved text objects', () => {
     const result = resolveTexts(template, { title: '八字提要', author: '[民国] 韦千里', subtitle: '' })
     for (const t of result) {
-      expect(t.sizeMin).toBeUndefined()
-      expect(t.sizeMax).toBeUndefined()
+      expect(t.charCount).toBeUndefined()
     }
+  })
+})
+
+// ===== scaleTextsToCanvas =====
+
+describe('scaleTextsToCanvas', () => {
+  it('scales size proportionally when canvas is larger than refCanvas', () => {
+    const texts = [{ content: '标题', size: 88 }, { content: '作者', size: 24 }]
+    // refCanvas=864 → canvas=1792，scale≈2.074
+    const result = scaleTextsToCanvas(texts, 864, 1792)
+    expect(result[0].size).toBe(Math.round(88 * (1792 / 864))) // 183
+    expect(result[1].size).toBe(Math.round(24 * (1792 / 864))) // 50
+  })
+
+  it('returns input unchanged when refCanvas equals canvas width', () => {
+    const texts = [{ content: '标题', size: 88 }]
+    expect(scaleTextsToCanvas(texts, 864, 864)).toBe(texts)
+  })
+
+  it('returns input unchanged when refCanvas is null', () => {
+    const texts = [{ content: '标题', size: 88 }]
+    expect(scaleTextsToCanvas(texts, null, 1792)).toBe(texts)
+  })
+
+  it('does not mutate input array', () => {
+    const texts = [{ content: '标题', size: 88 }]
+    const result = scaleTextsToCanvas(texts, 864, 1792)
+    expect(texts[0].size).toBe(88) // 原数组未变
+    expect(result).not.toBe(texts) // 返回新数组
+    expect(result[0]).not.toBe(texts[0]) // 新对象
+  })
+
+  it('scales size down when canvas is smaller than refCanvas', () => {
+    const texts = [{ content: '标题', size: 183 }]
+    const result = scaleTextsToCanvas(texts, 1792, 864)
+    expect(result[0].size).toBe(88)
   })
 })
 

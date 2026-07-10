@@ -1,0 +1,31 @@
+{
+  "refCanvas": 864,
+  "textOverlay": {
+    "texts": [
+      {
+        "content": "{{title}}",
+        "position": { "x": "center", "y": "center" },
+        "size": 88,
+        "charCount": 4,
+        "color": "#2C1810",
+        "fontHint": "ShouJin",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "content": "{{author}}",
+        "position": { "x": "center", "y": "80%" },
+        "size": 24,
+        "color": "#3D2B1F",
+        "fontHint": "HYNanGong",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ]
+  },
+  "backgroundPath": "public/images/template/墨兰鎏金-古籍封面.png"
+}

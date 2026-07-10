@@ -15,47 +15,19 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'node:module'
 import { renderTextOverlay } from './lib/image-gen/text-overlay.js'
 import { ensureFontsInstalled, logInstallSummary } from './lib/shared/font-installer.js'
-import { parseCatalogMd, resolveTexts, buildMetadata } from './lib/generate-book-cover/core.js'
+import { parseCatalogMd, resolveTexts, scaleTextsToCanvas, buildMetadata } from './lib/generate-book-cover/core.js'
+
+const require = createRequire(import.meta.url)
+const sharp = require('sharp')
 
 const PROJECT_ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const BOOKS_DIR = path.join(PROJECT_ROOT, 'books')
 const IMAGES_DIR = path.join(PROJECT_ROOT, 'public', 'images')
-const DEFAULT_BG = path.join(IMAGES_DIR, '墨兰鎏金-古籍封面.png')
 
-// ===== 默认模板 =====
-// 基于 八字提要-metadata.json 的 textOverlay.texts 提炼。
-// content 中用 {{title}} / {{author}} / {{subtitle}} 占位符。
-const DEFAULT_TEMPLATE = Object.freeze({
-  backgroundPath: DEFAULT_BG,
-  texts: [
-    {
-      content: '{{title}}',
-      position: { x: 'center', y: 'center' },
-      size: 88,
-      sizeMin: 60,
-      sizeMax: 96,
-      color: '#2C1810',
-      fontHint: 'ShouJin',
-      layout: 'vertical',
-      verticalDirection: 'rtl',
-      stroke: null,
-      explicitColor: true,
-    },
-    {
-      content: '{{author}}',
-      position: { x: 'center', y: '80%' },
-      size: 24,
-      color: '#3D2B1F',
-      fontHint: 'HYNanGong',
-      layout: 'horizontal',
-      verticalDirection: 'rtl',
-      stroke: null,
-      explicitColor: true,
-    },
-  ],
-})
+const DEFAULT_MEATADATA_PATH = 'public/images/template/墨兰鎏金-古籍封面.json'
 
 // ===== CLI 参数解析 =====
 
@@ -86,7 +58,10 @@ function parseArgs(argv) {
         opts.force = true
         break
       case '--books':
-        opts.books = (argv[i + 1] || '').split(',').map(s => s.trim()).filter(Boolean)
+        opts.books = (argv[i + 1] || '')
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
         i++
         break
       case '--metadata':
@@ -145,28 +120,26 @@ function scanBooks() {
  * 加载模板。如果指定了 --metadata 路径则从文件加载，否则使用内置默认模板。
  */
 function loadTemplate(metadataPath) {
-  if (metadataPath) {
-    const absPath = path.resolve(metadataPath)
-    if (!fs.existsSync(absPath)) {
-      console.error(`❌ 模板文件不存在: ${absPath}`)
-      process.exit(1)
-    }
-    try {
-      const meta = JSON.parse(fs.readFileSync(absPath, 'utf-8'))
-      if (!meta.textOverlay?.texts || meta.textOverlay.texts.length === 0) {
-        console.error('❌ 模板 metadata 中缺少 textOverlay.texts')
-        process.exit(1)
-      }
-      return {
-        backgroundPath: meta.backgroundPath || DEFAULT_BG,
-        texts: meta.textOverlay.texts,
-      }
-    } catch (err) {
-      console.error(`❌ 模板解析失败: ${err.message}`)
-      process.exit(1)
-    }
+  const absPath = path.resolve(metadataPath)
+  if (!fs.existsSync(absPath)) {
+    console.error(`❌ 模板文件不存在: ${absPath}`)
+    process.exit(1)
   }
-  return { backgroundPath: DEFAULT_BG, texts: DEFAULT_TEMPLATE.texts.map(t => ({ ...t })) }
+  try {
+    const meta = JSON.parse(fs.readFileSync(absPath, 'utf-8'))
+    if (!meta.textOverlay?.texts || meta.textOverlay.texts.length === 0) {
+      console.error('❌ 模板 metadata 中缺少 textOverlay.texts')
+      process.exit(1)
+    }
+    return {
+      backgroundPath: meta.backgroundPath,
+      refCanvas: meta.refCanvas || null,
+      texts: meta.textOverlay.texts,
+    }
+  } catch (err) {
+    console.error(`❌ 模板解析失败: ${err.message}`)
+    process.exit(1)
+  }
 }
 
 // ===== 封面存在性检查 =====
@@ -206,7 +179,9 @@ async function main() {
       console.error(`   可用书籍: ${books.map(b => b.slug).join(', ')}`)
       process.exit(1)
     }
-    const notFound = opts.books.filter(name => !books.some(b => b.slug === name || b.title === name))
+    const notFound = opts.books.filter(
+      name => !books.some(b => b.slug === name || b.title === name)
+    )
     if (notFound.length > 0) {
       console.warn(`⚠️  未找到: ${notFound.join(', ')}`)
     }
@@ -216,8 +191,10 @@ async function main() {
   console.log(`\n📚 扫描到 ${books.length} 本书籍`)
 
   // 加载模板
-  const template = loadTemplate(opts.metadataPath)
-  const bgPath = template.backgroundPath
+  const template = loadTemplate(opts.metadataPath || DEFAULT_MEATADATA_PATH)
+  const bgPath = path.isAbsolute(template.backgroundPath)
+    ? template.backgroundPath
+    : path.resolve(PROJECT_ROOT, template.backgroundPath)
   if (!fs.existsSync(bgPath)) {
     console.error(`❌ 模板底图不存在: ${bgPath}`)
     process.exit(1)
@@ -245,7 +222,7 @@ async function main() {
     console.log(`\n🖼️  生成: 《${book.title}》`)
     console.log(`   作者: ${book.author || '(无)'}`)
 
-    // 解析文字
+    // 解析文字（占位符替换 + charCount 字号缩放，size 为基准画布像素值）
     const texts = resolveTexts(template.texts, book)
     if (texts.length === 0) {
       console.warn(`   ⚠️  文字解析结果为空，跳过`)
@@ -253,21 +230,27 @@ async function main() {
       continue
     }
 
-    for (const t of texts) {
+    // 按实际画布宽度归一化字号（模板 refCanvas → 实际背景图宽）
+    const { width: canvasWidth } = await sharp(bgPath).metadata()
+    const scaledTexts = template.refCanvas
+      ? scaleTextsToCanvas(texts, template.refCanvas, canvasWidth)
+      : texts
+
+    for (const t of scaledTexts) {
       console.log(
-        `   - "${t.content}" ${t.fontHint ? `(${t.fontHint})` : ''} @ ${JSON.stringify(t.position)}`
+        `   - "${t.content}" ${t.fontHint ? `(${t.fontHint})` : ''} size=${t.size} @ ${JSON.stringify(t.position)}`
       )
     }
 
     try {
       // 渲染文字叠加
-      await renderTextOverlay(bgPath, texts, imagePath)
+      await renderTextOverlay(bgPath, scaledTexts, imagePath)
 
       // 保存 metadata
       const stat = fs.statSync(imagePath)
       const metadata = buildMetadata({
         book,
-        texts,
+        texts: scaledTexts,
         bgPath,
         filename: `${book.title}.png`,
         size: stat.size,
@@ -289,7 +272,8 @@ async function main() {
   if (failed > 0) process.exit(1)
 }
 
-const isMain = process.argv[1] && process.argv[1].endsWith('/generate-book-cover.js')
+const isMain =
+  process.argv[1] && path.basename(process.argv[1]).replace(/\.js$/, '') === 'generate-book-cover'
 if (isMain) {
   main().catch(err => {
     console.error('❌ 未预期的错误:', err.message)
