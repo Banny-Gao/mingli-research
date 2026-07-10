@@ -22,19 +22,19 @@ describe('buildPipelinePrompt', () => {
     expect(prompt).toContain('源文内容')
   })
 
-  it('includes 9-step pipeline instructions', () => {
+  it('references 9-step pipeline via SPEC pointers', () => {
     const prompt = buildPipelinePrompt({
       sourceText: 'x',
       condition: { 模式: '短篇', 案例: '否', 注家: '否', 异文: '否', 脱漏: '否', 超长: '否' },
       specBundle,
     })
-    expect(prompt).toContain('内容结构梳理')
-    expect(prompt).toContain('逐段引用')
-    expect(prompt).toContain('案例 / 分歧处理')
-    expect(prompt).toContain('深化洞见')
-    expect(prompt).toContain('图解补充')
-    expect(prompt).toContain('自评合规分')
-    expect(prompt).toContain('输出最终文件')
+    // v2 瘦身：9 步清单由 prompt 内的 §五指针触发，不再内联 Step 名。
+    expect(prompt).toContain('§五 Step')
+    expect(prompt).toContain('Step 3-4')
+    expect(prompt).toContain('Step 7-9')
+    // 关键行为锚点仍需显式提醒：自评门槛 + 按需撰深化洞见
+    expect(prompt).toContain('≥ 4 才输出')
+    expect(prompt).toContain('按需撰写深化洞见')
   })
 
   it('includes condition report', () => {
@@ -55,16 +55,16 @@ describe('buildPipelinePrompt', () => {
     expect(prompt).toContain('异文：是')
   })
 
-  it('includes §七 self-evaluation instructions', () => {
+  it('references §七 self-evaluation via SPEC pointer', () => {
     const prompt = buildPipelinePrompt({
       sourceText: 'x',
       condition: { 模式: '标准', 案例: '否', 注家: '否', 异文: '否', 脱漏: '否', 超长: '否' },
       specBundle,
     })
-    expect(prompt).toContain('自评合规分')
-    expect(prompt).toContain('致命错误')
-    expect(prompt).toContain('格式错误')
-    expect(prompt).toContain('内容检查')
+    // v2 瘦身：§七 自评清单由 prompt 内的 §七指针触发；
+    // 自评分数阈值（≥ 4）和"按需撰深化洞见"是行为锚点，保留显式提醒。
+    expect(prompt).toContain('§七')
+    expect(prompt).toContain('自评 ≥ 4 才输出')
   })
 
   it('forbids meta self-reference phrases', () => {

@@ -44,7 +44,7 @@ export async function callLLM(client, opts = {}) {
     model = llmConfig.model,
     system,
     messages,
-    maxTokens = 4096,
+    maxTokens = 128000,
     signal,
     retryBaseMs = DEFAULT_RETRY_BASE_MS,
     extendedThinking = false,
@@ -78,7 +78,8 @@ export async function callLLM(client, opts = {}) {
       return text
     } catch (err) {
       lastErr = err
-      if (err.status === 429 || err.status >= 500) {
+      // 可重试：HTTP 429/5xx，或无 status 的"空内容"返回（MiniMax 网关偶发） — 套 sys-debug 对话发现
+      if (err.status === 429 || err.status >= 500 || err.message.startsWith('LLM 未返回文本内容')) {
         const wait = retryBaseMs * Math.pow(2, attempt - 1) + Math.random() * 1000
         await sleep(wait)
         continue
