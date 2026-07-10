@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-07-10T02:26:49.902Z",
+  "type": "t2i",
+  "prompt": "书籍名称：李虚中命书,作者信息：[唐]李虚中",
+  "apiPrompt": "书籍名称：李虚中命书,作者信息：[唐]李虚中",
+  "model": "image-01",
+  "aspectRatio": "3:4",
+  "width": null,
+  "height": null,
+  "style": null,
+  "n": 1,
+  "seed": null,
+  "promptOptimizer": false,
+  "promptOptimizerEffective": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "name": "李虚中命书",
+  "results": [
+    {
+      "filename": "李虚中命书.png",
+      "size": 1664142,
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+    }
+  ],
+  "textOverlay": {
+    "intent": null,
+    "cleanPrompt": null,
+    "reservedAreas": [],
+    "texts": [
+      {
+        "content": "李虚中命书",
+        "position": {
+          "x": "center",
+          "y": "center"
+        },
+        "size": 78,
+        "sizeMin": 60,
+        "sizeMax": 96,
+        "color": "#2C1810",
+        "fontHint": "ShouJin",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "content": "[唐]李虚中",
+        "position": {
+          "x": "center",
+          "y": "80%"
+        },
+        "size": 24,
+        "color": "#3D2B1F",
+        "fontHint": "HYNanGong",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ],
+    "bgInfo": null,
+    "llmCalls": []
+  },
+  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+}

@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-07-10T02:26:50.788Z",
+  "type": "t2i",
+  "prompt": "书籍名称：滴天髓阐微,作者信息：[明] 刘基 撰 / [清] 任铁樵 注",
+  "apiPrompt": "书籍名称：滴天髓阐微,作者信息：[明] 刘基 撰 / [清] 任铁樵 注",
+  "model": "image-01",
+  "aspectRatio": "3:4",
+  "width": null,
+  "height": null,
+  "style": null,
+  "n": 1,
+  "seed": null,
+  "promptOptimizer": false,
+  "promptOptimizerEffective": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "name": "滴天髓阐微",
+  "results": [
+    {
+      "filename": "滴天髓阐微.png",
+      "size": 1672969,
+      "reusedFrom": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+    }
+  ],
+  "textOverlay": {
+    "intent": null,
+    "cleanPrompt": null,
+    "reservedAreas": [],
+    "texts": [
+      {
+        "content": "滴天髓阐微",
+        "position": {
+          "x": "center",
+          "y": "center"
+        },
+        "size": 78,
+        "sizeMin": 60,
+        "sizeMax": 96,
+        "color": "#2C1810",
+        "fontHint": "ShouJin",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      },
+      {
+        "content": "[明] 刘基 撰 / [清] 任铁樵 注",
+        "position": {
+          "x": "center",
+          "y": "80%"
+        },
+        "size": 24,
+        "color": "#3D2B1F",
+        "fontHint": "HYNanGong",
+        "layout": "horizontal",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": true
+      }
+    ],
+    "bgInfo": null,
+    "llmCalls": []
+  },
+  "backgroundPath": "/Users/gaozhipeng/Desktop/mingli-research/public/images/墨兰鎏金-古籍封面.png"
+}
