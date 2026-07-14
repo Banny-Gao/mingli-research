@@ -11,9 +11,9 @@ const progressPercent = (done: number, total: number) =>
 
 const BookCard = ({ book }: BookCardProps) => {
   const pct = progressPercent(book.done, book.total)
-  // 用 new URL 拼接避免双斜杠问题（BASE_URL 末尾有无 / 都能正确处理）
+  // BASE_URL 在 dev 下为 '/'，生产构建下为 '/mingli-research/'，首尾斜杠处理即可
   const coverSrc = book.cover
-    ? new URL(book.cover.replace(/^\/+/, ''), import.meta.env.BASE_URL).toString()
+    ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${book.cover.replace(/^\/+/, '')}`
     : ''
 
   return (
