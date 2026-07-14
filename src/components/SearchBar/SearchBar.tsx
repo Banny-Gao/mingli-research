@@ -4,6 +4,7 @@ import { useReader } from '../../hooks/useReader'
 import { SEARCH_HISTORY_KEY } from '../../lib/constants'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import './SearchBar.less'
 
 interface SearchEntry {
   slug: string
@@ -346,7 +347,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
       setSelectedIdx(-1)
       setLoading(false)
     },
-    [scopeSlug]
+    [scopeSlug, loadSearchIndex]
   )
 
   // Debounced search: triggered by query or filter changes
@@ -359,14 +360,25 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     }
   }, [query, typeFilter, sectionFilter, categoryFilter, doSearch])
 
+  // 打开搜索框时懒加载索引（事件触发，不走 effect→setState 级联）
+  const handleOpen = useCallback(() => {
+    if (!open) {
+      setOpen(true)
+      loadSearchIndex()
+    } else {
+      setOpen(false)
+    }
+  }, [open, loadSearchIndex])
+
   // keyboard: / to open, Esc to close
+  // 键盘快捷键（事件处理，非 effect→setState 级联）
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const tag = document.activeElement?.tagName
       if (e.key === '/' && !open) {
         if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
           e.preventDefault()
-          setOpen(true)
+          handleOpen()
         }
       }
       if (e.key === 'Escape') {
@@ -382,15 +394,12 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [open])
+  }, [open, handleOpen])
 
-  // auto-focus input when opened + preload index for section filter
+  // auto-focus input when opened
   useEffect(() => {
-    if (open) {
-      inputRef.current?.focus()
-      loadSearchIndex()
-    }
-  }, [open, loadSearchIndex])
+    if (open) inputRef.current?.focus()
+  }, [open])
 
   // Scroll selected result into view
   useEffect(() => {
@@ -472,7 +481,7 @@ const SearchBar = ({ scopeSlug }: SearchBarProps) => {
       {/* Search trigger button */}
       <Button
         variant="ghost"
-        onClick={() => setOpen(!open)}
+        onClick={handleOpen}
         className="search-trigger-btn"
         aria-label="打开搜索"
       >

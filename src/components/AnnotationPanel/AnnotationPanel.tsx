@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { Annotation, AnnotationType } from '../../hooks/useAnnotations'
 import { TYPE_LABELS } from '../../hooks/useNotesData'
+import './AnnotationPanel.less'
 
 interface Props {
   annotations: Annotation[]
@@ -19,13 +20,7 @@ const TYPE_CLASS: Record<AnnotationType, string> = {
   quote: 'ann-type-quote',
 }
 
-const AnnotationPanel = ({
-  annotations,
-  onRemove,
-  onUpdateNote,
-  onNavigate,
-  onClose,
-}: Props) => {
+const AnnotationPanel = ({ annotations, onRemove, onUpdateNote, onNavigate, onClose }: Props) => {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [noteVal, setNoteVal] = useState('')
 
@@ -50,7 +45,14 @@ const AnnotationPanel = ({
               <Badge variant="secondary" className={`ann-type-badge ${TYPE_CLASS[ann.type]}`}>
                 {TYPE_LABELS[ann.type]}
               </Badge>
-              <Button variant="ghost" size="icon-xs" className="ann-item-remove" onClick={() => onRemove(ann.id)} title="删除" aria-label="删除批注">
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                className="ann-item-remove"
+                onClick={() => onRemove(ann.id)}
+                title="删除"
+                aria-label="删除批注"
+              >
                 <Trash2 size={12} />
               </Button>
             </div>
@@ -78,7 +80,12 @@ const AnnotationPanel = ({
                   >
                     保存
                   </Button>
-                  <Button variant="ghost" size="sm" className="ann-note-cancel" onClick={() => setEditingId(null)}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="ann-note-cancel"
+                    onClick={() => setEditingId(null)}
+                  >
                     取消
                   </Button>
                 </div>

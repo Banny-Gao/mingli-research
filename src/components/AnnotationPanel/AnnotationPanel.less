@@ -1,0 +1,159 @@
+/* ===== Annotation Panel ===== */
+.ann-panel {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-card);
+  border-radius: inherit;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ann-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.ann-panel-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-body);
+}
+.ann-panel-count {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  background: var(--color-border);
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.5rem;
+}
+.ann-panel-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.ann-panel-empty {
+  padding: 1.5rem 0.875rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.ann-item {
+  padding: 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.ann-item:last-child {
+  border-bottom: none;
+}
+.ann-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.375rem;
+}
+.ann-type-badge {
+  font-size: 0.625rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.1875rem;
+}
+.ann-type-emphasis {
+  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
+  color: var(--color-gold);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 40%, transparent);
+  font-size: 0.625rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.1875rem;
+}
+.ann-type-question {
+  background: color-mix(in srgb, var(--color-danger) 20%, transparent);
+  color: var(--color-danger);
+  border: 1px solid color-mix(in srgb, var(--color-danger) 40%, transparent);
+  font-size: 0.625rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.1875rem;
+}
+.ann-type-quote {
+  background: color-mix(in srgb, var(--color-green) 20%, transparent);
+  color: var(--color-quote);
+  border: 1px solid color-mix(in srgb, var(--color-green) 40%, transparent);
+  font-size: 0.625rem;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.1875rem;
+}
+.ann-item-remove {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0;
+  line-height: 1;
+}
+.ann-item-remove:hover {
+  color: var(--color-danger);
+}
+.ann-item-text {
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  cursor: pointer;
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ann-item-text:hover {
+  color: var(--color-text-body);
+}
+.ann-note-text {
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  line-height: 1.5;
+  margin-bottom: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  background: var(--color-bg-base);
+  border-radius: 0.3125rem;
+}
+.ann-note-input {
+  width: 100%;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: 0.3125rem;
+  padding: 0.375rem 0.5rem;
+  color: var(--color-text-body);
+  font-size: 0.75rem;
+  resize: vertical;
+  margin-bottom: 0.375rem;
+}
+.ann-note-actions {
+  display: flex;
+  gap: 0.375rem;
+}
+.ann-note-save,
+.ann-note-cancel {
+  flex: 1;
+  padding: 0.1875rem 0;
+  border-radius: 0.25rem;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  border: none;
+}
+.ann-note-save {
+  background: var(--color-purple);
+  color: white;
+}
+.ann-note-cancel {
+  background: var(--color-border);
+  color: var(--color-text-dim);
+}
+.ann-note-add-btn {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  cursor: pointer;
+  padding: 0;
+}
+.ann-note-add-btn:hover {
+  color: var(--color-purple-light);
+}

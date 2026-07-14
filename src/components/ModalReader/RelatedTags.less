@@ -1,0 +1,58 @@
+/* ===== Related tags (in modal footer) ===== */
+.related-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.related-label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+/* Base related tag style — variants override color/bg */
+.related-tag-skill,
+.related-tag-source,
+.related-tag-interp,
+.related-tag-chapter {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.625rem;
+  border: 1px solid;
+  cursor: pointer;
+  transition: filter 0.15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.related-tag-skill {
+  background: color-mix(in srgb, var(--color-purple) 10%, transparent);
+  color: var(--color-purple-light);
+  border-color: color-mix(in srgb, var(--color-purple) 30%, transparent);
+}
+.related-tag-skill:hover {
+  background: color-mix(in srgb, var(--color-purple) 25%, transparent);
+}
+.related-tag-source {
+  background: color-mix(in srgb, var(--color-gold) 10%, transparent);
+  color: var(--color-gold);
+  border-color: color-mix(in srgb, var(--color-gold) 30%, transparent);
+}
+.related-tag-source:hover {
+  background: color-mix(in srgb, var(--color-gold) 20%, transparent);
+}
+.related-tag-interp {
+  background: color-mix(in srgb, var(--color-blue) 10%, transparent);
+  color: var(--color-blue);
+  border-color: color-mix(in srgb, var(--color-blue) 30%, transparent);
+}
+.related-tag-interp:hover {
+  background: color-mix(in srgb, var(--color-blue) 20%, transparent);
+}
+.related-tag-chapter {
+  background: color-mix(in srgb, var(--color-green) 10%, transparent);
+  color: var(--color-quote);
+  border-color: color-mix(in srgb, var(--color-green) 30%, transparent);
+}
+.related-tag-chapter:hover {
+  background: color-mix(in srgb, var(--color-green) 20%, transparent);
+}

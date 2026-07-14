@@ -1,9 +1,7 @@
-/* Less 模块导入 — Tailwind 由 index.css 处理 */
+/* Less 模块导入 — Tailwind 由 index.css 处理
+ * 此文件只保留全局公共样式（reset、布局、主题、通用排版）。
+ * 组件/页面样式由组件/页面文件就近 import。 */
 @import './base.less';
 @import './layout.less';
 @import './prose.less';
-@import './components/landing.less';
-@import './components/book.less';
-@import './components/notes.less';
-@import '../components/SectionHeader/SectionHeader.less';
 @import './theme.less';

@@ -18,7 +18,12 @@ import { fileURLToPath } from 'url'
 import { createRequire } from 'node:module'
 import { renderTextOverlay } from './lib/image-gen/text-overlay.js'
 import { ensureFontsInstalled, logInstallSummary } from './lib/shared/font-installer.js'
-import { parseCatalogMd, resolveTexts, scaleTextsToCanvas, buildMetadata } from './lib/generate-book-cover/core.js'
+import {
+  parseCatalogMd,
+  resolveTexts,
+  scaleTextsToCanvas,
+  buildMetadata,
+} from './lib/generate-book-cover/core.js'
 
 const require = createRequire(import.meta.url)
 const sharp = require('sharp')
@@ -149,6 +154,58 @@ function coverExists(bookTitle) {
   return fs.existsSync(imagePath)
 }
 
+// ===== catalog.md 回写 =====
+
+const COVER_LINE_RE = /^>\s*封面[：:]\s*.+$/m
+
+/**
+ * 在 catalog.md 头部元信息区写入封面路径。
+ * - 已有 `> 封面：...` 行则原地替换（幂等）。
+ * - 否则在标题 # 《...》 行后第一个空行处插入，封面行会位于作者行之前，
+ *   与其他 > 元信息行保持统一风格。
+ * - 若标题后无空行（理论不应出现，兜底），则插入到标题行之后（index 1）。
+ * @param {string} catalogPath
+ * @param {string} coverPublicPath  public 目录下的相对路径，例如 "images/渊海子平.png"
+ */
+function writeCoverToCatalog(catalogPath, coverPublicPath) {
+  const content = fs.readFileSync(catalogPath, 'utf-8')
+  const newLine = `> 封面：${coverPublicPath}`
+
+  if (COVER_LINE_RE.test(content)) {
+    const updated = content.replace(COVER_LINE_RE, newLine)
+    if (updated !== content) {
+      fs.writeFileSync(catalogPath, updated, 'utf-8')
+    }
+    return
+  }
+
+  // 插入：找标题行（# 《...》）之后紧跟的空行，在空行后插入 `> 封面：...`
+  // 优先放在 `> 作者：` 之前，让封面位于作者之后/元信息顶部也可；这里简单放在标题后第一个空行之后。
+  const lines = content.split('\n')
+  let insertIdx = -1
+  let inHeader = false
+  for (let i = 0; i < lines.length; i++) {
+    if (/^#\s*《/.test(lines[i])) {
+      inHeader = true
+      continue
+    }
+    if (!inHeader) continue
+    // 标题后第一个空行就是元信息块结束/开始位置；在空行后插入封面行+空行
+    if (lines[i].trim() === '') {
+      insertIdx = i + 1
+      break
+    }
+  }
+
+  if (insertIdx === -1) {
+    // 兜底：插入到标题行之后（index 1），与空行场景一致出现在元信息块顶部
+    lines.splice(1, 0, '', newLine)
+  } else {
+    lines.splice(insertIdx, 0, newLine)
+  }
+  fs.writeFileSync(catalogPath, lines.join('\n'), 'utf-8')
+}
+
 // ===== 主流程 =====
 
 async function main() {
@@ -211,10 +268,12 @@ async function main() {
 
   for (const book of books) {
     const imagePath = path.join(IMAGES_DIR, `${book.title}.png`)
+    const coverRel = `images/${book.title}.png`
 
-    // 跳过已有封面（除非 --force）
+    // 封面已存在：跳过渲染，但仍确保 catalog.md 有封面字段（幂等回填）
     if (!opts.force && coverExists(book.title)) {
-      console.log(`⏭️  跳过: 《${book.title}》（封面已存在）`)
+      writeCoverToCatalog(book.catalogPath, coverRel)
+      console.log(`⏭️  跳过: 《${book.title}》（封面已存在，已确认 catalog 字段）`)
       skipped++
       continue
     }
@@ -257,6 +316,9 @@ async function main() {
       })
       const metaPath = path.join(IMAGES_DIR, `${book.title}-metadata.json`)
       fs.writeFileSync(metaPath, JSON.stringify(metadata, null, 2), 'utf-8')
+
+      // 回写 catalog.md 封面字段
+      writeCoverToCatalog(book.catalogPath, `images/${book.title}.png`)
 
       console.log(`   ✅ ${book.title}.png (${(stat.size / 1024).toFixed(1)} KB)`)
       generated++

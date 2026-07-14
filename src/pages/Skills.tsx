@@ -5,6 +5,11 @@ import { Wand2, ChevronLeft, BookOpen } from 'lucide-react'
 import { CATEGORY_TREE, SECTION_ORDER } from '../data/category-tree'
 import { skills, type Skill } from '../data/skills'
 import { useReader } from '../hooks/useReader'
+// 引入 BookCard 样式（用于 .book-grid/.book-card 等卡片视觉原语，SkillCard 复用）
+// 引入 SectionHeader 样式（Skills 内联渲染了 .section-nav 结构，复用组件样式）
+import '../components/BookCard/BookCard.less'
+import '../components/SectionHeader/SectionHeader.less'
+import './Skills.less'
 
 /**
  * 选第一个有 skill 的二级类别作为默认 activeCategory
@@ -54,10 +59,7 @@ const Skills = () => {
     <div className="page-wrapper">
       <Helmet>
         <title>技能列表 · 豫知学堂</title>
-        <meta
-          name="description"
-          content="按术数类别聚合的 AI 可执行技能集，跨书沉淀，调用即得。"
-        />
+        <meta name="description" content="按术数类别聚合的 AI 可执行技能集，跨书沉淀，调用即得。" />
         <meta property="og:title" content="技能列表 · 豫知学堂" />
         <meta property="og:description" content="按术数类别聚合的 AI 可执行技能集" />
         <meta property="og:type" content="website" />
@@ -80,10 +82,7 @@ const Skills = () => {
         </div>
 
         {!hasAnySkill ? (
-          <div
-            className="stat-label"
-            style={{ textAlign: 'center', padding: '40px 0' }}
-          >
+          <div className="stat-label" style={{ textAlign: 'center', padding: '40px 0' }}>
             暂无技能，内容正在筹备中
           </div>
         ) : (
@@ -161,7 +160,6 @@ const SkillCard = ({ skill }: { skill: Skill }) => {
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="book-card"
       onClick={handleClick}

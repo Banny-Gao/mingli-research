@@ -1,6 +1,7 @@
 // src/components/ModalReader/RelatedTags.tsx
 import { Button } from '@/components/ui/button'
 import { CLASS } from './reader-mode/constants'
+import './RelatedTags.less'
 
 interface RelatedTagsProps {
   /** 可点击的项值数组 */

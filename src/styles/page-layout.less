@@ -1,0 +1,38 @@
+/* ===== Page layout: sidebar + content two-column (shared by Landing & Skills) ===== */
+.section-group {
+  width: 100%;
+  max-width: 900px;
+}
+
+.section-layout {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.section-sidebar {
+  width: 9.375rem;
+  flex-shrink: 0;
+  position: sticky;
+  top: 5rem;
+  text-align: center;
+  padding: 0.625rem 0;
+  border-radius: 0.5rem;
+  background: var(--color-bg-base);
+}
+
+.section-content {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .section-layout {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .section-sidebar {
+    width: 100%;
+    position: static;
+  }
+}

@@ -1,5 +1,6 @@
 import type { ArtSection } from '../../data/book-types'
 import { Button } from '@/components/ui/button'
+import './SectionHeader.less'
 
 export interface CategoryTree {
   section: ArtSection
@@ -14,7 +15,13 @@ interface Props {
   onSelectSection?: (section: ArtSection) => void
 }
 
-const SectionHeader = ({ tree, activeSection, activeCategory, onSelectCategory, onSelectSection }: Props) => (
+const SectionHeader = ({
+  tree,
+  activeSection,
+  activeCategory,
+  onSelectCategory,
+  onSelectSection,
+}: Props) => (
   <nav className="section-nav" aria-label="术数分类导航">
     {/* Mobile: 术数标签行（水平滚动） */}
     {onSelectSection && (

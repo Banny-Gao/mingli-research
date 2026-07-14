@@ -58,6 +58,7 @@ const META_KEYS = {
   section: ['术数'],
   category: ['类别'],
   contentTypes: ['内容类型'],
+  cover: ['封面'],
 }
 
 const META_PATTERNS = Object.fromEntries(
@@ -76,6 +77,7 @@ const parseBookMeta = filePath => {
     section: '',
     category: '',
     contentTypes: '',
+    cover: '',
   }
   for (const line of content.split('\n')) {
     const t = line.trim()
@@ -141,6 +143,7 @@ const processBook = bookSlug => {
     description: '',
     section: '',
     contentTypes: '',
+    cover: '',
   }
   const contentTypes = meta.contentTypes
     ? meta.contentTypes
@@ -166,6 +169,7 @@ const processBook = bookSlug => {
     section: meta.section,
     category: meta.category,
     contentTypes,
+    cover: meta.cover ? `/${meta.cover.replace(/^\/+/, '')}` : '',
     total: chapters.length,
     done: chapters.filter(c => c.isDone).length,
     chapters,
@@ -273,6 +277,7 @@ const generateGlobalFiles = books => {
     author: b.author,
     version: b.version,
     description: b.description,
+    cover: b.cover || '',
     total: b.total,
     done: b.done,
     chapters: b.chapters,
@@ -302,6 +307,7 @@ export interface Book {
   author: string;
   version: string;
   description: string;
+  cover: string;
   total: number;
   done: number;
   chapters: ChapterInfo[];
@@ -408,7 +414,9 @@ function auditSkillFrontmatter(skillPath, skillSlug, skillRel) {
 
   // 校验 2: slug 字段必须与 path 末段一致
   if (fm.slug !== skillSlug) {
-    violations.push(`${skillRel}: slug 字段 "${fm.slug || '(空)'}" 与 path 末段 "${skillSlug}" 不一致`)
+    violations.push(
+      `${skillRel}: slug 字段 "${fm.slug || '(空)'}" 与 path 末段 "${skillSlug}" 不一致`
+    )
   }
 
   // 校验 3: sources 数组每个元素对应 rules/<书slug>.md 存在
@@ -431,7 +439,9 @@ function auditSkillFrontmatter(skillPath, skillSlug, skillRel) {
     // 锁定 SKILL 包粒度：req 形如 "命/八字/取月支藏干"
     const reqPath = path.join(SKILLS_ROOT, req, 'SKILL.md')
     if (!fs.existsSync(reqPath)) {
-      violations.push(`${skillRel}: requires 引用 "${req}" 对应 SKILL.md 不存在（包粒度，不可指向 shared/ 内文件）`)
+      violations.push(
+        `${skillRel}: requires 引用 "${req}" 对应 SKILL.md 不存在（包粒度，不可指向 shared/ 内文件）`
+      )
     }
   }
 

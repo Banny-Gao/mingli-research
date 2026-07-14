@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { books } from '../data/books'
+import './Notes.less'
 import {
   TYPE_LABELS,
   deleteAnnotation,
@@ -25,7 +26,6 @@ const Notes = () => {
   // Refresh data when modal closes (bookmark/annotation may have changed)
   useEffect(() => {
     setRefresh(v => v + 1)
-     
   }, [closeVersion])
   const [tab, setTab] = useState<'bookmark' | 'annotation'>('annotation')
   const [typeFilter, setTypeFilter] = useState<AnnotationType | 'all'>('all')

@@ -17,6 +17,7 @@ export interface Book {
   author: string;
   version: string;
   description: string;
+  cover: string;
   total: number;
   done: number;
   chapters: ChapterInfo[];

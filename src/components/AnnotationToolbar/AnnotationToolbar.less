@@ -1,16 +1,103 @@
 .ann-toolbar {
   position: fixed;
   transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.375rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   z-index: 10000;
+  width: max-content;
 }
 .ann-toolbar-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid;
+  font-size: 0.6875rem;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.15s;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+}
+.ann-toolbar-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+.ann-emphasis {
+  background: color-mix(in srgb, var(--color-gold) 15%, transparent);
+  border-color: color-mix(in srgb, var(--color-gold) 40%, transparent);
+  color: var(--color-gold);
+}
+.ann-question {
+  background: color-mix(in srgb, var(--color-danger) 15%, transparent);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+  color: var(--color-danger);
+}
+.ann-quote {
+  background: color-mix(in srgb, var(--color-green) 15%, transparent);
+  border-color: color-mix(in srgb, var(--color-green) 40%, transparent);
+  color: var(--color-quote);
+}
+/* 功能按钮（close/copy）不应用 lift 高亮效果 */
+.ann-toolbar-close:hover,
+.ann-toolbar-copy:hover {
+  filter: none;
+  transform: none;
+}
+.ann-toolbar-close {
+  color: var(--color-text-dim);
+  border-color: var(--color-border) !important;
+  margin-left: 0.25rem;
+}
+.ann-toolbar-copy {
+  color: var(--color-text-dim);
+  border-color: var(--color-border) !important;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+}
+.ann-toolbar-copy:hover {
+  color: var(--color-purple-light);
+  border-color: var(--color-purple) !important;
+}
+.ann-toolbar-mobile {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 0.75rem;
+  background: var(--color-bg-card);
+  border-top: 1px solid var(--color-border-hover);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 10001;
+  overflow-x: auto;
+  animation: slideUp 0.2s ease-out;
+}
+.ann-toolbar-mobile .ann-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
 }
 .ann-toolbar-mobile-label {
   font-size: 0.6875rem;
   color: var(--color-text-muted);
   margin-right: 0.25rem;
   flex-shrink: 0;
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }

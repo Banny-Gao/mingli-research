@@ -9,6 +9,7 @@ import { getBook } from '../data/registry'
 import ReadList from '../components/ReadList'
 import SearchBar from '../components/SearchBar'
 import { useReader } from '../hooks/useReader'
+import './BookApp.less'
 
 const BookApp = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -45,9 +46,7 @@ const BookApp = () => {
   }, [])
 
   const pageTitle = book ? `《${book.title}》- 玄学文化馆` : '404 - 玄学文化馆'
-  const pageDesc = book
-    ? `共${book.total}篇·已解读${book.done}篇`
-    : '未找到该典籍'
+  const pageDesc = book ? `共${book.total}篇·已解读${book.done}篇` : '未找到该典籍'
 
   if (!book) {
     return (

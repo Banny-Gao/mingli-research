@@ -1,0 +1,65 @@
+/* ===== Landing Page ===== */
+@import '../styles/page-layout.less';
+@import '../styles/hero-section.less';
+
+.hero-badge {
+  display: inline-block;
+  background: color-mix(in srgb, var(--color-purple) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-purple) 50%, transparent);
+  color: var(--color-purple-light);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  padding: 0.25rem 1rem;
+  border-radius: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.hero-symbol {
+  position: absolute;
+  top: 0.5rem;
+  right: 2.5rem;
+  font-size: 3rem;
+  color: var(--color-gold);
+  opacity: 0.15;
+  pointer-events: none;
+  font-family: serif;
+  user-select: none;
+  line-height: 1;
+}
+.hero-stats {
+  display: flex;
+  gap: 4rem;
+  margin-bottom: 2rem;
+}
+.stat-item {
+  text-align: center;
+}
+.stat-num {
+  font-size: 1.875rem;
+  color: var(--color-gold);
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-num-green {
+  font-size: 1.875rem;
+  color: var(--color-green);
+  font-weight: 700;
+  line-height: 1;
+}
+.stat-num-purple {
+  font-size: 1.875rem;
+  color: var(--color-purple);
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .hero-stats {
+    gap: 2rem;
+  }
+  .stat-num,
+  .stat-num-green,
+  .stat-num-purple {
+    font-size: 1.5rem;
+  }
+}

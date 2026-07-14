@@ -18,3 +18,103 @@
 .category-chevron.rotated {
   transform: rotate(-90deg);
 }
+
+/* ===== ReadList / Chapter rows ===== */
+.section-badge {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.625rem;
+  background: color-mix(in srgb, var(--color-purple) 15%, transparent);
+  color: var(--color-purple-light);
+  border: 1px solid color-mix(in srgb, var(--color-purple) 30%, transparent);
+}
+.chapter-list {
+  display: grid;
+  gap: 0.25rem;
+}
+.chapter-row {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-bg-card);
+  border-radius: 0.375rem;
+  margin-bottom: 0.1875rem;
+  transition: all 0.2s;
+}
+.chapter-row.done {
+  border-left: 2px solid var(--color-purple-light);
+}
+.chapter-row:hover {
+  background: var(--color-bg-card-hover);
+  box-shadow: 0 0px 12px var(--color-border-card);
+}
+.chapter-num {
+  min-width: 1.875rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.chapter-name {
+  flex: 1;
+  font-size: 0.875rem;
+}
+.chapter-name.done {
+  color: var(--color-gold);
+}
+.chapter-name.undone {
+  color: var(--color-text);
+}
+.chapter-actions {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+}
+.chapter-action {
+  margin-left: 0;
+}
+.action-source {
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+.action-source:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+/* ===== Generic text button ===== */
+.btn-text {
+  font-size: 0.75rem;
+  padding: 0.1875rem 0.625rem;
+  border-radius: 0.25rem;
+  color: var(--color-blue);
+  border: 1px solid var(--color-border-hover);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-text:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+@media (max-width: 640px) {
+  .chapter-row {
+    padding: 0.5rem 0.625rem;
+    flex-wrap: wrap;
+  }
+  .chapter-num {
+    min-width: 1.5rem;
+    font-size: 0.6875rem;
+  }
+  .chapter-name {
+    font-size: 0.8125rem;
+  }
+  .chapter-actions {
+    gap: 0.25rem;
+  }
+  .btn-text {
+    font-size: 0.6875rem;
+    padding: 0.125rem 0.5rem;
+  }
+}

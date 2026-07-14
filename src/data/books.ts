@@ -10,6 +10,7 @@ export const books: Book[] = [
     "author": "[明] 万民英（字育吾，号兰谷，明嘉靖二十九年进士）",
     "version": "据明万历六年（1578）初刻本 / 清《四库全书》本",
     "description": "子平命理学集大成之作，十二卷汇编体；前九卷分列十天干，以日为主、月为核心、时为辅，定人吉凶；后三卷载大量平古歌赋；\"命学四书\"之一，与《滴天髓》《子平真诠》《穷通宝鉴》齐名",
+    "cover": "/images/三命通会.png",
     "total": 380,
     "done": 380,
     "chapters": [
@@ -3445,6 +3446,7 @@ export const books: Book[] = [
     "author": "[隋] 萧吉",
     "version": "据《四库全书》本",
     "description": "隋萧吉撰。五卷。书中所论皆阴阳五行之事，\"文章醇古，非唐以下所能为\"；萧吉以阴阳算术著称，书中多援引今已佚亡之古书。本书为现存最早系统讨论五行理论的专著之一。本书早于子平体系（子平法成熟于两宋），可作八字五行基础参考。",
+    "cover": "/images/五行大义.png",
     "total": 29,
     "done": 29,
     "chapters": [
@@ -3721,6 +3723,7 @@ export const books: Book[] = [
     "author": "[明]廖中",
     "version": "明刊本（南宋绍定元年戊子[1228]岳珂序）",
     "description": "南宋廖中编撰的命理汇编，分卷论述六十甲子、干神、支神、五行、年月日时胎、禄马印绶等专题",
+    "cover": "/images/五行精纪.png",
     "total": 32,
     "done": 32,
     "chapters": [
@@ -4024,6 +4027,7 @@ export const books: Book[] = [
     "author": "[民国]韦千里",
     "version": "据问真八字网（iwzbz.com）整理本",
     "description": "民国命学家韦千里所著子平八字提要，按\"月×日\"网格分述 12 月×10 天干 = 120 节，每节析论该月该日所生之格局宜忌、喜忌用神。",
+    "cover": "/images/八字提要.png",
     "total": 120,
     "done": 120,
     "chapters": [
@@ -5119,6 +5123,7 @@ export const books: Book[] = [
     "author": "[民国] 韦千里",
     "version": "据民国韦千里初版本（1935年）",
     "description": "民国命理学家韦千里所撰命学培训班讲义，语言简练，述理清晰，奠定现代命书基本格式：看强弱→定格局→取用神→论喜忌→查岁运→推六亲→评性情→断事业",
+    "cover": "/images/千里命稿.png",
     "total": 22,
     "done": 22,
     "chapters": [
@@ -5332,6 +5337,7 @@ export const books: Book[] = [
     "author": "[民国] 韦千里",
     "version": "据民国韦千里写本（中华民国五二年癸卯 / 1963 年）",
     "description": "韦千里继《千里命稿》后所撰命学札记，按「叙言」「上集·名人命造」「下集·命运答客问」三部分，记录作者行道以来所见特殊富贵贫贱之命",
+    "cover": "/images/呱呱集.png",
     "total": 35,
     "done": 0,
     "chapters": [
@@ -5662,6 +5668,7 @@ export const books: Book[] = [
     "author": "[民国] 袁树珊",
     "version": "据 iwzbz.com 录本",
     "description": "民国命理著作，全八卷——卷一本原、卷二起例、卷三强弱、卷四宜忌、卷五化合刑冲、卷六先贤名论、卷七润德堂藏稿、卷八星家十要，附跋；系统整理前人子平命理口诀，发其秘奥，嘉惠后学。",
+    "cover": "/images/命理探原.png",
     "total": 9,
     "done": 9,
     "chapters": [
@@ -5758,6 +5765,7 @@ export const books: Book[] = [
     "author": "[清]陈素庵",
     "version": "据问真八字网（iwzbz.com）整理本",
     "description": "清陈素庵所著子平命理专著，十卷汇集看命总法、格局用神、贯化诸法、干支神赋、女命小儿等，最末三卷篡辑旧说，体系完整且按法分类，逐法成篇，便于检索查阅。",
+    "cover": "/images/命理约言.png",
     "total": 123,
     "done": 122,
     "chapters": [
@@ -6877,6 +6885,7 @@ export const books: Book[] = [
     "author": "[清] 沈孝瞻 撰（乾隆四年进士）/ [民国] 徐乐吾 评注",
     "version": "据民国徐乐吾评注本",
     "description": "子平命理学\"前三本\"之一，体系严密地论述用神、相神、格局、宫分六亲等核心理论；徐乐吾以《滴天髓》《穷通宝鉴》为之作注，与任铁樵《滴天髓》注称姊妹篇",
+    "cover": "/images/子平真诠.png",
     "total": 50,
     "done": 50,
     "chapters": [
@@ -7342,6 +7351,7 @@ export const books: Book[] = [
     "author": "［清］雷鸣夏",
     "version": "未详",
     "description": "《子平管见》又名《子平管见集解》雷鸣夏著，又有名为《管见子平》、《管见子平集解》等版本。均为雷先生之作。此书为雷鸣夏三十余年命理研究之精华，好此道者，值得研究",
+    "cover": "/images/子平管见.png",
     "total": 54,
     "done": 54,
     "chapters": [
@@ -7843,6 +7853,7 @@ export const books: Book[] = [
     "author": "[唐]李虚中",
     "version": "文渊阁四库全书本（乾隆四十六年九月恭校上）",
     "description": "命书三卷，术数类五，命书相书之属。四库馆臣提要，述其授受源流与版本异同；正文为唐李虚中注、鬼谷子遗文九篇。",
+    "cover": "/images/李虚中命书.png",
     "total": 27,
     "done": 0,
     "chapters": [
@@ -8101,6 +8112,7 @@ export const books: Book[] = [
     "author": "[宋] 徐大升 编纂",
     "version": "据通行本（渊海/渊源合编本）",
     "description": "子平命理学开山之作，五卷汇编体，涵盖干支五行、十神格局、六亲赋文、诗诀口诀，共三百余篇",
+    "cover": "/images/渊海子平.png",
     "total": 244,
     "done": 244,
     "chapters": [
@@ -10309,6 +10321,7 @@ export const books: Book[] = [
     "author": "[明] 刘基 撰 / [清] 任铁樵 注",
     "version": "据《四库全书》本",
     "description": "子平命理学核心经典，以天干地支五行生克为核心，共六十三篇专题系统阐述命理原理",
+    "cover": "/images/滴天髓阐微.png",
     "total": 63,
     "done": 63,
     "chapters": [
@@ -10891,6 +10904,7 @@ export const books: Book[] = [
     "author": "[西晋末年] 郭璞",
     "version": "据明代《永乐大典》收录本",
     "description": "现存最早的四柱命理著作，堪称四柱八字命理学的开山之作，被明代的《永乐大典》和清代的《四库全书》列入术数类，有极高的学术价值和历史地位。《四库全书》认为此书\"所言吉凶应验，切近中理，亦有多可采\"。相对于后来的四柱命理著作，《玉照定真经》所述的论命方法更为朴素简洁，书中主要以五行生克制化来作论断，是清晰、朴素、易懂的四柱命理学著作。",
+    "cover": "/images/玉照定真经.png",
     "total": 18,
     "done": 18,
     "chapters": [
@@ -11068,6 +11082,7 @@ export const books: Book[] = [
     "author": "[明] 张楠",
     "version": "据《续修四库全书》本",
     "description": "明代命理名著，以格局法为纲、补以古法论命、兼采赋文为参考；与《三命通会》《渊海子平》《子平真诠》《星平会海》并称\"五大命学全书\"。",
+    "cover": "/images/神峰通考.png",
     "total": 113,
     "done": 0,
     "chapters": [
@@ -12100,6 +12115,7 @@ export const books: Book[] = [
     "author": "[清] 余春台",
     "version": "据民国徐乐吾《造化元钥评注》本",
     "description": "以天干为纲、十二月为目，逐月论述十干在不同月份的用神喜忌；\"命学四书\"之一，是子平命理调候取用法的集大成之作；与《三命通会》《滴天髓》《子平真诠》齐名",
+    "cover": "/images/穷通宝鉴.png",
     "total": 115,
     "done": 115,
     "chapters": [
@@ -13150,6 +13166,7 @@ export const books: Book[] = [
     "author": "[宋] 陈抟 撰",
     "version": "据《正统道藏》本",
     "description": "紫微斗数经典著作，托名宋初陈抟撰。包含太微赋、骨髓赋等核心赋文及安星诀法。",
+    "cover": "/images/紫微斗数全书.png",
     "total": 89,
     "done": 0,
     "chapters": [
@@ -13966,6 +13983,7 @@ export const books: Book[] = [
     "author": "［民国］徐乐吾",
     "version": "民国徐乐吾评注本（据问真八字网整理）",
     "description": "命学「调候取用」法集大成之作，徐乐吾逐段评注本。造化元钥即穷通宝鉴别名，本书以十干为纲、十二月为目，论述各月天干用神喜忌。",
+    "cover": "/images/造化元钥评注.png",
     "total": 15,
     "done": 0,
     "chapters": [
@@ -14116,6 +14134,7 @@ export const books: Book[] = [
     "author": "［春秋］鬼谷子（托名）",
     "version": "据问真八字（iwzbz.com）网络流传本",
     "description": "托名春秋鬼谷子所撰命理典籍，分上中下三卷。论六十甲子纳音性情、贵神优劣、天乙贵人合食等，为早期纳音论命之作。",
+    "cover": "/images/鬼谷遗文.png",
     "total": 25,
     "done": 25,
     "chapters": [

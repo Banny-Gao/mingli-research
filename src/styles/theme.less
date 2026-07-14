@@ -1,54 +1,104 @@
-/* ===== Light Theme Component Overrides ===== */
+/* ===== Light Theme Component Overrides =====
+ * 深色主题为默认主题（见 src/styles/index.css :root），
+ * 这里只覆盖 light 主题下需要调整的组件样式。
+ * 所有颜色都使用 var(--color-*) 变量，变量值在 index.css [data-theme='light'] 下切换。 */
 
+[data-theme='light'] body {
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.05);
+}
+
+/* Prose typography */
 [data-theme='light'] .prose-content th {
   background: var(--color-bg-card-hover);
   color: var(--color-gold);
 }
-
 [data-theme='light'] .prose-content pre {
   background: var(--color-bg-base);
   border-color: var(--color-border);
   color: var(--color-prose-body);
 }
-[data-theme='light'] .skill-raw-body {
-  background: var(--color-bg-base);
-  border-color: var(--color-border);
-  color: var(--color-prose-body);
-}
-
 [data-theme='light'] .prose-content blockquote {
   background: var(--color-purple-bg);
   color: var(--color-prose-quote);
 }
-
 [data-theme='light'] .prose-content tr:nth-child(even) td {
   background: var(--color-bg-card-hover);
 }
 
+/* Annotation marks in reader body */
 [data-theme='light'] mark.ann-emphasis {
   background: color-mix(in srgb, var(--color-gold) 20%, transparent);
 }
+[data-theme='light'] mark.ann-question {
+  background: color-mix(in srgb, var(--color-danger) 15%, transparent);
+}
+[data-theme='light'] mark.ann-quote {
+  background: color-mix(in srgb, var(--color-green) 15%, transparent);
+}
 
+/* Floating panels */
 [data-theme='light'] .ann-toolbar,
 [data-theme='light'] .ann-panel {
   background: var(--color-bg-card);
   border-color: var(--color-border-hover);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+[data-theme='light'] .search-dropdown {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Modal */
 [data-theme='light'] .modal-backdrop {
   background: rgba(0, 0, 0, 0.4);
 }
+[data-theme='light'] .modal-card {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
 
-[data-theme='light'] .hero-glow {
+/* Card hover shadows (soften for light) */
+[data-theme='light'] .book-card {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+[data-theme='light'] .book-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+[data-theme='light'] .book-card-cover {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-gold) 30%, transparent);
+}
+
+/* Hero glow (soften for light) */
+[data-theme='light'] .hero-glow,
+[data-theme='light'] .book-hero-glow {
   background: radial-gradient(
     ellipse,
     color-mix(in srgb, var(--color-purple) 8%, transparent) 0%,
     transparent 70%
   );
 }
+[data-theme='light'] .hero-title,
+[data-theme='light'] .book-card-title,
+[data-theme='light'] .hero-title-glow {
+  text-shadow: 0 0 20px color-mix(in srgb, var(--color-gold) 20%, transparent);
+}
 
+/* Top bar blur */
 [data-theme='light'] .top-actions {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-bg-base) 70%, transparent);
+}
+
+/* Progress fill glow (subtle in light) */
+[data-theme='light'] .progress-fill {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-gold) 30%, transparent);
+}
+
+/* Toggle button */
+[data-theme='light'] .ann-toolbar-mobile {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+}
+[data-theme='light'] .search-spinner {
+  border-top-color: var(--color-purple);
 }

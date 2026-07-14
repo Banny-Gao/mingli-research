@@ -7,6 +7,7 @@ import { books } from '../data/books'
 import type { ArtSection } from '../data/book-types'
 import SearchBar from '../components/SearchBar'
 import SectionHeader from '../components/SectionHeader'
+import BookCard from '../components/BookCard'
 import { ThemeToggle } from '../components/ThemeToggle'
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import {
   DropdownMenuItem,
 } from '../components/ui/dropdown-menu'
 import { CATEGORY_TREE, SECTION_ORDER } from '../data/category-tree'
+import './Landing.less'
 
 const Landing = () => {
   const [activeSection, setActiveSection] = useState<ArtSection>('命')
@@ -42,8 +44,6 @@ const Landing = () => {
   }
 
   const visibleBooks = booksBySection[activeSection].filter(b => b.category === activeCategory)
-  const progressPercent = (done: number, total: number) =>
-    total > 0 ? Math.round((done / total) * 100) : 0
 
   // GSAP 入场动画
   useLayoutEffect(() => {
@@ -128,25 +128,7 @@ const Landing = () => {
             <div className="section-content" ref={gridRef}>
               <div className="book-grid">
                 {visibleBooks.length > 0 ? (
-                  visibleBooks.map(book => (
-                    <Link
-                      key={book.slug}
-                      to={`/books/${book.section}/${book.slug}`}
-                      className="book-card"
-                    >
-                      <div className="book-card-info">
-                        <h2 className="book-card-title">《{book.title}》</h2>
-                        <p className="book-card-meta">{book.author || ''}</p>
-                      </div>
-                      {book.description && <p className="book-card-desc">{book.description}</p>}
-                      <div className="progress-bar">
-                        <div
-                          className="progress-fill"
-                          style={{ width: `${progressPercent(book.done, book.total)}%` }}
-                        />
-                      </div>
-                    </Link>
-                  ))
+                  visibleBooks.map(book => <BookCard key={book.slug} book={book} />)
                 ) : (
                   <div
                     className="stat-label"
