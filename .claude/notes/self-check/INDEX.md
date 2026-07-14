@@ -14,3 +14,4 @@
 | 2026-06-24 | interpretation | 论七政 | [五行大义-interpretation-论七政-2026-06-24](./五行大义-interpretation-论七政-2026-06-24.md) | — |
 | 2026-06-24 | interpretation | 论五行及生成数 | [五行大义-interpretation-论五行及生成数-2026-06-24](./五行大义-interpretation-论五行及生成数-2026-06-24.md) | — |
 | 2026-06-24 | interpretation | 5篇 R2 验证 | [5篇-interpretation-R2验证-2026-06-24](./5篇-interpretation-R2验证-2026-06-24.md) | — |
+| 2026-07-14 | source | 兰台妙选 | [兰台妙选-source-2026-07-14](./兰台妙选-source-2026-07-14.md) | R1: 1/5/7 → R2: 0/0/0（19 篇全检；调研底本后批量修复 W001-W007，仅余 1 项魁星学堂:37 留作 I003 待人工核底本） |
