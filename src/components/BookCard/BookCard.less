@@ -17,7 +17,7 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
   color: inherit;
 }
 .book-card::before {
@@ -37,7 +37,7 @@
 .book-card:hover {
   background: var(--color-bg-card-hover);
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-xl);
 }
 .book-card-info {
   flex: 1;
@@ -106,7 +106,7 @@
   overflow: hidden;
   background: linear-gradient(135deg, var(--color-purple), var(--color-purple-light));
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.4),
+    var(--shadow-md),
     inset 0 0 0 1px color-mix(in srgb, var(--color-gold) 15%, transparent);
   position: relative;
 }
