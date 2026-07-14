@@ -49,3 +49,17 @@
     letter-spacing: 2px;
   }
 }
+
+[data-theme='light'] .hero-glow,
+[data-theme='light'] .book-hero-glow {
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--color-purple) 8%, transparent) 0%,
+    transparent 70%
+  );
+}
+[data-theme='light'] .hero-title,
+[data-theme='light'] .book-card-title,
+[data-theme='light'] .hero-title-glow {
+  text-shadow: 0 0 20px color-mix(in srgb, var(--color-gold) 20%, transparent);
+}
