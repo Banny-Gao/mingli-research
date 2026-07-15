@@ -148,7 +148,7 @@ async function buildContext(mode, intent, prompt, apiKey, opts = {}) {
 async function designLayout({ intent, prompt, apiKey, context, mode, previousTexts = [] }) {
   const client = createLLMClient({ apiKey })
   // 8192 兼容多段文字 + extendedThinking：4 段 × ~12 字段 × JSON 格式 → 容易撞 12800 上限被截断
-  const baseOpts = { model: llmConfig.model, maxTokens: 8192, extendedThinking: true }
+  const baseOpts = { model: llmConfig.model, maxTokens: 12800, extendedThinking: true }
 
   const msgs = [
     `${TEXTS_EXTRACTION_PROMPT}`,

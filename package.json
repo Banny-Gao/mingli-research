@@ -15,7 +15,8 @@
     "test:e2e:ui": "playwright test --ui",
     "setup-claude": "node scripts/setup-claude.cjs",
     "t2i": "node scripts/t2i.js",
-    "i2i": "node scripts/i2i.js"
+    "i2i": "node scripts/i2i.js",
+    "books-cover": "node scripts/generate-book-cover.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.104.1",
