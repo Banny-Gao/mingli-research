@@ -25,6 +25,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 原生 <select> / <input> 等表单元素在 dark/light 下跟随系统 color-scheme，
+   让浏览器原生下拉面板、滚动条、日历选择器自动跟主题切换。
+   站点外观仍由站点 token 控，color-scheme 只影响浏览器内置控件的内核渲染。 */
+:root {
+  color-scheme: dark;
+}
+[data-theme='light'] {
+  color-scheme: light;
+}
+
 body {
   font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', serif;
   background-color: var(--color-bg-base);

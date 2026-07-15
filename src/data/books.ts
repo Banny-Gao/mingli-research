@@ -5116,6 +5116,193 @@ export const books: Book[] = [
     ]
   },
   {
+    "slug": "兰台妙选",
+    "section": "命",
+    "category": "子平/格局",
+    "title": "兰台妙选",
+    "author": "［明朝］西窗老人",
+    "version": "古今图书集成本（题明·西窗老人撰；万民英补注；现存最早明隆庆二年 1568 刻本）",
+    "description": "兰台妙选为明朝命理典籍，专论格局贵贱，上篇言贵，中篇论贱，下篇总论推断；底本为「经文（赋文，西窗老人撰）+ 底本原注（西窗老人门徒，泛称『注』）+ 万民英（字育吾，号莲峰居士，明嘉靖进士，《三命通会》作者）明隆庆二年 1568 补注」三层结构。",
+    "cover": "",
+    "total": 19,
+    "done": 19,
+    "chapters": [
+      {
+        "num": "01",
+        "name": "总论根基",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "02",
+        "name": "藏象纳音",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "03",
+        "name": "神煞格局",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "04",
+        "name": "三奇拱贵",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "05",
+        "name": "禄马财官",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "06",
+        "name": "魁星学堂",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "07",
+        "name": "天象节气",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "08",
+        "name": "二十八宿与贵人",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "09",
+        "name": "数理数格",
+        "isDone": true,
+        "category": "上篇"
+      },
+      {
+        "num": "01",
+        "name": "总论凶格",
+        "isDone": true,
+        "category": "中篇"
+      },
+      {
+        "num": "02",
+        "name": "凶煞破格",
+        "isDone": true,
+        "category": "中篇"
+      },
+      {
+        "num": "03",
+        "name": "印破刑截",
+        "isDone": true,
+        "category": "中篇"
+      },
+      {
+        "num": "04",
+        "name": "体象衰败",
+        "isDone": true,
+        "category": "中篇"
+      },
+      {
+        "num": "01",
+        "name": "总论推断",
+        "isDone": true,
+        "category": "下篇"
+      },
+      {
+        "num": "02",
+        "name": "日月星华",
+        "isDone": true,
+        "category": "下篇"
+      },
+      {
+        "num": "03",
+        "name": "节气候应",
+        "isDone": true,
+        "category": "下篇"
+      },
+      {
+        "num": "04",
+        "name": "明堂官禄",
+        "isDone": true,
+        "category": "下篇"
+      },
+      {
+        "num": "05",
+        "name": "贵格与不遇",
+        "isDone": true,
+        "category": "下篇"
+      },
+      {
+        "num": "06",
+        "name": "末论总结",
+        "isDone": true,
+        "category": "下篇"
+      }
+    ],
+    "sources": [
+      {
+        "name": "藏象纳音"
+      },
+      {
+        "name": "二十八宿与贵人"
+      },
+      {
+        "name": "贵格与不遇"
+      },
+      {
+        "name": "节气候应"
+      },
+      {
+        "name": "魁星学堂"
+      },
+      {
+        "name": "禄马财官"
+      },
+      {
+        "name": "明堂官禄"
+      },
+      {
+        "name": "末论总结"
+      },
+      {
+        "name": "日月星华"
+      },
+      {
+        "name": "三奇拱贵"
+      },
+      {
+        "name": "神煞格局"
+      },
+      {
+        "name": "数理数格"
+      },
+      {
+        "name": "体象衰败"
+      },
+      {
+        "name": "天象节气"
+      },
+      {
+        "name": "凶煞破格"
+      },
+      {
+        "name": "印破刑截"
+      },
+      {
+        "name": "总论根基"
+      },
+      {
+        "name": "总论推断"
+      },
+      {
+        "name": "总论凶格"
+      }
+    ]
+  },
+  {
     "slug": "千里命稿",
     "section": "命",
     "category": "八字",

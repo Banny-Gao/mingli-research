@@ -80,8 +80,15 @@ const Landing = () => {
       <div className="top-actions">
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={<UserStar color="var(--color-purple-light)" size={20} />}
-            aria-label="笔记与技能菜单"
+            render={
+              <button
+                type="button"
+                className="inline-flex items-center justify-center cursor-pointer text-purple-light"
+                aria-label="笔记与技能菜单"
+              >
+                <UserStar size={20} />
+              </button>
+            }
           />
           <DropdownMenuContent align="end" sideOffset={8}>
             <DropdownMenuItem
@@ -106,10 +113,9 @@ const Landing = () => {
         <ThemeToggle />
       </div>
 
-      <div className="hero-glow" />
-
       <div className="page-container">
-        <div className="hero-section">
+        <div className="hero-section hero-section--glow-host">
+          <div className="hero-glow" />
           <h1 className="hero-title">豫知学堂</h1>
           <p className="hero-subtitle">经典原文 · 系统解读 · 技能沉淀</p>
         </div>

@@ -110,10 +110,10 @@ async function generateOne({
       model: config.model,
       system,
       messages: [{ role: 'user', content: userForRound }],
-      maxTokens: 16000,
+      maxTokens: 12800,
       signal,
       retryBaseMs,
-      extendedThinking: true,
+      extendedThinking: false,
     })
     // 落盘前永远跑一次后处理（剥离围栏、补收束节）— 解决 LLM 偶发截断
     output = postProcessOutput(output, chapter)

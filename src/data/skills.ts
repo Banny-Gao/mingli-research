@@ -48,7 +48,7 @@ export const skills: Skill[] = [
     ],
     "requires": [],
     "updated": "2026-06-24",
-    "path": "skills/命/八字/长生十二位/SKILL.md",
+    "path": "skills\\命\\八字\\长生十二位\\SKILL.md",
     "rulesCount": 5,
     "ruleFiles": [
       "三命通会.md",

@@ -165,11 +165,10 @@ const Notes = () => {
           </Link>
         </div>
 
-        <div className="book-hero-glow" />
-
         <div className="page-container-narrow">
-          <div className="book-hero">
-            <h1 className="text-3xl text-[var(--color-gold)] font-bold tracking-widest mb-[10px] hero-title-glow">
+          <div className="book-hero book-hero--glow-host">
+            <div className="book-hero-glow" />
+            <h1 className="text-3xl text-gold font-bold tracking-widest mb-[10px] hero-title-glow">
               个人中心
             </h1>
           </div>
@@ -192,7 +191,7 @@ const Notes = () => {
               <select
                 value={bookFilter}
                 onChange={e => setBookFilter(e.target.value)}
-                className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-md px-2.5 py-1.5 text-[var(--color-text-body)] text-xs cursor-pointer"
+                className="bg-bg-card border border-border rounded-md px-2.5 py-1.5 text-text-body text-xs cursor-pointer"
               >
                 <option value="all">所有典籍</option>
                 {bookOptions.map(b => (
@@ -205,7 +204,7 @@ const Notes = () => {
                 <select
                   value={typeFilter}
                   onChange={e => setTypeFilter(e.target.value as AnnotationType | 'all')}
-                  className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-md px-2.5 py-1.5 text-[var(--color-text-body)] text-xs cursor-pointer"
+                  className="bg-bg-card border border-border rounded-md px-2.5 py-1.5 text-text-body text-xs cursor-pointer"
                 >
                   <option value="all">所有类型</option>
                   {Object.entries(TYPE_LABELS).map(([k, v]) => (
@@ -229,9 +228,9 @@ const Notes = () => {
             <div className="notes-section">
               {filteredBookmarks.length === 0 ? (
                 <div className="notes-empty">
-                  <Bookmark size={48} className="mb-4 text-[var(--color-text-muted)]" />
-                  <div className="text-base text-[var(--color-text-dim)] mb-2">暂无收藏篇目</div>
-                  <div className="text-xs text-[var(--color-text-muted)]">
+                  <Bookmark size={48} className="mb-4 text-text-muted" />
+                  <div className="text-base text-text-dim mb-2">暂无收藏篇目</div>
+                  <div className="text-xs text-text-muted">
                     在阅读时点击收藏按钮，收藏的篇目将显示在这里
                   </div>
                 </div>
@@ -245,7 +244,7 @@ const Notes = () => {
                       onCheckedChange={toggleAllBm}
                     />
                     <span
-                      className="text-xs text-[var(--color-text-muted)] cursor-pointer"
+                      className="text-xs text-text-muted cursor-pointer"
                       onClick={toggleAllBm}
                     >
                       全选
@@ -253,7 +252,7 @@ const Notes = () => {
                     <div className="flex-1" />
                     {selectedBm.size > 0 && (
                       <>
-                        <span className="text-xs text-[var(--color-text-dim)]">
+                        <span className="text-xs text-text-dim">
                           已选 {selectedBm.size} 项
                         </span>
                         <Button onClick={handleBatchDeleteBm} variant="destructive">
@@ -279,7 +278,7 @@ const Notes = () => {
                           />
                           <Link
                             to={`/${bm.slug}`}
-                            className="text-[var(--color-gold)] no-underline"
+                            className="text-gold no-underline"
                           >
                             《{book?.title || bm.slug}》
                           </Link>
@@ -332,18 +331,18 @@ const Notes = () => {
             <div className="notes-section">
               {groups.length === 0 ? (
                 <div className="notes-empty">
-                  <MessageSquare size={48} className="mb-4 text-[var(--color-text-muted)]" />
-                  <div className="text-base text-[var(--color-text-dim)] mb-2">
+                  <MessageSquare size={48} className="mb-4 text-text-muted" />
+                  <div className="text-base text-text-dim mb-2">
                     {all.length === 0 ? '暂无批注' : '没有匹配的批注'}
                   </div>
-                  <div className="text-xs text-[var(--color-text-muted)]">
+                  <div className="text-xs text-text-muted">
                     {all.length === 0 ? '在阅读篇目时选中文本添加批注' : '尝试调整筛选条件'}
                   </div>
                   {all.length === 0 && (
                     <div className="mt-5">
                       <Link
                         to={`/${books[0]?.slug || 'ditiansui-site'}`}
-                        className="text-[var(--color-purple-light)] text-sm inline-flex items-center gap-1"
+                        className="text-purple-light text-sm inline-flex items-center gap-1"
                       >
                         前往阅读 <ArrowRight size={14} />
                       </Link>
@@ -358,7 +357,7 @@ const Notes = () => {
                       onCheckedChange={toggleAllAnn}
                     />
                     <span
-                      className="text-xs text-[var(--color-text-muted)] cursor-pointer"
+                      className="text-xs text-text-muted cursor-pointer"
                       onClick={toggleAllAnn}
                     >
                       全选
@@ -366,7 +365,7 @@ const Notes = () => {
                     <div className="flex-1" />
                     {selectedAnn.size > 0 && (
                       <>
-                        <span className="text-xs text-[var(--color-text-dim)]">
+                        <span className="text-xs text-text-dim">
                           已选 {selectedAnn.size} 项
                         </span>
                         <Button onClick={handleBatchDeleteAnn} variant="destructive">
@@ -390,7 +389,7 @@ const Notes = () => {
                         />
                         <Link
                           to={`/${group.slug}`}
-                          className="text-[var(--color-gold)] no-underline"
+                          className="text-gold no-underline"
                         >
                           《{group.book}》
                         </Link>
@@ -406,11 +405,11 @@ const Notes = () => {
                                     checked={selectedAnn.has(ann.id)}
                                     onCheckedChange={() => toggleAnnSelect(ann.id)}
                                   />
-                                  <Badge variant="secondary" className={`ann-type-${ann.type}`}>
+                                  <Badge className={`ann-type-badge ann-type-${ann.type}`}>
                                     {TYPE_LABELS[ann.type]}
                                   </Badge>
                                 </div>
-                                <span className="text-[11px] text-[var(--color-text-muted)]">
+                                <span className="text-[11px] text-text-muted">
                                   {new Date(ann.createdAt).toLocaleDateString('zh-CN')}
                                 </span>
                               </div>

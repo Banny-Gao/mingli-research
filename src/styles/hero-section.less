@@ -5,6 +5,11 @@
   position: relative;
   width: 100%;
   padding: 1.5rem 0 0;
+  overflow: visible;
+}
+.hero-section--glow-host {
+  /* glow host 让内嵌的 .hero-glow 跟随 hero-section 一起被滚走，
+     避免 page-container 嵌套滚动时 glow 残留在视口顶部 */
 }
 .hero-title {
   font-size: 2.5rem;

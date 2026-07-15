@@ -44,7 +44,7 @@ export async function callLLM(client, opts = {}) {
     model = llmConfig.model,
     system,
     messages,
-    maxTokens = 4096,
+    maxTokens = 12800,
     signal,
     retryBaseMs = DEFAULT_RETRY_BASE_MS,
     extendedThinking = false,

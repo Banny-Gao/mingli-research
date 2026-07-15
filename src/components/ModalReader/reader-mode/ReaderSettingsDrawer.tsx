@@ -72,7 +72,7 @@ export function ReaderSettingsDrawer({
               阅读主题 <span className="text-xs text-muted-foreground/60 ml-1">即将上线</span>
             </p>
             <div className="flex gap-2">
-              {['#fff', '#f5f0e8', '#1a1a2e'].map((color, i) => (
+              {['var(--color-bg-elevated)', 'var(--color-bg-base)', 'var(--color-purple-bg)'].map((color, i) => (
                 <div
                   key={i}
                   className="size-6 rounded-full border opacity-30"

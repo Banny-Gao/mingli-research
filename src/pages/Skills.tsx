@@ -73,10 +73,9 @@ const Skills = () => {
         </Link>
       </div>
 
-      <div className="hero-glow" />
-
       <div className="page-container">
-        <div className="hero-section">
+        <div className="hero-section hero-section--glow-host">
+          <div className="hero-glow" />
           <h1 className="hero-title">技能列表</h1>
           <p className="hero-subtitle">按术数类别聚合 · 跨书沉淀 · 调用即得</p>
         </div>

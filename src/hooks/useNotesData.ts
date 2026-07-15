@@ -56,11 +56,6 @@ export const TYPE_LABELS: Record<AnnotationType, string> = {
   question: '疑问',
   quote: '引用',
 }
-export const TYPE_COLORS: Record<AnnotationType, string> = {
-  emphasis: 'var(--color-gold)',
-  question: 'var(--color-danger)',
-  quote: 'var(--color-quote)',
-}
 
 export function normalizeChapter(chapter: string, _bookSlug: string): string {
   return chapter

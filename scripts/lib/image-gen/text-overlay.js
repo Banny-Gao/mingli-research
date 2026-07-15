@@ -70,7 +70,7 @@ function callSummary(stage, userMsg) {
   const text = typeof userMsg === 'string' ? userMsg
     : Array.isArray(userMsg) ? userMsg.filter(b => b.type === 'text').map(b => b.text).join('\n')
     : ''
-  return { stage, model: llmConfig.model, maxTokens: 4096, userMessageLength: text.length }
+  return { stage, model: llmConfig.model, maxTokens: 12800, userMessageLength: text.length }
 }
 
 // ===== Stage 1: 意图分析 =====
@@ -96,7 +96,7 @@ async function analyzeIntent(mode, prompt, apiKey, inputImagePath) {
 
   const client = createLLMClient({ apiKey })
   const raw = await callLLM(client, {
-    model: llmConfig.model, maxTokens: 4096, extendedThinking: true,
+    model: llmConfig.model, maxTokens: 12800, extendedThinking: true,
     system: promptsModule.INTENT_SYSTEM,
     messages: [{ role: 'user', content: userContent }],
   })
@@ -130,7 +130,7 @@ async function buildContext(mode, intent, prompt, apiKey, opts = {}) {
 
   const client = createLLMClient({ apiKey })
   const raw = await callLLM(client, {
-    model: llmConfig.model, maxTokens: 4096, extendedThinking: true,
+    model: llmConfig.model, maxTokens: 12800, extendedThinking: true,
     system: CLEAN_PROMPT_SYSTEM,
     messages: [{ role: 'user', content: userMsg }],
   })
@@ -147,7 +147,7 @@ async function buildContext(mode, intent, prompt, apiKey, opts = {}) {
 
 async function designLayout({ intent, prompt, apiKey, context, mode, previousTexts = [] }) {
   const client = createLLMClient({ apiKey })
-  // 8192 兼容多段文字 + extendedThinking：4 段 × ~12 字段 × JSON 格式 → 容易撞 4096 上限被截断
+  // 8192 兼容多段文字 + extendedThinking：4 段 × ~12 字段 × JSON 格式 → 容易撞 12800 上限被截断
   const baseOpts = { model: llmConfig.model, maxTokens: 8192, extendedThinking: true }
 
   const msgs = [
