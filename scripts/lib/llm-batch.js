@@ -11,6 +11,7 @@ import { createLLMClient, callLLM } from './llm-client.js'
 import { checkCondition } from './condition-check.js'
 import { buildPipelinePrompt } from './pipeline.js'
 import { runSelfCheckLite } from './self-check-lite.js'
+import { postProcessOutput } from './post-process.js'
 
 const DEFAULT_RETRY_BASE_MS = 2000
 const MAX_REWRITE = 3
@@ -21,52 +22,6 @@ function fileExists(p) {
   } catch {
     return false
   }
-}
-
-/**
- * 后处理 LLM 输出：剥离游离的 ``` 围栏、补充截断时的收束节。
- * 解决「spec 模板被当成输出内容」「输出超长被截断」两个常见问题。
- */
-function postProcessOutput(text, chapter) {
-  let out = text
-
-  // 1. 剥离头部的 ```markdown / ```md / ``` 围栏行（单独的 fence）
-  //    规则：开头的 fence 行（可能带可选的 markdown/md 语言标识）移除
-  out = out.replace(/^\s*```(?:markdown|md)?\s*\n/, '')
-  //    兜底：再处理一次（防止 fence 在空行之后）
-  out = out.replace(/^\s*```(?:markdown|md)?\s*\n/, '')
-
-  // 2. 剥离尾部的单独 fence 行（文件末）
-  out = out.replace(/\n```\s*$/, '')
-  //    兜底：再处理
-  out = out.replace(/\n```\s*$/, '')
-
-  // 3. 文末截断时补充「## 此篇在命学体系中之位置」收束节
-  //    判定：文末 200 字符内没有「## 此篇在命学体系中之位置」节 + 末行不以句号/问号/感叹号/分号/冒号/引号收尾
-  const tailSnippet = out.slice(-200)
-  const hasClosingSection = /##\s*此篇在命学体系中之位置/.test(tailSnippet)
-  // 文末的最后一个非空字符
-  const trimmedEnd = out.replace(/\s+$/, '')
-  const lastChar = trimmedEnd.slice(-1)
-  const endsCleanly = /[。！？；：）」』"”’]/.test(lastChar)
-
-  if (!hasClosingSection && !endsCleanly) {
-    // 截断：以最近的一个完整句号切断，再补收束节
-    const lastPeriod = trimmedEnd.lastIndexOf('。')
-    const lastQ = trimmedEnd.lastIndexOf('？')
-    const lastE = trimmedEnd.lastIndexOf('！')
-    const cutAt = Math.max(lastPeriod, lastQ, lastE)
-    if (cutAt > trimmedEnd.length * 0.5) {
-      // 找到的句末位置在后半部分 → 在此处切断
-      out = trimmedEnd.slice(0, cutAt + 1) + '\n\n'
-    } else {
-      // 没找到合适句末 → 仅补收束节
-      out = trimmedEnd + '\n\n'
-    }
-    out += `## 此篇在命学体系中之位置\n\n此篇为千里命稿之《${chapter}》。文中所论之理，与命学体系中之核心议题相互呼应，于初学者之进学路径与研究者之体系构建，皆有其不可替代之位次。读者宜以此篇为阶梯之一级，由此上溯命学本源、下贯实务应用，则命学之全体大用，自能融会贯通而不滞于偏隅。\n`
-  }
-
-  return out
 }
 
 async function generateOne({
@@ -106,6 +61,9 @@ async function generateOne({
   let lastCheck = null
   let userForRound = user
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
+    console.log('\n# message userForRound', userForRound)
+    console.log(userForRound)
+    
     output = await callLLM(client, {
       model: config.model,
       system,
