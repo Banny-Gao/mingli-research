@@ -36,18 +36,13 @@ ${specBundle.shuSpecial}
 ### 4. source.md（待解读原文）
 ${sourceText}
 
-## 原文体检报告
-
-- 模式：${condition.模式}
-- 案例：${condition.案例}
-- 注家：${condition.注家}
-- 异文：${condition.异文}
-- 脱漏：${condition.脱漏}
-- 超长：${condition.超长}
-
 ## 执行清单
 
-严格遵守上述 4 份规范，尤其是 SPEC-interpretation.md
+严格遵守上述 4 份规范，尤其是 SPEC-interpretation.md §五 Steps 1-9 顺序执行。Steps 1-2（前置自检与红线确认）**必走不可跳**；后续允许回跳迭代。
+
+- **Step 3-4**：套 §五.3-4 + §1.2 §1、§三 + §2.1
+- **Step 5-6**：套 §五.5-6 + §2.2 + §1.2 §2（**按需撰写深化洞见**，无需等到 Step 6 才回灌 Step 4）
+- **Step 7-9**：套 §五.7-9 + §2.4 + §七（自评 ≥ 4 才输出；4 分以下强制重写）
 
 ${antiMetaPromptBlock()}
 

@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-07-16T07:20:03.722Z",
+  "type": "t2i",
+  "prompt": "现代新中式品牌商标，正方形印章 logo，阴刻阳刻结合，墨黑色印面主色，朱砂红色作为小点缀，与舒展的书卷竹简图形巧妙融合，线条干净几何化、扁平化矢量感，白色纯净背景，标志设计风格，极简、留白、克制、典雅，中央清晰印出《豫知国学》四字，构图居中对称，高端经典教育品牌视觉",
+  "apiPrompt": "现代新中式品牌商标，正方形印章 logo，阴刻阳刻结合，墨黑色印面主色，朱砂红色作为小点缀，与舒展的书卷竹简图形巧妙融合，线条干净几何化、扁平化矢量感，白色纯净背景，标志设计风格，极简、留白、克制、典雅，中央清晰印出《豫知国学》四字，构图居中对称，高端经典教育品牌视觉",
+  "model": "image-01",
+  "aspectRatio": "1:1",
+  "width": null,
+  "height": null,
+  "style": null,
+  "n": 3,
+  "seed": null,
+  "promptOptimizer": false,
+  "promptOptimizerEffective": false,
+  "aigcWatermark": false,
+  "responseFormat": "url",
+  "name": "豫知国学-square",
+  "results": [
+    {
+      "filename": "豫知国学-square-01.png",
+      "size": 114240,
+      "url": "https://hailuo-image-algeng-data.oss-cn-wulanchabu.aliyuncs.com/image_inference_output%2Ftalkie%2Fprod%2Fimg%2F2026-07-16%2Fa8b7ee0e-3958-4240-b207-cb503d2c85f7_aigc.jpeg?Expires=1784272827&OSSAccessKeyId=LTAI5tB2SwrRwAtD23etQUbC&Signature=0wAjQgMYjx39VOO6UbHlO94ES3c%3D"
+    },
+    {
+      "filename": "豫知国学-square-02.png",
+      "size": 81623,
+      "url": "https://hailuo-image-algeng-data.oss-cn-wulanchabu.aliyuncs.com/image_inference_output%2Ftalkie%2Fprod%2Fimg%2F2026-07-16%2Fdf104f1f-1b11-46b5-aa79-620e2ede53d9_aigc.jpeg?Expires=1784272827&OSSAccessKeyId=LTAI5tB2SwrRwAtD23etQUbC&Signature=IMem2aMYPG25HBL9QnBpGXFay1o%3D"
+    },
+    {
+      "filename": "豫知国学-square-03.png",
+      "size": 105514,
+      "url": "https://hailuo-image-algeng-data.oss-cn-wulanchabu.aliyuncs.com/image_inference_output%2Ftalkie%2Fprod%2Fimg%2F2026-07-16%2F298d6bf4-42f1-4d3a-a3e4-7d65c0ebe781_aigc.jpeg?Expires=1784272827&OSSAccessKeyId=LTAI5tB2SwrRwAtD23etQUbC&Signature=7Rv30KMm8ETEW0IAad%2FabMeWpT8%3D"
+    }
+  ],
+  "textOverlay": {
+    "intent": {
+      "composition": "正方形构图，居中对称布局，以方形印章为视觉核心，竹简书卷图形作为环绕或融合元素舒展延展，留白充足，视觉重心位于画面正中央，整体呈现克制、平衡、对称的空间结构",
+      "style": "现代新中式风格，品牌标志设计（logo design），极简主义美学，工笔与几何融合，阴刻阳刻相结合的印章工艺感，线条干净几何化、扁平化矢量风格，留白克制、典雅端庄",
+      "colors": "色彩极简克制：以墨黑色为主色调，用于印面文字与图形主体；朱砂红色作为极少量点缀色，用于关键点睛；纯白色作为背景底色，呈现强烈黑白对比关系，辅以红黑撞色，整体素雅、沉稳、高端",
+      "visualElements": "正方形印章主体（阴刻阳刻结合的篆刻风格）、墨黑印面、朱砂红点缀色、舒展延展的书卷竹简图形（线条几何化扁平化处理）、干净利落的几何线条，纯白纯净背景，高端教育品牌视觉调性",
+      "textRequirements": [
+        {
+          "content": "豫知国学",
+          "hierarchy": "primary",
+          "positionHint": "位于印章印面中央，作为logo核心文字，构图居中对称",
+          "fontStyleHint": "新中式篆刻/书法风格，融合阴刻阳刻工艺质感，端庄典雅"
+        }
+      ]
+    },
+    "cleanPrompt": "正方形构图，纯白素净底色铺满整幅画面，质感洁净无杂。画面正中央矗立一方厚重的正方形印体，印面呈深沉的墨黑色，表面平整哑光，带有微微的凹凸浮雕边缘质感，印体四角方正利落，轮廓清晰锐利。印体周围环绕着几缕舒展延展的书卷竹简图形，以几何化、扁平化的线条表现，线条干净纤细，墨黑勾勒，呈对称式向两侧及上下缓缓展开，卷轴端头略带细微的弧形收束，整体线条流畅而克制，不繁复堆叠。书卷线条与方形印体之间留有充足的呼吸空间，构图疏密有致。整体配色极度克制——墨黑为绝对主调，大面积铺陈于印面与线条之上；纯白底色与墨黑形成强烈的明暗对比；仅在画面中极其关键的一处细节点缀一抹浓丽的朱砂红，如朱泥般鲜润沉稳，成为整个画面的点睛之笔。整体风格呈现现代新中式的极简美学与品牌标志设计的专业调性，扁平矢量感强，无多余装饰，无渐变阴影，仅靠几何块面与线性元素构成端庄典雅、克制冷峻的视觉秩序。 No text, no letters, no characters, no symbols, no watermarks, no signatures, no seals — pure visual image only. 画面中不得出现任何文字、字母、符号、数字、水印或印章。",
+    "reservedAreas": [
+      {
+        "purpose": "main-title",
+        "bbox": {
+          "x": "35%",
+          "y": "38%",
+          "w": "30%",
+          "h": "24%"
+        },
+        "description": "画面正中央方形墨黑印面区域，为主标题文字预留的核心位置，居中对称"
+      }
+    ],
+    "texts": [
+      {
+        "content": "豫知国学",
+        "position": {
+          "x": "center",
+          "y": "50%"
+        },
+        "size": 46,
+        "color": "#F5F0E5",
+        "fontHint": "Xingkai",
+        "layout": "vertical",
+        "verticalDirection": "rtl",
+        "stroke": null,
+        "explicitColor": false
+      }
+    ],
+    "bgInfo": null,
+    "llmCalls": [
+      {
+        "stage": "intent",
+        "model": "MiniMax-M3[1m]",
+        "maxTokens": 12800,
+        "userMessageLength": 760
+      },
+      {
+        "stage": "context",
+        "model": "MiniMax-M3[1m]",
+        "maxTokens": 12800,
+        "userMessageLength": 3012
+      },
+      {
+        "stage": "layout",
+        "model": "MiniMax-M3[1m]",
+        "maxTokens": 12800,
+        "userMessageLength": 4338
+      }
+    ]
+  },
+  "backgroundPath": "豫知国学-篆书-bg.png"
+}

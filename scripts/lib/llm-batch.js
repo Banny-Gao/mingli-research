@@ -61,9 +61,6 @@ async function generateOne({
   let lastCheck = null
   let userForRound = user
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
-    console.log('\n# message userForRound', userForRound)
-    console.log(userForRound)
-    
     output = await callLLM(client, {
       model: config.model,
       system,
