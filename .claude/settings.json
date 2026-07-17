@@ -1,43 +1,8 @@
 {
-  "enabledPlugins": {
-    "document-skills@anthropic-agent-skills": true,
-    "frontend-design@claude-code-plugins": true,
-    "vue-volar@claude-code-lsps": true,
-    "superpowers@superpowers-marketplace": true,
-    "vtsls@claude-code-lsps": true
+  "env": {
+    "ENABLE_LSP_TOOL": "1"
   },
-  "spinnerTipsEnabled": true,
-  "enableAllProjectMcpServers": true,
-  "pluginAutoInstall": true,
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0
-  },
-  "extraKnownMarketplaces": {
-    "claude-code-lsps": {
-      "source": {
-        "source": "github",
-        "repo": "Piebald-AI/claude-code-lsps"
-      }
-    }
-  },
-  "env": { "ENABLE_LSP_TOOL": "1" },
   "permissions": {
-    "deny": [
-      "Bash(git checkout --:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(git checkout -- .:*)",
-      "Bash(git clean:*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git push --force-with-lease:*)",
-      "Bash(git branch -D:*)",
-      "Bash(git stash drop:*)",
-      "Bash(git stash clear:*)",
-      "Bash(rm -rf .git:*)",
-      "Bash(git reflog delete:*)"
-    ],
     "allow": [
       "mcp__playwright__browser_wait_for",
       "mcp__playwright__browser_snapshot",
@@ -59,16 +24,34 @@
       "mcp__claude-mem__search",
       "mcp__claude-mem__timeline",
       "mcp__claude-mem__get_observations"
+    ],
+    "deny": [
+      "Bash(git checkout --:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git checkout -- .:*)",
+      "Bash(git clean:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git stash drop:*)",
+      "Bash(git stash clear:*)",
+      "Bash(rm -rf .git:*)",
+      "Bash(git reflog delete:*)"
     ]
   },
-  "lsp": {
-    "servers": {
-      "vtsls": {
-        "command": "vtsls",
-        "args": ["--stdio"],
-        "filetypes": ["typescript", "typescriptreact", "javascript", "javascriptreact"],
-        "rootPatterns": ["tsconfig.json"]
-      }
-    }
-  }
+  "enableAllProjectMcpServers": true,
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-code-plugins": true,
+    "superpowers@claude-code-plugins": true,
+    "mattpocock-skills@mattpocock": true
+  },
+  "extraKnownMarketplaces": {},
+  "spinnerTipsEnabled": true,
+  "pluginAutoInstall": true
 }
