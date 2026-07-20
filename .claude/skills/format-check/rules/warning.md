@@ -2,8 +2,6 @@
 
 影响阅读体验和导航结构，`--fix` 自动修复确定性规则，LLM 规则需 `--analyze`。
 
-**作用域：** R3-R7、R15 在 interpretation.md 上正常检测修复；在 source.md 上正常检测但全部只读豁免（fixer 跳过，详见 `shared/scanner.md` 作用域闸门）。
-
 ---
 
 ## R3：标题层级过浅

@@ -62,6 +62,6 @@ scanner 输出 `Issue[]` 交给 fixer。fixer 按 `fix_type` + `file_scope` 分�
 
 | fix_type | file_scope=writable | file_scope=source-read-only |
 |----------|---------------------|---------------------------|
-| auto | fixer 直接应用修复策略 | **跳过**，仅进 report.skipped（注明"source.md 只读豁免"） |
+| auto | fixer 直接应用修复策略 | **跳过**，仅进 report.skipped |
 | llm | 仅 llm_enabled=true 时，主 agent 进行 LLM 分析后 fixer 应用 | 跳过，进 report.skipped |
 | manual | 仅交互模式提示，不自动修复 | 仅展示不提供修复选项 |

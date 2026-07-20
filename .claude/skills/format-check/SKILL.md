@@ -17,12 +17,6 @@ trigger: 格式检查|format-check|格式修复|排版检查|markdown格式|mark
 | `interpretation.md` | **可读写**（主作用域） | 排版整理、拆段、加粗关键词、插入意境图，均在此 |
 | `source.md` | **只读体检** | 扫描后命中只进报告，绝不 Edit（尊重 SPEC-source §2.1「原文照录」红线） |
 
-**与 SPEC、与 self-check 的边界：**
-
-- SPEC-source §2.1「不改变任何一个字」是 source-create 创建期约束；format-check 作为创建后的手动工具，对 source.md 仍坚持只读——不动原文锚点。
-- 插图往 interpretation.md 写入 `![](...)` 突破 SPEC-interpretation §二语法白名单（白名单不含图片）。此突破**由 format-check 显式触发、逐图人工确认**，SPEC 白名单合法化留待后续单独决策。
-- self-check 扫 SPEC 合规（反机械化、注家标识、术语）；format-check 扫格式/排版。两者不重叠。
-
 本 skill 覆盖 15 条 markdown 格式规则。**主 SKILL.md 只做路由 + 4 步引导，不做实际扫描修复。**
 
 ## 15 条规则
@@ -61,24 +55,24 @@ trigger: 格式检查|format-check|格式修复|排版检查|markdown格式|mark
 | `/format-check --analyze --book <slug>` | 交互式 + LLM | 按书 |
 | `/format-check --illustrate <interpretation.md 路径>` | 插图子流程 | 单篇 |
 
-## 插图子流程（新增能力）
+## 插图子流程
 
-为 interpretation.md 在篇首插入 1 张意境/氛围图。**结构图归 mermaid（R15），不进 t2i。**
+为 interpretation.md 在插入意境/氛围图。**结构图归 mermaid（R15），不进 t2i。**
 
 | 项 | 约定 |
 |----|------|
 | 作用域 | 仅 interpretation.md；source.md 不碰 |
 | 必要性 | 不是每篇都有，LLM 分析「值不值得插」，多数篇 0 张 |
 | 图性质 | 意境/氛围图（装饰性，非信息承载） |
-| 密度 | 宁缺毋滥，单篇上限 1 张 |
-| 位置 | 篇首（H1 后 / 第一个 `##` 前），整篇仅此一图 |
+| 密度 | 宁缺毋滥|
+| 位置 | 由 LLM 分析合适的位置 |
 | 图题 | 加图题（如 `**图：四月甲木·枯木待润**`），与 R15 mermaid 图题约定对齐 |
 | 执行 | 半自动：subagent 分析 → 出 prompt + 图题 → 主 agent 逐图确认 → t2i 生成 → 插入 |
 | 触发 | 单篇才走插图流程；全本默认跳过；全本若开启则跳过已有插图的篇章 |
 | 落盘 | `./public/images/articles/`（不存在则新建） |
-| 命名 | `{书名}-{篇名}.png`，如 `穷通宝鉴-四月甲木.png`（全中文，与 books.ts 封面图命名一致） |
-| md 引用 | `/images/articles/{书名}-{篇名}.png`（根绝对路径，Vite public 映射，react-markdown 默认 img 渲染） |
-| t2i 调用 | `node scripts/t2i.js --prompt "..." --name {书名}-{篇名} --output-dir ./public/images/articles` |
+| 命名 | `{书名}-{篇名}-{图名}.png`，如 `穷通宝鉴-四月甲木-枯木待润.png` |
+| md 引用 | `/images/articles/{书名}-{篇名}-{图名}.png`（根绝对路径，Vite public 映射，react-markdown 默认 img 渲染） |
+| t2i 调用 | `node scripts/t2i.js --prompt "..." --name {书名}-{篇名}-{图名} --output-dir ./public/images/articles` |
 
 插图 subagent 契约见 `shared/illustrator.md`。
 

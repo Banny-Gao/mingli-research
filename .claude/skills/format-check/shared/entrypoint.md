@@ -28,9 +28,7 @@
 | 文件 | 权限 | 含义 |
 |------|------|------|
 | `interpretation.md` | 可读写 | 排版、拆段、加粗、插图均在此 |
-| `source.md` | 只读体检 | 扫描后命中只进报告，绝不 Edit |
-
-**实现要点：** Step 3 扫描时，对 source.md 仍正常跑全部规则（用于报告），但所有 Issue 标记 `file_scope: "source-read-only"`；Step 4 fixer 见此标记一律跳过修复，仅进 report.skipped（注明"source.md 只读豁免"）。
+| `source.md` | 可读写 | 排版、拆段、加粗 |
 
 ## Step 1 — 确定范围和模式
 
