@@ -23,13 +23,6 @@
 | `issues` | `Issue[]` | Step 3 |
 | `report` | `{total, fixed, skipped, pending}` | Step 4 |
 
-## 作用域与权限（贯穿全流程）
-
-| 文件 | 权限 | 含义 |
-|------|------|------|
-| `interpretation.md` | 可读写 | 排版、拆段、加粗、插图均在此 |
-| `source.md` | 可读写 | 排版、拆段、加粗 |
-
 ## Step 1 — 确定范围和模式
 
 - 触发：用户输入 `/format-check [--fix|--analyze|--illustrate] [--book <slug>|<file-path>]`
@@ -65,10 +58,9 @@
 
 - 对每个 file in files：
   1. Read 文件全文
-  2. 按作用域判定 file_scope（source.md → "source-read-only"；interpretation.md → "writable"）
-  3. 按 rules/critical.md → rules/warning.md → rules/suggestion.md 顺序应用规则
-  4. 每条规则返回 Issue[]：`{rule_id, severity, file_scope, line_start, line_end, description, suggestion, fix_type}`
-  5. 按严重度分组收集
+  2. 按 rules/critical.md → rules/warning.md → rules/suggestion.md 顺序应用规则
+  3. 每条规则返回 Issue[]：`{rule_id, severity, line_start, line_end, description, suggestion, fix_type}`
+  4. 按严重度分组收集
 - 状态写：`issues = [...]`
 
 ## Step 4 — 模式分发执行
@@ -77,8 +69,8 @@
 
 - 分支：
   - mode=illustrate：跳过常规格式修复，直接进入插图子流程（见 `shared/illustrator.md`）。注意：illustrate 不排斥常规扫描——若用户希望"先排版再插图"，可先跑 `/format-check --analyze <file>` 再跑 `/format-check --illustrate <file>`
-  - mode=fix：自动修复 interpretation.md 的 R1 + R5-R7 + R10 + R13 + R14（跳过 R2-R4 + R8-R9 + R11-R12 + R15 + LLM）；source.md 全部跳过
-  - mode=interactive：逐 issue 展示（按严重度排序），AskUserQuestion 逐条确认；source.md 的 issue 标注"只读豁免"仅展示不提供修复
+  - mode=fix：自动修复 interpretation.md 的 R1 + R5-R7 + R10 + R13 + R14（跳过 R2-R4 + R8-R9 + R11-R12 + R15 + LLM）；
+  - mode=interactive：逐 issue 展示（按严重度排序），AskUserQuestion 逐条确认；
   - mode=analyze：同 interactive，但对 R3/R4/R15 额外触发 LLM 分析
 - 输出报告：
   ```
@@ -90,7 +82,6 @@
   🔴 严重：M 个（已修复 X，跳过 Y）
   🟡 警告：N 个（已修复 X，跳过 Y）
   🔵 建议：P 个（已应用 X，跳过 Y）
-  source.md 只读豁免：K 个
   ━━━━━━━━━━━━━━━━
   总计：T 个问题，已处理 H 个
   ```

@@ -1,13 +1,6 @@
 # 修复执行器契约
 
-主 agent 根据模式和 issue 的 fix_type + file_scope 执行修复。
-
-## 作用域闸门
-
-fixer 处理每条 Issue 前先查 `file_scope`：
-
-- `file_scope=source-read-only` → **一律跳过修复**，写入 report.skipped 并注明"source.md 只读豁免"（无论 fix_type 是 auto/llm/manual）。
-- `file_scope=writable` → 按下述模式分派。
+主 agent 根据模式和 issue 的 fix_type 执行修复。
 
 ## 修复模式
 
@@ -31,7 +24,6 @@ fixer 处理每条 Issue 前先查 `file_scope`：
 - R2（代码块包裹引用，` ``` ` 是合法语法，需用户确认意图）
 - R3, R4, R15（需要 LLM 分析）
 - R8, R9, R11, R12（建议类，不自动修）
-- source.md 上的全部规则（只读豁免）
 
 ### 交互模式
 
@@ -42,8 +34,6 @@ fixer 处理每条 Issue 前先查 `file_scope`：
 3. 用户选择后执行
 
 交互问题模板见各规则的 `rules/*.md` 中的"交互模板"。
-
-**source.md 的 issue** 在交互模式下标注"只读豁免"，仅展示问题与建议，不提供修复按钮（用户可自行决定是否去 source-create 调整）。
 
 ### --analyze LLM 分析模式
 
@@ -131,7 +121,6 @@ format-check 报告
 🔵 建议：P 个
   - 已应用：X
   - 已跳过：Y
-source.md 只读豁免：K 个
 ━━━━━━━━━━━━━━━━
 总计：T 个问题，已处理 H 个，跳过 S 个
 ```

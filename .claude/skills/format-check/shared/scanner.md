@@ -2,17 +2,6 @@
 
 主 agent 对每个文件顺序执行 15 条规则的检测逻辑。
 
-## 作用域
-
-扫描前先判定 file_scope：
-
-| 文件 | file_scope | 含义 |
-|------|-----------|------|
-| `source.md` | `source-read-only` | 正常扫描产出 Issue（用于报告），但 fixer 一律跳过修复 |
-| `interpretation.md` | `writable` | 正常扫描 + 可修复 |
-
-file_scope 写入每条 Issue，贯穿到 fixer。
-
 ## 扫描顺序
 
 ```
@@ -33,7 +22,6 @@ R10 → R13 → R11 → R12 → R8 → R9  (suggestion，检测优化建议)
 Issue {
   rule_id: "R1".."R15",
   severity: "critical" | "warning" | "suggestion",
-  file_scope: "source-read-only" | "writable",  // 作用域，fixer 据此决定是否修复
   file: string,           // 文件路径
   line_start: number,     // 问题起始行
   line_end: number,       // 问题结束行
@@ -58,10 +46,10 @@ Issue {
 
 ## 与 fixer 的接口
 
-scanner 输出 `Issue[]` 交给 fixer。fixer 按 `fix_type` + `file_scope` 分派：
+scanner 输出 `Issue[]` 交给 fixer。fixer 按 `fix_type` 分派：
 
-| fix_type | file_scope=writable | file_scope=source-read-only |
-|----------|---------------------|---------------------------|
-| auto | fixer 直接应用修复策略 | **跳过**，仅进 report.skipped |
-| llm | 仅 llm_enabled=true 时，主 agent 进行 LLM 分析后 fixer 应用 | 跳过，进 report.skipped |
-| manual | 仅交互模式提示，不自动修复 | 仅展示不提供修复选项 |
+| fix_type | - |
+|----------|---------------------|
+| auto | fixer 直接应用修复策略 |
+| llm | 仅 llm_enabled=true 时，主 agent 进行 LLM 分析后 fixer 应用 |
+| manual | 仅交互模式提示，不自动修复 |

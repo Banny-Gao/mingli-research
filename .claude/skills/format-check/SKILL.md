@@ -10,13 +10,6 @@ trigger: 格式检查|format-check|格式修复|排版检查|markdown格式|mark
 
 本 skill 是 **source-create / interpretation-create 之后的排版后处理层**，由用户手动触发，对生成产物做排版整理。
 
-**作用域与权限：**
-
-| 文件 | 权限 | 说明 |
-|------|------|------|
-| `interpretation.md` | **可读写**（主作用域） | 排版整理、拆段、加粗关键词、插入意境图，均在此 |
-| `source.md` | **只读体检** | 扫描后命中只进报告，绝不 Edit（尊重 SPEC-source §2.1「原文照录」红线） |
-
 本 skill 覆盖 15 条 markdown 格式规则。**主 SKILL.md 只做路由 + 4 步引导，不做实际扫描修复。**
 
 ## 15 条规则
