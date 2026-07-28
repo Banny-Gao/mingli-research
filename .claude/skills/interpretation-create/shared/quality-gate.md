@@ -23,7 +23,7 @@
   2. 独立【白话】行
   3. 标题机械化（二级标题用 "原注申说 / 原文第一段 / 段一" 等 source 分层标签）
 
-- **内容检查（3 项）**：v1 仅做轻量检查（v2 待 LLM 评估器集成）
+- **内容检查（3 项）**：v1 仅做轻量检查；批量链路已集成 LLM 内容评估器（`content-evaluator.js`，落盘前跑一次），单点模式由主 agent 按 SPEC §七自评
 
 - **score 计算**：
   - fatal > 0 或 format > 0 → score 3（强制重写）
@@ -38,12 +38,13 @@
 3. fatal > 0 → 报告致命项 → 回 Step 5 重写（最多 3 次）
 4. fatal = 0 → 准许落盘
 
-## 批量执行器流程
+## 批量执行器流程（双门）
 
 1. 跑 9 步流水线
-2. per-篇 `runSelfCheckLite(output)`
-3. fatal > 0 → 跳过该篇 + 记日志
-4. fatal = 0 → 写文件
+2. per-篇 `runSelfCheckLite(output, sourceText)`（**格式门**）
+3. fatal>0 或 format>0 → 注入 fatal+format 全集重写，最多 3 次
+4. 格式门过 → 跑内容评估器 `evaluateContent`（**内容门**，落盘前一次）
+5. 评估分 ≥4 → 写文件；评估分 <4 → 写 `.lastfailed`+`.lasteval` 跳过；评估器出错 → 降级放行
 
 ## v1 不调 self-check-interpretation subagent
 

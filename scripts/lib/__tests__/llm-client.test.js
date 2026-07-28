@@ -3,7 +3,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 const mockCreate = vi.fn()
 vi.mock('@anthropic-ai/sdk', () => ({
   default: vi.fn().mockImplementation(() => ({
-    messages: { create: (...args) => mockCreate(...args) },
+    // callLLM 现走流式：messages.stream(params) → stream.finalMessage() → message
+    messages: {
+      stream: async (params) => {
+        const message = await mockCreate(params)
+        return { finalMessage: async () => message }
+      },
+    },
   })),
 }))
 
@@ -54,25 +60,28 @@ describe('callLLM', () => {
   })
 
   it('throws after hitting continuation limit with no text', async () => {
-    for (let i = 0; i < 4; i++) {
+    // 首轮 + MAX_CONTINUATIONS 次续轮全返回 max_tokens 无 text → 打满上限后抛错
+    const TOTAL = 6
+    for (let i = 0; i < TOTAL; i++) {
       mockCreate.mockResolvedValueOnce(makeResponse({ text: null, stopReason: 'max_tokens', thinking: { text: `thinking-${i}`, signature: `sig-${i}` } }))
     }
     const client = createLLMClient({ apiKey: 'sk-test', baseUrl: 'https://api.test' })
     await expect(callLLM(client, { system: 'sys', messages: [{ role: 'user', content: 'x' }], maxTokens: 1024, extendedThinking: true })).rejects.toThrow(/LLM 未返回文本内容/)
-    expect(mockCreate).toHaveBeenCalledTimes(4)
+    expect(mockCreate).toHaveBeenCalledTimes(TOTAL)
   })
 
   it('returns accumulated partial text after hitting continuation limit', async () => {
-    // 4 次都返回部分 text + max_tokens（续轮上限被打满）
-    for (let i = 0; i < 4; i++) {
+    // 首轮 + MAX_CONTINUATIONS 次续轮全返回部分 text + max_tokens（续轮上限被打满）
+    const TOTAL = 6
+    for (let i = 0; i < TOTAL; i++) {
       mockCreate.mockResolvedValueOnce(
         makeResponse({ text: `段${i + 1}。`, stopReason: 'max_tokens', thinking: { text: `t-${i}`, signature: `s-${i}` } })
       )
     }
     const client = createLLMClient({ apiKey: 'sk-test', baseUrl: 'https://api.test' })
     const result = await callLLM(client, { system: 'sys', messages: [{ role: 'user', content: 'x' }], maxTokens: 1024, extendedThinking: true })
-    expect(result).toBe('段1。段2。段3。段4。')
-    expect(mockCreate).toHaveBeenCalledTimes(4)
+    expect(result).toBe('段1。段2。段3。段4。段5。段6。')
+    expect(mockCreate).toHaveBeenCalledTimes(TOTAL)
   })
 
   it('does NOT continue when stop_reason is end_turn even if no text', async () => {

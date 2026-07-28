@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseCliArgs } from '../generate-interpretations-cli.js'
+import { resolveChapters } from '../../generate-interpretations.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const CLI_PATH = path.join(__dirname, '..', '..', 'generate-interpretations.js')
@@ -67,5 +68,46 @@ describe('CLI signature consistency', () => {
       // 严格判断：逗号数 = 1（slug + opts）✓，> 1 报错
       expect(commaCount, `loadSpecBundle call "${argsStr.trim()}" should have 1 comma (2 args: slug + opts), found ${commaCount}`).toBe(1)
     }
+  })
+})
+
+// === F: resolveChapters 空结果守卫（catalog 格式不符时显式报错，不静默 0 篇成功）===
+import os from 'node:os'
+
+describe('resolveChapters empty-result guard (F)', () => {
+  let TMP_ROOT
+
+  beforeEach(() => {
+    TMP_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'resolve-chap-'))
+  })
+  afterEach(() => {
+    if (TMP_ROOT) fs.rmSync(TMP_ROOT, { recursive: true, force: true })
+  })
+
+  it('throws when catalog has no numbered table rows (format mismatch)', () => {
+    const slug = 'empty-book'
+    fs.mkdirSync(path.join(TMP_ROOT, `books/${slug}`), { recursive: true })
+    // 格式不符：缺少「| 序号 | 篇名 |」表格（如改版为纯列表）
+    fs.writeFileSync(
+      path.join(TMP_ROOT, `books/${slug}/catalog.md`),
+      '# 某书\n\n- 篇一\n- 篇二\n',
+      'utf-8'
+    )
+    expect(() => resolveChapters(slug, undefined, TMP_ROOT)).toThrow(/未解析到任何篇章/)
+  })
+
+  it('throws when catalog.md missing', () => {
+    expect(() => resolveChapters('no-such-book', undefined, TMP_ROOT)).toThrow(/找不到/)
+  })
+
+  it('returns all chapters when catalog table is valid', () => {
+    const slug = 'valid-book'
+    fs.mkdirSync(path.join(TMP_ROOT, `books/${slug}`), { recursive: true })
+    fs.writeFileSync(
+      path.join(TMP_ROOT, `books/${slug}/catalog.md`),
+      '# 某书\n\n| 序号 | 篇名 |\n| --- | --- |\n| 1 | 论一 |\n| 2 | 论二 |\n',
+      'utf-8'
+    )
+    expect(resolveChapters(slug, undefined, TMP_ROOT)).toEqual(['论一', '论二'])
   })
 })

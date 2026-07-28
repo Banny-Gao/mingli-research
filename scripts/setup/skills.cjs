@@ -30,7 +30,7 @@ function copyDir(src, dest) {
 
 const HOME = process.env.HOME || process.env.USERPROFILE;
 const GLOBAL_SKILLS_DIR = path.join(HOME, ".claude", "skills");
-const PROJECT_SKILLS_DIR = path.join(__dirname, "..", ".claude", "skills");
+const PROJECT_SKILLS_DIR = path.join(__dirname, "../..", ".claude", "skills");
 
 console.log("🔧 Skill 同步工具\n");
 

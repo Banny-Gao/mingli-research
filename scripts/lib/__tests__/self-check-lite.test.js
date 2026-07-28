@@ -169,4 +169,88 @@ describe('runSelfCheckLite', () => {
     const result = runSelfCheckLite(text)
     expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(false)
   })
+
+  // === 结构完整性检测（structural-incompleteness）===
+
+  it('detects structural incompleteness: effective body < 600 chars (天道 truncated form)', () => {
+    // 天道篇截断形态：3 节、有效正文 513 字符 < 600 → 命中篇幅检测
+    const body = '此二句为开篇立纲，以条件句式定下全篇取径，宗字引申为统摄归向，万法以三元为所归。'.repeat(2)
+    const text = `## 三元万法之宗\n\n> 【原文】欲识三元万法宗，先观帝载与神功。\n\n${body}\n\n## 帝载神功\n\n> 【原注】天有阴阳，故春木、夏火、秋金、冬水、季土，随时显其神功。\n\n${body}\n\n## 天道开篇\n\n${body}`
+    const result = runSelfCheckLite(text)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('结构残缺'))).toBe(true)
+    expect(result.score).toBeLessThan(4) // 触发重写
+  })
+
+  it('passes structural check: effective body ≥ 600 chars (君象 normal form)', () => {
+    // 君象篇正常形态：有效正文 > 600 → 篇幅达标，不判残缺
+    const body = '此造与上造对比鲜明，群比争财之象已成，局中偏偏缺火以行之，木之气机无从泄化，臣也得不到生拱之实益，任氏判其为上安而下难全。'.repeat(12)
+    const text = `## 君象\n\n> 【原文】君盛臣衰。\n\n${body}\n\n## 本篇在体系中之笼统位置\n\n本篇以「日主为君、官杀为臣」之人伦为喻，专论君盛臣衰的格局取用法。`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('结构残缺'))).toBe(false)
+  })
+
+  it('skips structural check for minimal fixtures (< 100 effective chars)', () => {
+    // 单测最小夹具/边界输入（< 100 字符）豁免结构检测，不误判残缺
+    const text = '## 标题\n\n> 【原文】原文整句。\n\n解读正文。'
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('结构残缺'))).toBe(false)
+  })
+
+  // === 结构覆盖检测（structural-coverage，长文场景）===
+
+  it('detects structural coverage gap: intr ##/src ## < 60% (天干 truncated form)', () => {
+    // 天干篇残缺形态：source 10 个 ##（十天干），intr 只覆盖辛壬癸 + 统会（4 个 ##）
+    const source = [
+      '## 甲木', '## 乙木', '## 丙火', '## 丁火', '## 戊土',
+      '## 己土', '## 庚金', '## 辛金', '## 壬水', '## 癸水',
+    ].join('\n\n')
+    const body = '辛金软弱温润而清，畏土之叠乐水之盈，论命者见辛金透干须辨其与丙合化之机。'.repeat(4)
+    const intr = [
+      '## 辛金软弱，温润而清', `> 【原文】辛金软弱。\n\n${body}`,
+      '## 壬水通河，周流不滞', `> 【原文】壬水通河。\n\n${body}`,
+      '## 癸水至弱，达于天津', `> 【原文】癸水至弱。\n\n${body}`,
+      '## 全篇之统会', `${body}`,
+    ].join('\n\n')
+    const result = runSelfCheckLite(intr, source)
+    expect(result.fatal).toBeGreaterThan(0)
+    expect(result.issues.fatal.some(i => i.includes('结构覆盖缺失'))).toBe(true)
+    // issue 应列出 source 全部 ## 节名作为"应覆盖清单"（含甲木、乙木...）
+    expect(result.issues.fatal.some(i => i.includes('甲木'))).toBe(true)
+    expect(result.issues.fatal.some(i => i.includes('癸水'))).toBe(true)
+    expect(result.score).toBeLessThan(4) // 触发重写
+  })
+
+  it('passes structural coverage: intr ##/src ## ≥ 60% (何知 normal form)', () => {
+    // 何知篇正常形态：source 8 个 ##，intr 9 个 ##（LLM 改写标题，但数量达标）→ 不命中
+    const source = [
+      '## 何知其人富', '## 何知其人贵', '## 何知其人贫', '## 何知其人贱',
+      '## 何知其人吉', '## 何知其人凶', '## 何知其人寿', '## 何知其人夭',
+    ].join('\n\n')
+    const body = '财气通门户官星有理会，论命者见此当辨财官之清浊与气势之顺逆。'.repeat(4)
+    const intr = [
+      '## 财气通门户', body, '## 官星有理会', body, '## 财神反不真', body, '## 官星还不见', body,
+      '## 喜神为辅弼', body, '## 忌神辗转攻', body, '## 性定元神厚', body, '## 气浊神枯了', body,
+      '## 命局吉凶对照图', body,
+    ].join('\n\n')
+    const result = runSelfCheckLite(intr, source)
+    expect(result.issues.fatal.some(i => i.includes('结构覆盖缺失'))).toBe(false)
+  })
+
+  it('skips coverage check when source ## < 5 (短篇不适用)', () => {
+    // source 仅 3 个 ##（< 5）→ 跳过覆盖检测，即使 intr 只有 1 个 ## 也不命中
+    const source = '## 甲木\n\n## 乙木\n\n## 丙火'
+    const body = '此篇以两造对看把君象之法从抽象理论落到具体命局，论命者当细辨君臣之强弱与火以行之枢机。'.repeat(8)
+    const intr = `## 全篇统会\n\n${body}`
+    const result = runSelfCheckLite(intr, source)
+    expect(result.issues.fatal.some(i => i.includes('结构覆盖缺失'))).toBe(false)
+  })
+
+  it('skips coverage check when source not passed (向后兼容)', () => {
+    // 不传 source 参数 → 覆盖检测不触发（向后兼容现有调用方）
+    const body = '此造与上造对比鲜明，群比争财之象已成，局中偏偏缺火以行之。'.repeat(12)
+    const text = `## 辛金软弱\n\n> 【原文】辛金。\n\n${body}\n\n## 全篇之统会\n\n${body}`
+    const result = runSelfCheckLite(text) // 不传 source
+    expect(result.issues.fatal.some(i => i.includes('结构覆盖缺失'))).toBe(false)
+  })
 })

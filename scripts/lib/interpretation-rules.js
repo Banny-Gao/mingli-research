@@ -109,6 +109,18 @@ export const INTERPRETATION_RULES = {
       promptDesc:
         '文件首/末出现单独成行的 ``` 围栏（不得用 markdown code fence 包裹整个 interpretation.md；文档中部的 ```mermaid / ```html 等代码块属合法用法）',
     },
+    {
+      id: 'structural-incompleteness',
+      label: '结构残缺',
+      // 篇幅信号：去 blockquote 与空白后有效正文 < 600 字符 → 判残缺。
+      // 解决 adaptive thinking 吃预算致 end_turn 提前停、产出"语法完整但结构残缺"的隐性截断。
+      // 实际检测在 self-check-lite.js 的 checkStructuralCompleteness 内特判（regex: null）。
+      // 不检测收束节存在性——产出末节写法高度多样（## / ### / 无标题收束段），正则无法穷举且误伤正常篇。
+      // "内容覆盖缺失"（如天干篇跳过甲~戊 6 干）检测不到，留待 self-check v2 LLM 评估器。
+      regex: null,
+      promptDesc:
+        '结构残缺：有效正文（去 blockquote 与空白）不少于 600 字符；adaptive thinking 模式下须控制 thinking 预算，确保正文走完 SPEC §五 Steps 3-9 全流程，篇幅过短判为结构残缺，强制重写',
+    },
   ],
 
   format: [

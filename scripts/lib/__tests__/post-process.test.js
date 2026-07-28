@@ -70,7 +70,7 @@ describe('postProcessOutput', () => {
       '- 致命错误：0 项',
       '- 合规分：5 分',
     ].join('\n')
-    const out = postProcessOutput(input, '测试篇')
+    const out = postProcessOutput(input)
     expect(out.startsWith('```')).toBe(false)
     expect(out).not.toContain('内部自评')
     expect(out).not.toContain('合规分')
@@ -80,21 +80,8 @@ describe('postProcessOutput', () => {
 
   it('strips tail fence', () => {
     const input = '## 标题\n\n正文。\n```'
-    const out = postProcessOutput(input, '测试篇')
+    const out = postProcessOutput(input)
     expect(out).not.toMatch(/\n```\s*$/)
     expect(out).toContain('正文。')
-  })
-
-  it('appends closing section when output is truncated mid-sentence', () => {
-    const input = '## 标题\n\n这是被截断的正文，没有句号收尾'
-    const out = postProcessOutput(input, '测试篇')
-    expect(out).toMatch(/##\s*此篇在命学体系中之位置/)
-    expect(out).toContain('《测试篇》')
-  })
-
-  it('does NOT append closing section when output ends cleanly', () => {
-    const input = '## 标题\n\n正文结束。'
-    const out = postProcessOutput(input, '测试篇')
-    expect(out).not.toMatch(/##\s*此篇在命学体系中之位置/)
   })
 })

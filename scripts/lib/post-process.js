@@ -1,12 +1,16 @@
 /**
- * scripts/lib/post-process.js — LLM 输出后处理（剥离围栏 / 自评 / 补截断收束）
+ * scripts/lib/post-process.js — LLM 输出后处理（剥离围栏 / 自评）
  *
- * 三个常见问题：
+ * 两个常见问题：
  * 1. LLM 把整篇输出包在 ```markdown ... ``` 围栏里
  * 2. LLM 在正文后追加「内部自评 / 合规分 5 分」元评估段
- * 3. 输出超长被 max_tokens 截断（缺 ## 此篇在命学体系中之位置 收束节）
  *
  * 纯函数，无副作用，方便独立单测。
+ *
+ * 注：曾含「文末截断时补收束节」逻辑，因硬编码书名致跨书污染（千里命稿套话套到
+ * 他书）且补节会绕过 self-check 截断检测，已删除。截断检测统一由 self-check-lite 的
+ * tail-truncation 规则（末行半句无句号）+ 篇幅检测 + 覆盖检测三层把关，触发 MAX_REWRITE
+ * 让 LLM 重写真实收束节。
  */
 
 /**
@@ -35,9 +39,10 @@ export function stripTailSelfEval(text) {
 }
 
 /**
- * 后处理 LLM 输出：剥离游离的 ``` 围栏、剥离末尾的自评段、补充截断时的收束节。
+ * 后处理 LLM 输出：剥离游离的 ``` 围栏、剥离末尾的自评段。
+ * @param {string} text
  */
-export function postProcessOutput(text, chapter) {
+export function postProcessOutput(text) {
   let out = text
 
   // 1. 剥离头部的 ```markdown / ```md / ``` 围栏行（单独的 fence）
@@ -53,31 +58,6 @@ export function postProcessOutput(text, chapter) {
 
   // 3. 剥离末尾的「内部自评 / 合规分」段（防 LLM 越界输出元评估）
   out = stripTailSelfEval(out)
-
-  // 4. 文末截断时补充「## 此篇在命学体系中之位置」收束节
-  //    判定：文末 200 字符内没有「## 此篇在命学体系中之位置」节 + 末行不以句号/问号/感叹号/分号/冒号/引号收尾
-  const tailSnippet = out.slice(-200)
-  const hasClosingSection = /##\s*此篇在命学体系中之位置/.test(tailSnippet)
-  // 文末的最后一个非空字符
-  const trimmedEnd = out.replace(/\s+$/, '')
-  const lastChar = trimmedEnd.slice(-1)
-  const endsCleanly = /[。！？；：）」』"”’]/.test(lastChar)
-
-  if (!hasClosingSection && !endsCleanly) {
-    // 截断：以最近的一个完整句号切断，再补收束节
-    const lastPeriod = trimmedEnd.lastIndexOf('。')
-    const lastQ = trimmedEnd.lastIndexOf('？')
-    const lastE = trimmedEnd.lastIndexOf('！')
-    const cutAt = Math.max(lastPeriod, lastQ, lastE)
-    if (cutAt > trimmedEnd.length * 0.5) {
-      // 找到的句末位置在后半部分 → 在此处切断
-      out = trimmedEnd.slice(0, cutAt + 1) + '\n\n'
-    } else {
-      // 没找到合适句末 → 仅补收束节
-      out = trimmedEnd + '\n\n'
-    }
-    out += `## 此篇在命学体系中之位置\n\n此篇为千里命稿之《${chapter}》。文中所论之理，与命学体系中之核心议题相互呼应，于初学者之进学路径与研究者之体系构建，皆有其不可替代之位次。读者宜以此篇为阶梯之一级，由此上溯命学本源、下贯实务应用，则命学之全体大用，自能融会贯通而不滞于偏隅。\n`
-  }
 
   return out
 }

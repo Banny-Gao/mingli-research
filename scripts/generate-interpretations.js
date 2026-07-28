@@ -16,19 +16,26 @@ import { parseCliArgs } from './lib/generate-interpretations-cli.js'
 import { resolveConfig, ConfigError, ANTHROPIC_SCHEMA } from './lib/env.js'
 import { loadSpecBundle } from './lib/spec-bundle.js'
 import { generateInterpretations } from './lib/llm-batch.js'
-import { progressBar, formatDuration } from './lib/utils.js'
+import { formatDuration } from './lib/utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
 
-function resolveChapters(slug, requested) {
-  const catalogPath = path.join(ROOT, `books/${slug}/catalog.md`)
+export function resolveChapters(slug, requested, projectRoot = ROOT) {
+  const catalogPath = path.join(projectRoot, `books/${slug}/catalog.md`)
   if (!fs.existsSync(catalogPath)) {
     throw new Error(`找不到 books/${slug}/catalog.md`)
   }
   const catalog = fs.readFileSync(catalogPath, 'utf-8')
   // 提取所有篇章名（从表格中）
   const allChapters = [...catalog.matchAll(/^\|\s*\d+\s*\|\s*([^|]+?)\s*\|/gm)].map(m => m[1].trim())
+
+  // F: catalog 格式不符正则时静默返回空数组 → 批量会"成功 0 篇"误导用户，显式报错
+  if (allChapters.length === 0) {
+    throw new Error(
+      `books/${slug}/catalog.md 未解析到任何篇章（表格需为「| 序号 | 篇名 |」格式，检查 catalog.md 是否改版或缺少数字序号列）`
+    )
+  }
 
   if (!requested) return allChapters // 整本
   // 精确匹配 + 模糊匹配
@@ -51,6 +58,7 @@ function printDryRun(slug, chapters) {
   chapters.forEach((c, i) => console.log(`  ${i + 1}. ${c}`))
   const estimatedMs = chapters.length * 60_000 // 每篇 60s 估算
   console.log(`\n预计耗时: ${formatDuration(estimatedMs)}`)
+  console.log(`\n⚠️ 质量优先建议：批量前先单点跑 1 篇（node scripts/generate-interpretations.js ${slug} ${chapters[0]} --force）人工验收，确认 SPEC/评估器无系统性偏差后再批量。`)
   console.log(`\n实跑命令: node scripts/generate-interpretations.js ${slug} ${chapters.join(',')} --force\n`)
 }
 
@@ -90,6 +98,13 @@ async function main() {
   const start = Date.now()
   const specBundle = loadSpecBundle(args.slug, { projectRoot: ROOT })
 
+  // 友好日志：每篇开始/完成各一行（行式而非覆盖式，并发友好）
+  // —— 单篇 LLM 调用含 thinking + 大 max_tokens，可能耗时数十秒到数分钟，
+  //   无中途反馈会像卡住。onChapterStart 打开始行，onStreamTick 每 ~3s 打一次心跳（覆盖式），
+  //   onProgress 打完成行（先 \n 把覆盖的心跳"推"到上一行）。
+  const chapterStartTimes = new Map()
+  const padNum = n => String(n).padStart(String(chapters.length).length, ' ')
+
   const results = await generateInterpretations({
     slug: args.slug,
     chapters,
@@ -97,13 +112,28 @@ async function main() {
     config,
     projectRoot: ROOT,
     force: args.force,
-    onProgress: (current, total, chapter, status) => {
-      const bar = progressBar(current, total)
-      process.stdout.write(`\r${bar} ${chapter.padEnd(12)} ${status}    `)
+    onChapterStart: (current, total, chapter) => {
+      chapterStartTimes.set(chapter, Date.now())
+      console.log(`[${padNum(current)}/${total}] ▶ 开始  ${chapter}`)
+    },
+    onStreamTick: ({ chars, phase }) => {
+      // 覆盖式心跳（节流 3s 一次，由 callOnce 控制）。完成行前会换行收尾。
+      const tag = phase === 'thinking' ? '🧠 思考中' : '✍️  生成中'
+      process.stdout.write(`\r  ⏳ ${tag}  已输出 ${chars} 字符`)
+    },
+    onProgress: (current, total, chapter, status, result) => {
+      // 先换行：把可能正在覆盖的心跳行"收"成上一行，让完成行落到新行
+      process.stdout.write('\n')
+      const elapsed = chapterStartTimes.has(chapter)
+        ? formatDuration(Date.now() - chapterStartTimes.get(chapter))
+        : '?'
+      const tag = STATUS_TAG[status] || status
+      const detail = formatResultDetail(result)
+      console.log(`[${padNum(current)}/${total}] ${tag} ${chapter}  (${elapsed}${detail})`)
     },
   })
 
-  console.log(`\n\n# 收尾报告`)
+  console.log(`\n# 收尾报告`)
   console.log(`总耗时: ${formatDuration(Date.now() - start)}`)
   const success = results.filter(r => r.status === 'success').length
   const failed = results.filter(r => r.status === 'failed').length
@@ -120,8 +150,35 @@ async function main() {
   process.exit(failed > 0 ? 1 : 0)
 }
 
-main().catch(err => {
-  console.error(`\n❌ 致命错误: ${err.message}\n`)
-  console.error(err.stack)
-  process.exit(1)
-})
+// 状态 → 单字标签 + emoji（终端可读）
+const STATUS_TAG = {
+  success: '✅ 完成',
+  failed: '❌ 失败',
+  skipped: '⏭ 跳过',
+}
+
+/**
+ * 把 result 的分数/原因格式化为日志后缀（成功带分数、失败/跳过带原因）。
+ * @param {{status: string, score?: number, contentScore?: number, reason?: string}} [result]
+ * @returns {string}
+ */
+function formatResultDetail(result) {
+  if (!result) return ''
+  if (result.status === 'success') {
+    const parts = []
+    if (typeof result.score === 'number') parts.push(`格式 ${result.score}/5`)
+    if (typeof result.contentScore === 'number') parts.push(`内容 ${result.contentScore}/5`)
+    return parts.length ? ` · ${parts.join(' / ')}` : ''
+  }
+  if (result.reason) return ` · ${result.reason}`
+  return ''
+}
+
+// 仅当作为脚本直接运行时执行 main（被 import 时不自动运行，便于单测 import resolveChapters）
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(err => {
+    console.error(`\n❌ 致命错误: ${err.message}\n`)
+    console.error(err.stack)
+    process.exit(1)
+  })
+}
