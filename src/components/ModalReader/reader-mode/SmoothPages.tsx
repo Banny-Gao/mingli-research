@@ -32,6 +32,15 @@ export function SmoothPages(
       if (!vp) return
       vp.scrollLeft = currentPage * vp.clientWidth - deltaX
     },
+    // 手势层 touch-action: none 吞掉原生纵向滚动，手动转发给当前页
+    // （单个 block 高于页高时，greedyPackPages 让其独占一页并溢出，
+    //   不转发则溢出内容永远读不到）
+    onVerticalPan: deltaY => {
+      const vp = viewportRef.current
+      if (!vp) return
+      const page = vp.querySelector<HTMLElement>(`.smooth-page[data-page="${currentPage}"]`)
+      if (page) page.scrollTop -= deltaY
+    },
   })
 
   // goToPage 被调用时（手势/点击），GSAP 滚到目标页

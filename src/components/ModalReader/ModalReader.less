@@ -160,6 +160,16 @@
     padding: 1rem;
     box-sizing: border-box;
     touch-action: pan-y;
+    /* 单个 block（如滴天髓长注文）高于页高时会独占一页并溢出，
+       保留细滚动条作为"还有内容"的视觉提示 */
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+      width: 0.1875rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border-hover);
+      border-radius: 0.125rem;
+    }
   }
 
   /* 手势层：覆盖在 .smooth-track 之上，确保 Hammer.js 能收到触摸事件。
@@ -200,6 +210,15 @@
     padding: 1rem;
     box-sizing: border-box;
     background: var(--color-bg-card);
+    /* 同 .smooth-page：超高 block 溢出时保留滚动条提示 */
+    scrollbar-width: thin;
+    &::-webkit-scrollbar {
+      width: 0.1875rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border-hover);
+      border-radius: 0.125rem;
+    }
   }
 
   .flip-gesture-layer {

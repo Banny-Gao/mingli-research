@@ -10,7 +10,7 @@ import {
 
 describe('MODAL_TYPES / ModalType', () => {
   it('MODAL_TYPES 为不可变元组', () => {
-    expect(MODAL_TYPES).toEqual(['interp', 'source'])
+    expect(MODAL_TYPES).toEqual(['interp', 'source', 'skill'])
   })
 
   it('ModalType 派生 = MODAL_TYPES 元素联合', () => {
@@ -25,11 +25,11 @@ describe('isModalType', () => {
   it('合法值 → true', () => {
     expect(isModalType('interp')).toBe(true)
     expect(isModalType('source')).toBe(true)
+    expect(isModalType('skill')).toBe(true)
   })
 
   it('非法值 → false', () => {
     expect(isModalType('pdf')).toBe(false)
-    expect(isModalType('skill')).toBe(false)
     expect(isModalType('')).toBe(false)
     expect(isModalType(null)).toBe(false)
     expect(isModalType(undefined)).toBe(false)
@@ -46,11 +46,19 @@ describe('MODAL_TYPE_CAPS', () => {
       expect(caps.proseClass).toBe('prose-content')
     }
   })
+
+  it('skill 不可标注、不翻页、有 proseClass', () => {
+    const caps = MODAL_TYPE_CAPS.skill
+    expect(caps.allowsAnnotation).toBe(false)
+    expect(caps.supportsPagination).toBe(false)
+    expect(caps.proseClass).toBe('prose-content')
+  })
 })
 
 describe('MODAL_TYPE_LABEL', () => {
   it('每个类型都有中英文标签', () => {
     expect(MODAL_TYPE_LABEL.interp).toBe('解读')
     expect(MODAL_TYPE_LABEL.source).toBe('原文')
+    expect(MODAL_TYPE_LABEL.skill).toBe('技能')
   })
 })

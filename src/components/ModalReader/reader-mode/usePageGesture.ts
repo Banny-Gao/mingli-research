@@ -15,6 +15,8 @@ interface UsePageGestureOptions {
   onCenterTap?: () => void
   /** 滑动中的位移量（仅 SmoothPages 用于实时跟手滚动） */
   onPanMove?: (deltaX: number) => void
+  /** 纵向滑动增量：用于滚动超出页高的 block（手势层 touch-action: none 吞掉了原生滚动） */
+  onVerticalPan?: (deltaY: number) => void
 }
 
 interface GestureCallbacks {
@@ -22,6 +24,7 @@ interface GestureCallbacks {
   goToPage: (page: number) => void
   onCenterTap?: () => void
   onPanMove?: (deltaX: number) => void
+  onVerticalPan?: (deltaY: number) => void
 }
 
 /** 触发翻页的速度阈值（velocityX 绝对值）。不同设备 velocityX 数值差异大，
@@ -55,6 +58,7 @@ export function usePageGesture(opts: UsePageGestureOptions) {
     goToPage: opts.goToPage,
     onCenterTap: opts.onCenterTap,
     onPanMove: opts.onPanMove,
+    onVerticalPan: opts.onVerticalPan,
   })
 
   useEffect(() => {
@@ -63,8 +67,15 @@ export function usePageGesture(opts: UsePageGestureOptions) {
       goToPage: opts.goToPage,
       onCenterTap: opts.onCenterTap,
       onPanMove: opts.onPanMove,
+      onVerticalPan: opts.onVerticalPan,
     }
-  }, [opts.currentPage, opts.goToPage, opts.onCenterTap, opts.onPanMove])
+  }, [
+    opts.currentPage,
+    opts.goToPage,
+    opts.onCenterTap,
+    opts.onPanMove,
+    opts.onVerticalPan,
+  ])
 
   useEffect(() => {
     const el = containerRef.current
@@ -73,7 +84,7 @@ export function usePageGesture(opts: UsePageGestureOptions) {
     const hammer = new Hammer.Manager(el, { touchAction: 'none' })
 
     const pan = new Hammer.Pan({
-      direction: Hammer.DIRECTION_HORIZONTAL,
+      direction: Hammer.DIRECTION_ALL,
       threshold: PAN_THRESHOLD_PX,
     })
     hammer.add(pan)
@@ -85,17 +96,42 @@ export function usePageGesture(opts: UsePageGestureOptions) {
     pan.recognizeWith(tap)
 
     let cumulativeDeltaX = 0
+    // 每次 pan 的主导轴。手势层 touch-action: none 吞掉了原生纵向滚动，
+    // 故纵向必须由此处手动转发给页面容器，否则超出页高的 block 无法阅读。
+    let axis: 'none' | 'x' | 'y' = 'none'
+    let lastDeltaY = 0
 
     hammer.on('panstart', () => {
       cumulativeDeltaX = 0
+      axis = 'none'
+      lastDeltaY = 0
     })
 
     hammer.on('panmove', e => {
-      cumulativeDeltaX = e.deltaX
-      callbacksRef.current.onPanMove?.(e.deltaX)
+      // 首次超过阈值时锁定主导轴，避免斜向滑动时翻页与滚动互相抢夺
+      if (axis === 'none') {
+        const absX = Math.abs(e.deltaX)
+        const absY = Math.abs(e.deltaY)
+        if (absX < PAN_THRESHOLD_PX && absY < PAN_THRESHOLD_PX) return
+        axis = absX > absY ? 'x' : 'y'
+        // 不在此设 lastDeltaY：锁轴帧的位移是真实手指行程，
+        // 保持基线 0 让它随下方逻辑一起发出，避免丢掉首帧滚动量
+      }
+
+      if (axis === 'x') {
+        cumulativeDeltaX = e.deltaX
+        callbacksRef.current.onPanMove?.(e.deltaX)
+      } else {
+        // 转发增量（非累计值），由消费者叠加到 scrollTop
+        callbacksRef.current.onVerticalPan?.(e.deltaY - lastDeltaY)
+        lastDeltaY = e.deltaY
+      }
     })
 
     hammer.on('panend', e => {
+      // 纵向滑动不触发翻页
+      if (axis === 'y') return
+
       const pageWidth = el.clientWidth
       if (pageWidth <= 0) return
 

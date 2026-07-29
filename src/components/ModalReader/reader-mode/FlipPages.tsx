@@ -72,6 +72,15 @@ export function FlipPages(
     totalPages: pageMds.length,
     goToPage,
     onCenterTap,
+    // 手势层 touch-action: none 吞掉原生纵向滚动，手动转发给可见页。
+    // page-flip 会把 .flip-book-page 搬进内部 distElement，故从 stage 内按序号取。
+    onVerticalPan: deltaY => {
+      const stage = containerRef.current
+      if (!stage) return
+      const pages = stage.querySelectorAll<HTMLElement>('.flip-book-page')
+      const page = pages[currentPage]
+      if (page) page.scrollTop -= deltaY
+    },
   })
 
   // 跟踪上一页，判断翻页方向
