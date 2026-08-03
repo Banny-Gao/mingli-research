@@ -22,6 +22,8 @@ import {
 
 const DEFAULT_RETRY_BASE_MS = 2000
 const MAX_REWRITE = 3
+// 内容门重写轮数：格式门过后评估器 <4 → 注入评估器 issues 整篇重写，最多 2 轮
+const MAX_CONTENT_REWRITE = 2
 // 单篇按段修复的最大轮数。每轮逐段串行修复；2 轮修不好说明问题不是局部措辞，
 // 继续修不如退回整篇重生成（由外层 MAX_REWRITE 兜底）。注意：此上限是"每次重写尝试内"的，
 // 病态文件最多 3 次重写尝试 × 2 轮修复。
@@ -87,6 +89,19 @@ function formatFormatIssuesBlock(issues) {
     lines.push('### 格式问题（必须修正）')
     issues.format.forEach(i => lines.push(`- ${i}`))
   }
+  return lines.join('\n')
+}
+
+/**
+ * 把内容质量评估器的 issues 格式化为注入下轮 prompt 的文本块。
+ * 评估器输出 {item, desc}（item=表层覆盖缺失|曲解原义|通俗性不足|行文突兀跳跃）。
+ * @param {Array<{item: string, desc: string}>} issues
+ * @returns {string} 注入文本（无问题时返回空串）
+ */
+function formatContentIssuesBlock(issues) {
+  if (!issues || issues.length === 0) return ''
+  const lines = ['### 内容质量问题（必须修正）']
+  issues.forEach(i => lines.push(`- [${i.item}] ${i.desc}`))
   return lines.join('\n')
 }
 
@@ -277,9 +292,29 @@ async function generateOne({
     userForRound = user + `\n\n## 上一次命中致命/格式规则（必须修正后再交）\n\n${issuesBlock}\n\n请重新生成，确保上述问题均已解决。`
   }
 
-  // A: 落盘前跑一次内容质量评估器（格式门已过，才值得花这次调用）。
-  // 评估器失败 → 降级放行（score=5）；内容不过 → 写 .lastfailed + .lasteval 不落盘，供人工介入。
-  const contentEval = await evaluateContent({ output, sourceText, config, client, signal, retryBaseMs })
+  // A: 落盘前跑内容质量评估器（格式门已过，才值得花这次调用）。
+  // 评估器失败 → 降级放行（score=5）；内容不过 → 注入评估器 issues 整篇重写（≤2 轮），
+  // 仍不过才写 .lastfailed + .lasteval 供人工介入。
+  let contentEval = await evaluateContent({ output, sourceText, config, client, signal, retryBaseMs })
+  let contentRewrites = 0
+  while (contentEval.score < 4 && !contentEval.failed && contentRewrites < MAX_CONTENT_REWRITE) {
+    const contentIssues = formatContentIssuesBlock(contentEval.issues)
+    userForRound = user + `\n\n## 内容质量评估未达标（必须修正后再交）\n\n${contentIssues}`
+    output = await callLLM(client, {
+      model: config.model,
+      system,
+      messages: [{ role: 'user', content: userForRound }],
+      maxTokens: llmParams.maxTokens,
+      signal,
+      retryBaseMs,
+      extendedThinking: llmParams.extendedThinking,
+      continuePrompt,
+      onStreamTick,
+    })
+    output = postProcessOutput(output)
+    contentRewrites++
+    contentEval = await evaluateContent({ output, sourceText, config, client, signal, retryBaseMs })
+  }
   if (contentEval.score < 4 && !contentEval.failed) {
     return buildFailure(chapter, output, sourceText, lastCheck, contentEval, outputPath, 'content')
   }
@@ -298,6 +333,7 @@ async function generateOne({
     status: 'success',
     score,
     contentScore: contentEval.score,
+    contentRewrites,
     repairedBySegment,
   }
 }
@@ -305,7 +341,7 @@ async function generateOne({
 /**
  * 构造失败结果。E：失败 report 聚合 fatal/format/content 三类问题清单，便于人工诊断。
  * 保留 .lastfailed 供分析（评估器若跑过，一并写 .lasteval 保留评估结果）。
- * @param {'format'|'content'} kind — 格式门失败（重写 N 次仍未过）vs 内容门失败（落盘前评估未达 4 分）
+ * @param {'format'|'content'} kind — 格式门失败（重写 N 次仍未过）vs 内容门失败（重写 2 轮后评估仍未达 4 分）
  */
 function buildFailure(chapter, output, sourceText, check, contentEval, outputPath, kind) {
   fs.writeFileSync(`${outputPath}.lastfailed`, output, 'utf-8')

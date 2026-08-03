@@ -807,9 +807,10 @@ describe('content evaluator gating (A)', () => {
     }))
   }
 
-  it('content score < 4 → status=failed, 不落盘, 写 .lastfailed+.lasteval, 不重写', async () => {
+  it('content score < 4 persists → status=failed after 2 content rewrites, 不落盘, 写 .lastfailed+.lasteval', async () => {
     const { evaluateContent } = await import('../content-evaluator.js')
-    evaluateContent.mockResolvedValueOnce({
+    // 连续 3 次评估都不过（初始 + 2 次重写后）→ 仍失败
+    evaluateContent.mockResolvedValue({
       score: 3,
       issues: [{ item: '表层覆盖缺失', desc: '甲木一节未解读' }],
       failed: false,
@@ -834,13 +835,48 @@ describe('content evaluator gating (A)', () => {
 
     expect(results[0].status).toBe('failed')
     expect(results[0].reason).toContain('内容') // 失败原因含内容评估
-    // 内容门不过不重写：LLM 只调用 1 次（格式门一次过，无重写轮）
-    expect(capturedPrompts).toHaveLength(1)
+    // 内容门不过 → 注入 issues 重写 2 轮：LLM 调用 1 次整篇 + 2 次内容重写 = 3 次
+    expect(capturedPrompts).toHaveLength(3)
+    // 重写轮 prompt 必须含评估器 issues
+    expect(capturedPrompts[1]).toContain('内容质量评估未达标')
+    expect(capturedPrompts[1]).toContain('甲木一节未解读')
     // 不落盘 interpretation.md，写 .lastfailed + .lasteval
     const outPath = path.join(dir, 'interpretation.md')
     expect(fs.existsSync(outPath)).toBe(false)
     expect(fs.existsSync(`${outPath}.lastfailed`)).toBe(true)
     expect(fs.existsSync(`${outPath}.lasteval`)).toBe(true)
+  })
+
+  it('content score improves after rewrite → success, 落盘, 记录 contentRewrites', async () => {
+    const { evaluateContent } = await import('../content-evaluator.js')
+    // 初始 3 分（不过）→ 第 1 次重写后 5 分（过）→ 落盘
+    evaluateContent
+      .mockResolvedValueOnce({ score: 3, issues: [{ item: '曲解原义', desc: '案例三命造被误置' }], failed: false })
+      .mockResolvedValueOnce({ score: 5, issues: [], failed: false })
+
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const capturedPrompts = []
+    mockCleanLLM(Anthropic, capturedPrompts)
+
+    const dir = path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/eval-ok-chap`)
+    fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(path.join(dir, 'source.md'), '# 原文\n\n内容。', 'utf-8')
+
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['eval-ok-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(results[0].contentScore).toBe(5)
+    expect(results[0].contentRewrites).toBe(1)
+    // 重写 prompt 含注入的评估器 issues
+    expect(capturedPrompts[1]).toContain('案例三命造被误置')
+    expect(fs.existsSync(path.join(dir, 'interpretation.md'))).toBe(true)
   })
 
   it('content score >= 4 → status=success, 落盘', async () => {

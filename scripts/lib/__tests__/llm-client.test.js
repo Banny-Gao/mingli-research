@@ -90,4 +90,32 @@ describe('callLLM', () => {
     await expect(callLLM(client, { system: 'sys', messages: [{ role: 'user', content: 'x' }], maxTokens: 100 })).rejects.toThrow(/LLM 未返回文本内容/)
     expect(mockCreate).toHaveBeenCalledTimes(1)
   })
+
+  // === 续轮条件：thinking-only + end_turn（minimax M3[1m] 实测形态）===
+  // 八格失败根因：minimax M3[1m] 的 thinking 吃完预算后返回 content:[thinking] + end_turn
+  // （无 max_tokens 截断标记），修复前直接抛「LLM 未返回文本内容」。
+  it('continues when response has only thinking + end_turn (thinking 耗尽预算提前停)', async () => {
+    mockCreate.mockResolvedValueOnce(makeResponse({ text: null, stopReason: 'end_turn', thinking: { text: 'deep thinking...', signature: 'sig-end' } }))
+    mockCreate.mockResolvedValueOnce(makeResponse({ text: '正文输出。' }))
+    const client = createLLMClient({ apiKey: 'sk-test', baseUrl: 'https://api.test' })
+    const result = await callLLM(client, { system: 'sys', messages: [{ role: 'user', content: '写' }], maxTokens: 1024, extendedThinking: true })
+    expect(result).toBe('正文输出。')
+    expect(mockCreate).toHaveBeenCalledTimes(2)
+    const secondCall = mockCreate.mock.calls[1][0]
+    expect(secondCall.messages[1].role).toBe('assistant')
+    expect(secondCall.messages[1].content).toEqual([{ type: 'thinking', thinking: 'deep thinking...', signature: 'sig-end' }])
+    expect(secondCall.messages[2]).toEqual({ role: 'user', content: '请继续。' })
+  })
+
+  it('exhausts continuations and still throws when only thinking + end_turn persists', async () => {
+    // 连续 5 轮都是 thinking-only + end_turn → 续轮上限耗尽后仍无文本 → 抛错（不无限续轮）
+    const responses = Array.from({ length: 6 }, () =>
+      makeResponse({ text: null, stopReason: 'end_turn', thinking: { text: 'still thinking', signature: 'sig' } })
+    )
+    responses.forEach(r => mockCreate.mockResolvedValueOnce(r))
+    const client = createLLMClient({ apiKey: 'sk-test', baseUrl: 'https://api.test' })
+    await expect(
+      callLLM(client, { system: 'sys', messages: [{ role: 'user', content: '写' }], maxTokens: 1024, extendedThinking: true })
+    ).rejects.toThrow('LLM 未返回文本内容')
+  })
 })

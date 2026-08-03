@@ -174,6 +174,8 @@ const STATUS_TAG = {
 
 /**
  * 把 result 的分数/原因格式化为日志后缀（成功带分数、失败/跳过带原因）。
+ * 失败/跳过的原因在进度行只取首行 + 条数摘要（完整原因见收尾报告的失败篇章列表，
+ * 避免 2000+ 字符的评估器详情在同一终端打两遍）。
  * @param {{status: string, score?: number, contentScore?: number, reason?: string, repairedBySegment?: boolean}} [result]
  * @returns {string}
  */
@@ -186,8 +188,10 @@ function formatResultDetail(result) {
     if (result.repairedBySegment) parts.push('按段修复')
     return parts.length ? ` · ${parts.join(' / ')}` : ''
   }
-  if (result.reason) return ` · ${result.reason}`
-  return ''
+  if (!result.reason) return ''
+  // 失败/跳过：取「原因分类 + 条数」，丢弃评估器的逐条细节（收尾报告会完整列出）
+  const brief = result.reason.split(' — ')[0]
+  return ` · ${brief}`
 }
 
 // 仅当作为脚本直接运行时执行 main（被 import 时不自动运行，便于单测 import resolveChapters）

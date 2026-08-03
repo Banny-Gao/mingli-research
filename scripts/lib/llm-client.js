@@ -150,7 +150,13 @@ export async function callLLM(client, opts = {}) {
     const textThisRound = extractText(response)
     if (textThisRound) allText += textThisRound
     const truncated = response.stop_reason === 'max_tokens'
-    if (truncated && continuations < MAX_CONTINUATIONS) {
+    // 续轮条件：没产出文本 = 模型还没写完。
+    // (a) 截断（max_tokens）；(b) thinking 耗尽预算以 end_turn 提前停、只回 thinking 块
+    //     （实测 minimax M3[1m]：thinking 吃完预算后返回 content:[thinking] + end_turn，
+    //       若只按 stop_reason 判断会直接抛「LLM 未返回文本内容」）。
+    // 两者都回灌 assistant content（含 thinking signature）续轮。
+    const hasOnlyThinking = !textThisRound && response.content.some(c => c.type === 'thinking')
+    if ((truncated || hasOnlyThinking) && continuations < MAX_CONTINUATIONS) {
       // 回灌 assistant 完整 content（含 thinking+signature 与已产出的部分 text）
       workingMessages.push({ role: 'assistant', content: response.content })
       workingMessages.push({ role: 'user', content: continuePrompt })
