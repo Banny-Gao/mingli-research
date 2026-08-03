@@ -503,7 +503,284 @@ describe('continuation anchor wiring (D integration)', () => {
   })
 })
 
-// === A: 内容评估器落盘前跑一次（格式门过后才调；内容<4 失败不重写不落盘）===
+// === 按段精确修复（取代整篇重生成）===
+// 纯逻辑由 segment-repair.test.js 覆盖；此处验证 generateOne 的接线：
+// 格式门不过时先走按段修，修好即落盘、不再整篇重生成。
+describe('segment repair integration', () => {
+  let TMP_ROOT
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    TMP_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-batch-seg-'))
+  })
+  afterEach(() => {
+    if (TMP_ROOT) fs.rmSync(TMP_ROOT, { recursive: true, force: true })
+  })
+
+  const LONG = '此言方局与三合之别，论命者当细辨其气之专杂与势之顺逆，方不致误判用神。'
+  // 3 段，仅第 3 段含「本解读」→ 1/3 段受影响（未超 50% 上限），可按段修
+  const DIRTY = `## 甲\n\n${LONG.repeat(10)}\n\n## 乙\n\n${LONG.repeat(10)}\n\n## 丙\n\n本解读认为此为纲。${LONG.repeat(8)}`
+  const CLEAN_SEG = `## 丙\n\n此为纲。${LONG.repeat(8)}`
+
+  function setupChapter(name) {
+    const dir = path.join(TMP_ROOT, `books/${TEST_SLUG}/articles/${name}`)
+    fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(path.join(dir, 'source.md'), '# 原文\n\n源文内容。', 'utf-8')
+    return dir
+  }
+
+  it('repairs only the offending segment and keeps others byte-identical', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const prompts = []
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(({ messages }) => {
+          idx++
+          prompts.push(messages[0].content)
+          // 第 1 次：整篇生成（含违规段）；第 2 次：按段修复请求 → 返回干净段
+          return Promise.resolve({ content: [{ type: 'text', text: idx === 1 ? DIRTY : CLEAN_SEG }] })
+        }),
+      },
+    }))
+
+    const dir = setupChapter('seg-chap')
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['seg-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(results[0].repairedBySegment).toBe(true)
+    // 恰好 2 次调用：1 次整篇生成 + 1 次单段修复（而非 2 次整篇重生成）
+    expect(prompts).toHaveLength(2)
+    // 第 2 次是按段修 prompt，只含违规段、不含整篇 SPEC 流水线
+    expect(prompts[1]).toContain('只修这一段')
+    expect(prompts[1]).toContain('本解读认为此为纲')
+    expect(prompts[1]).not.toContain('## 甲')
+
+    // 落盘内容：违规段已修，未受影响段落逐字保留
+    const written = fs.readFileSync(path.join(dir, 'interpretation.md'), 'utf-8')
+    expect(written).not.toContain('本解读')
+    expect(written).toContain(`## 甲\n\n${LONG.repeat(10)}`)
+    expect(written).toContain(`## 乙\n\n${LONG.repeat(10)}`)
+  })
+
+  it('falls back to full regeneration for structural incompleteness (内容缺失修不了)', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const prompts = []
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(({ messages }) => {
+          idx++
+          prompts.push(messages[0].content)
+          // 第 1 次：有效正文 170 字符（≥100 不豁免、<600 判残缺）→ 结构残缺，按段修无解
+          // 第 2 次：整篇重生成后篇幅达标（680 字符）
+          return Promise.resolve({
+            content: [
+              { type: 'text', text: idx === 1 ? `## 甲\n\n${LONG.repeat(5)}` : `## 甲\n\n${LONG.repeat(20)}` },
+            ],
+          })
+        }),
+      },
+    }))
+
+    setupChapter('struct-chap')
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['struct-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(results[0].repairedBySegment).toBeFalsy()
+    // 第 2 次必须是整篇重生成（含注入的问题清单），而非按段修
+    expect(prompts[1]).toContain('请重新生成')
+    expect(prompts[1]).not.toContain('只修这一段')
+  })
+
+  it('falls back to full regeneration when repair drops content (LLM 删内容守卫)', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const prompts = []
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(({ messages }) => {
+          idx++
+          prompts.push(messages[0].content)
+          if (idx === 1) return Promise.resolve({ content: [{ type: 'text', text: DIRTY }] })
+          // 第 2 次是按段修，但返回被大幅删减的段 → 应被 isRepairAcceptable 拒绝
+          if (idx === 2) return Promise.resolve({ content: [{ type: 'text', text: '## 丙\n\n短。' }] })
+          return Promise.resolve({ content: [{ type: 'text', text: `## 甲\n\n${LONG.repeat(20)}` }] })
+        }),
+      },
+    }))
+
+    setupChapter('drop-chap')
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['drop-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(results[0].repairedBySegment).toBeFalsy()
+    // 修复被拒 → 第 3 次走整篇重生成
+    expect(prompts[2]).toContain('请重新生成')
+  })
+
+  it('emits onSegmentRepair progress events', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(() => {
+          idx++
+          return Promise.resolve({ content: [{ type: 'text', text: idx === 1 ? DIRTY : CLEAN_SEG }] })
+        }),
+      },
+    }))
+
+    setupChapter('evt-chap')
+    const events = []
+    await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['evt-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+      onSegmentRepair: e => events.push(e),
+    })
+
+    expect(events.some(e => e.phase === 'start')).toBe(true)
+    expect(events.some(e => e.phase === 'success')).toBe(true)
+    const start = events.find(e => e.phase === 'start')
+    expect(start.segmentCount).toBe(1)
+    expect(start.headings).toEqual(['丙'])
+  })
+
+  it('emits retry event when round-1 repair still fails the gate, then succeeds round 2', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(() => {
+          idx++
+          // 1 整篇生成；2 第一轮修复仍含违规；3 第二轮修复干净
+          if (idx === 1) return Promise.resolve({ content: [{ type: 'text', text: DIRTY }] })
+          if (idx === 2) return Promise.resolve({ content: [{ type: 'text', text: '## 丙\n\n本解读仍在。' + LONG.repeat(8) }] })
+          return Promise.resolve({ content: [{ type: 'text', text: CLEAN_SEG }] })
+        }),
+      },
+    }))
+
+    setupChapter('retry-chap')
+    const events = []
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['retry-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+      onSegmentRepair: e => events.push(e),
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(results[0].repairedBySegment).toBe(true)
+    expect(events.map(e => e.phase)).toEqual(['start', 'retry', 'start', 'success'])
+    const retry = events.find(e => e.phase === 'retry')
+    expect(retry.round).toBe(1)
+    expect(typeof retry.score).toBe('number')
+  })
+
+  it('passes onStreamTick to the segment-repair call (修复期心跳不冻结)', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const repairTick = vi.fn()
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        // 不复用 mockStream（它要求 handler 返回 message 并包装成无事件流），
+        // 这里需要自定义流：第 2 次（修复调用）发 text delta 触发 onStreamTick
+        stream: async () => {
+          idx++
+          if (idx === 1) {
+            // 第 1 次：整篇生成（含违规段），无事件
+            return {
+              finalMessage: async () => ({ content: [{ type: 'text', text: DIRTY }], stop_reason: 'end_turn' }),
+              on: () => this,
+            }
+          }
+          // 第 2 次：按段修复，on('text') 立即触发一次心跳
+          return {
+            finalMessage: async () => ({ content: [{ type: 'text', text: CLEAN_SEG }], stop_reason: 'end_turn' }),
+            on: (event, fn) => {
+              if (event === 'text') fn('修', { length: 1 })
+              return this
+            },
+          }
+        },
+      },
+    }))
+
+    setupChapter('tick-chap')
+    const results = await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['tick-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+      onStreamTick: repairTick,
+    })
+
+    expect(results[0].status).toBe('success')
+    expect(repairTick).toHaveBeenCalled()
+  })
+
+  it('uses a small max_tokens for segment repair (不占长文预算)', async () => {
+    const Anthropic = (await import('@anthropic-ai/sdk')).default
+    const captured = []
+    let idx = 0
+    Anthropic.mockImplementation(() => ({
+      messages: {
+        stream: mockStream(params => {
+          idx++
+          captured.push(params)
+          return Promise.resolve({ content: [{ type: 'text', text: idx === 1 ? DIRTY : CLEAN_SEG }] })
+        }),
+      },
+    }))
+
+    setupChapter('tok-chap')
+    await generateInterpretations({
+      slug: TEST_SLUG,
+      chapters: ['tok-chap'],
+      specBundle: FAKE_BUNDLE,
+      config: FAKE_CONFIG,
+      projectRoot: TMP_ROOT,
+      force: true,
+    })
+
+    expect(captured).toHaveLength(2)
+    expect(captured[1].max_tokens).toBe(8000)
+    // 局部措辞修正不开 thinking
+    expect(captured[1].thinking).toBeUndefined()
+  })
+})
+
 describe('content evaluator gating (A)', () => {
   let TMP_ROOT
 
