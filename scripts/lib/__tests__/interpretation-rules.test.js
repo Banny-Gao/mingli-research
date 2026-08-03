@@ -12,12 +12,33 @@ describe('INTERPRETATION_RULES', () => {
     expect(INTERPRETATION_RULES).toHaveProperty('content')
   })
 
-  it('has 12 fatal rules (10 基础 + tail-truncation + stray-fence)', () => {
-    expect(INTERPRETATION_RULES.fatal).toHaveLength(12)
+  it('has 13 fatal rules (10 基础 + tail-truncation + stray-fence + structural-incompleteness)', () => {
+    expect(INTERPRETATION_RULES.fatal).toHaveLength(13)
   })
 
   it('has 3 format rules', () => {
     expect(INTERPRETATION_RULES.format).toHaveLength(3)
+  })
+
+  it('every regex rule declares an explicit scope', () => {
+    // scope 决定检测是否剥除块引用（原文转录）。漏标会静默回落到 'full'，
+    // 可能让原文用词误判为 LLM 违规——必须显式声明，见 interpretation-rules.js scope 说明。
+    for (const cat of ['fatal', 'format']) {
+      for (const rule of INTERPRETATION_RULES[cat]) {
+        expect(['body', 'full'], `${rule.id} scope`).toContain(rule.scope)
+      }
+    }
+  })
+
+  it('keeps citation/structure rules at full scope (防误改回归)', () => {
+    // 这几条若被改成 'body' 会静默失效：
+    // truncated-citation 以块引用为目标，tail-truncation/stray-fence 判文件级结构。
+    const mustBeFull = ['truncated-citation', 'tail-truncation', 'stray-fence', 'meta-blockquote']
+    for (const id of mustBeFull) {
+      const rule = INTERPRETATION_RULES.fatal.find(r => r.id === id)
+      expect(rule, `${id} 应存在`).toBeTruthy()
+      expect(rule.scope, `${id} 必须为 full`).toBe('full')
+    }
   })
 
   it('every rule has id, label, regex, promptDesc', () => {

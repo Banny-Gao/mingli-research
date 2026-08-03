@@ -15,13 +15,31 @@ import { INTERPRETATION_RULES } from './interpretation-rules.js'
 
 /**
  * 剥除 blockquote（`> ...`）行，避免原文转录中的"敏感词"误伤 LLM 解读输出。
- * 仅对致命规则 `school-absolutism` 生效（绝对定论措辞——原文转录不算 LLM 武断）。
+ * 对 scope: 'body' 的规则生效（见 interpretation-rules.js 的 scope 说明）。
  */
 function stripBlockquotes(text) {
   return text
     .split('\n')
     .filter(line => !/^\s*>/.test(line))
     .join('\n')
+}
+
+/**
+ * 按规则 scope 选择检测目标文本。
+ *
+ * 'body' → 剥除块引用（原文转录不参与检测，避免把原书用词判成 LLM 违规）
+ * 'full' → 全文检测（缺省）
+ *
+ * 导出供 segment-repair.js 的 locateRuleHits 复用——两处必须判定口径一致，
+ * 否则「self-check 命中」与「按段修复定位」会各扫各的、修错段。
+ *
+ * @param {{scope?: string}} rule
+ * @param {string} text - 原文
+ * @param {string} bodyText - 已剥块引用的文本（调用方预算一次，避免每规则重复剥）
+ * @returns {string}
+ */
+export function targetFor(rule, text, bodyText) {
+  return rule.scope === 'body' ? bodyText : text
 }
 
 /**
@@ -131,10 +149,12 @@ function checkStructuralCoverage(text, source) {
 export function runSelfCheckLite(text, sourceText) {
   const issues = { fatal: [], format: [], content: [] }
 
+  // 块引用（原文转录）剥除一次，供所有 scope: 'body' 的规则复用
+  const bodyText = stripBlockquotes(text)
+
   // === 致命错误 ===
   for (const rule of INTERPRETATION_RULES.fatal) {
-    // school-absolutism 特殊处理：只对 blockquote 外的文本做 grep
-    const target = rule.id === 'school-absolutism' ? stripBlockquotes(text) : text
+    const target = targetFor(rule, text, bodyText)
     if (rule.regex && rule.regex.test(target)) {
       issues.fatal.push(`${rule.label}：${rule.promptDesc || ''}`)
     }
@@ -154,7 +174,8 @@ export function runSelfCheckLite(text, sourceText) {
 
   // === 格式错误 ===
   for (const rule of INTERPRETATION_RULES.format) {
-    if (rule.regex && rule.regex.test(text)) {
+    const target = targetFor(rule, text, bodyText)
+    if (rule.regex && rule.regex.test(target)) {
       issues.format.push(`${rule.label}：${rule.promptDesc || ''}`)
     }
   }

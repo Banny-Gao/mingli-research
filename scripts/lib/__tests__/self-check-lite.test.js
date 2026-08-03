@@ -253,4 +253,62 @@ describe('runSelfCheckLite', () => {
     const result = runSelfCheckLite(text) // 不传 source
     expect(result.issues.fatal.some(i => i.includes('结构覆盖缺失'))).toBe(false)
   })
+
+  // === scope: 'body' —— 原文转录（块引用）不参与检测 ===
+  //
+  // 背景：此前除 school-absolutism 外所有规则都对全文 grep，把古籍原文里的用词
+  // （任氏曰「本文末句云…」）判成 LLM 违规，导致 LLM 无论重写几次都过不了门
+  // （实测 滴天髓阐微/方局 重写 3 次全废）。以下用例锁定「原文用词豁免、
+  // LLM 正文照查」两侧行为。
+
+  it('does NOT flag 本文 inside blockquote — 原文转录用语豁免 (方局 死局回归)', () => {
+    // 滴天髓阐微/方局 真实致败样本：任氏原文命造释义中的「本文」
+    const text = `## 方局之辨\n\n> 【任氏曰】此造正合本文成局，干透官星，左右皆空，四柱一无情致，用财则财会劫局。\n\n${'此言方局与三合之别，论命者当细辨其气之专杂与势之顺逆，方不致误判用神。'.repeat(20)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('元自我引用'))).toBe(false)
+    expect(result.score).toBeGreaterThanOrEqual(4) // 应可过格式门
+  })
+
+  it('still flags 本解读 in body text — LLM 元自我引用照查', () => {
+    const text = `## 方局之辨\n\n> 【原文】方是方兮局是局。\n\n本解读认为此句为纲。${'此言方局之别，论命者当细辨气之专杂。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('元自我引用'))).toBe(true)
+  })
+
+  it('does NOT flag source 定位元数据行 as cross-chapter assertion (渊海子平 回归)', () => {
+    // source 沿袭的定位行属录入规范要求，非 LLM 跨篇断言
+    const text = `> **定位**：卷二 · 格局十神 · 第 105 篇\n\n## 两干不杂之义\n\n${'此言两干不杂之格，论命者当辨其清纯与驳杂之分，气专则贵，气杂则常。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(false)
+  })
+
+  it('still flags cross-chapter assertion in body text', () => {
+    const text = `## 定位\n\n前数篇论用神成败、变化、纯杂，至此则论方局。${'此言方局之别。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('具体跨篇断言'))).toBe(true)
+  })
+
+  // === scope: 'full' —— 必须保持全文检测的规则 ===
+
+  it('KEEPS flagging elided citation inside blockquote (truncated-citation 必须 full)', () => {
+    // 这是真缺陷：LLM 用「……」省略引文中段，原文并无省略号。
+    // 若误把此规则改为 scope:'body'，28 处真实命中会全部漏检 → 此用例即防线。
+    const text = `## 杂论\n\n> 【原文】禄命之学，不详所自起，旧书云始于珞辂子……此其大略也。\n\n${'此言禄命之学源流难考，论者当以史证为凭。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('截取半句'))).toBe(true)
+  })
+
+  it('KEEPS flagging pipeline jargon inside blockquote (pipeline-jargon 必须 full)', () => {
+    // 流水线术语泄漏进块引用同样是真缺陷（渊海子平/神趣八法-鬼象 实测）
+    const text = `> 原文体量：原文有效非空行字符数 ≈ 421，依其密度按标准档组织\n\n## 鬼象\n\n${'此言鬼象之义，论命者当辨杀之有制无制。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('流水线术语'))).toBe(true)
+  })
+
+  it('KEEPS flagging meta blockquote header (meta-blockquote 必须 full)', () => {
+    // 规则以 ^> 锚定块引用，剥引用后会永远无法命中
+    const text = `> **本篇模式**：标准\n\n## 方局\n\n${'此言方局之别，论命者当细辨。'.repeat(12)}`
+    const result = runSelfCheckLite(text)
+    expect(result.issues.fatal.some(i => i.includes('元数据块'))).toBe(true)
+  })
 })
