@@ -13,9 +13,21 @@ import { buildPipelinePrompt } from './pipeline.js'
 import { runSelfCheckLite, extractH2Headings } from './self-check-lite.js'
 import { postProcessOutput } from './post-process.js'
 import { evaluateContent } from './content-evaluator.js'
+import {
+  planRepair,
+  buildSegmentRepairPrompt,
+  isRepairAcceptable,
+  applySegmentRepairs,
+} from './segment-repair.js'
 
 const DEFAULT_RETRY_BASE_MS = 2000
 const MAX_REWRITE = 3
+// 单篇按段修复的最大轮数。每轮逐段串行修复；2 轮修不好说明问题不是局部措辞，
+// 继续修不如退回整篇重生成（由外层 MAX_REWRITE 兜底）。注意：此上限是"每次重写尝试内"的，
+// 病态文件最多 3 次重写尝试 × 2 轮修复。
+const MAX_REPAIR_ROUNDS = 2
+// 单段修复给的 max_tokens——只改一节，不需要长文预算
+const REPAIR_MAX_TOKENS = 8000
 
 // max_tokens 分档（套 claude-api skill：Opus 4.8 max output = 128K，adaptive thinking
 // 计入 output 预算，故长文必须给足 max_tokens 否则 thinking 吃预算致正文截断）。
@@ -86,6 +98,90 @@ function fileExists(p) {
   }
 }
 
+/**
+ * 按段精确修复：只把命中规则的段落交给 LLM 改，其余段落逐字保留。
+ *
+ * 相比整篇重生成的价值：
+ *   - 长文（如 25K 字符）只因一处措辞违规时，不必重掷全篇的骰子——
+ *     整篇重写会让已合格的段落重新生成，旧问题修好、新问题冒出，score 反复横跳；
+ *   - 单段 prompt 只需 8K max_tokens，远低于整篇的 64K。
+ *
+ * 失败即退回：任一段修复不可接受（LLM 删内容 / 调用异常）或修完仍不过门，
+ * 返回 null 让调用方走原整篇重生成路径——按段修是快车道，不是唯一路径。
+ *
+ * @returns {Promise<{output: string, check: object}|null>} null 表示按段修不适用/未修好
+ */
+async function repairBySegments({
+  output,
+  sourceText,
+  check,
+  client,
+  config,
+  signal,
+  retryBaseMs,
+  onStreamTick,
+  onSegmentRepair,
+}) {
+  let current = output
+  let currentCheck = check
+
+  for (let round = 0; round < MAX_REPAIR_ROUNDS; round++) {
+    const plan = planRepair(current, currentCheck)
+    if (!plan.repairable) {
+      onSegmentRepair?.({ phase: 'skip', reason: plan.reason, round: round + 1 })
+      return null
+    }
+
+    onSegmentRepair?.({
+      phase: 'start',
+      round: round + 1,
+      segmentCount: plan.segments.length,
+      headings: plan.segments.map(s => s.heading),
+    })
+
+    // 逐段串行修复：段数通常 1-3，串行足够；且并发改同一文件的不同段易掩盖偏移错误
+    const repairs = []
+    for (const segment of plan.segments) {
+      let repaired
+      try {
+        repaired = await callLLM(client, {
+          model: config.model,
+          system: '你是术数学术研究者，按要求精确修复解读片段。只返回修改后的片段全文，不要任何解释或围栏。',
+          messages: [{ role: 'user', content: buildSegmentRepairPrompt(segment, sourceText) }],
+          maxTokens: REPAIR_MAX_TOKENS,
+          signal,
+          retryBaseMs,
+          extendedThinking: false, // 局部措辞修正，无需 thinking
+          onStreamTick, // 修复期间心跳照发，CLI 进度行不冻结
+        })
+      } catch (err) {
+        onSegmentRepair?.({ phase: 'error', heading: segment.heading, reason: err.message })
+        return null
+      }
+
+      repaired = postProcessOutput(repaired)
+      const verdict = isRepairAcceptable(segment.text, repaired)
+      if (!verdict.ok) {
+        // LLM 借修改之名删了内容 → 整个按段修方案作废，退回整篇重生成
+        onSegmentRepair?.({ phase: 'reject', heading: segment.heading, reason: verdict.reason })
+        return null
+      }
+      repairs.push({ segIndex: segment.segIndex, repaired })
+    }
+
+    current = applySegmentRepairs(current, repairs)
+    currentCheck = runSelfCheckLite(current, sourceText)
+
+    if (currentCheck.score >= 4) {
+      onSegmentRepair?.({ phase: 'success', round: round + 1, segmentCount: repairs.length })
+      return { output: current, check: currentCheck }
+    }
+    onSegmentRepair?.({ phase: 'retry', round: round + 1, score: currentCheck.score })
+  }
+
+  return null
+}
+
 async function generateOne({
   chapter,
   specBundle,
@@ -96,6 +192,7 @@ async function generateOne({
   client,
   retryBaseMs,
   onStreamTick,
+  onSegmentRepair,
 }) {
   const articlesDir = path.join(projectRoot, `books/${config.slug}/articles/${chapter}`)
   const sourcePath = path.join(articlesDir, 'source.md')
@@ -124,11 +221,13 @@ async function generateOne({
   const user = buildPipelinePrompt({ sourceText, condition, specBundle })
 
   // 调 LLM（最多重写 3 次以过格式门：fatal=0 && format=0，即 selfCheck score≥4）
-  // 重写循环只管格式门（fatal+format 全集注入定向修正）；内容质量评估器落盘前跑一次（A）。
+  // 格式门不过时先试**按段精确修复**（只改命中段，其余逐字保留）；
+  // 按段修不适用（结构类缺内容 / 定位不到行 / LLM 删内容）才退回整篇重生成。
   let output
   let score = 0
   let lastCheck = null
   let userForRound = user
+  let repairedBySegment = false
   for (let rewrite = 0; rewrite < MAX_REWRITE; rewrite++) {
     output = await callLLM(client, {
       model: config.model,
@@ -150,7 +249,27 @@ async function generateOne({
     // 格式门通过 → 跳出，进入落盘前内容评估
     if (score >= 4) break
 
-    // 格式门未过（fatal 或 format 命中）→ 注入 fatal+format 全集定向修正（B）
+    // 格式门未过 → 先试按段精确修复（省 token 且不破坏已合格段落）
+    const repaired = await repairBySegments({
+      output,
+      sourceText,
+      check,
+      client,
+      config,
+      signal,
+      retryBaseMs,
+      onStreamTick,
+      onSegmentRepair,
+    })
+    if (repaired) {
+      output = repaired.output
+      lastCheck = repaired.check
+      score = repaired.check.score
+      repairedBySegment = true
+      break
+    }
+
+    // 按段修不适用/未修好 → 注入 fatal+format 全集定向修正，整篇重生成（B）
     if (rewrite === MAX_REWRITE - 1) {
       return buildFailure(chapter, output, sourceText, check, null, outputPath, 'format')
     }
@@ -179,6 +298,7 @@ async function generateOne({
     status: 'success',
     score,
     contentScore: contentEval.score,
+    repairedBySegment,
   }
 }
 
@@ -227,6 +347,9 @@ function buildFailure(chapter, output, sourceText, check, contentEval, outputPat
  * @param {Function} [opts.onProgress] - (current, total, chapter, status, result) 单篇完成回调
  * @param {Function} [opts.onChapterStart] - (current, total, chapter) 单篇开始回调（长任务反馈）
  * @param {Function} [opts.onStreamTick] - (t: {chars, phase}) 流式心跳回调（单篇长任务进度）
+ * @param {Function} [opts.onSegmentRepair] - (e) 按段修复进度回调，事件形态：
+ *   {phase:'start', round, segmentCount, headings} | {phase:'success', round, segmentCount}
+ *   | {phase:'retry', round, score} | {phase:'reject'|'error'|'skip', reason}
  * @param {AbortSignal} [opts.signal]
  * @param {number} [opts.retryBaseMs=2000] - 429/5xx 重试退避基数（测试可缩小）
  * @param {number} [opts.concurrency] - 外层并发篇章数；缺省从 config.concurrency 取
@@ -242,6 +365,7 @@ export async function generateInterpretations(opts) {
     onProgress,
     onChapterStart,
     onStreamTick,
+    onSegmentRepair,
     signal,
     retryBaseMs = DEFAULT_RETRY_BASE_MS,
     concurrency = config.concurrency,
@@ -274,6 +398,7 @@ export async function generateInterpretations(opts) {
           client,
           retryBaseMs,
           onStreamTick,
+          onSegmentRepair,
         })
         results[i] = result
         onProgress?.(i + 1, total, chapter, result.status, result)

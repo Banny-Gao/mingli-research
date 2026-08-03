@@ -121,6 +121,21 @@ async function main() {
       const tag = phase === 'thinking' ? '🧠 思考中' : '✍️  生成中'
       process.stdout.write(`\r  ⏳ ${tag}  已输出 ${chars} 字符`)
     },
+    onSegmentRepair: e => {
+      // 按段修复进度：另起一行（先换行收掉可能正在覆盖的心跳行）
+      if (e.phase === 'start') {
+        const heads = e.headings.map(h => h || '引言').join('、')
+        process.stdout.write(`\n  🔧 按段修复  ${e.segmentCount} 段（${heads}）\n`)
+      } else if (e.phase === 'success') {
+        process.stdout.write(`  ✅ 按段修复成功（第 ${e.round} 轮，${e.segmentCount} 段）\n`)
+      } else if (e.phase === 'retry') {
+        process.stdout.write(`\n  🔁 第 ${e.round} 轮修完仍不合格（格式 ${e.score}/5），进入第 ${e.round + 1} 轮\n`)
+      } else if (e.phase === 'reject' || e.phase === 'error') {
+        process.stdout.write(`  ↩️  按段修复放弃，退回整篇重生成 — ${e.reason}\n`)
+      } else if (e.phase === 'skip') {
+        process.stdout.write(`\n  ↩️  按段修复不适用，整篇重生成 — ${e.reason}\n`)
+      }
+    },
     onProgress: (current, total, chapter, status, result) => {
       // 先换行：把可能正在覆盖的心跳行"收"成上一行，让完成行落到新行
       process.stdout.write('\n')
@@ -159,7 +174,7 @@ const STATUS_TAG = {
 
 /**
  * 把 result 的分数/原因格式化为日志后缀（成功带分数、失败/跳过带原因）。
- * @param {{status: string, score?: number, contentScore?: number, reason?: string}} [result]
+ * @param {{status: string, score?: number, contentScore?: number, reason?: string, repairedBySegment?: boolean}} [result]
  * @returns {string}
  */
 function formatResultDetail(result) {
@@ -168,6 +183,7 @@ function formatResultDetail(result) {
     const parts = []
     if (typeof result.score === 'number') parts.push(`格式 ${result.score}/5`)
     if (typeof result.contentScore === 'number') parts.push(`内容 ${result.contentScore}/5`)
+    if (result.repairedBySegment) parts.push('按段修复')
     return parts.length ? ` · ${parts.join(' / ')}` : ''
   }
   if (result.reason) return ` · ${result.reason}`
